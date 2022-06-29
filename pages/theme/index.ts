@@ -23,6 +23,7 @@ const colors = {
     200: "#64646f",
     300: "#313442",
     400: "#2c2c35",
+    500: "#1e1e24",
   },
   black: {
     100: "#0f0f12",
@@ -30,8 +31,17 @@ const colors = {
 };
 
 const BUTTON_STYLE = {
-  buttonStyle: (props: THEME_PROPS) => ({
-    backgroundColor: props.colorMode === "light" ? "white" : "none",
+  basicButtonStyle: (props: THEME_PROPS) => ({
+    background: props.colorMode === "light" ? "white" : "none",
+    borderWidth: 1,
+    borderColor: props.colorMode === "light" ? "" : "#8a8a98",
+    borderRadius: 8,
+    color: props.colorMode === "light" ? "#f1f1f1" : "#f1f1f1",
+  }),
+  submitButtonStyle: (props: THEME_PROPS) => ({
+    background: props.colorMode === "light" ? "white" : "#257eee",
+    borderRadius: 8,
+    color: props.colorMode === "light" ? "#f1f1f1" : "#f1f1f1",
   }),
 };
 
@@ -39,6 +49,7 @@ const theme = extendTheme({
   colors,
   fonts,
   BUTTON_STYLE,
+  initialColorMode: "dark",
   styles: {
     global: (props: THEME_PROPS) => ({
       "html, body": {

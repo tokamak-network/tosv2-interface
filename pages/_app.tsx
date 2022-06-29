@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   test();
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
-      <ColorModeScript />
+      <ColorModeScript initialColorMode={theme.initialColorMode} />
       <ChakraProvider resetCSS theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
