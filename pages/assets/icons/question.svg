@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <path style="fill:none" d="M0 0h16v16H0z"/>
+    <g data-name="question" transform="translate(-89.885 -89.885)">
+        <circle data-name="타원 8" cx="6" cy="6" r="6" transform="translate(91.885 91.885)" style="stroke:#8b8b93;stroke-linecap:round;stroke-linejoin:round;stroke-width:.75px;fill:none"/>
+        <path data-name="패스 38" d="M96.629 98.553V97.6a2 2 0 1 0-2-2" transform="translate(1.257 .786)" style="stroke:#8b8b93;stroke-linecap:round;stroke-linejoin:round;stroke-width:.75px;fill:none"/>
+        <circle data-name="타원 9" cx=".724" cy=".724" r=".724" transform="translate(97.161 100.378)" style="fill:#8b8b93"/>
+    </g>
+</svg>

@@ -15,7 +15,7 @@ const colors = {
     200: "#2775ff",
   },
   white: {
-    100: "#fffffff",
+    100: "#ffffff",
     200: "#f1f1f1",
   },
   gray: {
@@ -29,6 +29,17 @@ const colors = {
   black: {
     100: "#0f0f12",
   },
+  red: {
+    100: "#e23738",
+  },
+};
+
+const PAGE_LAYOUT_STYLE = {
+  flexDir: "column",
+  w: "100%",
+  backgroundColor: "black.100",
+  pl: 100,
+  pt: 138,
 };
 
 const BUTTON_STYLE = {
@@ -50,6 +61,7 @@ const theme = extendTheme({
   colors,
   fonts,
   BUTTON_STYLE,
+  PAGE_LAYOUT_STYLE,
   initialColorMode: "dark",
   styles: {
     global: (props: THEME_PROPS) => ({

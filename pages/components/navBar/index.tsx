@@ -4,6 +4,9 @@ import Logo from "./Logo";
 import DASHBOARD_ICON from "assets/icons/dashboard.svg";
 import BOND_ICON from "assets/icons/bond.svg";
 import STAKE_ICON from "assets/icons/stake.svg";
+import DASHBOARD_GRAY_ICON from "assets/icons/dashboard-gray.svg";
+import BOND_GRAY_ICON from "assets/icons/bond-gray.svg";
+import STAKE_GRAY_ICON from "assets/icons/stake-gray.svg";
 
 import MEDIUM_ICON from "assets/icons/medium.svg";
 import TWITTER_ICON from "assets/icons/twitter.svg";
@@ -11,9 +14,12 @@ import GITHUB_ICON from "assets/icons/github.svg";
 import TELEGRAM_ICON from "assets/icons/telegram.svg";
 
 import ARROW_RIGHT_ICON from "assets/icons/arrow-right.svg";
+import TOOLTIP_ARROW_LEFT_ICON from "assets/icons/Tooltips_left_arrow.svg";
 
 import Line from "common/line/Line";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 const iconList = [
   {
@@ -32,15 +38,18 @@ const iconList = [
 
 const navItemList = [
   {
-    icon: DASHBOARD_ICON,
+    icon: DASHBOARD_GRAY_ICON,
+    hoverIcon: DASHBOARD_ICON,
     link: "dashboard",
   },
   {
-    icon: BOND_ICON,
+    icon: BOND_GRAY_ICON,
+    hoverIcon: BOND_ICON,
     link: "bond",
   },
   {
-    icon: STAKE_ICON,
+    icon: STAKE_GRAY_ICON,
+    hoverIcon: STAKE_ICON,
     link: "stake",
   },
 ];
@@ -70,21 +79,69 @@ const LinkContainer = () => {
 };
 
 const NavItem = () => {
+  const [isHover, setIsHover] = useState<number | undefined>(undefined);
+  const router = useRouter();
+  const { pathname } = router;
+  const pName = pathname.replaceAll("/", "");
+
   return (
     <>
       {navItemList.map((item, index) => {
         return (
           <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
-            <Flex
-              w={54}
-              h={54}
-              alignItems="center"
-              justifyContent={"center"}
-              borderRadius={10}
-              _hover={{ backgroundColor: "blue.100" }}
-              cursor={"pointer"}
-            >
-              <Image src={item.icon} alt={"icon"}></Image>
+            <Flex pos={"relative"}>
+              <Flex
+                w={54}
+                h={54}
+                alignItems="center"
+                justifyContent={"center"}
+                borderRadius={10}
+                _hover={{ backgroundColor: "blue.100" }}
+                cursor={"pointer"}
+                onMouseEnter={() => setIsHover(index)}
+                onMouseLeave={() => setIsHover(undefined)}
+              >
+                <Image
+                  src={
+                    isHover === index || pName === item.link
+                      ? item.hoverIcon
+                      : item.icon
+                  }
+                  alt={"icon"}
+                ></Image>
+              </Flex>
+              {isHover === index && (
+                <Flex
+                  pos={"absolute"}
+                  ml={"90px"}
+                  mt={2}
+                  px={18}
+                  py={"9px"}
+                  bg={"gray.600"}
+                  borderRadius={3}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  color={"#2775ff"}
+                  fontSize={14}
+                  border={"1px solid #313442"}
+                >
+                  <Flex pos={"relative"}>
+                    <Box
+                      pos={"absolute"}
+                      left={-7}
+                      // bg={"red"}
+                      top={-3}
+                      style={{ transform: `rotate(270deg)` }}
+                    >
+                      <Image
+                        src={TOOLTIP_ARROW_LEFT_ICON}
+                        alt={"TOOLTIP_ARROW_LEFT_ICON"}
+                      ></Image>
+                    </Box>
+                  </Flex>
+                  <Text>{item.link}</Text>
+                </Flex>
+              )}
             </Flex>
           </Link>
         );
