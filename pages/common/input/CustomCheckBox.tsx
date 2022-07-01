@@ -9,17 +9,12 @@ type CheckBoxProp = {
   isError?: boolean;
 };
 
-const CheckBox: React.FC<CheckBoxProp> = (props) => {
+const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   const { placeHolder, w, h, isDisabled, value, isError } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
-  return (
-    <input
-      type={"checkbox"}
-      style={{ width: 20, height: 20, backgroundColor: "#000000" }}
-    ></input>
-  );
+  return <Checkbox size={"lg"} style={{ borderRadius: "4px" }}></Checkbox>;
 };
 
-export default CheckBox;
+export default CustomCheckBox;
