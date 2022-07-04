@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <path style="fill:none" d="M0 0h16v16H0z"/>
+    <g data-name="calendar">
+        <path data-name="선 24" transform="translate(5.083 1.35)" style="stroke-width:1.5px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0v2"/>
+        <path data-name="선 25" transform="translate(10.417 1.35)" style="stroke-width:1.5px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0v2"/>
+        <path data-name="선 26" transform="translate(2.083 6.077)" style="stroke-width:1.5px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0h11.333"/>
+        <path data-name="패스 953" d="M12.75 5.083v5.667a2.99 2.99 0 0 1-3.333 3.333H4.083A2.99 2.99 0 0 1 .75 10.75V5.083A2.99 2.99 0 0 1 4.083 1.75h5.334a2.99 2.99 0 0 1 3.333 3.333z" style="stroke-width:1.5px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" transform="translate(1 .6)"/>
+        <path data-name="선 27" transform="translate(10.213 9.15)" style="stroke-width:2px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0h.006"/>
+        <path data-name="선 28" transform="translate(10.213 11.15)" style="stroke-width:2px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0h.006"/>
+        <path data-name="선 29" transform="translate(7.747 9.15)" style="stroke-width:2px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0h.006"/>
+        <path data-name="선 30" transform="translate(7.747 11.15)" style="stroke-width:2px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0h.006"/>
+        <path data-name="선 31" transform="translate(5.279 9.15)" style="stroke-width:2px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0h.006"/>
+        <path data-name="선 32" transform="translate(5.279 11.15)" style="stroke-width:2px;stroke:#64646f;stroke-linecap:round;stroke-linejoin:round;fill:none" d="M0 0h.006"/>
+    </g>
+</svg>

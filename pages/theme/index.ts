@@ -59,12 +59,19 @@ const BUTTON_STYLE = {
   }),
 };
 
+const breakPoints = {
+  sm: "360px",
+  md: "1024px",
+  lg: "1440px",
+};
+
 const theme = extendTheme({
   colors,
   fonts,
   BUTTON_STYLE,
   PAGE_LAYOUT_STYLE,
   initialColorMode: "dark",
+  breakPoints,
   styles: {
     global: (props: THEME_PROPS) => ({
       "html, body": {

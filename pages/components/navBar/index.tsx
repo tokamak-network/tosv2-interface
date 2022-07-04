@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import Image from "next/image";
 import Logo from "./Logo";
 import DASHBOARD_ICON from "assets/icons/dashboard.svg";
@@ -172,6 +172,7 @@ const MenuButton = () => {
 
 const NavBar = () => {
   const [isExpended, setIsExpended] = useState<boolean>(false);
+  // const variant = useBreakpointValue()
   return (
     <Flex
       w={isExpended ? 256 : 104}

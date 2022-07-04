@@ -7,6 +7,7 @@ import theme from "./theme";
 import NavBar from "components/navBar";
 import Footer from "components/layout/Footer";
 import { RecoilRoot } from "recoil";
+import Header from "components/layout/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
   test();
@@ -15,9 +16,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ColorModeScript initialColorMode={theme.initialColorMode} />
       <ChakraProvider resetCSS theme={theme}>
         <RecoilRoot>
-          <Flex minH={"100vh"}>
+          <Flex minH={"100vh"} w={["360px", "1024px", "1440px"]}>
             <NavBar></NavBar>
             <Flex flexDir={"column"}>
+              <Header></Header>
               <Component {...pageProps} />
               <Footer></Footer>
             </Flex>

@@ -7,7 +7,7 @@ const DashBoard = () => {
   const theme = useTheme();
 
   return (
-    <Flex {...theme.PAGE_LAYOUT_STYLE}>
+    <Flex {...theme.PAGE_LAYOUT_STYLE} pr={"75px"}>
       <PageLayout></PageLayout>
       <SmallCardContainer></SmallCardContainer>
       <GraphContainer></GraphContainer>
