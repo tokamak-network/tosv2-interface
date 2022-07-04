@@ -1,8 +1,32 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useMemo } from "react";
 import { Dashboard_SmallCardType } from "types/dashboard";
 
 const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
-  const { title, price, priceChangePercent } = props;
+  const { title, price, priceUnit, priceChangePercent } = props;
+
+  const PriceContent = useMemo(() => {
+    switch (priceUnit) {
+      case "$":
+        return (
+          <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
+            {priceUnit} {price}
+          </Text>
+        );
+      default:
+        return (
+          <Flex>
+            <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
+              {price}
+            </Text>
+            <Text alignSelf={"end"} ml={"5px"} fontSize={14} pb={"3px"}>
+              {priceUnit}
+            </Text>
+          </Flex>
+        );
+    }
+  }, [price, priceUnit]);
+
   return (
     <Flex
       w={266}
@@ -28,13 +52,13 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
       </Text>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
-          $ {price}
+          {PriceContent}
         </Text>
         <Text
           fontSize={18}
           color={priceChangePercent > 0 ? "red.100" : "blue.200"}
         >
-          {priceChangePercent > 0 ? "+" : "-"}
+          {priceChangePercent > 0 ? "+" : ""}
           {priceChangePercent} %
         </Text>
       </Flex>

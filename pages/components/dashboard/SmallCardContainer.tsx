@@ -12,23 +12,27 @@ const SmallCardContainer = () => {
     const dummyData: Dashboard_SmallCardArrType = [
       {
         price: "15.75",
+        priceUnit: "$",
         priceChangePercent: 15,
         title: "TOS Price",
       },
       {
         price: "15.75",
-        priceChangePercent: 15,
-        title: "TOS Price",
+        priceUnit: "ETH/TOS",
+        priceChangePercent: -15,
+        title: "Backing per TOS",
       },
       {
         price: "15.75",
+        priceUnit: "$",
         priceChangePercent: 15,
-        title: "TOS Price",
+        title: "LTOS Price",
       },
       {
         price: "15.75",
+        priceUnit: "TOS",
         priceChangePercent: 15,
-        title: "TOS Price",
+        title: "LTOS Index",
       },
     ];
     setCardList(dummyData);
@@ -43,6 +47,7 @@ const SmallCardContainer = () => {
               price={cardData.price}
               priceChangePercent={cardData.priceChangePercent}
               title={cardData.title}
+              priceUnit={cardData.priceUnit}
             ></SmallCard>
           </Box>
         );
