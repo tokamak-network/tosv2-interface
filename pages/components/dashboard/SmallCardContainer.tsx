@@ -36,9 +36,9 @@ const SmallCardContainer = () => {
 
   return (
     <Flex>
-      {cardList?.map((cardData) => {
+      {cardList?.map((cardData, index) => {
         return (
-          <Box mr={"24px"} key={cardData.title}>
+          <Box mr={"24px"} key={`${cardData.title}_${index}`}>
             <SmallCard
               price={cardData.price}
               priceChangePercent={cardData.priceChangePercent}

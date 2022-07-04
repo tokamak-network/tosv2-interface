@@ -38,7 +38,7 @@ const PAGE_LAYOUT_STYLE = {
   flexDir: "column",
   w: "100%",
   backgroundColor: "black.100",
-  pl: 100,
+  pl: "24px",
   pt: 138,
 };
 

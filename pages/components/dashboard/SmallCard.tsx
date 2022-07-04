@@ -15,6 +15,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
       pr={"18px"}
       pt={"15px"}
       pb={"10px"}
+      bgColor={"gray.600"}
     >
       <Text
         color={"gray.100"}

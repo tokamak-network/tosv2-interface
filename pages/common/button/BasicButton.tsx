@@ -2,13 +2,14 @@ import { Button, useColorMode, useTheme } from "@chakra-ui/react";
 
 type BasicButtonProp = {
   name: string;
-  w?: number;
-  h?: number;
+  w?: number | string;
+  h?: number | string;
   isDisabled?: boolean;
+  style?: any;
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const { name, w, h, isDisabled } = props;
+  const { name, w, h, isDisabled, style } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   return (
@@ -19,6 +20,7 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
       _hover={isDisabled ? {} : { borderColor: "blue.100", color: "blue.100" }}
       fontSize={12}
       {...theme.BUTTON_STYLE.basicButtonStyle(colorMode)}
+      {...style}
       //   background={"white.100"}
     >
       {name}

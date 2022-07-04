@@ -124,6 +124,7 @@ const NavItem = () => {
                   color={"#2775ff"}
                   fontSize={14}
                   border={"1px solid #313442"}
+                  zIndex={1000}
                 >
                   <Flex pos={"relative"}>
                     <Box
@@ -170,9 +171,11 @@ const MenuButton = () => {
 };
 
 const NavBar = () => {
+  const [isExpended, setIsExpended] = useState<boolean>(false);
   return (
     <Flex
-      w={104}
+      w={isExpended ? 256 : 104}
+      h={"100%"}
       minH={"100vh"}
       flexDir="column"
       pt={33}
@@ -181,7 +184,9 @@ const NavBar = () => {
       pos={"relative"}
     >
       {/* menu button */}
-      <MenuButton></MenuButton>
+      <Box onClick={() => setIsExpended(!isExpended)}>
+        <MenuButton></MenuButton>
+      </Box>
       <Box mb={50}>
         <Logo></Logo>
       </Box>
