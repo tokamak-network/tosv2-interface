@@ -175,7 +175,6 @@ const NavBar = () => {
   return (
     <Flex
       w={isExpended ? 256 : 104}
-      h={"100%"}
       minH={"100vh"}
       flexDir="column"
       pt={33}
