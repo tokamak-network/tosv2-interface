@@ -6,10 +6,11 @@ type BasicButtonProp = {
   h?: number | string;
   isDisabled?: boolean;
   style?: any;
+  onClick?: Function;
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const { name, w, h, isDisabled, style } = props;
+  const { name, w, h, isDisabled, style, onClick } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   return (
@@ -22,6 +23,7 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
       {...theme.BUTTON_STYLE.basicButtonStyle(colorMode)}
       {...style}
       //   background={"white.100"}
+      onClick={onClick ? () => onClick() : null}
     >
       {name}
     </Button>
