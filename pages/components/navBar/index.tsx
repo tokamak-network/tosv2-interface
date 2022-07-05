@@ -172,7 +172,7 @@ const MenuButton = () => {
 
 const NavBar = () => {
   const [isExpended, setIsExpended] = useState<boolean>(false);
-  // const variant = useBreakpointValue()
+
   return (
     <Flex
       w={isExpended ? 256 : 104}
@@ -182,6 +182,7 @@ const NavBar = () => {
       alignItems="center"
       bg={"#1f2128"}
       pos={"relative"}
+      mr={isExpended ? "25px" : "100px"}
     >
       {/* menu button */}
       <Box onClick={() => setIsExpended(!isExpended)}>

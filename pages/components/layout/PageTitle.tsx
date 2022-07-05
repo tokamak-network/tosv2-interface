@@ -9,7 +9,7 @@ const PageTitle = () => {
   const { pathName } = usePathName();
 
   return (
-    <Flex flexDir={"column"} mb={"36px"} w={"100%"} pr={"25px"}>
+    <Flex flexDir={"column"} mb={"36px"} w={"100%"}>
       <Text
         fontSize={28}
         h={"39px"}

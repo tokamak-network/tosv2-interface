@@ -40,8 +40,7 @@ const PAGE_LAYOUT_STYLE = {
   flexDir: "column",
   w: "100%",
   backgroundColor: "black.100",
-  pl: "24px",
-  pt: 138,
+  pt: "66px",
 };
 
 const BUTTON_STYLE = {
