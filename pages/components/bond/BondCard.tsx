@@ -1,6 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
+import useModal from "hooks/useModal";
 import { BondCardProps } from "types/bond";
 
 function ContentComponent(props: {
@@ -19,6 +20,7 @@ function ContentComponent(props: {
 
 function BondCard(props: BondCardProps) {
   const { bondCapacity, bondingPrice, discountRate, tokenType } = props;
+  const { openModal } = useModal("bond_modal");
   return (
     <Flex
       flexDir={"column"}
@@ -63,6 +65,7 @@ function BondCard(props: BondCardProps) {
         name="Bond"
         h={"33px"}
         style={{ alignSelf: "center" }}
+        onClick={openModal}
       ></BasicButton>
     </Flex>
   );

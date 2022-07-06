@@ -1,5 +1,6 @@
 import { Flex, useTheme } from "@chakra-ui/react";
 import BondCardContainer from "components/bond/BondCardContainer";
+import BondModal from "components/bond/BondModal";
 import TopCardContainer from "components/bond/TopCardContrainer";
 import GraphContainer from "components/dashboard/GraphContainer";
 import SmallCardContainer from "components/dashboard/SmallCardContainer";
@@ -13,6 +14,7 @@ const Bond = () => {
       <PageLayout></PageLayout>
       <TopCardContainer></TopCardContainer>
       <BondCardContainer></BondCardContainer>
+      <BondModal></BondModal>
     </Flex>
   );
 };
