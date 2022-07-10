@@ -175,14 +175,15 @@ const NavBar = () => {
 
   return (
     <Flex
-      w={isExpended ? 256 : 104}
+      minW={isExpended ? 0 : [0, 0, 104]}
+      w={0}
       minH={"100vh"}
       flexDir="column"
       pt={33}
       alignItems="center"
       bg={"#1f2128"}
       pos={"relative"}
-      mr={isExpended ? "25px" : "100px"}
+      // mr={isExpended ? "50%" : "100px"}
     >
       {/* menu button */}
       <Box onClick={() => setIsExpended(!isExpended)}>

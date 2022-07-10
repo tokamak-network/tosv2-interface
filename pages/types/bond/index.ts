@@ -6,3 +6,8 @@ export type BondCardProps = {
   discountRate: string;
   tokenType: TokenTypes;
 };
+
+export type MyCardProps = {
+  info: { title: string; content: string }[];
+  tokenType: TokenTypes;
+};

@@ -58,11 +58,7 @@ const BUTTON_STYLE = {
   }),
 };
 
-const breakPoints = {
-  sm: "360px",
-  md: "1024px",
-  lg: "1440px",
-};
+const breakPoints = ["0px", "360px", "1024px"];
 
 const theme = extendTheme({
   colors,

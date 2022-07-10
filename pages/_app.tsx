@@ -16,12 +16,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ColorModeScript initialColorMode={theme.initialColorMode} />
       <ChakraProvider resetCSS theme={theme}>
         <RecoilRoot>
-          <Flex minH={"100vh"} w={["360px", "1024px", "1440px"]}>
+          <Flex minH={"100vh"}>
             <NavBar></NavBar>
-            <Flex flexDir={"column"}>
-              <Header></Header>
-              <Component {...pageProps} />
-              <Footer></Footer>
+            <Flex justifyContent="center" minW={"100%"}>
+              <Flex w={"1136px"} flexDir={"column"}>
+                <Header></Header>
+                <Component {...pageProps} />
+                <Footer></Footer>
+              </Flex>
             </Flex>
           </Flex>
         </RecoilRoot>
