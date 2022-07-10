@@ -1,4 +1,10 @@
-import { Box, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  useBreakpointValue,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import Logo from "./Logo";
 import DASHBOARD_ICON from "assets/icons/dashboard.svg";
@@ -20,6 +26,7 @@ import Line from "common/line/Line";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import useMediaView from "hooks/useMediaView";
 
 const iconList = [
   {
@@ -172,6 +179,11 @@ const MenuButton = () => {
 
 const NavBar = () => {
   const [isExpended, setIsExpended] = useState<boolean>(false);
+  const { tableView, mobileView } = useMediaView();
+
+  if (tableView || mobileView) {
+    return null;
+  }
 
   return (
     <Flex

@@ -11,6 +11,11 @@ import {
   Link,
   Box,
   Input,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderMark,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
@@ -20,12 +25,94 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
+import { useState } from "react";
+
+function StakeGraph() {
+  const labelStyles = {
+    mt: "2",
+    ml: "-2.5",
+    fontSize: "sm",
+  };
+  const [sliderValue, setSliderValue] = useState(36);
+  return (
+    <Flex w={"100%"} h={"157.5px"}>
+      <Slider
+        aria-label="slider-ex-1"
+        defaultValue={36}
+        min={1}
+        max={36}
+        step={1}
+        onChange={(val) => setSliderValue(val)}
+      >
+        {/* <SliderMark value={25} {...labelStyles}>
+          25%
+        </SliderMark> */}
+        <SliderMark
+          value={sliderValue}
+          textAlign="center"
+          bg="blue.500"
+          color="white"
+          mt="-10"
+          ml="-5"
+          w="12"
+        >
+          {sliderValue} STOS
+        </SliderMark>
+        <SliderTrack>
+          <SliderFilledTrack />
+        </SliderTrack>
+        <SliderThumb />
+      </Slider>
+    </Flex>
+  );
+}
+
+function BottomContent(props: { title: string; content: string }) {
+  const { title, content } = props;
+  return (
+    <Flex>
+      <Flex w={"100%"} justifyContent={"space-between"} fontSize={14}>
+        <Text color={"#8b8b93"}>{title}</Text>
+        <Text color={"white.200"} fontWeight={600}>
+          {content}
+        </Text>
+      </Flex>
+    </Flex>
+  );
+}
 
 function BondModal() {
   const selectedModal = useRecoilValue(selectedModalState);
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
+
+  const contentList = [
+    {
+      title: "Amount",
+      content: "1,000 WTON",
+    },
+    {
+      title: "Amount",
+      content: "1,000 WTON",
+    },
+    {
+      title: "Amount",
+      content: "1,000 WTON",
+    },
+    {
+      title: "Amount",
+      content: "1,000 WTON",
+    },
+    {
+      title: "Amount",
+      content: "1,000 WTON",
+    },
+    {
+      title: "Amount",
+      content: "1,000 WTON",
+    },
+  ];
 
   return (
     <Modal
@@ -38,7 +125,7 @@ function BondModal() {
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "#121318" : "#121318"}
         minW="43.75em"
-        h="704px"
+        // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>
@@ -125,18 +212,41 @@ function BondModal() {
                   <Input w={"120px"} h={"39px"} ml={"auto"}></Input>
                 </Flex>
               </Flex>
+              <Flex px={"49px"} mb={"30px"}>
+                <StakeGraph></StakeGraph>
+              </Flex>
               {/* Content Bottom */}
-              <Flex px={"50px"}>
-                <Flex w={"100%"} justifyContent={"space-between"} fontSize={14}>
-                  <Text color={"#8b8b93"}>Amount</Text>
-                  <Text color={"white.200"} fontWeight={600}>
-                    1,000 WTON
-                  </Text>
-                </Flex>
+              <Flex
+                flexDir={"column"}
+                columnGap={"9px"}
+                mb={"30px"}
+                px={"50px"}
+              >
+                {contentList.map((content) => {
+                  return (
+                    <BottomContent
+                      title={content.title}
+                      content={content.content}
+                      key={content.title}
+                    ></BottomContent>
+                  );
+                })}
               </Flex>
             </Flex>
-            <Flex justifyContent={"center"}>
+            <Flex justifyContent={"center"} mb={"21px"}>
               <SubmitButton w={460} h={42} name="Approve"></SubmitButton>
+            </Flex>
+            <Flex
+              fontSize={11}
+              color={"#64646f"}
+              textAlign="center"
+              w={"100%"}
+              mb={"24px"}
+            >
+              <Text w={"100%"}>
+                If this is First time bonding, Please approve Tonstarter to use
+                your DAI for bonding.
+              </Text>
             </Flex>
           </Flex>
         </ModalBody>

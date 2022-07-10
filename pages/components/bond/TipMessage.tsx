@@ -12,7 +12,7 @@ function TipMessage() {
 
   return (
     <Flex
-      w={"1136px"}
+      w={"100%"}
       h={"60px"}
       borderWidth={1}
       borderColor={"blue.100"}

@@ -58,7 +58,7 @@ const BUTTON_STYLE = {
   }),
 };
 
-const breakPoints = ["0px", "360px", "1024px"];
+const breakpoints = ["0px", "360px", "1024px"];
 
 const theme = extendTheme({
   colors,
@@ -66,7 +66,7 @@ const theme = extendTheme({
   BUTTON_STYLE,
   PAGE_LAYOUT_STYLE,
   initialColorMode: "dark",
-  breakPoints,
+  breakpoints,
   styles: {
     global: (props: THEME_PROPS) => ({
       "html, body": {

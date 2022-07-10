@@ -11,15 +11,29 @@ import Header from "components/layout/Header";
 
 function MyApp({ Component, pageProps }: AppProps) {
   test();
+
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <ColorModeScript initialColorMode={theme.initialColorMode} />
       <ChakraProvider resetCSS theme={theme}>
         <RecoilRoot>
-          <Flex minH={"100vh"}>
+          <Flex minH={"100vh"} w={"100%"}>
             <NavBar></NavBar>
-            <Flex justifyContent="center" minW={"100%"}>
-              <Flex w={"1136px"} flexDir={"column"}>
+            {/* PC VIEW = 1136px */}
+            <Flex
+              justifyContent="center"
+              // maxW={["100%", "100%", "1136px"]}
+              w={"100%"}
+              alignItems="center"
+            >
+              <Flex
+                // w={["360px", "800px", "1136px"]}
+                maxW={["100%", "100%", "1136px"]}
+                flexDir={"column"}
+                justifyContent="center"
+                w={"100%"}
+                // px={[0, "2%", ""]}
+              >
                 <Header></Header>
                 <Component {...pageProps} />
                 <Footer></Footer>
