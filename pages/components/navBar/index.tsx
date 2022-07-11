@@ -179,9 +179,9 @@ const MenuButton = () => {
 
 const NavBar = () => {
   const [isExpended, setIsExpended] = useState<boolean>(false);
-  const { tableView, mobileView } = useMediaView();
+  const { pcView } = useMediaView();
 
-  if (tableView || mobileView) {
+  if (!pcView) {
     return null;
   }
 

@@ -17,7 +17,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ColorModeScript initialColorMode={theme.initialColorMode} />
       <ChakraProvider resetCSS theme={theme}>
         <RecoilRoot>
-          <Flex minH={"100vh"} w={"100%"}>
+          <Flex minH={"100vh"} w={"100%"} px={["24px", "24px", "0px"]}>
             <NavBar></NavBar>
             {/* PC VIEW = 1136px */}
             <Flex

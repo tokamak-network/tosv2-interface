@@ -13,7 +13,6 @@ function TipMessage() {
   return (
     <Flex
       w={"100%"}
-      h={"60px"}
       borderWidth={1}
       borderColor={"blue.100"}
       alignItems="center"
@@ -22,6 +21,7 @@ function TipMessage() {
       borderRadius={14}
       pl={"30px"}
       pr={"20px"}
+      py={"20px"}
     >
       <Text color={"blue.100"}>
         Tip : New bonds are auto-staked (accrue rebase rewards) and no longer

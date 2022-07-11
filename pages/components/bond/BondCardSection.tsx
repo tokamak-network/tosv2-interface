@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from "@chakra-ui/react";
+import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
 import { useEffect, useState } from "react";
 import { BondCardProps } from "types/bond";
@@ -6,6 +6,7 @@ import BondCard from "./BondCard";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[]>();
+  const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
 
   useEffect(() => {
     const dummyData: BondCardProps[] = [
@@ -38,7 +39,13 @@ function BondCardSection() {
   }, []);
 
   return (
-    <SimpleGrid columns={3} gridRowGap={"24px"} columnGap={"25px"}>
+    <Flex
+      // columns={3} gridRowGap={"24px"} columnGap={"25px"}
+      columnGap={"2%"}
+      rowGap={"20px"}
+      justifyContent={isSmallerThan750 ? "center" : ""}
+      flexWrap={"wrap"}
+    >
       {cardList?.map((cardData, index) => (
         <BondCard
           bondCapacity={cardData.bondCapacity}
@@ -48,7 +55,7 @@ function BondCardSection() {
           key={cardData.bondCapacity + index}
         ></BondCard>
       ))}
-    </SimpleGrid>
+    </Flex>
   );
 }
 

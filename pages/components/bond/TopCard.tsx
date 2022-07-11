@@ -35,7 +35,7 @@ const TopCard: React.FC<TopCardProps> = (props) => {
 
   return (
     <Flex
-      w={["", "", "48.9%"]}
+      w={["48.9%", "48.9%", "48.9%"]}
       h={110}
       borderWidth={1}
       borderColor={"gray.600"}

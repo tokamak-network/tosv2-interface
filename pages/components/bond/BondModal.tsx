@@ -42,17 +42,31 @@ function StakeGraph() {
         w={"100%"}
         h={"2px"}
         bgColor={"#353d48"}
-        transform={`rotate(165deg)`}
-        top={"68px"}
+        transform={`rotate(165.5deg)`}
+        top={"69px"}
         borderRadius={6}
       ></Box>
-      <Flex pos={"absolute"} alignSelf={"flex-end"}>
+      <Flex
+        pos={"absolute"}
+        alignItems={"flex-end"}
+        w={"100%"}
+        h={"150px"}
+        pb={`${sliderValue * 2.2}px`}
+      >
+        <Box
+          w={`${(sliderValue - 1) * 2.9}%`}
+          h={"2px"}
+          bgColor={"#2775ff"}
+          transform={`rotate(165.5deg)`}
+          borderRadius={6}
+        ></Box>
+      </Flex>
+      <Flex pos={"absolute"} alignSelf={"flex-end"} pb={"7px"}>
         <Box
           opacity={0.5}
           borderTop={`${sliderValue * 4.3}px solid transparent`}
           borderRight={`${sliderValue * 16.5}px solid #2775ff`}
           lineHeight={0}
-          top={"-6px"}
         ></Box>
       </Flex>
       <Slider
@@ -61,7 +75,7 @@ function StakeGraph() {
         min={1}
         max={36}
         step={1}
-        onChange={(val) => setSliderValue(val)}
+        onChange={(val: any) => setSliderValue(val)}
         h={"10px"}
         alignSelf={"end"}
       >
@@ -243,12 +257,12 @@ function BondModal() {
                 mb={"30px"}
                 px={"50px"}
               >
-                {contentList.map((content) => {
+                {contentList.map((content, index) => {
                   return (
                     <BottomContent
                       title={content.title}
                       content={content.content}
-                      key={content.title}
+                      key={content.title + index}
                     ></BottomContent>
                   );
                 })}

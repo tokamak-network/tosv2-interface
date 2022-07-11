@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, useMediaQuery } from "@chakra-ui/react";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
@@ -21,11 +21,16 @@ function ContentComponent(props: {
 function BondCard(props: BondCardProps) {
   const { bondCapacity, bondingPrice, discountRate, tokenType } = props;
   const { openModal } = useModal("bond_modal");
+  const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
+
+  //vierport ref 1134px
+
   return (
     <Flex
       flexDir={"column"}
-      w={"362px"}
+      w={smallerThan1040 ? "49%" : "31.9%"}
       h={"232px"}
+      minW={["336px", "310px", "362px"]}
       borderWidth={1}
       borderColor={"gray.600"}
       borderRadius={10}
