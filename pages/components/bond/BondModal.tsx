@@ -35,7 +35,26 @@ function StakeGraph() {
   };
   const [sliderValue, setSliderValue] = useState(36);
   return (
-    <Flex w={"100%"} h={"157.5px"}>
+    <Flex w={"100%"} h={"157.5px"} pos="relative">
+      {/* diagonal line */}
+      <Box
+        pos={"absolute"}
+        w={"100%"}
+        h={"2px"}
+        bgColor={"#353d48"}
+        transform={`rotate(165deg)`}
+        top={"68px"}
+        borderRadius={6}
+      ></Box>
+      <Flex pos={"absolute"} alignSelf={"flex-end"}>
+        <Box
+          opacity={0.5}
+          borderTop={`${sliderValue * 4.3}px solid transparent`}
+          borderRight={`${sliderValue * 16.5}px solid #2775ff`}
+          lineHeight={0}
+          top={"-6px"}
+        ></Box>
+      </Flex>
       <Slider
         aria-label="slider-ex-1"
         defaultValue={36}
@@ -43,6 +62,8 @@ function StakeGraph() {
         max={36}
         step={1}
         onChange={(val) => setSliderValue(val)}
+        h={"10px"}
+        alignSelf={"end"}
       >
         {/* <SliderMark value={25} {...labelStyles}>
           25%
