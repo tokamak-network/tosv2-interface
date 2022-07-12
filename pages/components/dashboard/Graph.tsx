@@ -15,7 +15,9 @@ function Graph() {
   const selectedFilter = useRecoilValue(selectedFilterState);
   return (
     <Flex
-      w={"556px"}
+      w={"100%"}
+      minWidth={"336px"}
+      maxWidth={"556px"}
       h={"350px"}
       bgColor={"gray.600"}
       borderRadius={14}

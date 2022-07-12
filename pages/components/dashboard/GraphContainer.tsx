@@ -6,12 +6,18 @@ function GraphContainer() {
   return (
     <Flex flexDir={"column"}>
       <GraphFilter></GraphFilter>
-      <SimpleGrid w={"100%"} columns={2} spacingY={"24px"}>
+      <Flex
+        w={"100%"}
+        columnGap={"1.5%"}
+        rowGap={"24px"}
+        flexWrap={"wrap"}
+        justifyContent="center"
+      >
         <Graph></Graph>
         <Graph></Graph>
         <Graph></Graph>
         <Graph></Graph>
-      </SimpleGrid>
+      </Flex>
     </Flex>
   );
 }

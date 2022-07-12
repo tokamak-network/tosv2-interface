@@ -17,22 +17,17 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ColorModeScript initialColorMode={theme.initialColorMode} />
       <ChakraProvider resetCSS theme={theme}>
         <RecoilRoot>
-          <Flex minH={"100vh"} w={"100%"} px={["24px", "24px", "0px"]}>
+          <Flex minH={"100vh"} w={"100%"} px={["12px", "24px", "0px"]}>
             <NavBar></NavBar>
             {/* PC VIEW = 1136px */}
-            <Flex
-              justifyContent="center"
-              // maxW={["100%", "100%", "1136px"]}
-              w={"100%"}
-              alignItems="center"
-            >
+            {/* TABLET VIEW = 1040px */}
+            {/* MOBILE VIEW = 360px */}
+            <Flex justifyContent="center" w={"100%"} alignItems="center">
               <Flex
-                // w={["360px", "800px", "1136px"]}
                 maxW={["100%", "100%", "1136px"]}
                 flexDir={"column"}
                 justifyContent="center"
                 w={"100%"}
-                // px={[0, "2%", ""]}
               >
                 <Header></Header>
                 <Component {...pageProps} />

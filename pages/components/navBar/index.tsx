@@ -1,8 +1,12 @@
 import {
   Box,
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
   Flex,
   Text,
   useBreakpointValue,
+  useDisclosure,
   useMediaQuery,
 } from "@chakra-ui/react";
 import Image from "next/image";
@@ -18,7 +22,7 @@ import MEDIUM_ICON from "assets/icons/medium.svg";
 import TWITTER_ICON from "assets/icons/twitter.svg";
 import GITHUB_ICON from "assets/icons/github.svg";
 import TELEGRAM_ICON from "assets/icons/telegram.svg";
-
+import ARROW_LEFT_ICON from "assets/icons/arrow-left.svg";
 import ARROW_RIGHT_ICON from "assets/icons/arrow-right.svg";
 import TOOLTIP_ARROW_LEFT_ICON from "assets/icons/Tooltips_left_arrow.svg";
 
@@ -27,6 +31,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import useMediaView from "hooks/useMediaView";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { sidebarSelectedState, sidebarState } from "atom/header";
 
 const iconList = [
   {
@@ -61,9 +67,14 @@ const navItemList = [
   },
 ];
 
-const LinkContainer = () => {
+const LinkContainer = (props: { isExpended: boolean }) => {
   return (
-    <Flex mt={"auto"} mb={"15px"} flexDir={"column"}>
+    <Flex
+      mt={"auto"}
+      mb={"15px"}
+      flexDir={props.isExpended ? "row" : "column"}
+      columnGap={"10px"}
+    >
       {iconList.map((item, index) => {
         return (
           <Flex
@@ -85,28 +96,34 @@ const LinkContainer = () => {
   );
 };
 
-const NavItem = () => {
+const NavItem = (props: { isExpended: boolean }) => {
   const [isHover, setIsHover] = useState<number | undefined>(undefined);
+  const { isExpended } = props;
   const router = useRouter();
   const { pathname } = router;
   const pName = pathname.replaceAll("/", "");
+  const [isOpen, setIsOpen] = useRecoilState(sidebarState);
 
   return (
     <>
       {navItemList.map((item, index) => {
+        const capitalLinkName =
+          item.link.charAt(0).toUpperCase() + item.link.slice(1);
         return (
           <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
             <Flex pos={"relative"}>
               <Flex
-                w={54}
+                w={isExpended ? 206 : 54}
                 h={54}
                 alignItems="center"
-                justifyContent={"center"}
+                justifyContent={isExpended ? "flex-start" : "center"}
                 borderRadius={10}
-                _hover={{ backgroundColor: "blue.100" }}
+                _hover={{ backgroundColor: "blue.100", color: "white.200" }}
                 cursor={"pointer"}
                 onMouseEnter={() => setIsHover(index)}
                 onMouseLeave={() => setIsHover(undefined)}
+                pl={isExpended ? 15 : 0}
+                onClick={() => setIsOpen(false)}
               >
                 <Image
                   src={
@@ -116,8 +133,16 @@ const NavItem = () => {
                   }
                   alt={"icon"}
                 ></Image>
+                {isExpended && (
+                  <Text
+                    ml={"9px"}
+                    color={pName === item.link ? "white.200" : ""}
+                  >
+                    {capitalLinkName}
+                  </Text>
+                )}
               </Flex>
-              {isHover === index && (
+              {isHover === index && !isExpended && (
                 <Flex
                   pos={"absolute"}
                   ml={"90px"}
@@ -147,7 +172,7 @@ const NavItem = () => {
                       ></Image>
                     </Box>
                   </Flex>
-                  <Text>{item.link}</Text>
+                  <Text>{capitalLinkName}</Text>
                 </Flex>
               )}
             </Flex>
@@ -158,7 +183,7 @@ const NavItem = () => {
   );
 };
 
-const MenuButton = () => {
+const MenuButton = (props: { isExpended: boolean }) => {
   return (
     <Flex
       pos={"absolute"}
@@ -172,22 +197,58 @@ const MenuButton = () => {
       bg={"gray.600"}
       cursor={"pointer"}
     >
-      <Image src={ARROW_RIGHT_ICON} alt={"ARROW_RIGHT_ICON"}></Image>
+      <Image
+        src={props.isExpended ? ARROW_LEFT_ICON : ARROW_RIGHT_ICON}
+        alt={"ARROW_RIGHT_ICON"}
+      ></Image>
     </Flex>
   );
 };
+
+function MobileSideBar() {
+  const sidebarOpenState = useRecoilValue(sidebarSelectedState);
+  const [isOpen, setIsOpen] = useRecoilState(sidebarState);
+  const isExpended = true;
+  return (
+    <Drawer
+      isOpen={sidebarOpenState}
+      onClose={() => setIsOpen(false)}
+      placement={"left"}
+    >
+      <DrawerOverlay backdropFilter={"blur(17.9px)"} />
+      <DrawerContent
+        maxW={"256px"}
+        w={"256px"}
+        minH={"100vh"}
+        flexDir="column"
+        pt={33}
+        alignItems="center"
+        bg={"#1f2128"}
+      >
+        <Box mb={50}>
+          <Logo isExpended={isExpended}></Logo>
+        </Box>
+        <NavItem isExpended={isExpended}></NavItem>
+        <Box w={"100%"} mt={18} px={25}>
+          <Line></Line>
+        </Box>
+        <LinkContainer isExpended={isExpended}></LinkContainer>
+      </DrawerContent>
+    </Drawer>
+  );
+}
 
 const NavBar = () => {
   const [isExpended, setIsExpended] = useState<boolean>(false);
   const { pcView } = useMediaView();
 
   if (!pcView) {
-    return null;
+    return <MobileSideBar />;
   }
 
   return (
     <Flex
-      minW={isExpended ? 0 : [0, 0, 104]}
+      minW={isExpended ? 256 : [0, 0, 104]}
       w={0}
       minH={"100vh"}
       flexDir="column"
@@ -199,16 +260,16 @@ const NavBar = () => {
     >
       {/* menu button */}
       <Box onClick={() => setIsExpended(!isExpended)}>
-        <MenuButton></MenuButton>
+        <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
       <Box mb={50}>
-        <Logo></Logo>
+        <Logo isExpended={isExpended}></Logo>
       </Box>
-      <NavItem></NavItem>
+      <NavItem isExpended={isExpended}></NavItem>
       <Box w={"100%"} mt={18} px={25}>
         <Line></Line>
       </Box>
-      <LinkContainer></LinkContainer>
+      <LinkContainer isExpended={isExpended}></LinkContainer>
     </Flex>
   );
 };

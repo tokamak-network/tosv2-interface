@@ -1,9 +1,12 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useMemo } from "react";
 import { Dashboard_SmallCardType } from "types/dashboard";
 
 const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
-  const { title, price, priceUnit, priceChangePercent } = props;
+  const { title, price, priceUnit, priceChangePercent, style } = props;
+  const [width] = useWindowDimensions();
+  const isMobile = width < 490;
 
   const PriceContent = useMemo(() => {
     switch (priceUnit) {
@@ -29,17 +32,17 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
 
   return (
     <Flex
-      w={266}
       h={110}
-      borderWidth={1}
-      borderColor={"gray.600"}
-      borderRadius={14}
+      borderWidth={isMobile ? "none" : 1}
+      borderColor={isMobile ? "" : "gray.600"}
+      borderRadius={isMobile ? "none" : 14}
       flexDir={"column"}
       pl={"20px"}
       pr={"18px"}
       pt={"15px"}
       pb={"10px"}
       bgColor={"gray.600"}
+      {...style}
     >
       <Text
         color={"gray.100"}

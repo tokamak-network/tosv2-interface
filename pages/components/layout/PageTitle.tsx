@@ -44,6 +44,7 @@ const PageTitle = () => {
             fontSize={12}
             w={"100%"}
             justifyContent={"space-between"}
+            h={isMobile ? "66px" : ""}
           >
             <Flex>
               <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>

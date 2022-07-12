@@ -6,8 +6,6 @@ const useMediaView = (viewPort?: number) => {
   const [mobileView] = useMediaQuery("(max-width: 360px)");
   const [customMaxView] = useMediaQuery(`"(max-width: ${viewPort}px)"`);
 
-  console.log("hook go");
-
   return { pcView, tableView, mobileView, customMaxView };
 };
 
