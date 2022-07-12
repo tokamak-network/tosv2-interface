@@ -14,8 +14,6 @@ const SwitchButton: React.FC<SwitchButtonProps> = (props) => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
-  console.log("--");
-  console.log(isSelected);
   return (
     <Button
       w={w || 150}

@@ -5,15 +5,24 @@ import HOME_ICON from "assets/icons/home.svg";
 import CALENDAR_ICON from "assets/icons/calendar.svg";
 import Image from "next/image";
 import { useMemo } from "react";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 const PageTitle = () => {
   const { pathName } = usePathName();
+  const [width] = useWindowDimensions();
+  const isMobile = width < 510;
 
   const PathComponent = useMemo(() => {
     switch (pathName) {
       case "Bond":
         return (
-          <Flex fontSize={12} w={"100%"} justifyContent={"space-between"}>
+          <Flex
+            flexDir={isMobile ? "column" : "row"}
+            fontSize={12}
+            w={"100%"}
+            justifyContent={"space-between"}
+            h={isMobile ? "66px" : ""}
+          >
             <Flex>
               <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>
               <Text ml={"3px"}>Home</Text>
@@ -30,7 +39,12 @@ const PageTitle = () => {
         );
       default:
         return (
-          <Flex fontSize={12} w={"100%"} justifyContent={"space-between"}>
+          <Flex
+            flexDir={isMobile ? "column" : "row"}
+            fontSize={12}
+            w={"100%"}
+            justifyContent={"space-between"}
+          >
             <Flex>
               <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>
               <Text ml={"3px"}>Home</Text>
@@ -44,10 +58,10 @@ const PageTitle = () => {
           </Flex>
         );
     }
-  }, [pathName]);
+  }, [pathName, isMobile]);
 
   return (
-    <Flex flexDir={"column"} mb={"36px"} w={"100%"}>
+    <Flex flexDir={"column"} mb={isMobile ? "12px" : "36px"} w={"100%"}>
       <Text
         fontSize={28}
         h={"39px"}
