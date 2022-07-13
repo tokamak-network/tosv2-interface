@@ -6,6 +6,9 @@ import BUGER_ICON from "assets/icons/icon_buger.svg";
 import useMediaView from "hooks/useMediaView";
 import { useRecoilState } from "recoil";
 import { sidebarState } from "atom/header";
+import { useWeb3React } from "@web3-react/core";
+import { useActiveWeb3React } from "hooks/useWeb3";
+import { injected } from "connectors";
 
 function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
@@ -19,7 +22,8 @@ function BurgerButton() {
 
 function Header() {
   const { pcView } = useMediaView();
-
+  // const {  } = useActiveWeb3React();
+  const { activate, active, account } = useWeb3React();
   return (
     <Flex
       w={"100%"}
@@ -39,9 +43,10 @@ function Header() {
           alignItems={"center"}
           justifyContent={"space-between"}
           cursor={"pointer"}
+          onClick={() => (account ? null : activate(injected))}
         >
           <Image src={WALLET_ICON} alt={"WALLET_ICON"}></Image>
-          <Text>Connet Wallet</Text>
+          <Text>{account || "Connet Wallet"}</Text>
         </Flex>
         <Flex
           ml={"20px"}
