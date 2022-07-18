@@ -33,7 +33,11 @@ function GraphFilter() {
   return (
     <Flex mt={"48px"} w={"100%"}>
       <Flex mb={"24px"} w={"100%"} justifyContent="center">
-        <Flex justifyContent={"space-between"} columnGap={"6px"}>
+        <Flex
+          justifyContent={"space-between"}
+          columnGap={"6px"}
+          overflow={"auto"}
+        >
           {filterList.map(
             (list: { name: string; w: number }, index: number) => {
               return (
