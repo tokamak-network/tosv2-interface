@@ -1,11 +1,7 @@
 import { Flex } from "@chakra-ui/react";
-import CustomCheckBox from "common/input/CustomCheckBox";
-import TextInput from "common/input/TextInput";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import BasicButton from "./common/button/BasicButton";
-import SubmitButton from "./common/button/SubmitButton";
 
 const Home: NextPage = () => {
   return (

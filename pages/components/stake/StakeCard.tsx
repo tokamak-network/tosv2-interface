@@ -32,8 +32,8 @@ function StakeCard(props: StakeCardProps) {
   } = props;
   const { openModal } = useModal("stake_unstake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
-  //vierport ref 1134px
 
+  //vierport ref 1134px
   return (
     <Flex
       flexDir={"column"}
