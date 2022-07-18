@@ -61,17 +61,36 @@ const PageTitle = () => {
     }
   }, [pathName, isMobile]);
 
+  const AdditionalInfo = () => {
+    switch (pathName) {
+      case "Stake":
+        return (
+          <Flex fontSize={12} alignItems="center">
+            <Text mr={"5px"} color={"#2775ff"}>
+              05:50:20
+            </Text>
+            <Text color={"#9a9aaf"}>to next rebase</Text>
+          </Flex>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <Flex flexDir={"column"} mb={isMobile ? "12px" : "36px"} w={"100%"}>
-      <Text
-        fontSize={28}
-        h={"39px"}
-        fontWeight={"bold"}
-        color={"white.100"}
-        mb={"12px"}
-      >
-        {pathName}
-      </Text>
+      <Flex justifyContent={"space-between"}>
+        <Text
+          fontSize={28}
+          h={"39px"}
+          fontWeight={"bold"}
+          color={"white.100"}
+          mb={"12px"}
+        >
+          {pathName}
+        </Text>
+        <AdditionalInfo></AdditionalInfo>
+      </Flex>
       {PathComponent}
     </Flex>
   );

@@ -1,19 +1,6 @@
 import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
-import TipMessage from "./TipMessage";
+import { TopCardList } from "types";
 import TopCard from "./TopCard";
-
-const cardList = [
-  {
-    title: "TOS Price",
-    price: "5,000,000,000",
-    priceUnit: "$",
-  },
-  {
-    title: "Backing per TOS",
-    price: "1.00",
-    priceUnit: "$",
-  },
-];
 
 function MobileTopCard(props: {
   cardList: { title: string; price: string; priceUnit: string }[];
@@ -59,16 +46,16 @@ function MobileTopCard(props: {
   );
 }
 
-function TopCardContainer() {
+function TopCardContainer(props: { cardList: TopCardList }) {
   const [smallerThan510] = useMediaQuery("(max-width: 510px)");
+  const { cardList } = props;
 
   return (
     <Flex flexDir={"column"}>
-      <TipMessage></TipMessage>
       {smallerThan510 ? (
         <MobileTopCard cardList={cardList}></MobileTopCard>
       ) : (
-        <Flex justifyContent={"space-between"}>
+        <Flex justifyContent={"space-between"} columnGap={"24px"}>
           {cardList.map((cardData, index) => {
             const { title, price, priceUnit } = cardData;
             return (
@@ -77,7 +64,6 @@ function TopCardContainer() {
                 price={price}
                 priceUnit={priceUnit}
                 key={title}
-                style={index === 0 ? { marginRight: "24px" } : {}}
               ></TopCard>
             );
           })}

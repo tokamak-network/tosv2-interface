@@ -1,5 +1,11 @@
 import { TokenTypes } from "types";
 
+export type BondTopCardProps = {
+  title: string;
+  price: string;
+  priceUnit: "$";
+};
+
 export type BondCardProps = {
   bondCapacity: string;
   bondingPrice: string;

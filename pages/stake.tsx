@@ -5,15 +5,21 @@ import TopCardContainer from "components/bond/TopCardContrainer";
 import GraphContainer from "components/dashboard/GraphContainer";
 import SmallCardContainer from "components/dashboard/SmallCardContainer";
 import PageLayout from "components/layout/PageLayout";
-import { BondTopCardProps } from "types/bond";
+import StakeCardContainer from "components/stake/StakeCardContainer";
+import { StakeTopCardProps } from "types/stake";
 
-const Bond = () => {
+const Stake = () => {
   const theme = useTheme();
 
-  const cardList: BondTopCardProps[] = [
+  const cardList: StakeTopCardProps[] = [
     {
       title: "TOS Price",
       price: "5,000,000,000",
+      priceUnit: "$",
+    },
+    {
+      title: "Backing per TOS",
+      price: "1.00",
       priceUnit: "$",
     },
     {
@@ -27,10 +33,10 @@ const Bond = () => {
     <Flex {...theme.PAGE_LAYOUT_STYLE}>
       <PageLayout></PageLayout>
       <TopCardContainer cardList={cardList}></TopCardContainer>
-      <BondCardContainer></BondCardContainer>
+      <StakeCardContainer></StakeCardContainer>
       <BondModal></BondModal>
     </Flex>
   );
 };
 
-export default Bond;
+export default Stake;

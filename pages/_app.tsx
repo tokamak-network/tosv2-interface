@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 flexDir={"column"}
                 justifyContent="center"
                 w={"100%"}
+                minH={"100vh"}
               >
                 <Header></Header>
                 <Component {...pageProps} />
