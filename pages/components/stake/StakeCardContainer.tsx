@@ -1,19 +1,22 @@
 import { Box, Flex } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
+import SortSelect from "components/bond/SortSelect";
+import StakeCheckbox from "components/bond/StakeCheckbox";
 import { useState } from "react";
 import StakeCardSection from "./StakeCardSection";
 
 function StakeCardContainer() {
-  const [tab, setTab] = useState<0 | 1>(0);
-
   return (
     <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
       <Flex
-        justifyContent={tab === 0 ? "flex-end" : "space-between"}
+        justifyContent={"space-between"}
         mt={"30px"}
         mb={"27px"}
         alignItems="center"
-      ></Flex>
+      >
+        <StakeCheckbox></StakeCheckbox>
+        <SortSelect></SortSelect>
+      </Flex>
       <StakeCardSection></StakeCardSection>
     </Flex>
   );

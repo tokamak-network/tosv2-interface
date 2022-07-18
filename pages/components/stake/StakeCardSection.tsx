@@ -16,6 +16,7 @@ function StakeCardSection() {
         lockupPeriod: "5 Days",
         tokenType: "ETH",
         lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
+        isDisabled: true,
       },
       {
         amount: "20",
@@ -23,6 +24,7 @@ function StakeCardSection() {
         lockupPeriod: "5 Days",
         tokenType: "ETH",
         lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
+        isDisabled: false,
       },
       {
         amount: "20",
@@ -30,6 +32,7 @@ function StakeCardSection() {
         lockupPeriod: "5 Days",
         tokenType: "ETH",
         lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
+        isDisabled: true,
       },
       {
         amount: "20",
@@ -37,6 +40,7 @@ function StakeCardSection() {
         lockupPeriod: "5 Days",
         tokenType: "ETH",
         lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
+        isDisabled: false,
       },
     ];
     setCardList(dummyData);
@@ -57,7 +61,8 @@ function StakeCardSection() {
           lockupPeriod={cardData.lockupPeriod}
           lockupPeriodDate={cardData.lockupPeriodDate}
           tokenType={cardData.tokenType}
-          key={cardData.bondCapacity + index}
+          isDisabled={cardData.isDisabled}
+          key={cardData.amount + index}
         ></StakeCard>
       ))}
     </Flex>

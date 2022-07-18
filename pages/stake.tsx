@@ -1,11 +1,9 @@
 import { Flex, useTheme } from "@chakra-ui/react";
-import BondCardContainer from "components/bond/BondCardContainer";
-import BondModal from "components/bond/BondModal";
 import TopCardContainer from "components/bond/TopCardContrainer";
-import GraphContainer from "components/dashboard/GraphContainer";
-import SmallCardContainer from "components/dashboard/SmallCardContainer";
 import PageLayout from "components/layout/PageLayout";
 import StakeCardContainer from "components/stake/StakeCardContainer";
+import StakeModal from "components/stake/StakeModal";
+import UnstakeModal from "components/stake/UnstakeModal";
 import { StakeTopCardProps } from "types/stake";
 
 const Stake = () => {
@@ -34,7 +32,8 @@ const Stake = () => {
       <PageLayout></PageLayout>
       <TopCardContainer cardList={cardList}></TopCardContainer>
       <StakeCardContainer></StakeCardContainer>
-      <BondModal></BondModal>
+      <StakeModal></StakeModal>
+      <UnstakeModal></UnstakeModal>
     </Flex>
   );
 };

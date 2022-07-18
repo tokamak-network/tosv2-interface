@@ -12,4 +12,5 @@ export type StakeCardProps = {
   lockupPeriod: string;
   lockupPeriodDate: string;
   tokenType: TokenTypes;
+  isDisabled: boolean;
 };

@@ -5,7 +5,7 @@ function StakeCheckbox() {
   return (
     <Flex alignItems={"center"}>
       <CustomCheckBox></CustomCheckBox>
-      <Text ml={"9px"} mr={"17px"}>
+      <Text ml={"9px"} mr={"17px"} fontSize={12}>
         Selected : {0}
       </Text>
       <Flex
@@ -17,6 +17,7 @@ function StakeCheckbox() {
         color={"#5a5a5a"}
         alignItems="center"
         justifyContent={"center"}
+        fontSize={14}
       >
         <Text fontSize={14}>Unstake Selected</Text>
       </Flex>

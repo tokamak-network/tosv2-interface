@@ -3,6 +3,7 @@ import BasicButton from "common/button/BasicButton";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
+import { useState } from "react";
 import { BondCardProps } from "types/bond";
 import { StakeCardProps } from "types/stake";
 
@@ -21,11 +22,16 @@ function ContentComponent(props: {
 }
 
 function StakeCard(props: StakeCardProps) {
-  const { amount, discountRate, lockupPeriod, lockupPeriodDate, tokenType } =
-    props;
-  const { openModal } = useModal("bond_modal");
+  const {
+    amount,
+    discountRate,
+    lockupPeriod,
+    lockupPeriodDate,
+    tokenType,
+    isDisabled,
+  } = props;
+  const { openModal } = useModal("stake_unstake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
-
   //vierport ref 1134px
 
   return (
@@ -41,19 +47,31 @@ function StakeCard(props: StakeCardProps) {
       px={"20px"}
       pb={"21px"}
     >
-      <Flex mb={"18px"}>
-        <TokenSymbol tokenType={tokenType}></TokenSymbol>
-        <Text
-          fontSize={20}
-          fontWeight={600}
+      <Flex mb={"18px"} justifyContent={"space-between"}>
+        <Flex>
+          <TokenSymbol tokenType={tokenType}></TokenSymbol>
+          <Text
+            fontSize={20}
+            fontWeight={600}
+            textAlign={"center"}
+            lineHeight={"46px"}
+            color={"white.200"}
+            ml={"12px"}
+          >
+            {tokenType}
+          </Text>
+        </Flex>
+        <Flex
+          fontSize={12}
+          color={isDisabled ? "blue.200" : "red.100"}
           textAlign={"center"}
-          lineHeight={"46px"}
-          color={"white.200"}
-          ml={"12px"}
+          alignItems="center"
+          justifyContent={"center"}
         >
-          {tokenType}
-        </Text>
+          <Text>{isDisabled ? "Pending" : "Ended"}</Text>
+        </Flex>
       </Flex>
+
       <ContentComponent
         title="Amount"
         content={amount}
@@ -77,12 +95,21 @@ function StakeCard(props: StakeCardProps) {
       >
         <Text>{lockupPeriodDate}</Text>
       </Flex>
-      <Flex alignItems={"center"}>
-        <CustomCheckBox></CustomCheckBox>
-        <Text ml={"9px"} mr={"20px"} color={"white.200"} fontSize={12}>
-          Select
-        </Text>
-        <BasicButton name="Stake" h={"33px"} onClick={openModal}></BasicButton>
+      <Flex alignItems="center" justifyContent={isDisabled ? "center" : ""}>
+        {isDisabled === false && (
+          <>
+            <CustomCheckBox></CustomCheckBox>
+            <Text ml={"9px"} mr={"20px"}>
+              Select
+            </Text>
+          </>
+        )}
+        <BasicButton
+          isDisabled={isDisabled}
+          name={isDisabled ? "Pending" : "Unstake"}
+          h={"33px"}
+          onClick={openModal}
+        ></BasicButton>
       </Flex>
     </Flex>
   );
