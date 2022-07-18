@@ -1,6 +1,7 @@
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import Image from "next/image";
 import WALLET_ICON from "assets/icons/wallet.svg";
+import WALLET_INACTIVE_ICON from "assets/icons/wallet_inactive.svg";
 import MOON_ICON from "assets/icons/moon.svg";
 import BUGER_ICON from "assets/icons/icon_buger.svg";
 import useMediaView from "hooks/useMediaView";
@@ -9,6 +10,7 @@ import { sidebarState } from "atom/header";
 import { useWeb3React } from "@web3-react/core";
 import { useActiveWeb3React } from "hooks/useWeb3";
 import { injected } from "connectors";
+import trimAddress from "@/components/trimAddress";
 
 function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
@@ -43,10 +45,24 @@ function Header() {
           alignItems={"center"}
           justifyContent={"space-between"}
           cursor={"pointer"}
+          fontSize={16}
+          fontWeight={"bold"}
           onClick={() => (account ? null : activate(injected))}
         >
-          <Image src={WALLET_ICON} alt={"WALLET_ICON"}></Image>
-          <Text>{account || "Connet Wallet"}</Text>
+          <Image
+            src={account ? WALLET_ICON : WALLET_INACTIVE_ICON}
+            alt={"WALLET_ICON"}
+          ></Image>
+          <Text w={"127px"} color={account ? "white.200" : "#707070"}>
+            {account
+              ? trimAddress({
+                  address: account,
+                  firstChar: 7,
+                  lastChar: 4,
+                  dots: "....",
+                })
+              : "Connet Wallet"}
+          </Text>
         </Flex>
         <Flex
           ml={"20px"}

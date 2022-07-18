@@ -4,10 +4,12 @@ function trimAddress(args: {
   address: string;
   firstChar: number;
   lastChar: number;
-  dotLength: number;
+  dots: string;
 }): string {
-  const { address, firstChar, lastChar, dotLength } = args;
+  const { address, firstChar, lastChar, dots } = args;
   const firstChatAt = address.substring(0, firstChar);
   const lastCharAt = address.substring(address.length - lastChar);
-  return `${firstChar}${"."}${lastCharAt}`;
+  return `${firstChatAt}${dots}${lastCharAt}`;
 }
+
+export default trimAddress;
