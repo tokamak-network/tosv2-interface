@@ -6,10 +6,12 @@ type SubmitButtonProp = {
   h?: number;
   isDisabled?: boolean;
   isLoading?: boolean;
+  style?: {};
+  onClick?: () => void;
 };
 
 const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
-  const { name, w, h, isDisabled, isLoading } = props;
+  const { name, w, h, isDisabled, isLoading, style, onClick } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   return (
@@ -23,6 +25,8 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       spinner={<Spinner size={"md"}></Spinner>}
       {...theme.BUTTON_STYLE.submitButtonStyle(colorMode)}
       bgColor={isDisabled ? "gray.500" : ""}
+      onClick={() => onClick()}
+      {...style}
     >
       {name}
     </Button>

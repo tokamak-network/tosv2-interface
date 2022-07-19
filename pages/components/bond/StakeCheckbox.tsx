@@ -4,7 +4,11 @@ import CustomCheckBox from "common/input/CustomCheckBox";
 function StakeCheckbox() {
   return (
     <Flex alignItems={"center"}>
-      <CustomCheckBox></CustomCheckBox>
+      <CustomCheckBox
+        value={"selectAll"}
+        valueKey={"stake_all"}
+        pageKey={"Stake_screen"}
+      ></CustomCheckBox>
       <Text ml={"9px"} mr={"17px"} fontSize={12}>
         Selected : {0}
       </Text>

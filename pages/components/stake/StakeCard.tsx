@@ -33,7 +33,6 @@ function StakeCard(props: StakeCardProps) {
   const { openModal } = useModal("stake_unstake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
 
-  //vierport ref 1134px
   return (
     <Flex
       flexDir={"column"}
@@ -98,7 +97,11 @@ function StakeCard(props: StakeCardProps) {
       <Flex alignItems="center" justifyContent={isDisabled ? "center" : ""}>
         {isDisabled === false && (
           <>
-            <CustomCheckBox></CustomCheckBox>
+            <CustomCheckBox
+              value={{ test: "test" }}
+              valueKey={amount}
+              pageKey={"Stake_screen"}
+            ></CustomCheckBox>
             <Text ml={"9px"} mr={"20px"}>
               Select
             </Text>

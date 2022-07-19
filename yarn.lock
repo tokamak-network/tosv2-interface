@@ -501,6 +501,21 @@
   dependencies:
     "@chakra-ui/utils" "2.0.2"
 
+"@chakra-ui/icon@3.0.4":
+  "integrity" "sha512-9Ry+fa6EKRYUexffvgOJ9dRIkxCSnASgdSnb09EbQTgCTeM+47LUsxR2+r8pbY6ZT5D4m2zRLkTrv7O7icoyOw=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/icon/-/icon-3.0.4.tgz"
+  "version" "3.0.4"
+  dependencies:
+    "@chakra-ui/utils" "2.0.4"
+
+"@chakra-ui/icons@^2.0.4":
+  "integrity" "sha512-/Xh6UtIilFhSCxZ6pKmB3zaatvGMc+IAvPb0TvlegWfNaLI7XwHWkEoK+GxYXV02wT/yqmup2gd41/OL3S0YLg=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/icons/-/icons-2.0.4.tgz"
+  "version" "2.0.4"
+  dependencies:
+    "@chakra-ui/icon" "3.0.4"
+    "@types/react" "^18.0.1"
+
 "@chakra-ui/image@2.0.3":
   "integrity" "sha512-GLMJXLdR0y7CCZ0hKHf6YZLb8dlPpx4vdXWTbtLnIU5EfGIOSiCU4N3+0KcjvMtDB69hBr5W4h1XMJNpetP1EA=="
   "resolved" "https://registry.npmjs.org/@chakra-ui/image/-/image-2.0.3.tgz"
@@ -877,6 +892,16 @@
   "integrity" "sha512-9AC/ir9zm0shgFG7kdzOKUH2Wx5VB71M3uRMEsMZf75YlhhiU7AvBNtWXnJu+CBiTi41rKa5A+2ImMOsuPfGbA=="
   "resolved" "https://registry.npmjs.org/@chakra-ui/utils/-/utils-2.0.2.tgz"
   "version" "2.0.2"
+  dependencies:
+    "@types/lodash.mergewith" "4.6.6"
+    "css-box-model" "1.2.1"
+    "framesync" "5.3.0"
+    "lodash.mergewith" "4.6.2"
+
+"@chakra-ui/utils@2.0.4":
+  "integrity" "sha512-pr5qFTrhCja1iQTajOr2WSvb+f4lpnLnnxWOSYOuIv7k8LBEtee4LpTs0jzBBB/vycuo6ppKdXyj7db9xTqZfA=="
+  "resolved" "https://registry.npmjs.org/@chakra-ui/utils/-/utils-2.0.4.tgz"
+  "version" "2.0.4"
   dependencies:
     "@types/lodash.mergewith" "4.6.6"
     "css-box-model" "1.2.1"
@@ -1788,7 +1813,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.8.0 || ^17.0.0 || ^18.0.0", "@types/react@^16.9.0 || ^17.0.0 || ^18.0.0", "@types/react@18.0.14":
+"@types/react@*", "@types/react@^16.8.0 || ^17.0.0 || ^18.0.0", "@types/react@^16.9.0 || ^17.0.0 || ^18.0.0", "@types/react@^18.0.1", "@types/react@18.0.14":
   "integrity" "sha512-x4gGuASSiWmo0xjDLpm5mPb52syZHJx02VKbqUKdLmKtAwIh63XClGsiTI1K6DO5q7ox4xAsQrU+Gl3+gGXF9Q=="
   "resolved" "https://registry.npmjs.org/@types/react/-/react-18.0.14.tgz"
   "version" "18.0.14"
@@ -4629,7 +4654,14 @@
     "bn.js" "^4.10.0"
     "ethereumjs-util" "^4.3.0"
 
-"ethereumjs-abi@0.6.8", "ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
+"ethereumjs-abi@0.6.8":
+  "resolved" "git+ssh://git@github.com/ethereumjs/ethereumjs-abi.git"
+  "version" "0.6.8"
+  dependencies:
+    "bn.js" "^4.11.8"
+    "ethereumjs-util" "^6.0.0"
+
+"ethereumjs-abi@git+https://github.com/ethereumjs/ethereumjs-abi.git":
   "resolved" "git+ssh://git@github.com/ethereumjs/ethereumjs-abi.git#ee3994657fa7a427238e6ba92a84d0b529bbcde0"
   "version" "0.6.8"
   dependencies:
