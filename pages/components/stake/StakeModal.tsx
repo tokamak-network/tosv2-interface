@@ -26,6 +26,8 @@ import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useState } from "react";
+import { TextInput, BalanceInput } from "common/input/TextInput";
+import { inputBalanceState } from "atom/global/input";
 
 function StakeGraph() {
   const labelStyles = {
@@ -121,6 +123,7 @@ function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
+  const balanceValue = useRecoilValue(inputBalanceState);
 
   const contentList = [
     {
@@ -169,7 +172,7 @@ function StakeModal() {
               {/* Title Area*/}
               <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
                 <Text color={"white.200"} fontSize={20} fontWeight={600}>
-                  WTON BOND
+                  Stake
                 </Text>
                 <Flex
                   pos={"absolute"}
@@ -182,53 +185,8 @@ function StakeModal() {
               </Flex>
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
-                <Flex w={"100%"} justifyContent={"space-between"} mb={"24px"}>
-                  <Box display={"flex"} flexDir={"column"}>
-                    <Text
-                      color={"gray.100"}
-                      h={"17px"}
-                      mb={"3px"}
-                      fontSize={12}
-                      textAlign="center"
-                    >
-                      Bonding Price
-                    </Text>
-                    <Flex color={"white.200"} fontWeight={"bold"} h={"33px"}>
-                      <Text fontSize={24} mr={2}>
-                        441.5
-                      </Text>
-                      <Text fontSize={14} pt={"5px"} lineHeight={"33px"}>
-                        WTON
-                      </Text>
-                    </Flex>
-                  </Box>
-                  <Box display={"flex"} flexDir={"column"}>
-                    <Text
-                      color={"gray.100"}
-                      h={"17px"}
-                      mb={"3px"}
-                      fontSize={12}
-                      textAlign="center"
-                    >
-                      Market Price
-                    </Text>
-                    <Flex color={"white.200"} fontWeight={"bold"} h={"33px"}>
-                      <Text fontSize={24} mr={2}>
-                        500.5
-                      </Text>
-                      <Text fontSize={14} pt={"5px"} lineHeight={"33px"}>
-                        WTON
-                      </Text>
-                    </Flex>
-                  </Box>
-                </Flex>
                 <Flex mb={"9px"}>
-                  <Input
-                    w={"100%"}
-                    h={"45px"}
-                    borderWidth={1}
-                    borderColor={"#313442"}
-                  ></Input>
+                  <BalanceInput w={"100%"} h={45}></BalanceInput>
                 </Flex>
                 <Flex
                   fontSize={12}
