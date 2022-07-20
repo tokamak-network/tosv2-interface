@@ -28,6 +28,7 @@ import SubmitButton from "common/button/SubmitButton";
 import { useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import { inputBalanceState } from "atom/global/input";
+import useUser from "hooks/useUser";
 
 function StakeGraph() {
   const labelStyles = {
@@ -124,6 +125,7 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
   const balanceValue = useRecoilValue(inputBalanceState);
+  const { userBalance } = useUser();
 
   const contentList = [
     {
@@ -196,7 +198,7 @@ function StakeModal() {
                   mb={"12px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>1,000 WTON</Text>
+                  <Text>{userBalance.TosBalance}</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text mr={"24px"}>Lock-Up Period</Text>

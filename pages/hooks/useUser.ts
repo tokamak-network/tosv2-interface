@@ -2,14 +2,28 @@ import { useEffect, useState } from "react";
 import useUserBalance from "./useUserBalance";
 
 function useUser() {
-  const [userBalance, setUserBalance] = useState({});
+  //   {
+  //   userBalanceInfo: {
+  //     TOSBalance: string;
+  //     TonBalance: string;
+  //     WTonBalance: string;
+  //   };
+  // }
+  const [userBalance, setUserBalance] = useState({
+    TOSBalance: "",
+    TonBalance: "",
+    WTonBalance: "",
+  });
   const { userTOSBalance, userTonBalance, userWTonBalance } = useUserBalance();
+
+  console.log("--");
+  console.log(userTOSBalance, userTonBalance, userWTonBalance);
 
   useEffect(() => {
     const userBalanceInfo = {
-      userTOSBalance,
-      userTonBalance,
-      userWTonBalance,
+      TOSBalance: userTOSBalance,
+      TonBalance: userTonBalance,
+      WTonBalance: userWTonBalance,
     };
     setUserBalance(userBalanceInfo);
   }, [userTOSBalance, userTonBalance, userWTonBalance]);

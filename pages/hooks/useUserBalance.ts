@@ -11,32 +11,50 @@ const useUserBalance = () => {
   const [userWTonBalance, setUserWTonBalance] = useState<string>("");
   const [userTOSBalance, setUserTOSBalance] = useState<string>("");
 
+  console.log(TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT);
+
+  console.log(account);
+
   useEffect(() => {
     async function fetchBalance() {
-      if (!TON_CONTRACT || !WTON_CONTRACT || !TOS_CONTRACT) {
-        return;
+      try {
+        if (!TON_CONTRACT || !WTON_CONTRACT || !TOS_CONTRACT) {
+          return;
+        }
+        console.log("account", account);
+        const ton = await TON_CONTRACT.balanceOf(account);
+        const wton = await WTON_CONTRACT.balanceOf(account);
+        const tos = await TOS_CONTRACT.balanceOf(account);
+
+        const convertedTon = convertNumber({
+          amount: ton.toString(),
+          localeString: true,
+        });
+        const convertedWTon = convertNumber({
+          type: "ray",
+          amount: wton.toString(),
+          localeString: true,
+        });
+        const convertedTos = convertNumber({
+          amount: tos.toString(),
+          localeString: true,
+        });
+        console.log("go?");
+        console.log(convertedTon, convertedWTon, convertedWTon);
+
+        setUserTonBalance(convertedTon || "0.00");
+        setUserWTonBalance(convertedWTon || "0.00");
+        setUserTOSBalance(convertedWTon || "0.00");
+      } catch (e) {
+        console.log("*****fetch balance err*****");
+        console.log(e);
       }
-      const ton = await TON_CONTRACT.balanceOf(account);
-      const wton = await WTON_CONTRACT.balanceOf(account);
-      const tos = await TOS_CONTRACT.balanceOf(account);
-      const convertedTon = convertNumber({
-        amount: ton.toString(),
-        localeString: true,
-      });
-      const convertedWTon = convertNumber({
-        type: "ray",
-        amount: wton.toString(),
-        localeString: true,
-      });
-      const convertedTos = convertNumber({
-        amount: tos.toString(),
-        localeString: true,
-      });
-      setUserTonBalance(convertedTon || "0.00");
-      setUserWTonBalance(convertedWTon || "0.00");
-      setUserTOSBalance(convertedWTon || "0.00");
     }
-    if (TON_CONTRACT && WTON_CONTRACT && TOS_CONTRACT) fetchBalance();
+    if (account) {
+      console.log("gogo?");
+
+      fetchBalance();
+    }
   }, [account, TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT]);
 
   return { userTonBalance, userWTonBalance, userTOSBalance };
