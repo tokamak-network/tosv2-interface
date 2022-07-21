@@ -18,7 +18,7 @@ import {
   SliderMark,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedModalState } from "atom/global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
@@ -27,7 +27,7 @@ import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
-import { inputBalanceState } from "atom/global/input";
+import { inputBalanceState, inputState } from "atom/global/input";
 import useUser from "hooks/useUser";
 
 function StakeGraph() {
@@ -36,6 +36,11 @@ function StakeGraph() {
     ml: "-2.5",
     fontSize: "sm",
   };
+  const oldValues = useRecoilValue(inputBalanceState);
+  const [value, setValue] = useRecoilState(inputState);
+
+  console.log(oldValues);
+
   const [sliderValue, setSliderValue] = useState(36);
   return (
     <Flex w={"100%"} h={"157.5px"} pos="relative">
@@ -78,7 +83,7 @@ function StakeGraph() {
         min={1}
         max={36}
         step={1}
-        onChange={(val: any) => setSliderValue(val)}
+        onChange={(val: any) => setValue({ stake_stake_modal_period: val })}
         h={"10px"}
         alignSelf={"end"}
       >
@@ -188,7 +193,11 @@ function StakeModal() {
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
                 <Flex mb={"9px"}>
-                  <BalanceInput w={"100%"} h={45}></BalanceInput>
+                  <BalanceInput
+                    w={"100%"}
+                    h={45}
+                    atomKey={"stake_stake_modal_balance"}
+                  ></BalanceInput>
                 </Flex>
                 <Flex
                   fontSize={12}
@@ -198,13 +207,19 @@ function StakeModal() {
                   mb={"12px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userBalance.TosBalance}</Text>
+                  <Text>{userBalance.TOSBalance} TOS</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text mr={"24px"}>Lock-Up Period</Text>
                   <CustomCheckBox></CustomCheckBox>
                   <Text ml={"9px"}>5 days Lock-Up</Text>
-                  <Input w={"120px"} h={"39px"} ml={"auto"}></Input>
+                  {/* <Input w={"120px"} h={"39px"} ml={"auto"}></Input> */}
+                  <BalanceInput
+                    w={"100%"}
+                    h={45}
+                    atomKey={"stake_stake_modal_period"}
+                    value={balanceValue.stake_stake_modal_period}
+                  ></BalanceInput>
                 </Flex>
               </Flex>
               <Flex px={"49px"} mb={"30px"}>

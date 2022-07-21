@@ -6,9 +6,9 @@ import {
   useColorMode,
   useTheme,
 } from "@chakra-ui/react";
-import { inputState } from "atom/global/input";
+import { inputBalanceState, inputState } from "atom/global/input";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 type InputProp = {
   placeHolder?: string;
@@ -17,10 +17,11 @@ type InputProp = {
   isDisabled?: boolean;
   value?: string | number;
   isError?: boolean;
+  atomKey: string;
 };
 
 const TextInput: React.FC<InputProp> = (props) => {
-  const { placeHolder, w, h, isDisabled, value, isError } = props;
+  const { placeHolder, w, h, isDisabled, atomKey, value, isError } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
@@ -45,14 +46,14 @@ const TextInput: React.FC<InputProp> = (props) => {
 };
 
 function BalanceInput(props: InputProp) {
-  const { placeHolder, w, h, isDisabled, isError } = props;
+  const { placeHolder, w, h, isDisabled, atomKey, isError } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
-
+  const oldValues = useRecoilValue(inputBalanceState);
   const [value, setValue] = useRecoilState(inputState);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
+    setValue({ ...oldValues, [atomKey]: event.target.value });
   };
 
   return (
@@ -71,7 +72,7 @@ function BalanceInput(props: InputProp) {
         focusBorderColor="#8a8a98"
         _focus={{ color: "#f1f1f1", boxShadow: "" }}
         errorBorderColor={"#e23738"}
-        value={value}
+        value={value.atomKey}
         onChange={onChange}
       ></Input>
       <InputRightElement

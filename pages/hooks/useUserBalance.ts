@@ -21,7 +21,6 @@ const useUserBalance = () => {
         if (!TON_CONTRACT || !WTON_CONTRACT || !TOS_CONTRACT) {
           return;
         }
-        console.log("account", account);
         const ton = await TON_CONTRACT.balanceOf(account);
         const wton = await WTON_CONTRACT.balanceOf(account);
         const tos = await TOS_CONTRACT.balanceOf(account);
@@ -51,8 +50,6 @@ const useUserBalance = () => {
       }
     }
     if (account) {
-      console.log("gogo?");
-
       fetchBalance();
     }
   }, [account, TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT]);

@@ -16,9 +16,6 @@ function useUser() {
   });
   const { userTOSBalance, userTonBalance, userWTonBalance } = useUserBalance();
 
-  console.log("--");
-  console.log(userTOSBalance, userTonBalance, userWTonBalance);
-
   useEffect(() => {
     const userBalanceInfo = {
       TOSBalance: userTOSBalance,

@@ -2,7 +2,7 @@ import { atom, selector } from "recoil";
 
 const inputState = atom({
   key: "inputState",
-  default: "",
+  default: {},
 });
 
 const inputBalanceState = selector({
