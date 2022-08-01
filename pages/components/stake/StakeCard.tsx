@@ -97,14 +97,14 @@ function StakeCard(props: StakeCardProps) {
       </Flex>
       <Flex
         alignItems="center"
-        justifyContent={smallerThan1440 ? "space-between" : "center"}
+        justifyContent={smallerThan1440 ? "flex-end" : "center"}
         flexDir={smallerThan1040 ? "column" : "row"}
         pos={"relative"}
       >
         {isDisabled === false && (
           <Flex
             mb={smallerThan1040 ? "19px" : ""}
-            pos={"absolute"}
+            pos={smallerThan1040 ? {} : "absolute"}
             mr={"auto"}
             w={"100%"}
           >

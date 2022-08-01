@@ -4,18 +4,25 @@ import SortSelect from "components/bond/SortSelect";
 import StakeCheckbox from "components/bond/StakeCheckbox";
 import { useState } from "react";
 import StakeCardSection from "./StakeCardSection";
+import StakeTitle from "./StakeTitle";
 
 function StakeCardContainer() {
   return (
     <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
       <Flex
         justifyContent={"space-between"}
-        mt={"30px"}
+        mt={"60px"}
         mb={"27px"}
         alignItems="center"
       >
+        <StakeTitle></StakeTitle>
+      </Flex>
+      <Flex justifyContent={"space-between"} mb={"27px"} alignItems="center">
         <StakeCheckbox></StakeCheckbox>
-        <SortSelect></SortSelect>
+        <Flex columnGap={"12px"}>
+          <SortSelect></SortSelect>
+          <SortSelect></SortSelect>
+        </Flex>
       </Flex>
       <StakeCardSection></StakeCardSection>
     </Flex>
