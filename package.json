@@ -9,18 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.0.4",
     "@chakra-ui/react": "^2.2.1",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@fontsource/poppins": "^4.5.8",
-    "decimal.js": "^10.3.1",
+    "@nivo/core": "^0.72.0",
+    "@nivo/line": "^0.72.0",
     "framer-motion": "^6.3.16",
+    "moment": "^2.29.4",
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "recoil": "^0.7.4",
-    "web3-utils": "^1.7.4"
+    "recoil": "^0.7.4"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
