@@ -2,7 +2,7 @@ import { Box, Checkbox, Input, useColorMode, useTheme } from "@chakra-ui/react";
 import useCheckbox from "hooks/useCheckbox";
 import usePathName from "hooks/usePathName";
 import React, { useEffect, useState } from "react";
-import { PageKey, pages } from "types";
+import { PageKey, Pages } from "types";
 
 type CheckBoxProp = {
   placeHolder?: string;
@@ -34,6 +34,8 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   const { pathName } = usePathName();
   const [isCheckedAll, setIsChecked] = useState<boolean>(false);
 
+  console.log(selectedCheckbox);
+
   useEffect(() => {
     const isCheckedAll = selectedCheckbox?.filter((data) => {
       if (data.pageKey === pageKey) {
@@ -46,6 +48,11 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
     }
   }, [selectedCheckbox, pageKey]);
 
+  useEffect(() => {
+    // (async () => {
+    // })();
+  }, [isCheckedAll]);
+
   return (
     <Checkbox
       size={"lg"}
@@ -55,7 +62,7 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
         const isChecked = e.target.checked;
         setIsChecked(isChecked);
         setThisCheckboxValue({
-          page: pathName as pages,
+          page: pathName as Pages,
           values: value,
           key: `${pathName}_${valueKey}`,
           pageKey,
