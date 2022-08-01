@@ -32,12 +32,13 @@ function StakeCard(props: StakeCardProps) {
   } = props;
   const { openModal } = useModal("stake_unstake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
+  const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
 
   return (
     <Flex
       flexDir={"column"}
-      w={smallerThan1040 ? "49%" : "31.9%"}
-      h={"250px"}
+      w={smallerThan1040 ? "100%" : "31.9%"}
+      h={smallerThan1040 ? "" : "250px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
       borderColor={"gray.600"}
@@ -94,24 +95,35 @@ function StakeCard(props: StakeCardProps) {
       >
         <Text>{lockupPeriodDate}</Text>
       </Flex>
-      <Flex alignItems="center" justifyContent={isDisabled ? "center" : ""}>
+      <Flex
+        alignItems="center"
+        justifyContent={smallerThan1440 ? "space-between" : "center"}
+        flexDir={smallerThan1040 ? "column" : "row"}
+        pos={"relative"}
+      >
         {isDisabled === false && (
-          <>
+          <Flex
+            mb={smallerThan1040 ? "19px" : ""}
+            pos={"absolute"}
+            mr={"auto"}
+            w={"100%"}
+          >
             <CustomCheckBox
               value={{ test: "test" }}
               valueKey={amount}
               pageKey={"Stake_screen"}
             ></CustomCheckBox>
-            <Text ml={"9px"} mr={"20px"}>
+            <Text ml={"9px"} fontSize={12}>
               Select
             </Text>
-          </>
+          </Flex>
         )}
         <BasicButton
           isDisabled={isDisabled}
           name={isDisabled ? "Pending" : "Unstake"}
           h={"33px"}
           onClick={openModal}
+          style={smallerThan1040 ? { width: "100%" } : {}}
         ></BasicButton>
       </Flex>
     </Flex>

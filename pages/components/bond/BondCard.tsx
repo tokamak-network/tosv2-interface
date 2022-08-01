@@ -22,13 +22,14 @@ function BondCard(props: BondCardProps) {
   const { bondCapacity, bondingPrice, discountRate, tokenType } = props;
   const { openModal } = useModal("bond_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
+  const [smallerThan726] = useMediaQuery("(max-width: 726px)");
 
   //vierport ref 1134px
 
   return (
     <Flex
       flexDir={"column"}
-      w={smallerThan1040 ? "49%" : "31.9%"}
+      w={smallerThan1040 ? "100%" : "31.9%"}
       h={"232px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
