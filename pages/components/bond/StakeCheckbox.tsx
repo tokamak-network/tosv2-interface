@@ -3,15 +3,21 @@ import CustomCheckBox from "common/input/CustomCheckBox";
 
 function StakeCheckbox() {
   return (
-    <Flex alignItems={"center"}>
-      <CustomCheckBox
-        value={"selectAll"}
-        valueKey={"stake_all"}
-        pageKey={"Stake_screen"}
-      ></CustomCheckBox>
-      <Text ml={"9px"} mr={"17px"} fontSize={12}>
-        Selected : {0}
-      </Text>
+    <Flex
+      alignItems={"center"}
+      justifyContent={["space-between", "space-between", ""]}
+      w={["100%", 275, 275]}
+    >
+      <Flex>
+        <CustomCheckBox
+          value={"selectAll"}
+          valueKey={"stake_all"}
+          pageKey={"Stake_screen"}
+        ></CustomCheckBox>
+        <Text ml={"9px"} mr={"17px"} fontSize={12}>
+          Selected : {0}
+        </Text>
+      </Flex>
       <Flex
         w={"160px"}
         h={"45px"}

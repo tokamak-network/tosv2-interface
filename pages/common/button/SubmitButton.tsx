@@ -2,8 +2,8 @@ import { Button, useColorMode, useTheme, Spinner } from "@chakra-ui/react";
 
 type SubmitButtonProp = {
   name: string;
-  w?: number;
-  h?: number;
+  w?: number | string;
+  h?: number | string;
   isDisabled?: boolean;
   isLoading?: boolean;
   style?: {};

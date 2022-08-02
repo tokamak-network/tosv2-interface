@@ -129,8 +129,6 @@ function StakeCardSection() {
     setCardList(dummyData);
   }, []);
 
-  console.log(cardList);
-
   return (
     <Flex flexDir={"column"}>
       <Flex

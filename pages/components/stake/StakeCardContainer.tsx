@@ -17,9 +17,19 @@ function StakeCardContainer() {
       >
         <StakeTitle></StakeTitle>
       </Flex>
-      <Flex justifyContent={"space-between"} mb={"27px"} alignItems="center">
+      <Flex
+        flexDir={["column", "row", "row"]}
+        justifyContent={"space-between"}
+        mb={"27px"}
+        alignItems="center"
+      >
         <StakeCheckbox></StakeCheckbox>
-        <Flex columnGap={"12px"}>
+        <Flex
+          w={["100%", "400px", "360px"]}
+          columnGap={["6px", "6px", "12px"]}
+          justifyContent={"space-between"}
+          mt={["24px", "", ""]}
+        >
           <SortSelect></SortSelect>
           <SortSelect></SortSelect>
         </Flex>
