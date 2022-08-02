@@ -1,8 +1,10 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, color, Flex, Text, useColorMode } from "@chakra-ui/react";
 import usePathName from "hooks/usePathName";
 import { useRouter } from "next/router";
 import HOME_ICON from "assets/icons/home.svg";
-import CALENDAR_ICON from "assets/icons/calendar.svg";
+import HOME_LIGHT_ICON from 'assets/icons/homeLight.svg';
+import CALENDAR_ICON_DARK from "assets/icons/calendar.svg";
+import CALENDAR_ICON_LIGHT from 'assets/icons/calendarLight.svg'
 import Image from "next/image";
 import { useMemo } from "react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
@@ -11,6 +13,7 @@ const PageTitle = () => {
   const { pathName } = usePathName();
   const [width] = useWindowDimensions();
   const isMobile = width < 510;
+  const { colorMode } = useColorMode();
 
   const PathComponent = useMemo(() => {
     switch (pathName) {
@@ -24,7 +27,7 @@ const PageTitle = () => {
             h={isMobile ? "66px" : ""}
           >
             <Flex>
-              <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>
+              <Image src={colorMode === 'light'? HOME_LIGHT_ICON : HOME_ICON} alt={"HOME_ICON"}></Image>
               <Text ml={"3px"}>Home</Text>
               <Text mx={"7px"}>{">"}</Text>
               <Text>Bond</Text>
@@ -32,8 +35,8 @@ const PageTitle = () => {
               <Text color={"blue.200"}>Bondlist</Text>
             </Flex>
             <Flex>
-              <Image src={CALENDAR_ICON} alt={"CALENDAR_ICON"}></Image>
-              <Text ml={"7px"}>Updated on 2022.06.01 20:00 (UTC+9)</Text>
+            <Image src={colorMode === 'dark'?  CALENDAR_ICON_DARK: CALENDAR_ICON_LIGHT} alt={"CALENDAR_ICON"}></Image>
+              <Text color={colorMode ==='light'? '#7e7e8f': '#8b8b93'} ml={"7px"}>Updated on 2022.06.01 20:00 (UTC+9)</Text>
             </Flex>
           </Flex>
         );
@@ -53,8 +56,8 @@ const PageTitle = () => {
               <Text color={"blue.200"}>{pathName}</Text>
             </Flex>
             <Flex>
-              <Image src={CALENDAR_ICON} alt={"CALENDAR_ICON"}></Image>
-              <Text ml={"7px"}>Updated on 2022.06.01 20:00 (UTC+9)</Text>
+              <Image src={colorMode === 'dark'?  CALENDAR_ICON_DARK: CALENDAR_ICON_LIGHT} alt={"CALENDAR_ICON"}></Image>
+              <Text color={colorMode ==='light'? '#7e7e8f': '#8b8b93'} ml={"7px"}>Updated on 2022.06.01 20:00 (UTC+9)</Text>
             </Flex>
           </Flex>
         );
@@ -84,8 +87,8 @@ const PageTitle = () => {
           fontSize={28}
           h={"39px"}
           fontWeight={"bold"}
-          color={"white.100"}
           mb={"12px"}
+          color={colorMode === "light" ? "#07070c" : "#ffffff"}
         >
           {pathName}
         </Text>

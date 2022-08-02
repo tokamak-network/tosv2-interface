@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex,useColorMode } from "@chakra-ui/react";
 
 type TabButtonProps = {
   nameList: string[];
@@ -8,6 +8,8 @@ type TabButtonProps = {
 
 function TabButton(props: TabButtonProps) {
   const { nameList, tabIndex, onClick } = props;
+  const { colorMode } = useColorMode();
+
   return (
     <Flex
       fontSize={14}
@@ -25,10 +27,10 @@ function TabButton(props: TabButtonProps) {
             w={"102px"}
             h={"40px"}
             borderWidth={1}
-            borderColor={"gray.300"}
-            borderLeftRadius={index === 0 ? 14 : 0}
+            borderColor={colorMode === 'dark'? "gray.300": '#c6cbd9'}
+            borderLeftRadius={index === 0 ? 10 : 0}
             borderLeftWidth={index !== 0 ? 0 : 1}
-            borderRightRadius={index === nameList.length - 1 ? 14 : 0}
+            borderRightRadius={index === nameList.length - 1 ? 10 : 0}
             _hover={{ color: "white.100", bgColor: "blue.100" }}
             bgColor={tabIndex === index ? "blue.100" : ""}
             color={tabIndex === index ? "white.100" : "gray.200"}

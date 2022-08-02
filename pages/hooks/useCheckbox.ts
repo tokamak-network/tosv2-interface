@@ -20,9 +20,9 @@ function useCheckbox() {
     }
   }, [thisCheckboxValue]);
 
-  console.log(thisCheckboxValue);
-  console.log(sCheckbox);
-  console.log(selectedCheckbox);
+  // console.log(thisCheckboxValue);
+  // console.log(sCheckbox);
+  // console.log(selectedCheckbox);
 
   return {
     selectedCheckbox,

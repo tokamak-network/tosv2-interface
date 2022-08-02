@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import {  Flex, Text, useColorMode } from "@chakra-ui/react";
 import { useMemo } from "react";
 
 type TopCardProps = {
@@ -9,47 +9,63 @@ type TopCardProps = {
 };
 
 const TopCard: React.FC<TopCardProps> = (props) => {
+  const { colorMode } = useColorMode();
   const { title, price, priceUnit, style } = props;
-
+  
   const PriceContent = useMemo(() => {
+    
     switch (priceUnit) {
       case "$":
         return (
-          <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
+          <Text
+            fontSize={22}
+            color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
+            fontWeight={"bold"}
+          >
             {priceUnit} {price}
           </Text>
         );
       default:
         return (
           <Flex>
-            <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
+            <Text
+              fontSize={22}
+              color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
+              fontWeight={"bold"}
+            >
               {price}
             </Text>
-            <Text alignSelf={"end"} ml={"5px"} fontSize={14} pb={"3px"}>
+            <Text
+              alignSelf={"end"}
+              ml={"5px"}
+              color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
+              fontSize={14}
+              pb={"3px"}
+            >
               {priceUnit}
             </Text>
           </Flex>
         );
     }
-  }, [price, priceUnit]);
+  }, [price, priceUnit,colorMode]);
 
   return (
     <Flex
       w={["48.9%", "48.9%", "48.9%"]}
       h={110}
       borderWidth={1}
-      borderColor={"gray.600"}
+      borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
       borderRadius={14}
       flexDir={"column"}
       pl={"20px"}
       pr={"18px"}
       pt={"15px"}
       pb={"10px"}
-      bgColor={"gray.600"}
+      bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       {...style}
     >
       <Text
-        color={"gray.100"}
+        color={colorMode === "dark" ? "gray.100" : "gray.200"}
         fontSize={12}
         fontWeight={600}
         h={17}
@@ -58,9 +74,21 @@ const TopCard: React.FC<TopCardProps> = (props) => {
         {title}
       </Text>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
-        <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
+        <Text
+          fontWeight={"bold"}
+          fontSize={22}
+          color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
+        >
           {PriceContent}
         </Text>
+        {/* <Text
+          fontSize={22}
+        
+          // color={colorMode === "dark" ?  "white.200" : "#07070c"}
+          fontWeight={"bold"}
+        >
+          {PriceContent}
+        </Text> */}
       </Flex>
     </Flex>
   );
