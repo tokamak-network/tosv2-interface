@@ -7,9 +7,6 @@ function usePagination(listArr: any[]) {
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [currentPageList, setCurrentPageList] = useState<any[]>([]);
 
-  console.log(currentPage);
-  console.log(currentPageList);
-
   useEffect(() => {
     const pageLength = listArr.length / pageSize;
     const pageNum = Math.floor(pageLength) + 1;

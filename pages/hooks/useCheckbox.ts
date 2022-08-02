@@ -37,9 +37,7 @@ function useCheckbox() {
     }
   }, [thisCheckboxValue]);
 
-  useEffect(() => {
-    console.log(sCheckbox);
-  }, [sCheckbox]);
+  useEffect(() => {}, [sCheckbox]);
 
   return {
     selectedCheckbox,

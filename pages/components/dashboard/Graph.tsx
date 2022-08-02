@@ -109,8 +109,6 @@ function Graph(props: {
         pointLabelYOffset={-12}
         useMesh={true}
         sliceTooltip={({ slice }) => {
-          console.log("slice", slice);
-
           return (
             <div
               style={{

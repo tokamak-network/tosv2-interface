@@ -11,10 +11,6 @@ const useUserBalance = () => {
   const [userWTonBalance, setUserWTonBalance] = useState<string>("");
   const [userTOSBalance, setUserTOSBalance] = useState<string>("");
 
-  console.log(TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT);
-
-  console.log(account);
-
   useEffect(() => {
     async function fetchBalance() {
       try {
@@ -38,8 +34,6 @@ const useUserBalance = () => {
           amount: tos.toString(),
           localeString: true,
         });
-        console.log("go?");
-        console.log(convertedTon, convertedWTon, convertedWTon);
 
         setUserTonBalance(convertedTon || "0.00");
         setUserWTonBalance(convertedWTon || "0.00");
