@@ -22,20 +22,15 @@ function Graph(props: {
 }) {
   const { data, title, amount, tooltipTitle } = props;
   const theme = {
-   
-    "axis": {
-       
-        "ticks": {
-           
-            "text": {
-                "fontSize": 11,
-                "fill": "#64646f"
-            }
-        }
+    axis: {
+      ticks: {
+        text: {
+          fontSize: 11,
+          fill: "#64646f",
+        },
+      },
     },
-   
-  
-}
+  };
 
   const selectedFilter = useRecoilValue(selectedFilterState);
   return (
@@ -59,7 +54,7 @@ function Graph(props: {
           {" "}
           <img src={question}/>
         </Tooltip> */}
-        <Image src={question}/>
+        <Image src={question} />
       </Flex>
       <Text color={"#ffffff"} fontSize="20px">
         {amount}
@@ -80,7 +75,6 @@ function Graph(props: {
           stacked: true,
           reverse: false,
         }}
-       
         lineWidth={1}
         areaBaselineValue={0}
         yFormat=" >-.2f"
@@ -131,16 +125,16 @@ function Graph(props: {
                 width: "155px",
               }}
             >
-              {slice.points.map((point) => {
+              {slice.points.map((point, index) => {
                 const color = point.borderColor.toString();
                 return (
                   <div
                     style={{
                       display: "flex",
                       flexDirection: "row",
-
                       alignItems: "center",
                     }}
+                    key={`${index}_${point.serieColor}`}
                   >
                     <div
                       style={{

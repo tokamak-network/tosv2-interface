@@ -25,7 +25,7 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       spinner={<Spinner size={"md"}></Spinner>}
       {...theme.BUTTON_STYLE.submitButtonStyle(colorMode)}
       bgColor={isDisabled ? "gray.500" : ""}
-      onClick={() => onClick()}
+      onClick={() => onClick && onClick()}
       {...style}
     >
       {name}

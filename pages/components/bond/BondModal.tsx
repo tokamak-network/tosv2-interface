@@ -242,7 +242,11 @@ function BondModal() {
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text mr={"24px"}>Lock-Up Period</Text>
-                  <CustomCheckBox></CustomCheckBox>
+                  <CustomCheckBox
+                    pageKey="Bond_screen"
+                    value={""}
+                    valueKey={""}
+                  ></CustomCheckBox>
                   <Text ml={"9px"}>5 days Lock-Up</Text>
                   <Input w={"120px"} h={"39px"} ml={"auto"}></Input>
                 </Flex>

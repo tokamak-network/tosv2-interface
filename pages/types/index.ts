@@ -6,7 +6,7 @@ export type TokenTypes = "ETH" | "TON" | "WTON" | "TOS";
 export type TopCardList = BondTopCardProps[] | StakeTopCardProps[];
 
 export type Pages = "Dashboard" | "Bond" | "Stake";
-export type PageKey = "Stake_screen";
+export type PageKey = "Stake_screen" | "Bond_screen";
 
 export type CheckBoxValueType = {
   page: Pages;

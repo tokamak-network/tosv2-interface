@@ -81,7 +81,11 @@ function MyCard(props: MyCardProps) {
       <Flex alignItems="center" justifyContent={isDisabled ? "" : "center"}>
         {isDisabled && (
           <>
-            <CustomCheckBox></CustomCheckBox>
+            <CustomCheckBox
+              pageKey="Bond_screen"
+              value={""}
+              valueKey={""}
+            ></CustomCheckBox>
             <Text ml={"9px"} mr={"20px"}>
               Select
             </Text>

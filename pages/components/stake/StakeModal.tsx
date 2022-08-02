@@ -211,13 +211,18 @@ function StakeModal() {
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text mr={"24px"}>Lock-Up Period</Text>
-                  <CustomCheckBox></CustomCheckBox>
+                  <CustomCheckBox
+                    pageKey="Stake_screen"
+                    value={""}
+                    valueKey={""}
+                  ></CustomCheckBox>
                   <Text ml={"9px"}>5 days Lock-Up</Text>
                   {/* <Input w={"120px"} h={"39px"} ml={"auto"}></Input> */}
                   <BalanceInput
                     w={"100%"}
                     h={45}
                     atomKey={"stake_stake_modal_period"}
+                    //@ts-ignore
                     value={balanceValue.stake_stake_modal_period}
                   ></BalanceInput>
                 </Flex>

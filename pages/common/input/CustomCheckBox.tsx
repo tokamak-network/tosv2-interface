@@ -34,7 +34,7 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   const { pathName } = usePathName();
   const [isCheckedAll, setIsChecked] = useState<boolean>(false);
 
-  console.log(selectedCheckbox);
+  // console.log(selectedCheckbox);
 
   useEffect(() => {
     const isCheckedAll = selectedCheckbox?.filter((data) => {

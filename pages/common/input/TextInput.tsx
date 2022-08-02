@@ -15,7 +15,7 @@ type InputProp = {
   w?: number | string;
   h?: number | string;
   isDisabled?: boolean;
-  value?: string | number;
+  value?: string | number | any;
   isError?: boolean;
   atomKey: string;
 };
@@ -72,6 +72,7 @@ function BalanceInput(props: InputProp) {
         focusBorderColor="#8a8a98"
         _focus={{ color: "#f1f1f1", boxShadow: "" }}
         errorBorderColor={"#e23738"}
+        //@ts-ignore
         value={value.atomKey}
         onChange={onChange}
       ></Input>
