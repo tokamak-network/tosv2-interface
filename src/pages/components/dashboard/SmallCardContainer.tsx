@@ -1,6 +1,12 @@
 import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
+import useCallContract from "hooks/useCallContract";
+import useContract from "hooks/useContract";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useEffect, useState } from "react";
+
+import CONTRACT_ADDRESS from "services/addresses/contract";
+import TreasuryAbi from "services/abis/Treasury.json";
+
 import { Dashboard_SmallCardArrType } from "types/dashboard";
 import SmallCard from "./SmallCard";
 
@@ -9,8 +15,13 @@ const SmallCardContainer = () => {
     Dashboard_SmallCardArrType | undefined
   >(undefined);
   const [width] = useWindowDimensions();
+  const { Treasury_CONTRACT } = useCallContract();
 
   useEffect(() => {
+    // (async () => {
+    //   const backingRateETHPerTOS = await Treasury_CONTRACT?.backingReserve();
+    // })();
+
     const dummyData: Dashboard_SmallCardArrType = [
       {
         price: "15.75",
@@ -38,7 +49,7 @@ const SmallCardContainer = () => {
       },
     ];
     setCardList(dummyData);
-  }, []);
+  }, [Treasury_CONTRACT]);
 
   if (width < 490) {
     return (
