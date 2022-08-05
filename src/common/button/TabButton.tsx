@@ -31,7 +31,7 @@ function TabButton(props: TabButtonProps) {
             borderLeftRadius={index === 0 ? 10 : 0}
             borderLeftWidth={index !== 0 ? 0 : 1}
             borderRightRadius={index === nameList.length - 1 ? 10 : 0}
-            _hover={{ color: "white.100", bgColor: "blue.100" }}
+            _hover={{ color: tabIndex === index ?'white.100': "blue.200", bgColor: tabIndex === index ? ' "blue.100"': "transparent" }}
             bgColor={tabIndex === index ? "blue.100" : ""}
             color={tabIndex === index ? "white.100" : "gray.200"}
           >

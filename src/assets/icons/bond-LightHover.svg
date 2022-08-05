@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
     <path style="opacity:.5;fill:none" d="M0 0h24v24H0z"/>
     <g transform="translate(1.75 1.75)">
-        <path data-name="패스 948" d="M15.66 4.78a8.63 8.63 0 0 1 3.66 6.15" transform="translate(-.75 -.75)" style="stroke:#2e2e3a;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
-        <path data-name="패스 949" d="M2.19 10.98a8.6 8.6 0 0 1 3.6-6.15" transform="translate(-.75 -.75)" style="stroke:#2e2e3a;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
-        <path data-name="패스 950" d="M6.89 19.55a8.6 8.6 0 0 0 7.6.07" transform="translate(-.75 -.75)" style="stroke:#2e2e3a;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
-        <circle data-name="타원 70" cx="2.78" cy="2.78" r="2.78" transform="translate(7.229)" style="stroke:#2e2e3a;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
-        <circle data-name="타원 71" cx="2.78" cy="2.78" r="2.78" transform="translate(0 12.22)" style="stroke:#2e2e3a;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
-        <circle data-name="타원 72" cx="2.78" cy="2.78" r="2.78" transform="translate(14.34 12.22)" style="stroke:#2e2e3a;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
+        <path data-name="패스 948" d="M15.66 4.78a8.63 8.63 0 0 1 3.66 6.15" transform="translate(-.75 -.75)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
+        <path data-name="패스 949" d="M2.19 10.98a8.6 8.6 0 0 1 3.6-6.15" transform="translate(-.75 -.75)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
+        <path data-name="패스 950" d="M6.89 19.55a8.6 8.6 0 0 0 7.6.07" transform="translate(-.75 -.75)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
+        <circle data-name="타원 70" cx="2.78" cy="2.78" r="2.78" transform="translate(7.229)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
+        <circle data-name="타원 71" cx="2.78" cy="2.78" r="2.78" transform="translate(0 12.22)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
+        <circle data-name="타원 72" cx="2.78" cy="2.78" r="2.78" transform="translate(14.34 12.22)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none"/>
     </g>
 </svg>

@@ -57,14 +57,14 @@ const BUTTON_STYLE = {
   basicButtonStyle: (props: THEME_PROPS) => ({
     background: props.colorMode === "light" ? "white" : "none",
     borderWidth: 1,
-    borderColor: props.colorMode === "light" ? "" : "#8a8a98",
+    borderColor: props.colorMode === "light" ? "#7e7e8f" : "#8a8a98",
     borderRadius: 8,
-    color: props.colorMode === "light" ? "#f1f1f1" : "#f1f1f1",
+    color: props.colorMode === "light" ? "#07070c" : "#f1f1f1",
   }),
   submitButtonStyle: (props: THEME_PROPS) => ({
     background: props.colorMode === "light" ? "white" : "#257eee",
     borderRadius: 8,
-    color: props.colorMode === "light" ? "#f1f1f1" : "#f1f1f1",
+    color: props.colorMode === "light" ? "#07070c" : "#f1f1f1",
   }),
 };
 

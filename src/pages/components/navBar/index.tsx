@@ -131,9 +131,7 @@ const NavItem = (props: { isExpended: boolean }) => {
                   isHover === index
                     ? pName === item.link
                       ? "white.200"
-                      : colorMode === "dark"
-                      ? "#f1f1f1"
-                      : "#2e2e3a"
+                      : "#2775ff"
                     : pName === item.link
                     ? "white.200"
                     : colorMode === "dark"
@@ -148,7 +146,7 @@ const NavItem = (props: { isExpended: boolean }) => {
               >
                 <Image
                   src={
-                    isHover === index &&   pName !== item.link? colorMode === 'dark'?item.hoverIcon : item.lightHoverIcon:    pName === item.link
+                    isHover === index && pName !== item.link? item.lightHoverIcon:    pName === item.link
                       ? item.hoverIcon
                       : item.icon
                   }

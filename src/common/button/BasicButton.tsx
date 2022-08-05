@@ -19,8 +19,10 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
       h={h || 33}
       isDisabled={isDisabled}
       _hover={isDisabled ? {} : { borderColor: "blue.100", color: "blue.100" }}
+      _focus={{backgroundColor:'transparent'}}
       fontSize={12}
       {...theme.BUTTON_STYLE.basicButtonStyle(colorMode)}
+      color={colorMode==='dark'?'#f1f1f1':'#07070c'}
       {...style}
       //   background={"white.100"}
       onClick={onClick ? () => onClick() : null}

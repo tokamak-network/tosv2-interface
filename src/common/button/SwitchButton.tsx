@@ -1,4 +1,4 @@
-import { Button, useColorMode, useTheme } from "@chakra-ui/react";
+import { border, Button, useColorMode, useTheme } from "@chakra-ui/react";
 
 type SwitchButtonProps = {
   name: string;
@@ -24,14 +24,15 @@ const SwitchButton: React.FC<SwitchButtonProps> = (props) => {
           ? {}
           : isSelected
           ? { color: "white.100" }
-          : { color: "blue.100" }
+          : { color: "blue.100", border: '1px solid #257eee' }
       }
       fontSize={12}
       {...theme.BUTTON_STYLE.basicButtonStyle(colorMode)}
-      border={"1px solid #313442"}
+      border={colorMode === 'dark'? "1px solid #313442": '1px solid #e8edf2'}
       color={isSelected ? "white.100" : "gray.200"}
       fontWeight={0}
-      bgColor={isSelected ? "blue.200" : ""}
+      bgColor={isSelected ? "blue.200" : "transparent"}
+      _active={{background: 'transparent'}}
       {...style}
       //   background={"white.100"}
     >

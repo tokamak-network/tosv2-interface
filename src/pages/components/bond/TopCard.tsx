@@ -40,8 +40,7 @@ const TopCard: React.FC<TopCardProps> = (props) => {
               ml={"5px"}
               color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
               fontSize={14}
-              pb={"3px"}
-            >
+              pb={"3px"}>
               {priceUnit}
             </Text>
           </Flex>
