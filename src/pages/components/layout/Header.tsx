@@ -36,15 +36,27 @@ function BurgerButton() {
   );
 }
 
-function Header() {
+type HeaderProps = {
+  walletopen: () => void;
+};
+
+function Header(props:HeaderProps) {
+
   const { toggleColorMode, colorMode } = useColorMode();
   const [isHover, setIsHover] = useState<boolean>(false);
   const SwitchIcon = useColorModeValue(MOON_ICON, SUN_ICON);
   const theme = useTheme();
+  const [walletState, setWalletState] = useState<string>('');
+  const {onOpen} = useDisclosure();
+
   const { pcView } = useMediaView();
   const text = useColorModeValue("dark", "light");
   // const {  } = useActiveWeb3React();
   const { activate, active, account } = useWeb3React();
+  const handleWalletModalOpen = (state: string) => {
+    setWalletState(state);
+    onOpen();
+  };
 
   return (
     <Flex
@@ -73,7 +85,8 @@ function Header() {
           onMouseLeave={() => setIsHover(false)}
           _hover={{color:'blue.200', border:!account ?'1px solid #2775ff':''}}
           fontWeight={"bold"}
-          onClick={() => (account ? null : activate(injected))}
+          // onClick={() => (account ? null : activate(injected))}
+          onClick={props.walletopen}
         >
           <Image
             src={
@@ -100,7 +113,6 @@ function Header() {
                 ? "#7e7e8f"
                 : "#707070"
             }
-         
           >
             {account
               ? trimAddress({

@@ -1,4 +1,4 @@
-import { injected } from "connectors/";
+import { injected,trazorConnector } from "connectors/";
 import { WalletInfo } from "types/wallet";
 // import { DEPLOYED_TYPE } from "./type";
 import { ethers } from "ethers";
@@ -32,5 +32,14 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     href: null,
     color: "#E8831D",
     type: "METAMASK",
+  },
+  TREZOR: {
+    connector: trazorConnector,
+    name: 'Trezor',
+    iconName: 'trezor.png',
+    description: 'Hardware Wallet.',
+    href: null,
+    color: '#E8831D',
+    type: 'TREZOR',
   },
 };

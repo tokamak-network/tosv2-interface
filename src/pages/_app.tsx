@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app";
 import { Box, ChakraProvider, ColorModeScript, Flex } from "@chakra-ui/react";
+import {useDisclosure} from '@chakra-ui/react';
 import { Web3ReactProvider } from "@web3-react/core";
 import getLibrary from "utils/getLibrary";
 import test from "utils/test";
@@ -8,9 +9,13 @@ import NavBar from "pages/components/navBar";
 import Footer from "pages/components/layout/Footer";
 import { RecoilRoot } from "recoil";
 import Header from "pages/components/layout/Header";
-
+import {WalletModal} from 'common/wallet/index';
 function MyApp({ Component, pageProps }: AppProps) {
   test();
+  const {onOpen, isOpen: isModalOpen, onClose} = useDisclosure();
+  const handleWalletModalOpen = (state: string) => {
+    onOpen();
+  };
 
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
@@ -30,9 +35,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                 w={"100%"}
                 minH={"100vh"}
               >
-                <Header></Header>
+                <Header  walletopen={() => handleWalletModalOpen('wallet')}></Header>
                 <Component {...pageProps} />
                 <Footer></Footer>
+                <WalletModal isOpen={isModalOpen} onClose={onClose}/>
               </Flex>
             </Flex>
           </Flex>
