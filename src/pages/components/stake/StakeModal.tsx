@@ -40,7 +40,7 @@ function StakeGraph() {
   const [value, setValue] = useRecoilState(inputState);
 
   console.log(oldValues);
-
+  const { colorMode } = useColorMode();
   const [sliderValue, setSliderValue] = useState(36);
   return (
     <Flex w={"100%"} h={"157.5px"} pos="relative">
@@ -112,11 +112,12 @@ function StakeGraph() {
 
 function BottomContent(props: { title: string; content: string }) {
   const { title, content } = props;
+  const { colorMode } = useColorMode();
   return (
     <Flex>
-      <Flex w={"100%"} justifyContent={"space-between"} fontSize={14}>
-        <Text color={"#8b8b93"}>{title}</Text>
-        <Text color={"white.200"} fontWeight={600}>
+      <Flex w={"100%"} justifyContent={"space-between"} fontSize={14} mt={'9px'}>
+        <Text color={colorMode === 'dark'? "gray.100":'gray.1000'}>{title}</Text>
+        <Text color={colorMode === 'dark'?"white.200":'gray.800'} fontWeight={600}>
           {content}
         </Text>
       </Flex>
@@ -168,7 +169,7 @@ function StakeModal() {
       <ModalOverlay />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
-        bg={colorMode === "light" ? "#121318" : "#121318"}
+        bg={colorMode === "light" ? "white.100" : "#121318"}
         minW="43.75em"
         // h="704px"
       >
@@ -178,7 +179,11 @@ function StakeModal() {
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
               <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
-                <Text color={"white.200"} fontSize={20} fontWeight={600}>
+                <Text
+                  color={colorMode === "light" ? "gray.800" : "white.200"}
+                  fontSize={20}
+                  fontWeight={600}
+                >
                   Stake
                 </Text>
                 <Flex
@@ -201,7 +206,7 @@ function StakeModal() {
                 </Flex>
                 <Flex
                   fontSize={12}
-                  color={"#8b8b93"}
+                  color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
@@ -210,21 +215,33 @@ function StakeModal() {
                   <Text>{userBalance.TOSBalance} TOS</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
-                  <Text mr={"24px"}>Lock-Up Period</Text>
+                  <Text
+                    mr={"24px"}
+                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                  >
+                    Lock-Up Period
+                  </Text>
                   <CustomCheckBox
                     pageKey="Stake_screen"
                     value={""}
                     valueKey={""}
+              
                   ></CustomCheckBox>
-                  <Text ml={"9px"}>5 days Lock-Up</Text>
+                  <Text
+                    ml={"9px"}
+                  
+                    color={colorMode === "light" ? "gray.100" : "gray.1000"}
+                  >
+                    5 days Lock-Up
+                  </Text>
                   {/* <Input w={"120px"} h={"39px"} ml={"auto"}></Input> */}
-                  <BalanceInput
-                    w={"100%"}
+                  <TextInput
+                    w={"120px"}
                     h={45}
                     atomKey={"stake_stake_modal_period"}
                     //@ts-ignore
                     value={balanceValue.stake_stake_modal_period}
-                  ></BalanceInput>
+                  ></TextInput>
                 </Flex>
               </Flex>
               <Flex px={"49px"} mb={"30px"}>
@@ -258,7 +275,7 @@ function StakeModal() {
               w={"100%"}
               mb={"24px"}
             >
-              <Text w={"100%"}>
+              <Text w={"100%"} color={colorMode ==='dark'? 'gray.200':'gray.700'}>
                 If this is First time bonding, Please approve Tonstarter to use
                 your DAI for bonding.
               </Text>

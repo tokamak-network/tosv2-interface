@@ -30,15 +30,22 @@ const TextInput: React.FC<InputProp> = (props) => {
       isInvalid={isError}
       w={w || 270}
       h={h || 45}
+      ml={'auto'}
       borderRadius={8}
       borderWidth={1}
-      borderColor={colorMode === "light" ? "" : "#313442"}
+      borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
       fontSize={14}
-      color={colorMode === "light" ? "" : "#313442"}
+      color={colorMode === "light" ? 'gray.800': "#f1f1f1"}
       _placeholder={{ color: "#64646f" }}
-      _hover={{ borderColor: "#535353" }}
-      focusBorderColor="#8a8a98"
-      _focus={{ color: "#f1f1f1", boxShadow: "" }}
+      _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
+      focusBorderColor="none"
+      _focus={{
+        outline: "none",
+        color:colorMode === "light"? 'gray.800': "#f1f1f1",
+        boxShadow: "",
+        borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
+      }}
+      outline="none"
       errorBorderColor={"#e23738"}
       value={value}
     ></Input>
@@ -62,16 +69,23 @@ function BalanceInput(props: InputProp) {
         isInvalid={isError}
         w={w || 270}
         h={h || 45}
+        ml={'auto'}
         borderRadius={8}
         borderWidth={1}
-        borderColor={colorMode === "light" ? "" : "#313442"}
+        borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
         fontSize={14}
-        color={colorMode === "light" ? "" : "#313442"}
+        color={colorMode === "light" ? 'gray.800': "#f1f1f1"}
         _placeholder={{ color: "#64646f" }}
-        _hover={{ borderColor: "#535353" }}
-        focusBorderColor="#8a8a98"
-        _focus={{ color: "#f1f1f1", boxShadow: "" }}
+        _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
+        focusBorderColor="none"
+        _focus={{
+          outline: "none",
+          color:colorMode === "light"? 'gray.800': "#f1f1f1",
+          boxShadow: "",
+          borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
+        }}
         errorBorderColor={"#e23738"}
+        outline="none"
         //@ts-ignore
         value={value.atomKey}
         onChange={onChange}

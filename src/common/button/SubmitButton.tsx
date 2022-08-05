@@ -21,6 +21,7 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       isDisabled={isDisabled}
       isLoading={isLoading}
       _hover={{}}
+      _focus={{backgroundColor:'#257eee'}}
       fontSize={12}
       spinner={<Spinner size={"md"}></Spinner>}
       {...theme.BUTTON_STYLE.submitButtonStyle(colorMode)}

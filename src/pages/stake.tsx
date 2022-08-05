@@ -8,9 +8,7 @@ import { StakeTopCardProps } from "types/stake";
 
 const Stake = () => {
   const theme = useTheme();
-  const { colorMode } = useColorMode();
-  console.log(theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode));
-  
+  const { colorMode } = useColorMode();  
   const cardList: StakeTopCardProps[] = [
     {
       title: "TOS Price",

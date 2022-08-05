@@ -56,7 +56,7 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   return (
     <Checkbox
       size={"lg"}
-      style={{ borderRadius: "4px" }}
+      style={{ borderRadius: "4px", borderColor: colorMode === 'dark'? '#535353':'#c6cbd9' }}
       isChecked={isCheckedAll}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = e.target.checked;

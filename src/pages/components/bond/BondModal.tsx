@@ -26,6 +26,7 @@ import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useState } from "react";
+import { TextInput, BalanceInput } from "common/input/TextInput";
 
 function StakeGraph() {
   const labelStyles = {
@@ -104,11 +105,13 @@ function StakeGraph() {
 
 function BottomContent(props: { title: string; content: string }) {
   const { title, content } = props;
+  const { colorMode } = useColorMode();
+
   return (
     <Flex>
-      <Flex w={"100%"} justifyContent={"space-between"} fontSize={14}>
-        <Text color={"#8b8b93"}>{title}</Text>
-        <Text color={"white.200"} fontWeight={600}>
+      <Flex w={"100%"} justifyContent={"space-between"} fontSize={14} mt={'9px'}>
+      <Text color={colorMode === 'dark'? "gray.100":'gray.1000'}>{title}</Text>
+        <Text color={colorMode === 'dark'?"white.200":'gray.800'} fontWeight={600}>
           {content}
         </Text>
       </Flex>
@@ -158,7 +161,7 @@ function BondModal() {
       <ModalOverlay />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
-        bg={colorMode === "light" ? "#121318" : "#121318"}
+        bg={colorMode === "light" ? "white.100" : "#121318"}
         minW="43.75em"
         // h="704px"
       >
@@ -168,7 +171,11 @@ function BondModal() {
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
               <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
-                <Text color={"white.200"} fontSize={20} fontWeight={600}>
+                <Text
+                  color={colorMode === "light" ? "gray.800" : "white.200"}
+                  fontSize={20}
+                  fontWeight={600}
+                >
                   WTON BOND
                 </Text>
                 <Flex
@@ -185,27 +192,38 @@ function BondModal() {
                 <Flex w={"100%"} justifyContent={"space-between"} mb={"24px"}>
                   <Box display={"flex"} flexDir={"column"}>
                     <Text
-                      color={"gray.100"}
+                      color={colorMode === "dark" ? "gray.100" : "gray.1000"}
                       h={"17px"}
                       mb={"3px"}
+                      fontWeight={600}
                       fontSize={12}
                       textAlign="center"
                     >
                       Bonding Price
                     </Text>
-                    <Flex color={"white.200"} fontWeight={"bold"} h={"33px"}>
-                      <Text fontSize={24} mr={2}>
+                    <Flex fontWeight={"bold"} h={"33px"}>
+                      <Text
+                        color={colorMode === "dark" ? "white.100" : "gray.800"}
+                        fontSize={24}
+                        mr={2}
+                      >
                         441.5
                       </Text>
-                      <Text fontSize={14} pt={"5px"} lineHeight={"33px"}>
+                      <Text
+                        color={colorMode === "dark" ? "white.200" : "gray.800"}
+                        fontSize={14}
+                        pt={"5px"}
+                        lineHeight={"33px"}
+                      >
                         WTON
                       </Text>
                     </Flex>
                   </Box>
                   <Box display={"flex"} flexDir={"column"}>
                     <Text
-                      color={"gray.100"}
+                      color={colorMode === "dark" ? "gray.100" : "gray.1000"}
                       h={"17px"}
+                      fontWeight={600}
                       mb={"3px"}
                       fontSize={12}
                       textAlign="center"
@@ -213,26 +231,34 @@ function BondModal() {
                       Market Price
                     </Text>
                     <Flex color={"white.200"} fontWeight={"bold"} h={"33px"}>
-                      <Text fontSize={24} mr={2}>
+                      <Text
+                        color={colorMode === "dark" ? "white.100" : "gray.800"}
+                        fontSize={24}
+                        mr={2}
+                      >
                         500.5
                       </Text>
-                      <Text fontSize={14} pt={"5px"} lineHeight={"33px"}>
+                      <Text
+                        color={colorMode === "dark" ? "white.200" : "gray.800"}
+                        fontSize={14}
+                        pt={"5px"}
+                        lineHeight={"33px"}
+                      >
                         WTON
                       </Text>
                     </Flex>
                   </Box>
                 </Flex>
                 <Flex mb={"9px"}>
-                  <Input
+                <BalanceInput
                     w={"100%"}
-                    h={"45px"}
-                    borderWidth={1}
-                    borderColor={"#313442"}
-                  ></Input>
+                    h={45}
+                    atomKey={"stake_stake_modal_balance"}
+                  ></BalanceInput>
                 </Flex>
                 <Flex
                   fontSize={12}
-                  color={"#8b8b93"}
+                  color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
@@ -241,14 +267,14 @@ function BondModal() {
                   <Text>1,000 WTON</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
-                  <Text mr={"24px"}>Lock-Up Period</Text>
+                  <Text mr={"24px"}  color={colorMode === "light" ? "gray.800" : "white.200"}>Lock-Up Period</Text>
                   <CustomCheckBox
                     pageKey="Bond_screen"
                     value={""}
                     valueKey={""}
                   ></CustomCheckBox>
                   <Text ml={"9px"}>5 days Lock-Up</Text>
-                  <Input w={"120px"} h={"39px"} ml={"auto"}></Input>
+                  <TextInput w={"120px"} h={"39px"}   atomKey={"stake_stake_modal_period"}></TextInput>
                 </Flex>
               </Flex>
               <Flex px={"49px"} mb={"30px"}>
@@ -282,7 +308,7 @@ function BondModal() {
               w={"100%"}
               mb={"24px"}
             >
-              <Text w={"100%"}>
+              <Text w={"100%"}  color={colorMode ==='dark'? 'gray.200':'gray.700'}>
                 If this is First time bonding, Please approve Tonstarter to use
                 your DAI for bonding.
               </Text>
