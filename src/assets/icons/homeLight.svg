@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12.099" viewBox="0 0 12 12.099">
+    <path style="fill:none" d="M0 0h12v12H0z" transform="translate(0 .099)"/>
+    <g data-name="home">
+        <path data-name="패스 951" d="m4.26 1.161-2.7 2.1a2.379 2.379 0 0 0-.81 1.66v3.705a2.113 2.113 0 0 0 2.105 2.11h5.79a2.112 2.112 0 0 0 2.1-2.105v-3.64a2.362 2.362 0 0 0-.9-1.725L6.76 1.1a2.243 2.243 0 0 0-2.5.061z" style="stroke:#7e7e8f;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" transform="translate(0 .099)"/>
+        <path data-name="선 23" transform="translate(5.75 7.335)" style="stroke:#7e7e8f;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" d="M0 1.5V0"/>
+    </g>
+</svg>

@@ -1,4 +1,4 @@
-import { Flex, useTheme } from "@chakra-ui/react";
+import { Flex, useTheme,useColorMode } from "@chakra-ui/react";
 import BondCardContainer from "pages/components/bond/BondCardContainer";
 import BondModal from "pages/components/bond/BondModal";
 import TopCardContainer from "pages/components/bond/TopCardContrainer";
@@ -9,7 +9,7 @@ import { BondTopCardProps } from "types/bond";
 
 const Bond = () => {
   const theme = useTheme();
-
+  const { colorMode } = useColorMode();
   const cardList: BondTopCardProps[] = [
     {
       title: "TOS Price",
@@ -24,7 +24,7 @@ const Bond = () => {
   ];
 
   return (
-    <Flex {...theme.PAGE_LAYOUT_STYLE}>
+    <Flex {...theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode)} bg={colorMode === 'light'? "#fafbfc" : "black.100"}>
       <PageLayout></PageLayout>
       <TopCardContainer cardList={cardList}></TopCardContainer>
       <BondCardContainer></BondCardContainer>

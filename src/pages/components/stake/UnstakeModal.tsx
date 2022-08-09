@@ -34,6 +34,7 @@ function StakeGraph() {
     fontSize: "sm",
   };
   const [sliderValue, setSliderValue] = useState(36);
+  const { colorMode } = useColorMode();
   return (
     <Flex w={"100%"} h={"157.5px"} pos="relative">
       {/* diagonal line */}
@@ -103,12 +104,13 @@ function StakeGraph() {
 }
 
 function BottomContent(props: { title: string; content: string }) {
+  const { colorMode } = useColorMode();
   const { title, content } = props;
   return (
     <Flex>
       <Flex w={"100%"} justifyContent={"space-between"} fontSize={14}>
-        <Text color={"#8b8b93"}>{title}</Text>
-        <Text color={"white.200"} fontWeight={600}>
+        <Text color={colorMode === 'dark'? "gray.100":'gray.1000'}>{title}</Text>
+        <Text color={colorMode === 'dark'?"white.200":'gray.800'} fontWeight={600}>
           {content}
         </Text>
       </Flex>
@@ -142,7 +144,7 @@ function UnstakeModal() {
       <ModalOverlay />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
-        bg={colorMode === "light" ? "#121318" : "#121318"}
+        bg={colorMode === "light" ? "white.100" : "#121318"}
         minW="43.75em"
         // h="704px"
       >
@@ -152,7 +154,7 @@ function UnstakeModal() {
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
               <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
-                <Text color={"white.200"} fontSize={20} fontWeight={600}>
+                <Text color={colorMode === "light" ? 'gray.800':"white.200"} fontSize={20} fontWeight={600}>
                   Unstake
                 </Text>
                 <Flex

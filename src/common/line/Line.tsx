@@ -6,7 +6,7 @@ const Line = () => {
     <Box
       width={"100%"}
       height={"1px"}
-      bg={colorMode === "light" ? "#313442" : "#313442"}
+      bg={colorMode === "light" ? "#e8edf2" : "#313442"}
     ></Box>
   );
 };

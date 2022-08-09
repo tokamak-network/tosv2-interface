@@ -1,10 +1,12 @@
 import { selector, useRecoilValue } from "recoil";
 import { filterState } from "atom//dashboard";
-import { Flex, Text, Tooltip } from "@chakra-ui/react";
+import { Flex, Text, Tooltip, useColorMode } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import question from "assets/icons/question.svg";
 import Image from "next/image";
 import moment from "moment";
+
+
 const selectedFilterState = selector({
   key: "selectedFilterState", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
@@ -21,12 +23,13 @@ function Graph(props: {
   tooltipTitle: string;
 }) {
   const { data, title, amount, tooltipTitle } = props;
+  const {colorMode} = useColorMode();
   const theme = {
     axis: {
       ticks: {
         text: {
           fontSize: 11,
-          fill: "#64646f",
+          fill: colorMode === 'dark'? "#64646f": '#9a9aaf',
         },
       },
     },
@@ -39,24 +42,24 @@ function Graph(props: {
       minWidth={"336px"}
       maxWidth={"556px"}
       h={"350px"}
-      bgColor={"gray.600"}
+      bgColor={colorMode === 'dark'? "gray.600": 'white.100'}
       borderRadius={14}
       borderWidth={1}
       flexDir="column"
-      borderColor={"#313442"}
+      borderColor={colorMode === 'dark'? "gray.300": 'gray.900'}
       // pt={'18px'}
       // pl={'20px'}
       p={" 18px 20px 10px 20px"}
     >
       <Flex flexDir={"row"}>
-        <Text mr="6px">{title} </Text>
+        <Text mr="6px" fontSize={'12px'} fontWeight={600} color={colorMode === 'dark'? "gray.100": 'gray.1000'}>{title} </Text>
         {/* <Tooltip label="tooltip message">
           {" "}
           <img src={question}/>
         </Tooltip> */}
         <Image src={question} />
       </Flex>
-      <Text color={"#ffffff"} fontSize="20px">
+      <Text color={colorMode === 'dark'? "white.100": 'gray.800'} fontWeight={600} fontSize="20px">
         {amount}
       </Text>
 
@@ -112,12 +115,12 @@ function Graph(props: {
           return (
             <div
               style={{
-                background: "#1f2128",
+                background: colorMode === 'dark'? '#1f2128': '#ffffff',
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 paddingLeft: "24px",
-                border: "1px solid #313442",
+                border: colorMode === 'dark'? "1px solid #313442": '1px solid #e8edf2',
                 borderRadius: "14px",
                 height: slice.points.length !== 1 ? "112px" : "74px",
                 width: "155px",
@@ -144,7 +147,7 @@ function Graph(props: {
                       }}
                     ></div>
 
-                    <div style={{ color: "#d0d0da" }}>
+                    <div style={{ color: colorMode === 'dark'? "#d0d0da": '#07070c' }}>
                       $
                       {Number(point.data.y).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
@@ -170,7 +173,7 @@ function Graph(props: {
                   })}
                 </div> */}
 
-              <div>
+              <div style={{ color: colorMode === 'dark'? "#d0d0da": '#9a9aaf' }}>
                 {moment
                   .unix(Number(slice.points[0].data.x))
                   .format("MMM DD, YYYY")}

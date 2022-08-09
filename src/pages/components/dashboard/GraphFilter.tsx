@@ -49,6 +49,7 @@ function GraphFilter() {
                     name={list.name}
                     w={`${list.w}px`}
                     h={"36px"}
+                   
                     isSelected={selectedFilter === list.name}
                   ></SwitchButton>
                 </Box>

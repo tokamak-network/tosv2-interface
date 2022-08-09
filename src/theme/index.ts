@@ -17,6 +17,7 @@ const colors = {
   white: {
     100: "#ffffff",
     200: "#f1f1f1",
+    300: '#fafbfc',
   },
   gray: {
     100: "#8b8b93",
@@ -26,7 +27,9 @@ const colors = {
     500: "#1e1e24",
     600: "#1f2128",
     700: "#9a9aaf",
-    800: "#313442",
+    800: '#07070c',
+    900: '#e8edf2',
+    1000: '#7e7e8f',
   },
   black: {
     100: "#0f0f12",
@@ -37,24 +40,31 @@ const colors = {
 };
 
 const PAGE_LAYOUT_STYLE = {
-  flexDir: "column",
-  w: "100%",
-  backgroundColor: "black.100",
-  pt: "66px",
+ 
+  layoutTheme: (props: THEME_PROPS) => ({
+
+      flexDir: "column",
+      w: "100%",
+      // backgroundColor: props.colorMode === "light" ? "#e23738" : "#257eee",
+      pt: "66px"
+
+   ,
+  })
+
 };
 
 const BUTTON_STYLE = {
   basicButtonStyle: (props: THEME_PROPS) => ({
     background: props.colorMode === "light" ? "white" : "none",
     borderWidth: 1,
-    borderColor: props.colorMode === "light" ? "" : "#8a8a98",
+    borderColor: props.colorMode === "light" ? "#7e7e8f" : "#8a8a98",
     borderRadius: 8,
-    color: props.colorMode === "light" ? "#f1f1f1" : "#f1f1f1",
+    color: props.colorMode === "light" ? "#07070c" : "#f1f1f1",
   }),
   submitButtonStyle: (props: THEME_PROPS) => ({
     background: props.colorMode === "light" ? "white" : "#257eee",
     borderRadius: 8,
-    color: props.colorMode === "light" ? "#f1f1f1" : "#f1f1f1",
+    color: props.colorMode === "light" ? "#07070c" : "#f1f1f1",
   }),
 };
 
@@ -71,7 +81,7 @@ const theme = extendTheme({
     global: (props: THEME_PROPS) => ({
       "html, body": {
         backgroundColor:
-          props.colorMode === "light" ? "black.100" : "black.100",
+          props.colorMode === "light" ? "white.300" : "black.100",
         fontFamily: fonts.Poppins,
         color: props.colorMode === "light" ? "gray.100" : "gray.100",
       },

@@ -1,4 +1,4 @@
-import { Flex, Text, useMediaQuery } from "@chakra-ui/react";
+import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import BasicButton from "common/button/BasicButton";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import TokenSymbol from "common/token/TokenSymol";
@@ -13,10 +13,12 @@ function ContentComponent(props: {
   style?: any;
 }) {
   const { title, content, style } = props;
+  const { colorMode } = useColorMode();
+
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
-      <Text color={"gray.100"}>{title}</Text>
-      <Text color={"white.200"}>{content}</Text>
+      <Text color={colorMode === 'dark'? "gray.100":'gray.1000'}>{title}</Text>
+      <Text color={colorMode === 'dark'? "white.200":'gray.800'} fontWeight={600}>{content}</Text>
     </Flex>
   );
 }
@@ -33,6 +35,7 @@ function StakeCard(props: StakeCardProps) {
   const { openModal } = useModal("stake_unstake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
+  const { colorMode } = useColorMode();
 
   return (
     <Flex
@@ -41,7 +44,7 @@ function StakeCard(props: StakeCardProps) {
       h={smallerThan1040 ? "" : "250px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
-      borderColor={"gray.600"}
+      borderColor={colorMode === 'dark'? "gray.300": 'gray.900'}
       borderRadius={10}
       pt={"18px"}
       px={"20px"}
@@ -55,7 +58,7 @@ function StakeCard(props: StakeCardProps) {
             fontWeight={600}
             textAlign={"center"}
             lineHeight={"46px"}
-            color={"white.200"}
+            color={colorMode === 'dark'? "white.200": 'gray.800'}
             ml={"12px"}
           >
             {tokenType}
@@ -93,7 +96,7 @@ function StakeCard(props: StakeCardProps) {
         mt={"3px"}
         mb={"21px"}
       >
-        <Text>{lockupPeriodDate}</Text>
+        <Text color={colorMode==='light'? '#16161e': '#eaeaf4'}>{lockupPeriodDate}</Text>
       </Flex>
       <Flex
         alignItems="center"
@@ -113,7 +116,7 @@ function StakeCard(props: StakeCardProps) {
               valueKey={amount}
               pageKey={"Stake_screen"}
             ></CustomCheckBox>
-            <Text ml={"9px"} fontSize={12}>
+            <Text ml={"9px"} fontSize={12} color={colorMode==='dark'? 'white.200':'gray.800'}>
               Select
             </Text>
           </Flex>
