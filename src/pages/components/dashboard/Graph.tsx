@@ -57,7 +57,7 @@ function Graph(props: {
           {" "}
           <img src={question}/>
         </Tooltip> */}
-        <Image src={question} />
+        <Image src={question} alt={'question'} />
       </Flex>
       <Text color={colorMode === 'dark'? "white.100": 'gray.800'} fontWeight={600} fontSize="20px">
         {amount}

@@ -62,7 +62,7 @@ const PageTitle = () => {
           </Flex>
         );
     }
-  }, [pathName, isMobile]);
+  }, [pathName, isMobile,colorMode]);
 
   const AdditionalInfo = () => {
     switch (pathName) {
