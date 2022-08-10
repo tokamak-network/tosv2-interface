@@ -16,6 +16,7 @@ import {
   SliderFilledTrack,
   SliderThumb,
   SliderMark,
+  Tooltip
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
@@ -34,56 +35,46 @@ function StakeGraph() {
     ml: "-2.5",
     fontSize: "sm",
   };
-  const [sliderValue, setSliderValue] = useState(36);
+  const [sliderValue, setSliderValue] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false)
+  const {colorMode} = useColorMode()
   return (
-    <Flex w={"100%"} h={"157.5px"} pos="relative">
-      {/* diagonal line */}
-      <Box
-        pos={"absolute"}
-        w={"100%"}
-        h={"2px"}
-        bgColor={"#353d48"}
-        transform={`rotate(165.5deg)`}
-        top={"69px"}
-        borderRadius={6}
-      ></Box>
-      <Flex
-        pos={"absolute"}
-        alignItems={"flex-end"}
-        w={"100%"}
-        h={"150px"}
-        pb={`${sliderValue * 2.2}px`}
-      >
-        <Box
-          w={`${(sliderValue - 1) * 2.9}%`}
-          h={"2px"}
-          bgColor={"#2775ff"}
-          transform={`rotate(165.5deg)`}
-          borderRadius={6}
-        ></Box>
-      </Flex>
-      <Flex pos={"absolute"} alignSelf={"flex-end"} pb={"7px"}>
-        <Box
-          opacity={0.5}
-          borderTop={`${sliderValue * 4.3}px solid transparent`}
-          borderRight={`${sliderValue * 16.5}px solid #2775ff`}
-          lineHeight={0}
-        ></Box>
-      </Flex>
+    <Flex w={"100%"} h='70px' pos="relative">
       <Slider
         aria-label="slider-ex-1"
-        defaultValue={36}
-        min={1}
-        max={36}
-        step={1}
+        defaultValue={0}
+        min={0}
+        max={156}
+       
         onChange={(val: any) => setSliderValue(val)}
         h={"10px"}
         alignSelf={"end"}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
       >
+        <SliderMark value={0} {...labelStyles}>
+          7d
+        </SliderMark>
+        <SliderMark value={8} {...labelStyles}>
+       1m
+        </SliderMark>
+        <SliderMark value={24} {...labelStyles}>
+         6m
+        </SliderMark>
+        <SliderMark value={52} {...labelStyles}>
+       1y
+        </SliderMark>
+        <SliderMark value={104} {...labelStyles}>
+        2y
+        </SliderMark>
+        <SliderMark value={156} {...labelStyles}>
+        3y
+        </SliderMark>
+       
         {/* <SliderMark value={25} {...labelStyles}>
           25%
         </SliderMark> */}
-        <SliderMark
+        {/* <SliderMark
           value={sliderValue}
           textAlign="center"
           bg="blue.500"
@@ -93,11 +84,27 @@ function StakeGraph() {
           w="12"
         >
           {sliderValue} STOS
-        </SliderMark>
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
+        </SliderMark> */}
+        <SliderTrack bg={colorMode ==='light'? '#e7edf3':'#353d48'}>
+          <SliderFilledTrack bg={'#2775ff'}/>
+        </SliderTrack >
+        <Tooltip
+       color={colorMode === 'light'? '#07070c':'#f1f1f1'}
+       placement='top'
+       bg={'transparent'}
+       w={'50px'}
+       display='flex'
+       alignItems='center'
+       justifyContent={'center'}
+      textAlign='center'
+       fontSize={'15px'}
+     fontWeight={600}
+       isOpen={showTooltip}
+       label={`${sliderValue} sTOS`}
+      >
+         <SliderThumb />
+      </Tooltip>
+       
       </Slider>
     </Flex>
   );
@@ -128,27 +135,27 @@ function BondModal() {
   const contentList = [
     {
       title: "Amount",
-      content: "1,000 WTON",
+      content: "10 DAI ",
     },
     {
-      title: "Amount",
-      content: "1,000 WTON",
+      title: "Lock-Up Period",
+      content: "1 Year",
     },
     {
-      title: "Amount",
-      content: "1,000 WTON",
+      title: "Bond Discounts Rate",
+      content: "0.5%",
     },
     {
-      title: "Amount",
-      content: "1,000 WTON",
+      title: "Rewards (after Lock-up period)",
+      content: "100 TOS",
     },
     {
-      title: "Amount",
-      content: "1,000 WTON",
+      title: "Earn sTOS",
+      content: "1,000 sTOS",
     },
     {
-      title: "Amount",
-      content: "1,000 WTON",
+      title: "TOS APY",
+      content: "30%",
     },
   ];
 
