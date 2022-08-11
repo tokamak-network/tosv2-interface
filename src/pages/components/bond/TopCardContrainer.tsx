@@ -27,7 +27,7 @@ function MobileTopCard(props: {
             key={title + index}
             mb={index !== cardList.length - 1 ? "24px" : 0}
           >
-            <Box
+            <Text
               color={"gray.100"}
               fontSize={12}
               fontWeight={600}
@@ -35,10 +35,10 @@ function MobileTopCard(props: {
               mb={"7px"}
             >
               {title}
-            </Box>
-            <Box fontSize={22} color={"white.200"} fontWeight={"bold"}>
+            </Text>
+            <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
               {priceUnit} {price}
-            </Box>
+            </Text>
           </Flex>
         );
       })}
