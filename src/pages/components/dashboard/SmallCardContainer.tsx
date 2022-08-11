@@ -9,6 +9,7 @@ import TreasuryAbi from "services/abis/Treasury.json";
 
 import { Dashboard_SmallCardArrType } from "types/dashboard";
 import SmallCard from "./SmallCard";
+import useCardData from "hooks/dashboard/useCardData";
 
 const SmallCardContainer = () => {
   const [cardList, setCardList] = useState<
@@ -17,14 +18,14 @@ const SmallCardContainer = () => {
   const [width] = useWindowDimensions();
   const { Treasury_CONTRACT } = useCallContract();
 
-  useEffect(() => {
-    // (async () => {
-    //   const backingRateETHPerTOS = await Treasury_CONTRACT?.backingReserve();
-    // })();
+  const { tosPrice } = useCardData();
 
+  console.log(tosPrice);
+
+  useEffect(() => {
     const dummyData: Dashboard_SmallCardArrType = [
       {
-        price: "15.75",
+        price: tosPrice,
         priceUnit: "$",
         priceChangePercent: 15,
         title: "TOS Price",
@@ -59,25 +60,27 @@ const SmallCardContainer = () => {
         borderColor={"gray.300"}
         borderRadius={14}
       >
-        {cardList?.map((cardData, index) => {
-          return (
-            <Box key={`${cardData.title}_${index}`} w={"100%"} minW={"210px"}>
-              <SmallCard
-                price={cardData.price}
-                priceChangePercent={cardData.priceChangePercent}
-                title={cardData.title}
-                priceUnit={cardData.priceUnit}
-                style={
-                  index === 0
-                    ? { borderTopRadius: 14 }
-                    : index === cardList.length - 1
-                    ? { borderBottomRadius: 14 }
-                    : {}
-                }
-              ></SmallCard>
-            </Box>
-          );
-        })}
+        {cardList?.map(
+          (cardData: Dashboard_SmallCardArrType, index: number) => {
+            return (
+              <Box key={`${cardData.title}_${index}`} w={"100%"} minW={"210px"}>
+                <SmallCard
+                  price={cardData.price}
+                  priceChangePercent={cardData.priceChangePercent}
+                  title={cardData.title}
+                  priceUnit={cardData.priceUnit}
+                  style={
+                    index === 0
+                      ? { borderTopRadius: 14 }
+                      : index === cardList.length - 1
+                      ? { borderBottomRadius: 14 }
+                      : {}
+                  }
+                ></SmallCard>
+              </Box>
+            );
+          }
+        )}
       </Flex>
     );
   }
@@ -89,7 +92,7 @@ const SmallCardContainer = () => {
       justifyContent="center"
       columns={width < 960 ? 2 : 4}
     >
-      {cardList?.map((cardData, index) => {
+      {cardList?.map((cardData: Dashboard_SmallCardArrType, index: number) => {
         return (
           <Box key={`${cardData.title}_${index}`} w={"100%"} minW={"210px"}>
             <SmallCard
