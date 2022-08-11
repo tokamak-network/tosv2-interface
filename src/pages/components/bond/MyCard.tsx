@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, useColorMode } from "@chakra-ui/react";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
@@ -12,10 +12,12 @@ function ContentComponent(props: {
   style?: any;
 }) {
   const { title, content, style } = props;
+  const { colorMode } = useColorMode();
+
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
-      <Text color={"gray.100"}>{title}</Text>
-      <Text color={"white.200"}>{content}</Text>
+      <Text color={colorMode === 'dark'? "gray.100": 'gray.1000'}>{title}</Text>
+      <Text color={colorMode === 'dark'?"white.200": 'gray.800'}>{content}</Text>
     </Flex>
   );
 }
@@ -23,15 +25,17 @@ function ContentComponent(props: {
 function MyCard(props: MyCardProps) {
   const { info, tokenType } = props;
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const { colorMode } = useColorMode();
 
   return (
     <Flex
       flexDir={"column"}
       w={"362px"}
-      h={"250px"}
+      h={"200px"}
       borderWidth={1}
-      borderColor={"gray.600"}
+      borderColor={colorMode === "dark" ?"gray3600":'gray.900'}
       borderRadius={10}
+      bg={colorMode === "dark" ? "gray.600" : "white.100"}
       pt={"18px"}
       px={"20px"}
       pb={"21px"}
@@ -44,7 +48,7 @@ function MyCard(props: MyCardProps) {
             fontWeight={600}
             textAlign={"center"}
             lineHeight={"46px"}
-            color={"white.200"}
+            color={colorMode === 'light'? 'gray.800' :"white.200"}
             ml={"12px"}
           >
             {tokenType}
@@ -57,7 +61,7 @@ function MyCard(props: MyCardProps) {
           alignItems="center"
           justifyContent={"center"}
         >
-          <Text>{isDisabled ? "Pending" : "Ended"}</Text>
+          <Text>{isDisabled ? "Unlocked" : "Locked"}</Text>
         </Flex>
       </Flex>
       {info?.map((infoData, index: number) => {
@@ -76,7 +80,7 @@ function MyCard(props: MyCardProps) {
         mb={"21px"}
         color={"#eaeaf4"}
       >
-        <Text>2022. 12. 26 12:58 ~ 12. 31 12:59</Text>
+        <Text color={colorMode ==='dark'? '#eaeaf4':'#16161e'}>2022. 12. 26 12:58 ~ 12. 31 12:59</Text>
       </Flex>
       <Flex alignItems="center" justifyContent={isDisabled ? "" : "center"}>
         {isDisabled && (
@@ -91,11 +95,11 @@ function MyCard(props: MyCardProps) {
             </Text>
           </>
         )}
-        <BasicButton
+        {/* <BasicButton
           name={isDisabled ? "Pending" : "Unstake"}
           h={"33px"}
           isDisabled={isDisabled}
-        ></BasicButton>
+        ></BasicButton> */}
       </Flex>
     </Flex>
   );

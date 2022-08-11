@@ -53,11 +53,10 @@ function Graph(props: {
     >
       <Flex flexDir={"row"}>
         <Text mr="6px" fontSize={'12px'} fontWeight={600} color={colorMode === 'dark'? "gray.100": 'gray.1000'}>{title} </Text>
-        {/* <Tooltip label="tooltip message">
-          {" "}
-          <img src={question}/>
-        </Tooltip> */}
-        <Image src={question} />
+        <Tooltip label=""  placement='bottom'>
+        <Image src={question} alt={''}/>
+</Tooltip>
+        {/* <Image src={question} /> */}
       </Flex>
       <Text color={colorMode === 'dark'? "white.100": 'gray.800'} fontWeight={600} fontSize="20px">
         {amount}

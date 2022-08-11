@@ -13,12 +13,12 @@ function MyCardSection() {
       {
         info: [
           {
-            title: "Amount",
-            content: "20",
+            title: "Staked",
+            content: "1 LTOS / 4 sTOS",
           },
           {
-            title: "Discount Rate",
-            content: "10.5%",
+            title: "Bond Price",
+            content: "$0.95",
           },
           {
             title: "Lock-Up Period",
@@ -31,6 +31,7 @@ function MyCardSection() {
     setCardList(dummyData);
   }, []);
 
+  
   return (
     <SimpleGrid columns={3} gridRowGap={"24px"} columnGap={"25px"}>
       {cardList?.map((cardData, index) => (
