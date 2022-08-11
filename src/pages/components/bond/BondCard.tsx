@@ -2,6 +2,7 @@ import { Flex, Text, useMediaQuery,useColorMode } from "@chakra-ui/react";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
+import { useState } from "react";
 import { BondCardProps } from "types/bond";
 
 function ContentComponent(props: {
@@ -25,14 +26,14 @@ function BondCard(props: BondCardProps) {
   const { openModal } = useModal("bond_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
-
+const [isOpen, setIsOpen] = useState(true)
   //vierport ref 1134px
 
   return (
     <Flex
       flexDir={"column"}
       w={smallerThan1040 ? "100%" : "31.9%"}
-      h={"232px"}
+      h={"290px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
       borderColor={colorMode==='light'? 'gray.900':'gray.300'}
@@ -42,7 +43,8 @@ function BondCard(props: BondCardProps) {
       px={"20px"}
       pb={"21px"}
     >
-      <Flex mb={"18px"}>
+       <Flex mb={"18px"} justifyContent={"space-between"}  alignItems="center" >
+      <Flex >
         <TokenSymbol tokenType={tokenType}></TokenSymbol>
         <Text
           fontSize={20}
@@ -55,20 +57,40 @@ function BondCard(props: BondCardProps) {
           {tokenType}
         </Text>
       </Flex>
+      <Flex
+          fontSize={12}
+          color={isOpen ? "#5eea8d" : "red.100"}
+          textAlign={"center"}
+          alignItems="center"
+          justifyContent={"center"}
+        >
+          <Text>{isOpen ? "Open" : "Closed"}</Text>
+        </Flex>
+      </Flex>
       <ContentComponent
-        title="Bond Capacity"
-        content={bondCapacity}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-      <ContentComponent
-        title="Bonding Price"
+        title="Bond Price"
         content={bondingPrice}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
-      <ContentComponent
-        title="Discount Rate"
+       <ContentComponent
+        title="Discount"
         content={discountRate}
         style={{ marginBottom: "16px" }}
+      ></ContentComponent>
+      <ContentComponent
+        title="Capacity"
+        content={bondCapacity}
+        style={{ marginBottom: "9px" }}
+      ></ContentComponent>
+       <ContentComponent
+        title="Total Sold"
+        content={'XXXXX'}
+        style={{ marginBottom: "9px" }}
+      ></ContentComponent>
+      <ContentComponent
+        title="Time Left"
+        content={'XXXX'}
+        style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <BasicButton
         name="Bond"

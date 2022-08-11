@@ -47,7 +47,7 @@ const {colorMode}  = useColorMode()
       bgColor={colorMode === "dark" ?"gray.600":'white.100'}
       {...style}
     >
-      <Text
+      <Flex
         color={"gray.100"}
         fontSize={12}
         fontWeight={600}
@@ -55,7 +55,7 @@ const {colorMode}  = useColorMode()
         mb={"12px"}
       >
         {title}
-      </Text>
+      </Flex>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Text fontSize={22}  color={colorMode === "dark" ? "white.200" : "gray.800"} fontWeight={"bold"}>
           {PriceContent}

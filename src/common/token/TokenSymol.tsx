@@ -4,27 +4,27 @@ import TOKAMAK_SYMBOL from "assets/icons/tokamak-1.svg";
 import { TokenTypes } from "types";
 import { Flex } from "@chakra-ui/react";
 
-function TokenSymbol(props: { tokenType: TokenTypes }) {
-  const { tokenType } = props;
+function TokenSymbol(props: { tokenType: TokenTypes, h?: string, w?:string }) {
+  const { tokenType, h, w } = props;
   switch (tokenType) {
     case "ETH":
       return (
         <Flex
-          w={"46px"}
-          h={"46px"}
+          w={w|| "46px"}
+          h={h||"46px"}
           borderRadius={25}
           bgColor={"#383736"}
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Image src={ETH_SYMBOL} alt={""}></Image>
+          <Image src={ETH_SYMBOL} alt={""} height={'30px'} width={'30px'}></Image>
         </Flex>
       );
     case "TON":
       return (
         <Flex
-          w={"46px"}
-          h={"46px"}
+          w={w||"46px"}
+          h={h||"46px"}
           borderRadius={25}
           bgColor={"#007aff"}
           alignItems={"center"}
@@ -36,8 +36,8 @@ function TokenSymbol(props: { tokenType: TokenTypes }) {
     case "WTON":
       return (
         <Flex
-          w={"46px"}
-          h={"46px"}
+          w={w||"46px"}
+          h={h||"46px"}
           borderRadius={25}
           bgColor={"#007aff"}
           alignItems={"center"}
