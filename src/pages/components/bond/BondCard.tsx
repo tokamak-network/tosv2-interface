@@ -57,7 +57,7 @@ function BondCard(props: { data: BondCardProps }) {
     >
       <Flex mb={"18px"} justifyContent={"space-between"} alignItems="center">
         <Flex>
-          <TokenSymbol tokenType={tokenType}></TokenSymbol>
+          <TokenSymbol tokenType={data?.tokenType}></TokenSymbol>
           <Text
             fontSize={20}
             fontWeight={600}
@@ -66,7 +66,7 @@ function BondCard(props: { data: BondCardProps }) {
             color={colorMode === "light" ? "gray.800" : "white.200"}
             ml={"12px"}
           >
-            {tokenType}
+            {data?.tokenType}
           </Text>
         </Flex>
         <Flex
