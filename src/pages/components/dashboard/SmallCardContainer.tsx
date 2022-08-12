@@ -106,7 +106,7 @@ const SmallCardContainer = () => {
       justifyContent="center"
       columns={width < 960 ? 2 : 4}
     >
-      {cardList?.map((cardData: Dashboard_SmallCardArrType, index: number) => {
+      {cardList?.map((cardData: Dashboard_SmallCardType, index: number) => {
         return (
           <Box key={`${cardData.title}_${index}`} w={"100%"} minW={"210px"}>
             <SmallCard
