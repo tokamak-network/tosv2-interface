@@ -8,7 +8,9 @@ import BondCard from "./BondCard";
 import commafy from "utils/commafy";
 
 function BondCardSection() {
-  const [cardList, setCardList] = useState<BondCardProps[]>();
+  const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
+    undefined
+  );
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { loading, error, data } = useQuery(GET_BOND_LIST, {
     variables: {
