@@ -3,8 +3,9 @@ import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
 import { GET_BOND_LIST } from "graphql/bond/getBond";
 import { useEffect, useState } from "react";
-import { BondCardProps } from "types/bond";
+import { BondRawdata, BondCardProps } from "types/bond";
 import BondCard from "./BondCard";
+import commafy from "utils/commafy";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[]>();
@@ -20,34 +21,22 @@ function BondCardSection() {
   console.log(data);
 
   useEffect(() => {
-    const dummyData: BondCardProps[] = [
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "ETH",
-      },
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "WTON",
-      },
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "ETH",
-      },
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "ETH",
-      },
-    ];
-    setCardList(dummyData);
-  }, []);
+    if (data) {
+      const { bonds } = data.getBondList[0];
+      const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
+        const { bondPrice, capacity, index, tokenLogo, totalSold } = bond;
+        return {
+          bondCapacity: commafy(capacity),
+          bondingPrice: bondPrice,
+          discountRate: "0.5%",
+          tokenType: "ETH",
+          totalSold: `${commafy(totalSold)} TOS`,
+          timeLeft: "",
+        };
+      });
+      setCardList(dum);
+    }
+  }, [data]);
 
   return (
     <Flex
@@ -59,10 +48,7 @@ function BondCardSection() {
     >
       {cardList?.map((cardData, index) => (
         <BondCard
-          bondCapacity={cardData.bondCapacity}
-          bondingPrice={cardData.bondingPrice}
-          discountRate={cardData.discountRate}
-          tokenType={cardData.tokenType}
+          data={cardData}
           key={cardData.bondCapacity + index}
         ></BondCard>
       ))}

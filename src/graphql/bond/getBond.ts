@@ -9,6 +9,7 @@ const GET_BOND_LIST = gql`
         tokenLogo
         bondPrice
         index
+        endTime
       }
       createdAt
     }
