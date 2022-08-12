@@ -17,11 +17,8 @@ function BondCardSection() {
     },
   });
 
-  console.log("--data--");
-  console.log(data);
-
   useEffect(() => {
-    if (data) {
+    if (data && data?.bonds) {
       const { bonds } = data.getBondList[0];
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
         const { bondPrice, capacity, index, tokenLogo, totalSold } = bond;
