@@ -1,5 +1,7 @@
+import { useQuery } from "@apollo/client";
 import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
+import { GET_BOND_LIST } from "graphql/bond/getBond";
 import { useEffect, useState } from "react";
 import { BondCardProps } from "types/bond";
 import BondCard from "./BondCard";
@@ -7,6 +9,15 @@ import BondCard from "./BondCard";
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[]>();
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
+  const { loading, error, data } = useQuery(GET_BOND_LIST, {
+    variables: {
+      period: "-1",
+      limit: 1,
+    },
+  });
+
+  console.log("--data--");
+  console.log(data);
 
   useEffect(() => {
     const dummyData: BondCardProps[] = [

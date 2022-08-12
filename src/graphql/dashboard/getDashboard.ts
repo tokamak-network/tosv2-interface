@@ -8,4 +8,16 @@ const GET_DASHBOARD = gql`
   }
 `;
 
-export { GET_DASHBOARD };
+const GET_DASHBOARD_CARD = gql`
+  query GetDashboardCard($period: String!, $limit: Int!) {
+    getDashboardCard(period: $period, limit: $limit) {
+      tosPrice
+      backingPerTos
+      ltosPrice
+      ltosIndex
+      chainId
+    }
+  }
+`;
+
+export { GET_DASHBOARD, GET_DASHBOARD_CARD };
