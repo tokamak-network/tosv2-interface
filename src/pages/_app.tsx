@@ -19,6 +19,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     onOpen();
   };
 
+  //test
+
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <ApolloProvider client={client}>
