@@ -20,7 +20,7 @@ function BondCardSection() {
   });
 
   useEffect(() => {
-    if (data && data?.getBondList[0] && data?.getBondList[0]?.bonds) {
+    if (data) {
       const { bonds } = data.getBondList[0];
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
         const { bondPrice, capacity, index, tokenLogo, totalSold } = bond;
@@ -45,7 +45,7 @@ function BondCardSection() {
       justifyContent={isSmallerThan750 ? "center" : ""}
       flexWrap={"wrap"}
     >
-      {cardList?.map((cardData, index) => (
+      {cardList?.map((cardData: BondCardProps, index) => (
         <BondCard
           data={cardData}
           key={cardData.bondCapacity + index}

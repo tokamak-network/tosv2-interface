@@ -27,14 +27,14 @@ function ContentComponent(props: {
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
   const { data } = props;
-  const {
-    bondCapacity,
-    bondingPrice,
-    discountRate,
-    tokenType,
-    totalSold,
-    timeLeft,
-  } = data;
+  // const {
+  //   bondCapacity,
+  //   bondingPrice,
+  //   discountRate,
+  //   tokenType,
+  //   totalSold,
+  //   timeLeft,
+  // } = data;
   const { openModal } = useModal("bond_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
@@ -81,22 +81,22 @@ function BondCard(props: { data: BondCardProps }) {
       </Flex>
       <ContentComponent
         title="Bond Price"
-        content={bondingPrice}
+        content={data?.bondingPrice}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
         title="Discount"
-        content={discountRate}
+        content={data?.discountRate}
         style={{ marginBottom: "16px" }}
       ></ContentComponent>
       <ContentComponent
         title="Capacity"
-        content={bondCapacity}
+        content={data?.bondCapacity}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
         title="Total Sold"
-        content={totalSold}
+        content={data?.totalSold}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
