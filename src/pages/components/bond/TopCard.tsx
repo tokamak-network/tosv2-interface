@@ -17,13 +17,23 @@ const TopCard: React.FC<TopCardProps> = (props) => {
     switch (priceUnit) {
       case "$":
         return (
+          <Flex>
           <Text
+           fontSize={22}
+           color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
+           fontWeight={"bold"}
+          >
+            {priceUnit}
+          </Text>
+          <Text
+           
             fontSize={22}
             color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
             fontWeight={"bold"}
-          >
-            {priceUnit} {price}
+            >
+            {price}
           </Text>
+        </Flex>
         );
       default:
         return (
@@ -73,13 +83,13 @@ const TopCard: React.FC<TopCardProps> = (props) => {
         {title}
       </Text>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
-        <Text
+        <Flex
           fontWeight={"bold"}
           fontSize={22}
           color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
         >
           {PriceContent}
-        </Text>
+        </Flex>
         {/* <Text
           fontSize={22}
         

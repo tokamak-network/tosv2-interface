@@ -15,7 +15,6 @@ export const WalletPending: FC<WalletPendingProps> = ({
   setPendingError,
   tryActivation,
 }) => {
-  console.log('error',error);
   
   /*eslint-disable */
   const [accountValue, setAccountValue] = useLocalStorage('account', {});
