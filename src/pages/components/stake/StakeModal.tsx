@@ -40,20 +40,18 @@ function StakeGraph() {
   const oldValues = useRecoilValue(inputBalanceState);
   const [value, setValue] = useRecoilState(inputState);
 
-  console.log(oldValues);
   const { colorMode } = useColorMode();
   const [sliderValue, setSliderValue] = useState(0);
-  const [showTooltip, setShowTooltip] = useState(false)
+  const [showTooltip, setShowTooltip] = useState(false);
   return (
     <Flex w={"100%"} h={"70px"} pos="relative">
       {/* diagonal line */}
-      
+
       <Slider
         aria-label="slider-ex-1"
         defaultValue={0}
         min={0}
         max={156}
-       
         onChange={(val: any) => setSliderValue(val)}
         h={"10px"}
         alignSelf={"end"}
@@ -64,42 +62,39 @@ function StakeGraph() {
           7d
         </SliderMark>
         <SliderMark value={8} {...labelStyles}>
-       1m
+          1m
         </SliderMark>
         <SliderMark value={24} {...labelStyles}>
-         6m
+          6m
         </SliderMark>
         <SliderMark value={52} {...labelStyles}>
-       1y
+          1y
         </SliderMark>
         <SliderMark value={104} {...labelStyles}>
-        2y
+          2y
         </SliderMark>
         <SliderMark value={156} {...labelStyles}>
-        3y
+          3y
         </SliderMark>
-        <SliderTrack bg={colorMode ==='light'? '#e7edf3':'#353d48'}>
-          <SliderFilledTrack bg={'#2775ff'}/>
-        </SliderTrack >
+        <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
+          <SliderFilledTrack bg={"#2775ff"} />
+        </SliderTrack>
         <Tooltip
-        color={colorMode === 'light'? '#07070c':'#f1f1f1'}
-        placement='top'
-        bg={'transparent'}
-        w={'50px'}
-        display='flex'
-        alignItems='center'
-        justifyContent={'center'}
-       textAlign='center'
-        fontSize={'15px'}
-      fontWeight={600}
-        isOpen={showTooltip}
-        label={`${sliderValue} sTOS`}
-
-      >
-       
-         <SliderThumb />
-      </Tooltip>
-       
+          color={colorMode === "light" ? "#07070c" : "#f1f1f1"}
+          placement="top"
+          bg={"transparent"}
+          w={"50px"}
+          display="flex"
+          alignItems="center"
+          justifyContent={"center"}
+          textAlign="center"
+          fontSize={"15px"}
+          fontWeight={600}
+          isOpen={showTooltip}
+          label={`${sliderValue} sTOS`}
+        >
+          <SliderThumb />
+        </Tooltip>
       </Slider>
     </Flex>
   );
@@ -110,9 +105,19 @@ function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
   return (
     <Flex>
-      <Flex w={"100%"} justifyContent={"space-between"} fontSize={14} mt={'9px'}>
-        <Text color={colorMode === 'dark'? "gray.100":'gray.1000'}>{title}</Text>
-        <Text color={colorMode === 'dark'?"white.200":'gray.800'} fontWeight={600}>
+      <Flex
+        w={"100%"}
+        justifyContent={"space-between"}
+        fontSize={14}
+        mt={"9px"}
+      >
+        <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
+          {title}
+        </Text>
+        <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontWeight={600}
+        >
           {content}
         </Text>
       </Flex>
@@ -220,11 +225,9 @@ function StakeModal() {
                     pageKey="Stake_screen"
                     value={""}
                     valueKey={""}
-              
                   ></CustomCheckBox>
                   <Text
                     ml={"9px"}
-                  
                     color={colorMode === "light" ? "gray.100" : "gray.1000"}
                   >
                     5 days Lock-Up
@@ -270,7 +273,10 @@ function StakeModal() {
               w={"100%"}
               mb={"24px"}
             >
-              <Text w={"100%"} color={colorMode ==='dark'? 'gray.200':'gray.700'}>
+              <Text
+                w={"100%"}
+                color={colorMode === "dark" ? "gray.200" : "gray.700"}
+              >
                 If this is First time bonding, Please approve Tonstarter to use
                 your DAI for bonding.
               </Text>

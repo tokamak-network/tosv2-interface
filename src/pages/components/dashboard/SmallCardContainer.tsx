@@ -7,7 +7,10 @@ import { useEffect, useState } from "react";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import TreasuryAbi from "services/abis/Treasury.json";
 
-import { Dashboard_SmallCardArrType } from "types/dashboard";
+import {
+  Dashboard_SmallCardArrType,
+  Dashboard_SmallCardType,
+} from "types/dashboard";
 import SmallCard from "./SmallCard";
 import useCardData from "hooks/dashboard/useCardData";
 import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";
@@ -37,25 +40,25 @@ const SmallCardContainer = () => {
         data.getDashboardCard[0];
       const dummyData: Dashboard_SmallCardArrType = [
         {
-          price: commafy(tosPrice),
+          price: commafy(tosPrice) as string,
           priceUnit: "$",
           priceChangePercent: 15,
           title: "TOS Price",
         },
         {
-          price: commafy(backingPerTos),
+          price: commafy(backingPerTos) as string,
           priceUnit: "ETH/TOS",
           priceChangePercent: -15,
           title: "Backing per TOS",
         },
         {
-          price: commafy(ltosPrice),
+          price: commafy(ltosPrice) as string,
           priceUnit: "$",
           priceChangePercent: 15,
           title: "LTOS Price",
         },
         {
-          price: commafy(ltosIndex),
+          price: commafy(ltosIndex) as string,
           priceUnit: "TOS",
           priceChangePercent: 15,
           title: "LTOS Index",
@@ -73,27 +76,25 @@ const SmallCardContainer = () => {
         borderColor={"gray.300"}
         borderRadius={14}
       >
-        {cardList?.map(
-          (cardData: Dashboard_SmallCardArrType, index: number) => {
-            return (
-              <Box key={`${cardData.title}_${index}`} w={"100%"} minW={"210px"}>
-                <SmallCard
-                  price={cardData.price}
-                  priceChangePercent={cardData.priceChangePercent}
-                  title={cardData.title}
-                  priceUnit={cardData.priceUnit}
-                  style={
-                    index === 0
-                      ? { borderTopRadius: 14 }
-                      : index === cardList.length - 1
-                      ? { borderBottomRadius: 14 }
-                      : {}
-                  }
-                ></SmallCard>
-              </Box>
-            );
-          }
-        )}
+        {cardList?.map((cardData: Dashboard_SmallCardType, index: number) => {
+          return (
+            <Box key={`${cardData.title}_${index}`} w={"100%"} minW={"210px"}>
+              <SmallCard
+                price={cardData.price}
+                priceChangePercent={cardData.priceChangePercent}
+                title={cardData.title}
+                priceUnit={cardData.priceUnit}
+                style={
+                  index === 0
+                    ? { borderTopRadius: 14 }
+                    : index === cardList.length - 1
+                    ? { borderBottomRadius: 14 }
+                    : {}
+                }
+              ></SmallCard>
+            </Box>
+          );
+        })}
       </Flex>
     );
   }
