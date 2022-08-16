@@ -31,7 +31,6 @@ function MyCardSection() {
     setCardList(dummyData);
   }, []);
 
-  
   return (
     <SimpleGrid columns={3} gridRowGap={"24px"} columnGap={"25px"}>
       {cardList?.map((cardData, index) => (

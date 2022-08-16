@@ -7,7 +7,7 @@ type SubmitButtonProp = {
   isDisabled?: boolean;
   isLoading?: boolean;
   style?: {};
-  onClick?: () => void;
+  onClick?: Function;
 };
 
 const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
@@ -21,7 +21,7 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       isDisabled={isDisabled}
       isLoading={isLoading}
       _hover={{}}
-      _focus={{backgroundColor:'#257eee'}}
+      _focus={{ backgroundColor: "#257eee" }}
       fontSize={12}
       spinner={<Spinner size={"md"}></Spinner>}
       {...theme.BUTTON_STYLE.submitButtonStyle(colorMode)}

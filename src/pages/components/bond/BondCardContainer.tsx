@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useWeb3React } from "@web3-react/core";
 import TabButton from "common/button/TabButton";
 import { useState } from "react";
 import BondCardSection from "./BondCardSection";
@@ -8,6 +9,7 @@ import StakeCheckbox from "./StakeCheckbox";
 
 function BondCardContainer() {
   const [tab, setTab] = useState<0 | 1>(0);
+  const { account } = useWeb3React();
 
   return (
     <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
@@ -22,8 +24,8 @@ function BondCardContainer() {
         mb={"27px"}
         alignItems="center"
       >
-        {tab === 1 && <StakeCheckbox></StakeCheckbox>}
-        <SortSelect></SortSelect>
+        {tab === 1 && account && <StakeCheckbox></StakeCheckbox>}
+        {tab === 0 || (tab === 1 && account && <SortSelect></SortSelect>)}
       </Flex>
       {tab === 0 ? (
         <BondCardSection></BondCardSection>
