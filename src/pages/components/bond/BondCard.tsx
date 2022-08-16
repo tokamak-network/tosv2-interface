@@ -1,4 +1,5 @@
 import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
+import { useWeb3React } from "@web3-react/core";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
@@ -39,8 +40,9 @@ function BondCard(props: { data: BondCardProps }) {
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const [isOpen, setIsOpen] = useState(true);
-  //vierport ref 1134px
+  const { account } = useWeb3React();
 
+  //vierport ref 1134px
   return (
     <Flex
       flexDir={"column"}
@@ -105,9 +107,10 @@ function BondCard(props: { data: BondCardProps }) {
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <BasicButton
-        name="Bond"
+        name={account ? "Bond" : "Connect Wallet"}
         h={"33px"}
         style={{ alignSelf: "center" }}
+        isDisabled={!account}
         onClick={openModal}
       ></BasicButton>
     </Flex>

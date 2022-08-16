@@ -1,12 +1,4 @@
-import {
-  Flex,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  useMediaQuery,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import Image from "next/image";
 import ARROW_RIGHT from "assets/icons/arrow-right.svg";
 import { useState } from "react";
@@ -17,7 +9,7 @@ function StakeTitle() {
   const [radioValue, setRadioValue] = useState<"All" | "Bond" | "Stake">("All");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const { openModal } = useModal("stake_stake_modal");
-  const {colorMode} = useColorMode();
+  const { colorMode } = useColorMode();
   return (
     <Flex
       // h={"31px"}
@@ -28,7 +20,12 @@ function StakeTitle() {
       w={"100%"}
     >
       <Flex justifyContent={smallerThan1040 ? "space-between" : {}}>
-        <Text fontSize={22} fontWeight={600} color={colorMode === 'dark'? "white.200":'gray.800'} mr={"12px"}>
+        <Text
+          fontSize={22}
+          fontWeight={600}
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          mr={"12px"}
+        >
           My Staked
         </Text>
 
@@ -39,26 +36,18 @@ function StakeTitle() {
           <Image src={ARROW_RIGHT} alt={"ARROW_RIGHT"}></Image>
         </Flex>
       </Flex>
-      {smallerThan1040 && (
+      <Flex fontSize={14}>
         <SubmitButton
           name="Stake"
-          w={"100%"}
-          style={{ fontSize: 14, marginTop: "20px", marginBottom: "30px" }}
+          w={smallerThan1040 ? "100%" : ""}
+          style={
+            smallerThan1040
+              ? { fontSize: 14, marginTop: "20px", marginBottom: "30px" }
+              : { fontSize: 14 }
+          }
           onClick={openModal}
+          iconName={"Plus"}
         ></SubmitButton>
-      )}
-      <Flex fontSize={14} color={colorMode==='dark'? "gray.100": '#535362'}>
-        <RadioGroup
-          onChange={(value: "All" | "Bond" | "Stake") => setRadioValue(value)}
-          value={radioValue}
-         
-        >
-          <Stack direction="row" columnGap={"34px"}>
-            <Radio value="All"><Text color={radioValue === 'All'? colorMode === 'dark'? 'white.200': 'gray.800':''}>All</Text></Radio>
-            <Radio value="Bond"><Text color={radioValue === 'Bond'? colorMode === 'dark'? 'white.200': 'gray.800':''}>Bond</Text></Radio>
-            <Radio value="Stake"><Text color={radioValue === 'Stake'? colorMode === 'dark'? 'white.200': 'gray.800':''}>Stake</Text></Radio>
-          </Stack>
-        </RadioGroup>
       </Flex>
     </Flex>
   );
