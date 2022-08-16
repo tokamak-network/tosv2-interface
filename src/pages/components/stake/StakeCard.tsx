@@ -6,6 +6,8 @@ import useModal from "hooks/useModal";
 import { useState } from "react";
 import { BondCardProps } from "types/bond";
 import { StakeCardProps } from "types/stake";
+import BondIcon from "assets/icons/bond.svg";
+import Image from "next/image";
 
 function ContentComponent(props: {
   title: string;
@@ -17,8 +19,15 @@ function ContentComponent(props: {
 
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
-      <Text color={colorMode === 'dark'? "gray.100":'gray.1000'}>{title}</Text>
-      <Text color={colorMode === 'dark'? "white.200":'gray.800'} fontWeight={600}>{content}</Text>
+      <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
+        {title}
+      </Text>
+      <Text
+        color={colorMode === "dark" ? "white.200" : "gray.800"}
+        fontWeight={600}
+      >
+        {content}
+      </Text>
     </Flex>
   );
 }
@@ -41,10 +50,10 @@ function StakeCard(props: StakeCardProps) {
     <Flex
       flexDir={"column"}
       w={smallerThan1040 ? "100%" : "31.9%"}
-      h={smallerThan1040 ? "" : "250px"}
+      h={smallerThan1040 ? "" : "273px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
-      borderColor={colorMode === 'dark'? "gray.300": 'gray.900'}
+      borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
       borderRadius={10}
       pt={"18px"}
       px={"20px"}
@@ -58,76 +67,80 @@ function StakeCard(props: StakeCardProps) {
             fontWeight={600}
             textAlign={"center"}
             lineHeight={"46px"}
-            color={colorMode === 'dark'? "white.200": 'gray.800'}
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
             ml={"12px"}
           >
             {tokenType}
           </Text>
         </Flex>
-        <Flex
-          fontSize={12}
-          color={isDisabled ? "blue.200" : "red.100"}
-          textAlign={"center"}
-          alignItems="center"
-          justifyContent={"center"}
-        >
-          <Text>{isDisabled ? "Pending" : "Ended"}</Text>
+        <Flex>
+          <Image src={BondIcon} alt={"BondIcon"}></Image>
+          <Flex
+            fontSize={12}
+            color={isDisabled ? "green.100" : "red.100"}
+            textAlign={"center"}
+            alignItems="center"
+            justifyContent={"center"}
+            ml={"9px"}
+          >
+            <Text>{isDisabled ? "No Lock-Up" : "Locked"}</Text>
+          </Flex>
         </Flex>
       </Flex>
 
       <ContentComponent
-        title="Amount"
+        title="Staked"
         content={amount}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
-        title="Discount Rate"
+        title="Principal"
         content={discountRate}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
-        title="Lock-Up Period"
+        title="End Time"
         content={lockupPeriod}
       ></ContentComponent>
       <Flex
-        fontSize={9}
-        justifyContent="flex-end"
-        color={"#eaeaf4"}
-        mt={"3px"}
-        mb={"21px"}
-      >
-        <Text color={colorMode==='light'? '#16161e': '#eaeaf4'}>{lockupPeriodDate}</Text>
-      </Flex>
-      <Flex
         alignItems="center"
         justifyContent={smallerThan1440 ? "flex-end" : "center"}
-        flexDir={smallerThan1040 ? "column" : "row"}
-        pos={"relative"}
+        flexDir={"column"}
+        mt={"auto"}
       >
         {isDisabled === false && (
-          <Flex
-            mb={smallerThan1040 ? "19px" : ""}
-            pos={smallerThan1040 ? {} : "absolute"}
-            mr={"auto"}
-            w={"100%"}
-          >
+          <Flex w={"100%"} justifyContent={"center"} mb={"21px"}>
             <CustomCheckBox
               value={{ test: "test" }}
               valueKey={amount}
               pageKey={"Stake_screen"}
             ></CustomCheckBox>
-            <Text ml={"9px"} fontSize={12} color={colorMode==='dark'? 'white.200':'gray.800'}>
-              Select
+            <Text
+              ml={"9px"}
+              fontSize={12}
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+            >
+              Unstake Select
             </Text>
           </Flex>
         )}
-        <BasicButton
-          isDisabled={isDisabled}
-          name={isDisabled ? "Pending" : "Unstake"}
-          h={"33px"}
-          onClick={openModal}
-          style={smallerThan1040 ? { width: "100%" } : {}}
-        ></BasicButton>
+        <Flex justifyContent={"space-between"} w={"100%"}>
+          <BasicButton
+            name={isDisabled ? "Update" : "Stake"}
+            h={"33px"}
+            onClick={openModal}
+            style={smallerThan1040 ? { width: "100%" } : {}}
+            iconName={isDisabled ? "Question" : undefined}
+            iconLocation={isDisabled ? "right" : undefined}
+          ></BasicButton>
+          <BasicButton
+            isDisabled={isDisabled}
+            name={"Unstake"}
+            h={"33px"}
+            onClick={openModal}
+            style={smallerThan1040 ? { width: "100%" } : {}}
+          ></BasicButton>
+        </Flex>
       </Flex>
     </Flex>
   );

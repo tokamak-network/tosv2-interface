@@ -17,7 +17,7 @@ const colors = {
   white: {
     100: "#ffffff",
     200: "#f1f1f1",
-    300: '#fafbfc',
+    300: "#fafbfc",
   },
   gray: {
     100: "#8b8b93",
@@ -27,9 +27,9 @@ const colors = {
     500: "#1e1e24",
     600: "#1f2128",
     700: "#9a9aaf",
-    800: '#07070c',
-    900: '#e8edf2',
-    1000: '#7e7e8f',
+    800: "#07070c",
+    900: "#e8edf2",
+    1000: "#7e7e8f",
   },
   black: {
     100: "#0f0f12",
@@ -37,20 +37,18 @@ const colors = {
   red: {
     100: "#e23738",
   },
+  green: {
+    100: "#5eea8d",
+  },
 };
 
 const PAGE_LAYOUT_STYLE = {
- 
   layoutTheme: (props: THEME_PROPS) => ({
-
-      flexDir: "column",
-      w: "100%",
-      // backgroundColor: props.colorMode === "light" ? "#e23738" : "#257eee",
-      pt: "66px"
-
-   ,
-  })
-
+    flexDir: "column",
+    w: "100%",
+    // backgroundColor: props.colorMode === "light" ? "#e23738" : "#257eee",
+    pt: "66px",
+  }),
 };
 
 const BUTTON_STYLE = {
