@@ -7,7 +7,7 @@ import {
 import { MIDDLEWARE_API } from "constants/index";
 
 const client = new ApolloClient({
-  uri: MIDDLEWARE_API || "http://3.36.64.198:4000/graphql",
+  uri: MIDDLEWARE_API || "https://tosv2-server.tokamak.network/graphql",
   cache: new InMemoryCache(),
   credentials: "include",
 });
