@@ -17,7 +17,6 @@ function useMyHistory() {
         const depositList = await BondDepository_CONTRACT.getDepositList(
           account
         );
-        console.log(depositList);
       }
     };
     fetchListdata().catch((e) => {

@@ -11,7 +11,7 @@ export type BondCardProps = {
   bondingPrice: string;
   discountRate: string;
   totalSold: string;
-  timeLeft: string;
+  endTime: number;
   tokenType: TokenTypes;
 };
 

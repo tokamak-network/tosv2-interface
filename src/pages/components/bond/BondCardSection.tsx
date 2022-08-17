@@ -25,14 +25,15 @@ function BondCardSection() {
     if (data) {
       const { bonds } = data.getBondList[0];
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
-        const { bondPrice, capacity, index, tokenLogo, totalSold } = bond;
+        const { bondPrice, capacity, index, tokenLogo, totalSold, endTime } =
+          bond;
         return {
           bondCapacity: commafy(capacity),
           bondingPrice: bondPrice,
           discountRate: "0.5%",
           tokenType: "ETH",
           totalSold: `${commafy(totalSold)} TOS`,
-          timeLeft: "",
+          endTime,
         };
       });
       setCardList(dum);

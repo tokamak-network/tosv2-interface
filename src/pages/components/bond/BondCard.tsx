@@ -1,3 +1,4 @@
+import { convertTimeStamp, getNowTimeStamp } from "@/components/convertTime";
 import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import BasicButton from "common/button/BasicButton";
@@ -41,6 +42,13 @@ function BondCard(props: { data: BondCardProps }) {
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const [isOpen, setIsOpen] = useState(true);
   const { account } = useWeb3React();
+
+  const timeDiff = data?.endTime - getNowTimeStamp();
+  const splitedTimeDiff = convertTimeStamp(timeDiff, `DD.HH.mm`).split(".");
+  const timeLeft =
+    timeDiff < 1
+      ? "0 days 0 hours 0 min"
+      : `${splitedTimeDiff[0]} days ${splitedTimeDiff[1]} hours ${splitedTimeDiff[2]} min`;
 
   //vierport ref 1134px
   return (
@@ -103,7 +111,7 @@ function BondCard(props: { data: BondCardProps }) {
       ></ContentComponent>
       <ContentComponent
         title="Time Left"
-        content={"XXXX"}
+        content={timeLeft}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <BasicButton
