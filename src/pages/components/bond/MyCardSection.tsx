@@ -1,35 +1,37 @@
 import { Flex, SimpleGrid } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
+import useMyHistory from "hooks/bond/useMyHistory";
 import { useEffect, useState } from "react";
 import { BondCardProps, MyCardProps } from "types/bond";
 import BondCard from "./BondCard";
 import MyCard from "./MyCard";
 
 function MyCardSection() {
-  const [cardList, setCardList] = useState<MyCardProps[]>();
+  // const [cardList, setCardList] = useState<MyCardProps[]>();
+  const { cardList } = useMyHistory();
 
-  useEffect(() => {
-    const dummyData: MyCardProps[] = [
-      {
-        info: [
-          {
-            title: "Staked",
-            content: "1 LTOS / 4 sTOS",
-          },
-          {
-            title: "Bond Price",
-            content: "$0.95",
-          },
-          {
-            title: "Lock-Up Period",
-            content: "5 Days",
-          },
-        ],
-        tokenType: "ETH",
-      },
-    ];
-    setCardList(dummyData);
-  }, []);
+  // useEffect(() => {
+  //   const dummyData: MyCardProps[] = [
+  //     {
+  //       info: [
+  //         {
+  //           title: "Staked",
+  //           content: "1 LTOS / 4 sTOS",
+  //         },
+  //         {
+  //           title: "Bond Price",
+  //           content: "$0.95",
+  //         },
+  //         {
+  //           title: "Lock-Up Period",
+  //           content: "5 Days",
+  //         },
+  //       ],
+  //       tokenType: "ETH",
+  //     },
+  //   ];
+  //   setCardList(dummyData);
+  // }, []);
 
   return (
     <SimpleGrid columns={3} gridRowGap={"24px"} columnGap={"25px"}>

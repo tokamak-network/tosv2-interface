@@ -32,6 +32,7 @@ import { useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
+import useCallContract from "hooks/useCallContract";
 
 function StakeGraph() {
   const labelStyles = {
@@ -209,22 +210,23 @@ function BondModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
+  const {} = useCallContract();
 
   const contentList = [
     {
       title: "You Give",
       content: "10 DAI ",
-      tooltip: false
+      tooltip: false,
     },
     {
       title: "You Will Get",
       content: "2 LTOS / 33 sTOS",
-      tooltip: true
+      tooltip: true,
     },
     {
       title: "End Time",
       content: "2022. 01.12. 23:12 (UTC+9)",
-      tooltip: true
+      tooltip: true,
     },
     // {
     //   title: "Rewards (after Lock-up period)",
@@ -259,7 +261,11 @@ function BondModal() {
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
               <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
-                <TokenSymbol tokenType={'ETH'} h={'30px'} w={'30px'}></TokenSymbol>
+                <TokenSymbol
+                  tokenType={"ETH"}
+                  h={"30px"}
+                  w={"30px"}
+                ></TokenSymbol>
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={20}
@@ -366,7 +372,6 @@ function BondModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
-
                     ></BottomContent>
                   );
                 })}

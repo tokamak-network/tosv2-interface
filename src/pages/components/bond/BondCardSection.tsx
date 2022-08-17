@@ -19,6 +19,8 @@ function BondCardSection() {
     },
   });
 
+  console.log(data);
+
   useEffect(() => {
     if (data) {
       const { bonds } = data.getBondList[0];
