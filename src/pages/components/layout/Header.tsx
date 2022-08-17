@@ -53,10 +53,10 @@ function Header(props:HeaderProps) {
   const text = useColorModeValue("dark", "light");
   // const {  } = useActiveWeb3React();
   const { activate, active, account } = useWeb3React();
-  const handleWalletModalOpen = (state: string) => {
-    setWalletState(state);
-    onOpen();
-  };
+  // const handleWalletModalOpen = (state: string) => {
+  //   setWalletState(state);
+  //   onOpen();
+  // };
 
   return (
     <Flex

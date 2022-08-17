@@ -38,11 +38,12 @@ function BondCard(props: { data: BondCardProps }) {
   //   timeLeft,
   // } = data;
   const { openModal } = useModal("bond_modal");
+   // const { openModal } = useModal("update_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const [isOpen, setIsOpen] = useState(true);
   const { account } = useWeb3React();
-
+ 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const splitedTimeDiff = convertTimeStamp(timeDiff, `DD.HH.mm`).split(".");
   const timeLeft =

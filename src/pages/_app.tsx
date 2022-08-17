@@ -14,8 +14,8 @@ import { WalletModal } from "common/wallet/index";
 import client from "client/client";
 function MyApp({ Component, pageProps }: AppProps) {
   test();
-  const { onOpen, isOpen: isModalOpen, onClose } = useDisclosure();
-  const handleWalletModalOpen = (state: string) => {
+  const {onOpen, isOpen: isModalOpen, onClose} = useDisclosure();
+  const handleWalletModalOpen = () => {
     onOpen();
   };
 
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   minH={"100vh"}
                 >
                   <Header
-                    walletopen={() => handleWalletModalOpen("wallet")}
+                    walletopen={() => handleWalletModalOpen()}
                   ></Header>
                   <Component {...pageProps} />
                   <Footer></Footer>
