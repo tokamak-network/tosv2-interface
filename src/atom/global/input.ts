@@ -2,7 +2,10 @@ import { atom, selector } from "recoil";
 
 const inputState = atom({
   key: "inputState",
-  default: {},
+  default: {
+    stake_stake_modal_period: "",
+    stake_stake_modal_balance: "",
+  },
 });
 
 const inputBalanceState = selector({

@@ -21,18 +21,21 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import { useRecoilValue } from "recoil";
-import { selectedModalState } from "atom//global/modal";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { selectedModalData, selectedModalState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
+import useBondModal from "hooks/bond/useBondModal";
+import useInputData from "hooks/bond/useInputData";
+import { inputBalanceState, inputState } from "atom/global/input";
 
 function StakeGraph() {
   const labelStyles = {
@@ -42,6 +45,18 @@ function StakeGraph() {
   };
   const [sliderValue, setSliderValue] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
+  const oldValues = useRecoilValue(inputBalanceState);
+  const [value, setValue] = useRecoilState(inputState);
+
+  useEffect(() => {
+    setValue({ ...oldValues, stake_stake_modal_period: String(sliderValue) });
+  }, [sliderValue]);
+
+  // useEffect(() => {
+  //   console.log(value.stake_stake_modal_period);
+  //   setSliderValue(Number(value.stake_stake_modal_period));
+  // }, [value.stake_stake_modal_period]);
+
   const { colorMode } = useColorMode();
   return (
     <Flex w={"100%"} h="70px" pos="relative">
@@ -50,6 +65,7 @@ function StakeGraph() {
         defaultValue={0}
         min={0}
         max={156}
+        value={sliderValue}
         onChange={(val: any) => setSliderValue(val)}
         h={"10px"}
         alignSelf={"end"}
@@ -156,7 +172,11 @@ function BottomContent(props: {
   );
 }
 
-function Tile(props: { title: string; content: string; symbol?: string }) {
+function Tile(props: {
+  title: string;
+  content: string | undefined;
+  symbol?: string;
+}) {
   const { title, content, symbol } = props;
   const { colorMode } = useColorMode();
   return (
@@ -190,7 +210,7 @@ function Tile(props: { title: string; content: string; symbol?: string }) {
           fontSize={24}
           mr={2}
         >
-          {content}
+          {content || "-"}
         </Text>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
@@ -206,16 +226,19 @@ function Tile(props: { title: string; content: string; symbol?: string }) {
 }
 
 function BondModal() {
-  const selectedModal = useRecoilValue(selectedModalState);
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
   const {} = useCallContract();
+  const { selectedModal } = useModal();
+  const { bondModalData } = useBondModal();
+  const oldValues = useRecoilValue(inputBalanceState);
+  const { bondInputData } = useInputData(oldValues.stake_stake_modal_balance);
 
   const contentList = [
     {
       title: "You Give",
-      content: "10 DAI ",
+      content: `${bondInputData?.youWillGet || "-"}`,
       tooltip: false,
     },
     {
@@ -291,28 +314,41 @@ function BondModal() {
                     templateRows="repeat(2, 1fr)"
                   >
                     <GridItem>
-                      <Tile title={"Bond Price"} content={"$0.95"} />
+                      <Tile
+                        title={"Bond Price"}
+                        content={`${bondModalData?.bondPrice}`}
+                      />
                     </GridItem>
                     <GridItem>
-                      <Tile title={"Market Price"} content={"$0.95"} />
+                      <Tile
+                        title={"Market Price"}
+                        content={`${bondModalData?.marketPrice}`}
+                      />
                     </GridItem>
                     <GridItem>
-                      <Tile title={"Discount"} content={"95%"} />
+                      <Tile
+                        title={"Discount"}
+                        content={`${bondModalData?.discount}`}
+                      />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"Min Bond"}
-                        content={"0.001"}
+                        content={bondModalData?.minBond}
                         symbol={"ETH"}
                       />
                     </GridItem>
                     <GridItem>
-                      <Tile title={"Max Bond"} content={"9.5"} symbol={"ETH"} />
+                      <Tile
+                        title={"Max Bond"}
+                        content={bondModalData?.maxBond}
+                        symbol={"ETH"}
+                      />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"LTOS Index"}
-                        content={"100"}
+                        content={bondModalData?.ltosIndex}
                         symbol={"TOS"}
                       />
                     </GridItem>

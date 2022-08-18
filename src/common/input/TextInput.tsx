@@ -6,7 +6,7 @@ import {
   useColorMode,
   useTheme,
 } from "@chakra-ui/react";
-import { inputBalanceState, inputState } from "atom//global/input";
+import { inputBalanceState, inputState } from "atom/global/input";
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -15,39 +15,51 @@ type InputProp = {
   w?: number | string;
   h?: number | string;
   isDisabled?: boolean;
-  value?: string | number | any;
+  inputValue?: string | number | any;
   isError?: boolean;
   atomKey: string;
 };
 
 const TextInput: React.FC<InputProp> = (props) => {
-  const { placeHolder, w, h, isDisabled, atomKey, value, isError } = props;
+  const { placeHolder, w, h, isDisabled, atomKey, inputValue, isError } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
+
+  const oldValues = useRecoilValue(inputBalanceState);
+  const [value, setValue] = useRecoilState(inputState);
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue({ ...oldValues, [atomKey]: event.target.value });
+  };
+
+  console.log("--");
+  console.log(value);
 
   return (
     <Input
       isInvalid={isError}
       w={w || 270}
       h={h || 45}
-      ml={'auto'}
+      ml={"auto"}
       borderRadius={8}
       borderWidth={1}
       borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
       fontSize={14}
-      color={colorMode === "light" ? 'gray.800': "#f1f1f1"}
+      color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
       _placeholder={{ color: "#64646f" }}
       _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
       focusBorderColor="none"
       _focus={{
         outline: "none",
-        color:colorMode === "light"? 'gray.800': "#f1f1f1",
+        color: colorMode === "light" ? "gray.800" : "#f1f1f1",
         boxShadow: "",
         borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
       }}
       outline="none"
       errorBorderColor={"#e23738"}
-      value={value}
+      //@ts-ignore
+      value={value.atomKey}
+      onChange={onChange}
     ></Input>
   );
 };
@@ -69,18 +81,18 @@ function BalanceInput(props: InputProp) {
         isInvalid={isError}
         w={w || 270}
         h={h || 45}
-        ml={'auto'}
+        ml={"auto"}
         borderRadius={8}
         borderWidth={1}
         borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
         fontSize={14}
-        color={colorMode === "light" ? 'gray.800': "#f1f1f1"}
+        color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
         _placeholder={{ color: "#64646f" }}
         _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
         focusBorderColor="none"
         _focus={{
           outline: "none",
-          color:colorMode === "light"? 'gray.800': "#f1f1f1",
+          color: colorMode === "light" ? "gray.800" : "#f1f1f1",
           boxShadow: "",
           borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
         }}
