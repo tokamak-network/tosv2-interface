@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from "@chakra-ui/react";
+import { Flex, SimpleGrid, Tooltip,Button } from "@chakra-ui/react";
 import Graph from "./Graph";
 import GraphFilter from "./GraphFilter";
 import { useQuery } from "@apollo/client";
@@ -243,29 +243,39 @@ function GraphContainer() {
         flexWrap={"wrap"}
         justifyContent="center"
       >
+      
         <Graph
           data={marketCapDatas}
           title="Market Cap"
-          amount="$ 1,000,000,000"
-          tooltipTitle="tooltip"
+          amount={marketCapDatas[0]? `$ ${Number(marketCapDatas[0].data[0].y).toLocaleString(undefined, { maximumFractionDigits: 2 })}`: ''}
+          tooltipTitle="“Market Cap” represents the total
+          dollar value of TOS in circulation."
         ></Graph>
         <Graph
           data={totalStakedDatas}
           title="Total Value Staked"
-          amount="$ 1,000,000,000"
-          tooltipTitle="tooltip"
+          amount={totalStakedDatas[0]? `$ ${Number(totalStakedDatas[0].data[0].y).toLocaleString(undefined, { maximumFractionDigits: 2 })}`: ''}
+          tooltipTitle="“Total Value Staked” represents 
+          the total dollar value of all the LTOS. 
+          LTOS represents TOS that are staked
+          and their staking interest."
         ></Graph>
         <Graph
           data={data3}
           title="Treasury Balance"
           amount="$ 1,000,000,000"
-          tooltipTitle="tooltip"
+          tooltipTitle="“Treasury Balance” represents the 
+          total dollar value of non-TOS assets
+          owned by the treasury that can be
+          used for backing each TOS."
         ></Graph>
         <Graph
           data={runwayDatas}
           title="Runway"
-          amount="100 Days"
-          tooltipTitle="tooltip"
+          amount={`${runwayDatas.length} Days`}
+          tooltipTitle="“Runway” represents the number of days
+          that staking interest can be sustained 
+          by the protocol."
         ></Graph>
       </Flex>
     </Flex>

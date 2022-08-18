@@ -1,11 +1,19 @@
 import { selector, useRecoilValue } from "recoil";
 import { filterState } from "atom//dashboard";
-import { Flex, Text, Tooltip, useColorMode } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Tooltip,
+  useColorMode,
+  Button,
+  IconButton,
+  color,
+} from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 import question from "assets/icons/question.svg";
-import Image from "next/image";
+// import Image from "next/image";
 import moment from "moment";
-
 
 const selectedFilterState = selector({
   key: "selectedFilterState", // unique ID (with respect to other atoms/selectors)
@@ -15,6 +23,7 @@ const selectedFilterState = selector({
     return selectedFilter;
   },
 });
+
 // typeof global.ResizeObserver === "undefined";
 function Graph(props: {
   data: any[];
@@ -23,13 +32,13 @@ function Graph(props: {
   tooltipTitle: string;
 }) {
   const { data, title, amount, tooltipTitle } = props;
-  const {colorMode} = useColorMode();
+  const { colorMode } = useColorMode();
   const theme = {
     axis: {
       ticks: {
         text: {
           fontSize: 11,
-          fill: colorMode === 'dark'? "#64646f": '#9a9aaf',
+          fill: colorMode === "dark" ? "#64646f" : "#9a9aaf",
         },
       },
     },
@@ -42,23 +51,64 @@ function Graph(props: {
       minWidth={"336px"}
       maxWidth={"556px"}
       h={"350px"}
-      bgColor={colorMode === 'dark'? "gray.600": 'white.100'}
+      bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       borderRadius={14}
       borderWidth={1}
       flexDir="column"
-      borderColor={colorMode === 'dark'? "gray.300": 'gray.900'}
+      borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
       // pt={'18px'}
       // pl={'20px'}
       p={" 18px 20px 10px 20px"}
     >
       <Flex flexDir={"row"}>
-        <Text mr="6px" fontSize={'12px'} fontWeight={600} color={colorMode === 'dark'? "gray.100": 'gray.1000'}>{title} </Text>
-        <Tooltip label=""  placement='bottom'>
-        <Image src={question} alt={''}/>
-</Tooltip>
+        <Text
+          mr="6px"
+          fontSize={"12px"}
+          fontWeight={600}
+          color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+        >
+          {title}{" "}
+        </Text>
+
+        {/* <Tooltip
+          label={tooltipTitle}
+          aria-label="A tooltip"
+          placement="left"
+          isOpen
+          zIndex={100}
+          top={100}
+        >
+          <Image src={question} alt={""} />
+        </Tooltip> */}
+        <Tooltip
+          label={tooltipTitle}
+          closeOnClick={false}
+          bg={colorMode === "dark" ? "#1f2128" : "#fff"}
+          borderRadius={"3px"}
+          color={colorMode==='light'? '#07070c': '#8b8b93'}
+          fontSize='12px'
+          border={
+            colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"
+          }
+        >
+          <IconButton
+            aria-label="Search database"
+            h={"16px"}
+            w={"16px"}
+            icon={<QuestionOutlineIcon />}
+            bg={"transparent"}
+            p={0}
+            _hover={{ bg: "transparent" }}
+          />
+        </Tooltip>
+
         {/* <Image src={question} /> */}
       </Flex>
-      <Text color={colorMode === 'dark'? "white.100": 'gray.800'} fontWeight={600} fontSize="20px">
+      <Text
+        color={colorMode === "dark" ? "white.100" : "gray.800"}
+        fontWeight={600}
+        fontSize="20px"
+      >
         {amount}
       </Text>
 
@@ -66,7 +116,7 @@ function Graph(props: {
         data={data}
         theme={theme}
         // width={516}
-        margin={{ top: 14, right: 20, bottom: 32, left: 55 }}
+        margin={{ top: 14, right: 20, bottom: 65, left: 50 }}
         // colors={{datum: 'data.color'}}
         colors={["#405df9", "#e23738", "#50d1b2"]}
         xScale={{ type: "point" }}
@@ -101,7 +151,7 @@ function Graph(props: {
           legendOffset: -40,
           legendPosition: "middle",
           format: function (value) {
-            return `$${value}M`;
+            return `$${Number(value) / 1000000}M`;
           },
         }}
         pointSize={10}
@@ -114,12 +164,16 @@ function Graph(props: {
           return (
             <div
               style={{
-                background: colorMode === 'dark'? '#1f2128': '#ffffff',
+                background: colorMode === "dark" ? "#1f2128" : "#ffffff",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
                 paddingLeft: "24px",
-                border: colorMode === 'dark'? "1px solid #313442": '1px solid #e8edf2',
+                fontSize: "11px",
+                border:
+                  colorMode === "dark"
+                    ? "1px solid #313442"
+                    : "1px solid #e8edf2",
                 borderRadius: "14px",
                 height: slice.points.length !== 1 ? "112px" : "74px",
                 width: "155px",
@@ -143,10 +197,15 @@ function Graph(props: {
                         borderRadius: "50%",
                         height: "10px",
                         width: "10px",
+                        marginBottom: "12px",
                       }}
                     ></div>
 
-                    <div style={{ color: colorMode === 'dark'? "#d0d0da": '#07070c' }}>
+                    <div
+                      style={{
+                        color: colorMode === "dark" ? "#d0d0da" : "#07070c",
+                      }}
+                    >
                       $
                       {Number(point.data.y).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
@@ -155,24 +214,10 @@ function Graph(props: {
                   </div>
                 );
               })}
-              {/* <div
-                  style={{
-                    background: "#405df9",
-                    marginRight: "9px",
-                    borderRadius: "50%",
-                    height: "10px",
-                    width: "10px",
-                  }}
-                ></div>
 
-                <div style={{ color: "#d0d0da" }}>
-                  $
-                  {Number(slice.points[0].data.y).toLocaleString(undefined, {
-                    minimumFractionDigits: 0,
-                  })}
-                </div> */}
-
-              <div style={{ color: colorMode === 'dark'? "#d0d0da": '#9a9aaf' }}>
+              <div
+                style={{ color: colorMode === "dark" ? "#64646f" : "#9a9aaf" }}
+              >
                 {moment
                   .unix(Number(slice.points[0].data.x))
                   .format("MMM DD, YYYY")}
@@ -183,32 +228,6 @@ function Graph(props: {
         enableArea={true}
         enableGridX={false}
         enableGridY={false}
-        // legends={[
-        //   {
-        //     anchor: "bottom-right",
-        //     direction: "column",
-        //     justify: false,
-        //     translateX: 100,
-        //     translateY: 0,
-        //     itemsSpacing: 0,
-        //     itemDirection: "left-to-right",
-        //     itemWidth: 80,
-        //     itemHeight: 20,
-        //     itemOpacity: 0.75,
-        //     symbolSize: 12,
-        //     symbolShape: "circle",
-        //     symbolBorderColor: "rgba(0, 0, 0, .5)",
-        //     effects: [
-        //       {
-        //         on: "hover",
-        //         style: {
-        //           itemBackground: "rgba(0, 0, 0, .03)",
-        //           itemOpacity: 1,
-        //         },
-        //       },
-        //     ],
-        //   },
-        // ]}
       />
     </Flex>
   );
