@@ -21,6 +21,7 @@ export type BondRawdata = {
   index: number;
   tokenLogo: string;
   totalSold: number;
+  endTime: number;
 };
 
 export type MyCardProps = {
