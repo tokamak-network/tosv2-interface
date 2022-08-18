@@ -3,6 +3,11 @@ import { filterState } from "atom//dashboard";
 import BasicButton from "common/button/BasicButton";
 import SwitchButton from "common/button/SwitchButton";
 import { atom, useRecoilState } from "recoil";
+import { SetStateAction } from "react";
+
+type FilterProps = {
+  setFilter: React.Dispatch<SetStateAction<string>>;
+};
 
 const filterList = [
   {
@@ -27,7 +32,8 @@ const filterList = [
   },
 ];
 
-function GraphFilter() {
+function GraphFilter(props:FilterProps) {
+  const {setFilter} = props
   const [selectedFilter, setSelectedFilter] = useRecoilState(filterState);
 
   return (
@@ -43,7 +49,9 @@ function GraphFilter() {
               return (
                 <Box
                   key={list.name}
-                  onClick={() => setSelectedFilter(list.name)}
+                  onClick={() =>{ 
+                    setFilter(list.name)
+                    setSelectedFilter(list.name)}}
                 >
                   <SwitchButton
                     name={list.name}
