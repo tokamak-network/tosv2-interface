@@ -28,7 +28,7 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
@@ -36,6 +36,9 @@ import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
+import commafy from "@/components/commafy";
+import { BondCardProps } from "types/bond";
+import { convertToWei } from "@/components/number";
 
 function StakeGraph() {
   const labelStyles = {
@@ -229,41 +232,53 @@ function BondModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
-  const {} = useCallContract();
-  const { selectedModal } = useModal();
+  const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const oldValues = useRecoilValue(inputBalanceState);
   const { bondInputData } = useInputData(oldValues.stake_stake_modal_balance);
+  const { BondDepositoryProxy_CONTRACT } = useCallContract();
+
+  const propData = selectedModalData as BondCardProps;
+  const marketId = propData.index;
 
   const contentList = [
     {
       title: "You Give",
-      content: `${bondInputData?.youWillGet || "-"}`,
+      content: `${oldValues.stake_stake_modal_balance || "-"} ETH`,
       tooltip: false,
     },
     {
       title: "You Will Get",
-      content: "2 LTOS / 33 sTOS",
+      content: `${bondInputData?.youWillGet || "-"}`,
       tooltip: true,
     },
     {
       title: "End Time",
-      content: "2022. 01.12. 23:12 (UTC+9)",
+      content: `${bondInputData?.endTime || "-"}`,
       tooltip: true,
     },
-    // {
-    //   title: "Rewards (after Lock-up period)",
-    //   content: "100 TOS",
-    // },
-    // {
-    //   title: "Earn sTOS",
-    //   content: "1,000 sTOS",
-    // },
-    // {
-    //   title: "TOS APY",
-    //   content: "30%",
-    // },
   ];
+
+  const callBond = useCallback(() => {
+    if (BondDepositoryProxy_CONTRACT) {
+      console.log("---");
+      console.log(
+        marketId,
+        convertToWei(oldValues.stake_stake_modal_balance),
+        oldValues.stake_stake_modal_period
+      );
+      return BondDepositoryProxy_CONTRACT.ETHDeposit(
+        marketId,
+        convertToWei(oldValues.stake_stake_modal_balance),
+        { value: convertToWei(oldValues.stake_stake_modal_balance) }
+      );
+    }
+  }, [
+    oldValues.stake_stake_modal_balance,
+    oldValues.stake_stake_modal_period,
+    BondDepositoryProxy_CONTRACT,
+    marketId,
+  ]);
 
   return (
     <Modal
@@ -358,6 +373,7 @@ function BondModal() {
                   <BalanceInput
                     w={"100%"}
                     h={45}
+                    placeHolder={"Enter an amount of ETH"}
                     atomKey={"stake_stake_modal_balance"}
                   ></BalanceInput>
                 </Flex>
@@ -385,9 +401,11 @@ function BondModal() {
                   ></CustomCheckBox>
                   <Text ml={"9px"}>5 days Lock-Up</Text>
                   <TextInput
-                    w={"120px"}
+                    w={"170px"}
                     h={"39px"}
                     atomKey={"stake_stake_modal_period"}
+                    placeHolder={"1 Weeks"}
+                    style={{ marginLeft: "auto" }}
                   ></TextInput>
                 </Flex>
               </Flex>
@@ -414,7 +432,12 @@ function BondModal() {
               </Flex>
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
-              <SubmitButton w={460} h={42} name="Approve"></SubmitButton>
+              <SubmitButton
+                w={460}
+                h={42}
+                name="Bond"
+                onClick={callBond}
+              ></SubmitButton>
             </Flex>
             <Flex
               fontSize={11}

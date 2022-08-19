@@ -65,11 +65,11 @@ function useBondModal() {
           Number(bondPrice) /
             (Number(commafy(apiData.getDashboard[0].tosPrice)) * 100);
         setBondModalData({
-          bondPrice: `$${bondPrice}`,
+          bondPrice: `$${commafy(bondPrice)}`,
           marketPrice: `$${marketPrice}`,
           discount: `${commafy(discount)}%`,
           minBond: "",
-          maxBond,
+          maxBond: `${commafy(maxBond)}`,
           ltosIndex: "-",
         });
       }
