@@ -4,6 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
+import useWallet from "hooks/useWallet";
 import { useState } from "react";
 import { BondCardProps } from "types/bond";
 
@@ -34,13 +35,14 @@ function BondCard(props: { data: BondCardProps }) {
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const [isOpen, setIsOpen] = useState(true);
   const { account } = useWeb3React();
+  const { tryActivation } = useWallet();
 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const splitedTimeDiff = convertTimeStamp(timeDiff, `DD.HH.mm`).split(".");
-  const timeLeft =
-    timeDiff < 1
-      ? "0 days 0 hours 0 min"
-      : `${splitedTimeDiff[0]} days ${splitedTimeDiff[1]} hours ${splitedTimeDiff[2]} min`;
+  const bondIsDisabled = timeDiff < 1;
+  const timeLeft = bondIsDisabled
+    ? "0 days 0 hours 0 min"
+    : `${splitedTimeDiff[0]} days ${splitedTimeDiff[1]} hours ${splitedTimeDiff[2]} min`;
 
   //vierport ref 1134px
   return (
@@ -81,38 +83,35 @@ function BondCard(props: { data: BondCardProps }) {
           <Text>{isOpen ? "Open" : "Closed"}</Text>
         </Flex>
       </Flex>
-      <ContentComponent
-        title="Bond Price"
-        content={`$ ${data?.bondingPrice}`}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-      <ContentComponent
-        title="Discount"
-        content={data?.discountRate}
-        style={{ marginBottom: "16px" }}
-      ></ContentComponent>
-      <ContentComponent
-        title="Capacity"
-        content={`${data?.bondCapacity} TOS`}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-      <ContentComponent
-        title="Total Sold"
-        content={data?.totalSold}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-      <ContentComponent
-        title="Time Left"
-        content={timeLeft}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-      <BasicButton
-        name={account ? "Bond" : "Connect Wallet"}
-        h={"33px"}
-        style={{ alignSelf: "center" }}
-        isDisabled={!account}
-        onClick={openModal}
-      ></BasicButton>
+      <Flex flexDir={"column"} rowGap={"9px"}>
+        <ContentComponent
+          title="Bond Price"
+          content={`$ ${data?.bondingPrice}`}
+        ></ContentComponent>
+        <ContentComponent
+          title="Discount"
+          content={data?.discountRate}
+        ></ContentComponent>
+        <ContentComponent
+          title="Capacity"
+          content={`${data?.bondCapacity} TOS`}
+        ></ContentComponent>
+        <ContentComponent
+          title="Total Sold"
+          content={data?.totalSold}
+        ></ContentComponent>
+        <ContentComponent
+          title="Time Left"
+          content={timeLeft}
+        ></ContentComponent>
+        <BasicButton
+          name={account ? "Bond" : "Connect Wallet"}
+          h={"33px"}
+          style={{ alignSelf: "center", marginTop: "9px" }}
+          isDisabled={bondIsDisabled}
+          onClick={account ? openModal : tryActivation}
+        ></BasicButton>
+      </Flex>
     </Flex>
   );
 }

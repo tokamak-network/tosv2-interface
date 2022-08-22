@@ -19,8 +19,6 @@ function BondCardSection() {
     },
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (data) {
       const { bonds } = data.getBondList[0];
@@ -32,7 +30,8 @@ function BondCardSection() {
           bondingPrice: bondPrice,
           discountRate: "0.5%",
           tokenType: "ETH",
-          totalSold: `${commafy(totalSold)} TOS`,
+          totalSold: `temp`,
+          // `${commafy(totalSold)} TOS`,
           endTime,
           index,
         };

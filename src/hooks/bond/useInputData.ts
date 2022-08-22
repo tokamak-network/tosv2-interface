@@ -25,6 +25,9 @@ function useInputData(inputAmount: string) {
 
   useEffect(() => {
     const fetchListdata = async () => {
+      if (inputAmount === "") {
+        return;
+      }
       if (BondDepositoryProxy_CONTRACT && StakingV2Proxy_CONTRACT) {
         const tosAmount =
           await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(

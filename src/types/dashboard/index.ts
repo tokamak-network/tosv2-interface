@@ -1,7 +1,7 @@
 export type Dashboard_SmallCardType = {
   price: string | number;
   priceUnit: string;
-  priceChangePercent: number;
+  priceChangePercent?: number;
   title: string;
   tooltip?: boolean;
   style?: {};

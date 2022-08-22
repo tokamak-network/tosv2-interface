@@ -52,7 +52,7 @@ function StakeGraph() {
   const [value, setValue] = useRecoilState(inputState);
 
   useEffect(() => {
-    setValue({ ...oldValues, stake_stake_modal_period: String(sliderValue) });
+    setValue({ ...oldValues, stake_stake_modal_period: sliderValue });
   }, [sliderValue]);
 
   // useEffect(() => {
