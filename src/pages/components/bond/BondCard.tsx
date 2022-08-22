@@ -29,21 +29,12 @@ function ContentComponent(props: {
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
   const { data } = props;
-  // const {
-  //   bondCapacity,
-  //   bondingPrice,
-  //   discountRate,
-  //   tokenType,
-  //   totalSold,
-  //   timeLeft,
-  // } = data;
-  const { openModal } = useModal("bond_modal");
-   // const { openModal } = useModal("update_modal");
+  const { openModal } = useModal("bond_modal", data);
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const [isOpen, setIsOpen] = useState(true);
   const { account } = useWeb3React();
- 
+
   const timeDiff = data?.endTime - getNowTimeStamp();
   const splitedTimeDiff = convertTimeStamp(timeDiff, `DD.HH.mm`).split(".");
   const timeLeft =
@@ -92,7 +83,7 @@ function BondCard(props: { data: BondCardProps }) {
       </Flex>
       <ContentComponent
         title="Bond Price"
-        content={data?.bondingPrice}
+        content={`$ ${data?.bondingPrice}`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
@@ -102,7 +93,7 @@ function BondCard(props: { data: BondCardProps }) {
       ></ContentComponent>
       <ContentComponent
         title="Capacity"
-        content={data?.bondCapacity}
+        content={`${data?.bondCapacity} TOS`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent

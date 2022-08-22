@@ -43,23 +43,17 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
   );
   const LibTreasury_CONTRACT = useContract(LibTreasury, ERC20.abi);
   const Treasury_CONTRACT = useContract(Treasury, TreasuryAbi.abi);
-  const TreasuryProxy_CONTRACT = useContract(
-    TreasuryProxy,
-    TreasuryProxyAbi.abi
-  );
+  const TreasuryProxy_CONTRACT = useContract(TreasuryProxy, TreasuryAbi.abi);
   const LibStaking_CONTRACT = useContract(LibStaking, LibStakingAbi.abi);
   const StakingV2_CONTRACT = useContract(StakingV2, StakingV2Abi.abi);
-  const StakingV2Proxy_CONTRACT = useContract(
-    StakingV2Proxy,
-    StakingV2ProxyAbi.abi
-  );
+  const StakingV2Proxy_CONTRACT = useContract(StakingV2Proxy, StakingV2Abi.abi);
   const BondDepository_CONTRACT = useContract(
     BondDepository,
     BondDepositoryAbi.abi
   );
   const BondDepositoryProxy_CONTRACT = useContract(
     BondDepositoryProxy,
-    BondDepositoryProxyAbi.abi
+    BondDepositoryAbi.abi
   );
 
   return {

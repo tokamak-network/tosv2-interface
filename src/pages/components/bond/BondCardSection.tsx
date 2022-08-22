@@ -34,6 +34,7 @@ function BondCardSection() {
           tokenType: "ETH",
           totalSold: `${commafy(totalSold)} TOS`,
           endTime,
+          index,
         };
       });
       setCardList(dum);

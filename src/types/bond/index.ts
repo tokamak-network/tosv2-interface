@@ -13,6 +13,7 @@ export type BondCardProps = {
   totalSold: string;
   endTime: number;
   tokenType: TokenTypes;
+  index: number;
 };
 
 export type BondRawdata = {
