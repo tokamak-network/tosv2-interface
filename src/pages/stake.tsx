@@ -5,6 +5,7 @@ import StakeCardContainer from "pages/components/stake/StakeCardContainer";
 import StakeModal from "pages/components/stake/StakeModal";
 import UnstakeModal from "pages/components/stake/UnstakeModal";
 import { StakeTopCardProps } from "types/stake";
+import UpdateModal from "pages/components/bond/UpdateModal";
 
 const Stake = () => {
   const theme = useTheme();
@@ -14,16 +15,19 @@ const Stake = () => {
       title: "TOS Price",
       price: "5,000,000,000",
       priceUnit: "$",
+      tooltip:''
     },
     {
       title: "Backing per TOS",
       price: "1.00",
       priceUnit: "$",
+      tooltip:''
     },
     {
       title: "LTOS Index",
       price: "1.00",
       priceUnit: "$",
+      tooltip:''
     },
   ];
 
@@ -34,6 +38,7 @@ const Stake = () => {
       <StakeCardContainer></StakeCardContainer>
       <StakeModal></StakeModal>
       <UnstakeModal></UnstakeModal>
+      <UpdateModal></UpdateModal>
     </Flex>
   );
 };

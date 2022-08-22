@@ -19,6 +19,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
@@ -33,6 +34,7 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 function StakeGraph() {
   const labelStyles = {
@@ -74,21 +76,6 @@ function StakeGraph() {
         <SliderMark value={156} {...labelStyles}>
           3y
         </SliderMark>
-
-        {/* <SliderMark value={25} {...labelStyles}>
-          25%
-        </SliderMark> */}
-        {/* <SliderMark
-          value={sliderValue}
-          textAlign="center"
-          bg="blue.500"
-          color="white"
-          mt="-10"
-          ml="-5"
-          w="12"
-        >
-          {sliderValue} STOS
-        </SliderMark> */}
         <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
           <SliderFilledTrack bg={"#2775ff"} />
         </SliderTrack>
@@ -117,8 +104,11 @@ function BottomContent(props: {
   title: string;
   content: string;
   tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string
+
 }) {
-  const { title, content, tooltip } = props;
+  const { title, content, tooltip, tooltipMessage,secondTooltip } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -129,7 +119,7 @@ function BottomContent(props: {
         fontSize={14}
         mt={"9px"}
       >
-        <Flex>
+        <Flex alignItems={'center'}>
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
             mr={"6px"}
@@ -137,27 +127,86 @@ function BottomContent(props: {
             {title}
           </Text>
           {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
+            <Tooltip
+              label={tooltipMessage}
+              bg={colorMode === "dark" ? "#1f2128" : "#fff"}
+              borderRadius={"3px"}
+              aria-label="A tooltip"
+           
+              defaultIsOpen={false}
+              color={colorMode === "light" ? "#07070c" : "#8b8b93"}
+              fontSize="12px"
+              border={
+                colorMode === "light"
+                  ? "solid 1px #e8edf2"
+                  : "solid 1px #313442"
+              }
+            >
+              <IconButton
+                aria-label="Search database"
+                h={"16px"}
+                minW={"16px"}
+                icon={<QuestionOutlineIcon />}
+                bg={"transparent"}
+                p={0}
+                _hover={{ bg: "transparent" }}
+                _active={{ bg: "transparent" }}
+              />
             </Tooltip>
           ) : (
             <></>
           )}
         </Flex>
-
+        <Flex alignItems={'center'}>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
           fontWeight={600}
         >
           {content}
         </Text>
+        {secondTooltip? <Tooltip
+              label={secondTooltip}
+              bg={colorMode === "dark" ? "#1f2128" : "#fff"}
+              borderRadius={"3px"}
+              aria-label="A tooltip"
+              defaultIsOpen={false}
+              color={colorMode === "light" ? "#07070c" : "#8b8b93"}
+              fontSize="12px"
+              border={
+                colorMode === "light"
+                  ? "solid 1px #e8edf2"
+                  : "solid 1px #313442"
+              }
+             
+            >
+              <IconButton
+                aria-label="Search database"
+                h={"16px"}
+                minW={"16px"}
+                ml={'6px'}
+                icon={<QuestionOutlineIcon />}
+                bg={"transparent"}
+                p={0}
+                _hover={{ bg: "transparent" }}
+                _active={{ bg: "transparent" }}
+              />
+            </Tooltip>:<></> }
+       
+        </Flex>
+
+       
       </Flex>
     </Flex>
   );
 }
 
-function Tile(props: { title: string; content: string; symbol?: string }) {
-  const { title, content, symbol } = props;
+function Tile(props: {
+  title: string;
+  content: string;
+  symbol?: string;
+  tooltip: string;
+}) {
+  const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
   return (
     <Box
@@ -179,8 +228,28 @@ function Tile(props: { title: string; content: string; symbol?: string }) {
         >
           {title}
         </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
+        <Tooltip
+          label={tooltip}
+          bg={colorMode === "dark" ? "#1f2128" : "#fff"}
+          borderRadius={"3px"}
+          aria-label="A tooltip"
+          defaultIsOpen={false}
+          color={colorMode === "light" ? "#07070c" : "#8b8b93"}
+          fontSize="12px"
+          border={
+            colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"
+          }
+        >
+          <IconButton
+            aria-label="Search database"
+            h={"16px"}
+            minW={"16px"}
+            icon={<QuestionOutlineIcon />}
+            bg={"transparent"}
+            p={0}
+            _hover={{ bg: "transparent" }}
+            _active={{ bg: "transparent" }}
+          />
         </Tooltip>
       </Flex>
 
@@ -217,29 +286,22 @@ function BondModal() {
       title: "You Give",
       content: "10 DAI ",
       tooltip: false,
+      tooltipMessage: "",
     },
     {
       title: "You Will Get",
       content: "2 LTOS / 33 sTOS",
       tooltip: true,
+      tooltipMessage: "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+      secondTooltip:'Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.'
+
     },
     {
       title: "End Time",
       content: "2022. 01.12. 23:12 (UTC+9)",
       tooltip: true,
+      tooltipMessage: "LTOS can be unstaked after this time. ",
     },
-    // {
-    //   title: "Rewards (after Lock-up period)",
-    //   content: "100 TOS",
-    // },
-    // {
-    //   title: "Earn sTOS",
-    //   content: "1,000 sTOS",
-    // },
-    // {
-    //   title: "TOS APY",
-    //   content: "30%",
-    // },
   ];
 
   return (
@@ -291,29 +353,54 @@ function BondModal() {
                     templateRows="repeat(2, 1fr)"
                   >
                     <GridItem>
-                      <Tile title={"Bond Price"} content={"$0.95"} />
+                      <Tile
+                        title={"Bond Price"}
+                        content={"$0.95"}
+                        tooltip={"Bonding price for 1 TOS in USD."}
+                      />
                     </GridItem>
                     <GridItem>
-                      <Tile title={"Market Price"} content={"$0.95"} />
+                      <Tile
+                        title={"Market Price"}
+                        content={"$0.95"}
+                        tooltip={"Market price for 1 TOS in USD."}
+                      />
                     </GridItem>
                     <GridItem>
-                      <Tile title={"Discount"} content={"95%"} />
+                      <Tile
+                        title={"Discount"}
+                        content={"95%"}
+                        tooltip={"Discount for bonding."}
+                      />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"Min Bond"}
                         content={"0.001"}
                         symbol={"ETH"}
+                        tooltip={
+                          "The recommended minimum amount to bond to offset the gas cost."
+                        }
                       />
                     </GridItem>
                     <GridItem>
-                      <Tile title={"Max Bond"} content={"9.5"} symbol={"ETH"} />
+                      <Tile
+                        title={"Max Bond"}
+                        content={"9.5"}
+                        symbol={"ETH"}
+                        tooltip={
+                          "The maximum bondable amount based on the current bond market capacity."
+                        }
+                      />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"LTOS Index"}
                         content={"100"}
                         symbol={"TOS"}
+                        tooltip={
+                          "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                        }
                       />
                     </GridItem>
                   </Grid>
@@ -372,6 +459,8 @@ function BondModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}

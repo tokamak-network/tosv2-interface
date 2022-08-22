@@ -8,6 +8,11 @@ import { BondCardProps } from "types/bond";
 import { StakeCardProps } from "types/stake";
 import BondIcon from "assets/icons/bond.svg";
 import Image from "next/image";
+import { useRecoilState } from "recoil";
+import { modalState } from "atom//global/modal";
+
+
+
 
 function ContentComponent(props: {
   title: string;
@@ -41,10 +46,17 @@ function StakeCard(props: StakeCardProps) {
     tokenType,
     isDisabled,
   } = props;
-  const { openModal } = useModal("stake_unstake_modal");
+  // const { openModal } = useModal("stake_unstake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
   const { colorMode } = useColorMode();
+  const [selectedModal, setSelectedModal] = useRecoilState(modalState);
+
+
+  const openModal = (modalType:string) => {
+    if (modalType) setSelectedModal(modalType);
+  };
+
 
   return (
     <Flex
@@ -124,11 +136,12 @@ function StakeCard(props: StakeCardProps) {
             </Text>
           </Flex>
         )}
+        {/* update_modal */}
         <Flex justifyContent={"space-between"} w={"100%"}>
           <BasicButton
             name={isDisabled ? "Update" : "Stake"}
             h={"33px"}
-            onClick={openModal}
+            onClick={isDisabled? () => openModal("update_modal"):()=>openModal('stake_stake_modal')}
             style={smallerThan1040 ? { width: "100%" } : {}}
             iconName={isDisabled ? "Question" : undefined}
             iconLocation={isDisabled ? "right" : undefined}
@@ -137,7 +150,7 @@ function StakeCard(props: StakeCardProps) {
             isDisabled={isDisabled}
             name={"Unstake"}
             h={"33px"}
-            onClick={openModal}
+            onClick={()=>openModal('stake_unstake_modal')}
             style={smallerThan1040 ? { width: "100%" } : {}}
           ></BasicButton>
         </Flex>

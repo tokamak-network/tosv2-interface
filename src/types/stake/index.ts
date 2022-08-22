@@ -4,6 +4,7 @@ export type StakeTopCardProps = {
   title: string;
   price: string;
   priceUnit: "$";
+  tooltip: string;
 };
 
 export type StakeCardProps = {

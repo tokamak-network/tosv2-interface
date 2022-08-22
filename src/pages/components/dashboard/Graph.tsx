@@ -60,7 +60,7 @@ function Graph(props: {
       // pl={'20px'}
       p={" 18px 20px 10px 20px"}
     >
-      <Flex flexDir={"row"}>
+      <Flex flexDir={"row"} alignItems='center'>
         <Text
           mr="6px"
           fontSize={"12px"}
@@ -82,7 +82,7 @@ function Graph(props: {
         </Tooltip> */}
         <Tooltip
           label={tooltipTitle}
-          closeOnClick={false}
+       
           bg={colorMode === "dark" ? "#1f2128" : "#fff"}
           borderRadius={"3px"}
           color={colorMode==='light'? '#07070c': '#8b8b93'}
@@ -94,7 +94,7 @@ function Graph(props: {
           <IconButton
             aria-label="Search database"
             h={"16px"}
-            w={"16px"}
+            minW={"16px"}
             icon={<QuestionOutlineIcon />}
             bg={"transparent"}
             p={0}

@@ -18,9 +18,7 @@ import { useQuery } from "@apollo/client";
 import commafy from "@/components/commafy";
 
 const SmallCardContainer = () => {
-  const [cardList, setCardList] = useState<
-    Dashboard_SmallCardArrType | undefined
-  >(undefined);
+  const [cardList, setCardList] = useState<Dashboard_SmallCardArrType | undefined >(undefined);
   const [width] = useWindowDimensions();
   const { Treasury_CONTRACT } = useCallContract();
 
@@ -44,24 +42,32 @@ const SmallCardContainer = () => {
           priceUnit: "$",
           priceChangePercent: 15,
           title: "TOS Price",
+          tooltip: true,
+          tooltipMessage:'TOS market price in USD'
         },
         {
           price: commafy(backingPerTos) as string,
           priceUnit: "ETH/TOS",
           priceChangePercent: -15,
           title: "Backing per TOS",
+          tooltip: true,
+          tooltipMessage:'Amount of treasury asset backed per 1 TOS in ETH'
         },
         {
           price: commafy(ltosPrice) as string,
           priceUnit: "$",
           priceChangePercent: 15,
           title: "LTOS Price",
+          tooltip: true,
+          tooltipMessage:'The price of 1 LTOS when they are converted to TOS using LTOS index: LTOS Price = TOS Price x LTOS index'
         },
         {
           price: commafy(ltosIndex) as string,
           priceUnit: "TOS",
           priceChangePercent: 15,
           title: "LTOS Index",
+          tooltip: true,
+          tooltipMessage:'Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours.'
         },
       ];
       setCardList(dummyData);
@@ -91,6 +97,7 @@ const SmallCardContainer = () => {
                     ? { borderBottomRadius: 14 }
                     : {}
                 }
+                tooltipMessage={cardData.tooltipMessage}
               ></SmallCard>
             </Box>
           );
@@ -114,6 +121,7 @@ const SmallCardContainer = () => {
               priceChangePercent={cardData.priceChangePercent}
               title={cardData.title}
               priceUnit={cardData.priceUnit}
+              tooltipMessage={cardData.tooltipMessage}
             ></SmallCard>
           </Box>
         );

@@ -1,16 +1,18 @@
-import {  Flex, Text, useColorMode } from "@chakra-ui/react";
+import {  Flex, Text, useColorMode,Tooltip, IconButton } from "@chakra-ui/react";
 import { useMemo } from "react";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
 
 type TopCardProps = {
   title: string;
   price: string;
   priceUnit: string;
   style?: any;
+  tooltip:string;
 };
 
 const TopCard: React.FC<TopCardProps> = (props) => {
   const { colorMode } = useColorMode();
-  const { title, price, priceUnit, style } = props;
+  const { title, price, priceUnit, style,tooltip } = props;
   
   const PriceContent = useMemo(() => {
     
@@ -73,15 +75,43 @@ const TopCard: React.FC<TopCardProps> = (props) => {
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       {...style}
     >
+      <Flex alignItems={'center'}   mb={"12px"}  h={17}>
       <Text
-        color={colorMode === "dark" ? "gray.100" : "gray.200"}
+        color={colorMode === "dark" ? "gray.100" : "gray.1000"}
         fontSize={12}
         fontWeight={600}
         h={17}
-        mb={"12px"}
+      
+        mr={'6px'}
       >
         {title}
       </Text>
+      <Tooltip
+                label={tooltip}
+                bg={colorMode === "dark" ? "#1f2128" : "#fff"}
+                borderRadius={"3px"}
+                color={colorMode === "light" ? "#07070c" : "#8b8b93"}
+                fontSize="12px"
+                border={
+                  colorMode === "light"
+                    ? "solid 1px #e8edf2"
+                    : "solid 1px #313442"
+                }
+              >
+                <IconButton
+                  aria-label="Search database"
+                  h={"16px"}
+                  minW={"16px"}
+                  icon={<QuestionOutlineIcon />}
+                  bg={"transparent"}
+                  p={0}
+                  _hover={{ bg: "transparent" }}
+                  _active={{ bg: "transparent" }}
+                />
+
+              </Tooltip>
+      </Flex>
+     
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex
           fontWeight={"bold"}
