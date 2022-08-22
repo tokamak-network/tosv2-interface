@@ -41,7 +41,8 @@ function StakeCard(props: StakeCardProps) {
     tokenType,
     isDisabled,
   } = props;
-  const { openModal } = useModal("stake_unstake_modal");
+  const { openModal: openUnstakeModal } = useModal("stake_unstake_modal");
+  const { openModal } = useModal("stake_stake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
   const { colorMode } = useColorMode();
@@ -137,7 +138,7 @@ function StakeCard(props: StakeCardProps) {
             isDisabled={isDisabled}
             name={"Unstake"}
             h={"33px"}
-            onClick={openModal}
+            onClick={openUnstakeModal}
             style={smallerThan1040 ? { width: "100%" } : {}}
           ></BasicButton>
         </Flex>

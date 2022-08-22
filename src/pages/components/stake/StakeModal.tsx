@@ -11,6 +11,8 @@ import {
   Link,
   Box,
   Input,
+  Grid,
+  GridItem,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -20,16 +22,23 @@ import {
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedModalState } from "atom//global/modal";
+import { selectedModalData, selectedModalState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
-import { inputBalanceState, inputState } from "atom//global/input";
-import useUser from "hooks/useUser";
+import TokenSymbol from "common/token/TokenSymol";
+import question from "assets/icons/question.svg";
+import useCallContract from "hooks/useCallContract";
+import useBondModal from "hooks/bond/useBondModal";
+import useInputData from "hooks/bond/useInputData";
+import { inputBalanceState, inputState } from "atom/global/input";
+import commafy from "@/components/commafy";
+import { BondCardProps } from "types/bond";
+import { convertToWei } from "@/components/number";
 
 function StakeGraph() {
   const labelStyles = {
@@ -37,21 +46,29 @@ function StakeGraph() {
     ml: "-2.5",
     fontSize: "sm",
   };
+  const [sliderValue, setSliderValue] = useState(0);
+  const [showTooltip, setShowTooltip] = useState(false);
   const oldValues = useRecoilValue(inputBalanceState);
   const [value, setValue] = useRecoilState(inputState);
 
-  const { colorMode } = useColorMode();
-  const [sliderValue, setSliderValue] = useState(0);
-  const [showTooltip, setShowTooltip] = useState(false);
-  return (
-    <Flex w={"100%"} h={"70px"} pos="relative">
-      {/* diagonal line */}
+  useEffect(() => {
+    setValue({ ...oldValues, stake_stake_modal_period: sliderValue });
+  }, [sliderValue]);
 
+  // useEffect(() => {
+  //   console.log(value.stake_stake_modal_period);
+  //   setSliderValue(Number(value.stake_stake_modal_period));
+  // }, [value.stake_stake_modal_period]);
+
+  const { colorMode } = useColorMode();
+  return (
+    <Flex w={"100%"} h="70px" pos="relative">
       <Slider
         aria-label="slider-ex-1"
         defaultValue={0}
         min={0}
         max={156}
+        value={sliderValue}
         onChange={(val: any) => setSliderValue(val)}
         h={"10px"}
         alignSelf={"end"}
@@ -76,6 +93,21 @@ function StakeGraph() {
         <SliderMark value={156} {...labelStyles}>
           3y
         </SliderMark>
+
+        {/* <SliderMark value={25} {...labelStyles}>
+          25%
+        </SliderMark> */}
+        {/* <SliderMark
+          value={sliderValue}
+          textAlign="center"
+          bg="blue.500"
+          color="white"
+          mt="-10"
+          ml="-5"
+          w="12"
+        >
+          {sliderValue} STOS
+        </SliderMark> */}
         <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
           <SliderFilledTrack bg={"#2775ff"} />
         </SliderTrack>
@@ -100,9 +132,14 @@ function StakeGraph() {
   );
 }
 
-function BottomContent(props: { title: string; content: string }) {
-  const { title, content } = props;
+function BottomContent(props: {
+  title: string;
+  content: string;
+  tooltip?: boolean;
+}) {
+  const { title, content, tooltip } = props;
   const { colorMode } = useColorMode();
+
   return (
     <Flex>
       <Flex
@@ -111,9 +148,22 @@ function BottomContent(props: { title: string; content: string }) {
         fontSize={14}
         mt={"9px"}
       >
-        <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
-          {title}
-        </Text>
+        <Flex>
+          <Text
+            color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+            mr={"6px"}
+          >
+            {title}
+          </Text>
+          {tooltip ? (
+            <Tooltip label="" placement="bottom">
+              <Image src={question} alt={""} height={"16px"} width={"16px"} />
+            </Tooltip>
+          ) : (
+            <></>
+          )}
+        </Flex>
+
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
           fontWeight={600}
@@ -125,40 +175,110 @@ function BottomContent(props: { title: string; content: string }) {
   );
 }
 
-function StakeModal() {
-  const selectedModal = useRecoilValue(selectedModalState);
+function Tile(props: {
+  title: string;
+  content: string | undefined;
+  symbol?: string;
+}) {
+  const { title, content, symbol } = props;
+  const { colorMode } = useColorMode();
+  return (
+    <Box
+      display={"flex"}
+      flexDir={"column"}
+      w={"152px"}
+      alignItems={"center"}
+      mb={"15px"}
+    >
+      <Flex alignItems={"center"}>
+        <Text
+          color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+          h={"17px"}
+          mb={"3px"}
+          fontWeight={600}
+          fontSize={12}
+          textAlign="center"
+          mr={"6px"}
+        >
+          {title}
+        </Text>
+        <Tooltip label="" placement="bottom">
+          <Image src={question} alt={""} height={"16px"} width={"16px"} />
+        </Tooltip>
+      </Flex>
+
+      <Flex fontWeight={"bold"} h={"33px"}>
+        <Text
+          color={colorMode === "dark" ? "white.100" : "gray.800"}
+          fontSize={24}
+          mr={2}
+        >
+          {content || "-"}
+        </Text>
+        <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontSize={14}
+          pt={"5px"}
+          lineHeight={"33px"}
+        >
+          {symbol ? symbol : ""}
+        </Text>
+      </Flex>
+    </Box>
+  );
+}
+
+function BondModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
-  const balanceValue = useRecoilValue(inputBalanceState);
-  const { userBalance } = useUser();
+  const { selectedModalData, selectedModal } = useModal();
+  const { bondModalData } = useBondModal();
+  const oldValues = useRecoilValue(inputBalanceState);
+  const { bondInputData } = useInputData(oldValues.stake_stake_modal_balance);
+  const { BondDepositoryProxy_CONTRACT } = useCallContract();
+
+  const propData = selectedModalData as BondCardProps;
+  const marketId = propData.index;
 
   const contentList = [
     {
-      title: "Amount",
-      content: "10 DAI ",
+      title: "You Give",
+      content: `${oldValues.stake_stake_modal_balance || "-"} ETH`,
+      tooltip: false,
     },
     {
-      title: "Lock-Up Period",
-      content: "1 Year",
+      title: "You Will Get",
+      content: `${bondInputData?.youWillGet || "-"}`,
+      tooltip: true,
     },
     {
-      title: "Bond Discounts Rate",
-      content: "0.5%",
-    },
-    {
-      title: "Rewards (after Lock-up period)",
-      content: "100 TOS",
-    },
-    {
-      title: "Earn sTOS",
-      content: "1,000 sTOS",
-    },
-    {
-      title: "TOS APY",
-      content: "30%",
+      title: "End Time",
+      content: `${bondInputData?.endTime || "-"}`,
+      tooltip: true,
     },
   ];
+
+  const callBond = useCallback(() => {
+    if (BondDepositoryProxy_CONTRACT) {
+      console.log("---");
+      console.log(
+        marketId,
+        convertToWei(oldValues.stake_stake_modal_balance),
+        oldValues.stake_stake_modal_period
+      );
+      return BondDepositoryProxy_CONTRACT.ETHDeposit(
+        marketId,
+        convertToWei(oldValues.stake_stake_modal_balance),
+        { value: convertToWei(oldValues.stake_stake_modal_balance) }
+      );
+    }
+  }, [
+    oldValues.stake_stake_modal_balance,
+    oldValues.stake_stake_modal_period,
+    BondDepositoryProxy_CONTRACT,
+    marketId,
+  ]);
 
   return (
     <Modal
@@ -178,7 +298,7 @@ function StakeModal() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
+              <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={20}
@@ -186,6 +306,7 @@ function StakeModal() {
                 >
                   Stake
                 </Text>
+
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}
@@ -197,10 +318,21 @@ function StakeModal() {
               </Flex>
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
+                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
+                  <Tile
+                    title={"Next rebase"}
+                    content={`${bondModalData?.bondPrice}`}
+                  />
+                  <Tile
+                    title={"LTOS Index"}
+                    content={`${bondModalData?.discount}`}
+                  />
+                </Flex>
                 <Flex mb={"9px"}>
                   <BalanceInput
                     w={"100%"}
                     h={45}
+                    placeHolder={"Enter an amount of ETH"}
                     atomKey={"stake_stake_modal_balance"}
                   ></BalanceInput>
                 </Flex>
@@ -212,7 +344,7 @@ function StakeModal() {
                   mb={"12px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userBalance.TOSBalance} TOS</Text>
+                  <Text>1,000 WTON</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text
@@ -222,23 +354,17 @@ function StakeModal() {
                     Lock-Up Period
                   </Text>
                   <CustomCheckBox
-                    pageKey="Stake_screen"
+                    pageKey="Bond_screen"
                     value={""}
                     valueKey={""}
                   ></CustomCheckBox>
-                  <Text
-                    ml={"9px"}
-                    color={colorMode === "light" ? "gray.100" : "gray.1000"}
-                  >
-                    5 days Lock-Up
-                  </Text>
-                  {/* <Input w={"120px"} h={"39px"} ml={"auto"}></Input> */}
+                  <Text ml={"9px"}>5 days Lock-Up</Text>
                   <TextInput
-                    w={"120px"}
-                    h={45}
+                    w={"170px"}
+                    h={"39px"}
                     atomKey={"stake_stake_modal_period"}
-                    //@ts-ignore
-                    value={balanceValue.stake_stake_modal_period}
+                    placeHolder={"1 Weeks"}
+                    style={{ marginLeft: "auto" }}
                   ></TextInput>
                 </Flex>
               </Flex>
@@ -258,13 +384,19 @@ function StakeModal() {
                       title={content.title}
                       content={content.content}
                       key={content.title + index}
+                      tooltip={content.tooltip}
                     ></BottomContent>
                   );
                 })}
               </Flex>
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
-              <SubmitButton w={460} h={42} name="Approve"></SubmitButton>
+              <SubmitButton
+                w={460}
+                h={42}
+                name="Bond"
+                onClick={callBond}
+              ></SubmitButton>
             </Flex>
             <Flex
               fontSize={11}
@@ -288,4 +420,4 @@ function StakeModal() {
   );
 }
 
-export default StakeModal;
+export default BondModal;

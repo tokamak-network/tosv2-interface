@@ -51,9 +51,14 @@ function useBondModal() {
     async function fetchAsyncData() {
       //   const ltosIndex = await StakingV2Proxy_CONTRACT?.possibleIndex();
       if (propData && apiData) {
+        const marketData = await BondDepositoryProxy_CONTRACT?.viewMarket(
+          propData.index
+        );
+
         const maxBondWei =
-          await BondDepositoryProxy_CONTRACT?.purchasableAseetAmountAtOneTime(
-            propData.index
+          await BondDepositoryProxy_CONTRACT?.purchasableAssetAmountAtOneTime(
+            marketData.tosPrice,
+            marketData.maxPayout
           );
         const maxBond = convertNumber({
           amount: maxBondWei?.toString(),

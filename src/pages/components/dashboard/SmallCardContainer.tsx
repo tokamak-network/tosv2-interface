@@ -48,7 +48,6 @@ const SmallCardContainer = () => {
         {
           price: commafy(backingPerTos) as string,
           priceUnit: "ETH/TOS",
-          priceChangePercent: -15,
           title: "Backing per TOS",
         },
         {
