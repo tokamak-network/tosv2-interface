@@ -379,7 +379,7 @@ function BondModal() {
 
                         content={bondModalData?.maxBond}
                         symbol={"ETH"}
-                        symbol={"ETH"}
+                       
                         tooltip={
                           "The maximum bondable amount based on the current bond market capacity."
                         }
