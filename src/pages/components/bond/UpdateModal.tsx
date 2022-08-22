@@ -29,6 +29,7 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
+import {ArrowForwardIcon} from '@chakra-ui/icons'
 import { useState } from "react";
 import {
   TextInput,
@@ -36,8 +37,8 @@ import {
   InputWithSymbol,
 } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
-import question from "assets/icons/question.svg";
 import { builtinModules } from "module";
+import BasicTooltip from "common/tooltip/index";
 
 function StakeGraph() {
   const labelStyles = {
@@ -79,21 +80,6 @@ function StakeGraph() {
         <SliderMark value={156} {...labelStyles}>
           3y
         </SliderMark>
-
-        {/* <SliderMark value={25} {...labelStyles}>
-            25%
-          </SliderMark> */}
-        {/* <SliderMark
-            value={sliderValue}
-            textAlign="center"
-            bg="blue.500"
-            color="white"
-            mt="-10"
-            ml="-5"
-            w="12"
-          >
-            {sliderValue} STOS
-          </SliderMark> */}
         <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
           <SliderFilledTrack bg={"#2775ff"} />
         </SliderTrack>
@@ -122,8 +108,18 @@ function BottomContent(props: {
   title: string;
   content: string;
   tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string;
+  secondContent?: string;
 }) {
-  const { title, content, tooltip } = props;
+  const {
+    title,
+    content,
+    tooltip,
+    tooltipMessage,
+    secondTooltip,
+    secondContent,
+  } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -141,28 +137,46 @@ function BottomContent(props: {
           >
             {title}
           </Text>
-          {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
-          ) : (
-            <></>
-          )}
+          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
         </Flex>
 
-        <Text
+       
+        {secondContent ? (
+          <Flex>
+             <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontWeight={600}
+          mr={'6px'}
+        >
+          {content}
+        </Text>
+        <BasicTooltip label={secondTooltip}/>
+            <Text mx={'6px'}>/</Text>
+            <Text>
+            
+              {secondContent}
+            </Text>
+          </Flex>
+        ) : (
+          <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
           fontWeight={600}
         >
           {content}
         </Text>
+        )}
       </Flex>
     </Flex>
   );
 }
 
-function Tile(props: { title: string; content: string; symbol?: string }) {
-  const { title, content, symbol } = props;
+function Tile(props: {
+  title: string;
+  content: string;
+  symbol?: string;
+  tooltip: string;
+}) {
+  const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
   return (
     <Box
@@ -184,9 +198,8 @@ function Tile(props: { title: string; content: string; symbol?: string }) {
         >
           {title}
         </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
+
+        <BasicTooltip label={tooltip} />
       </Flex>
 
       <Flex fontWeight={"bold"} h={"33px"}>
@@ -223,27 +236,35 @@ function UpdateModal() {
       tooltip: false,
     },
     {
-      title: "You Will Get",
-      content: "2 LTOS / 33 sTOS",
+      title: "Current Balance",
+      content: "10 LTOS",
       tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS before the update.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      secondContent: "100 sTOS",
+    },
+    {
+      title: "New Balance",
+      content: "12 LTOS ",
+      tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS after the update.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      secondContent: "100 sTOS",
+    },
+    {
+      title: "Current End Time",
+      content: "2022. 01.10. 21:12 (UTC+9)",
+      tooltip: true,
+      tooltipMessage: "Lock-Up period end time before the update.",
     },
     {
       title: "New End Time",
       content: "2022. 01.12. 23:12 (UTC+9)",
       tooltip: true,
+      tooltipMessage: "Lock-Up period end time after the update.",
     },
-    // {
-    //   title: "Rewards (after Lock-up period)",
-    //   content: "100 TOS",
-    // },
-    // {
-    //   title: "Earn sTOS",
-    //   content: "1,000 sTOS",
-    // },
-    // {
-    //   title: "TOS APY",
-    //   content: "30%",
-    // },
   ];
 
   return (
@@ -275,14 +296,12 @@ function UpdateModal() {
                   >
                     Update
                   </Text>
-                  <Tooltip label="" placement="bottom">
-                    <Image
-                      src={question}
-                      alt={""}
-                      height={"16px"}
-                      width={"16px"}
-                    />
-                  </Tooltip>
+
+                  <BasicTooltip
+                    label={
+                      "Increase sTOS by staking additional TOS or/and extending the Lock-Up period."
+                    }
+                  />
                 </Flex>
 
                 <Flex
@@ -297,9 +316,18 @@ function UpdateModal() {
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
                 <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile title={"Next Rebase"} content={"05:50:20"} />
+                  <Tile
+                    title={"Next Rebase"}
+                    content={"05:50:20"}
+                    tooltip={"Time left until LTOS index is increased."}
+                  />
 
-                  <Tile title={"LTOS Index"} content={"100"} symbol={"TOS"} />
+                  <Tile
+                    title={"LTOS Index"}
+                    content={"100"}
+                    symbol={"TOS"}
+                    tooltip={"Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."}
+                  />
                 </Flex>
                 <Flex mb={"9px"} justifyContent="flex-start">
                   <InputWithSymbol
@@ -334,33 +362,51 @@ function UpdateModal() {
                   <Text>Your Balance</Text>
                   <Text>1,000 WTON</Text>
                 </Flex>
-                {isTosChecked? <Flex flexDir={'column'}> <Flex mb={"9px"}>
-                  <BalanceInput
-                    w={"100%"}
-                    h={45}
-                    atomKey={"stake_stake_modal_balance"}
-                  ></BalanceInput>
-                </Flex>
-                <Flex
-                  fontSize={12}
-                  color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                  h={"17px"}
-                  justifyContent={"space-between"}
-                  mb={"12px"}
-                >
-                  <Text>Your Balance</Text>
-                  <Text>1,000 WTON</Text>
-                </Flex>
-                </Flex>
-                :<></>}
+                {isTosChecked ? (
+                  <Flex flexDir={"column"}>
+                    {" "}
+                    <Flex mb={"9px"}>
+                      <BalanceInput
+                        w={"100%"}
+                        h={45}
+                        atomKey={"stake_stake_modal_balance"}
+                      ></BalanceInput>
+                    </Flex>
+                    <Flex
+                      fontSize={12}
+                      color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
+                      h={"17px"}
+                      justifyContent={"space-between"}
+                      mb={"12px"}
+                    >
+                      <Text>Your Balance</Text>
+                      <Text>1,000 WTON</Text>
+                    </Flex>
+                  </Flex>
+                ) : (
+                  <></>
+                )}
                 <Flex fontSize={12} alignItems="center">
                   <Text
                     mr={"24px"}
                     color={colorMode === "light" ? "gray.800" : "white.200"}
                   >
-                   New Lock-Up Period
+                    New Lock-Up Period
                   </Text>
-                
+                  <Flex
+                    w={"120px"}
+                    h={"39px"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    borderRadius={"8px"}
+                    borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
+                    borderWidth="1px"
+                  >
+                    <Text mr={"6px"}>52 Weeks</Text>
+
+                    <BasicTooltip label={"The current lock-up period."} />
+                  </Flex>
+                  <ArrowForwardIcon mx={'14px'} w={'16px'} h={'16px'} color={'blue.100'}/>
                   <TextInput
                     w={"150px"}
                     h={"39px"}
@@ -385,15 +431,18 @@ function UpdateModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondContent={content.secondContent}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
-                   );
+                  );
                 })}
               </Flex>
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
               <SubmitButton w={460} h={42} name="Update"></SubmitButton>
             </Flex>
-            <Flex
+            {/* <Flex
               fontSize={11}
               color={"#64646f"}
               textAlign="center"
@@ -407,7 +456,7 @@ function UpdateModal() {
                 If this is First time bonding, Please approve Tonstarter to use
                 your DAI for bonding.
               </Text>
-            </Flex>
+            </Flex> */}
           </Flex>
         </ModalBody>
       </ModalContent>

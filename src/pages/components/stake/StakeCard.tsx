@@ -145,6 +145,7 @@ function StakeCard(props: StakeCardProps) {
             style={smallerThan1040 ? { width: "100%" } : {}}
             iconName={isDisabled ? "Question" : undefined}
             iconLocation={isDisabled ? "right" : undefined}
+            tooltip={isDisabled ?'You can increase sTOS by using “Update” function. This costs less gas than using the “Stake” function.':undefined}
           ></BasicButton>
           <BasicButton
             isDisabled={isDisabled}

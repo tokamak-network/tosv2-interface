@@ -12,22 +12,22 @@ const Stake = () => {
   const { colorMode } = useColorMode();  
   const cardList: StakeTopCardProps[] = [
     {
-      title: "TOS Price",
+      title: "Total Value Staked",
       price: "5,000,000,000",
       priceUnit: "$",
-      tooltip:''
+      tooltip:'The total dollar value of all the LTOS.'
     },
     {
-      title: "Backing per TOS",
-      price: "1.00",
-      priceUnit: "$",
-      tooltip:''
+      title: "TOS APY",
+      price: "1.00%",
+      priceUnit: undefined,
+      tooltip:'The annualized percentage yield in TOS for staking. This value is used to increase LTOS index at every rebase period.'
     },
     {
       title: "LTOS Index",
       price: "1.00",
       priceUnit: "$",
-      tooltip:''
+      tooltip:'Number of TOS you get when you unstake 1 LTOS. LTOS index increases at every rebase period.'
     },
   ];
 

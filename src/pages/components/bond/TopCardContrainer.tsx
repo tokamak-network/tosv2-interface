@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { TopCardList } from "types";
 import TopCard from "./TopCard";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import BasicTooltip from "common/tooltip";
 
 function MobileTopCard(props: {
   cardList: {
@@ -53,30 +53,8 @@ function MobileTopCard(props: {
              
               {title}
             </Text>
-            <Tooltip
-                label={tooltip}
-                bg={colorMode === "dark" ? "#1f2128" : "#fff"}
-                borderRadius={"3px"}
-                color={colorMode === "light" ? "#07070c" : "#8b8b93"}
-                fontSize="12px"
-                border={
-                  colorMode === "light"
-                    ? "solid 1px #e8edf2"
-                    : "solid 1px #313442"
-                }
-              >
-                <IconButton
-                  aria-label="Search database"
-                  h={"16px"}
-                  minW={"16px"}
-                  icon={<QuestionOutlineIcon />}
-                  bg={"transparent"}
-                  p={0}
-                  _hover={{ bg: "transparent" }}
-                  _active={{ bg: "transparent" }}
-                />
-
-              </Tooltip>
+          
+              <BasicTooltip label={tooltip} />
               </Flex>
             <Text fontSize={22} color={colorMode === 'dark'? "white.200":'gray.800'} fontWeight={"bold"}>
               {priceUnit} {price}

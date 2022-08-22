@@ -30,6 +30,7 @@ import { useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import { inputBalanceState, inputState } from "atom//global/input";
 import useUser from "hooks/useUser";
+import BasicTooltip from "common/tooltip/index";
 
 function StakeGraph() {
   const labelStyles = {
@@ -100,8 +101,16 @@ function StakeGraph() {
   );
 }
 
-function BottomContent(props: { title: string; content: string }) {
-  const { title, content } = props;
+function BottomContent(props: {
+  title: string;
+  content: string;
+  tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string;
+}) {
+  const { title, content, tooltip,
+    tooltipMessage,
+    secondTooltip, } = props;
   const { colorMode } = useColorMode();
   return (
     <Flex>
@@ -111,17 +120,77 @@ function BottomContent(props: { title: string; content: string }) {
         fontSize={14}
         mt={"9px"}
       >
-        <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
+         <Flex>
+        <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"} mr={'6px'}>
           {title}
         </Text>
+        {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
+        </Flex>
+        <Flex>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
           fontWeight={600}
+          mr={'6px'}
         >
           {content}
         </Text>
+        {secondTooltip? <BasicTooltip label={secondTooltip} />:<></>}
+        </Flex>
       </Flex>
     </Flex>
+  );
+}
+
+function Tile(props: {
+  title: string;
+  content: string;
+  symbol?: string;
+  tooltip: string;
+}) {
+  const { title, content, symbol, tooltip } = props;
+  const { colorMode } = useColorMode();
+  return (
+    <Box
+      display={"flex"}
+      flexDir={"column"}
+      w={"152px"}
+      alignItems={"center"}
+      mb={"15px"}
+    >
+      <Flex alignItems={"center"}>
+        <Text
+          color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+          h={"17px"}
+          mb={"3px"}
+          fontWeight={600}
+          fontSize={12}
+          textAlign="center"
+          mr={"6px"}
+        >
+          {title}
+        </Text>
+
+        <BasicTooltip label={tooltip} />
+      </Flex>
+
+      <Flex fontWeight={"bold"} h={"33px"}>
+        <Text
+          color={colorMode === "dark" ? "white.100" : "gray.800"}
+          fontSize={24}
+          mr={2}
+        >
+          {content}
+        </Text>
+        <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontSize={14}
+          pt={"5px"}
+          lineHeight={"33px"}
+        >
+          {symbol ? symbol : ""}
+        </Text>
+      </Flex>
+    </Box>
   );
 }
 
@@ -135,29 +204,41 @@ function StakeModal() {
 
   const contentList = [
     {
-      title: "Amount",
+      title: "You Give",
       content: "10 DAI ",
+      tooltip: false,
     },
     {
-      title: "Lock-Up Period",
-      content: "1 Year",
+      title: "You will Get",
+      content: "20 LTOS",
+      tooltip: true,
+      tooltipMessage: "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+      secondTooltip: "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
     },
     {
-      title: "Bond Discounts Rate",
-      content: "0.5%",
+      title: "Current Balance",
+      content: "20 LTOS",
+      tooltip: true,
+      tooltipMessage: "Current LTOS balance without Lock-Up period",
+      secondTooltip: "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
+   
     },
     {
-      title: "Rewards (after Lock-up period)",
-      content: "100 TOS",
+      title: "New Balance",
+      content: "100 LTOS",
+      tooltip: true,
+      tooltipMessage: "ANew LTOS balance without Lock-Up period after staking.",
+      secondTooltip: "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
+   
     },
-    {
-      title: "Earn sTOS",
-      content: "1,000 sTOS",
-    },
-    {
-      title: "TOS APY",
-      content: "30%",
-    },
+    // {
+    //   title: "Earn sTOS",
+    //   content: "1,000 sTOS",
+    // },
+    // {
+    //   title: "TOS APY",
+    //   content: "30%",
+    // },
   ];
 
   return (
@@ -197,6 +278,22 @@ function StakeModal() {
               </Flex>
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
+                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
+                  <Tile
+                    title={"Next Rebase"}
+                    content={"05:50:20"}
+                    tooltip={"Time left until LTOS index is increased."}
+                  />
+
+                  <Tile
+                    title={"LTOS Index"}
+                    content={"100"}
+                    symbol={"TOS"}
+                    tooltip={
+                      "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                    }
+                  />
+                </Flex>
                 <Flex mb={"9px"}>
                   <BalanceInput
                     w={"100%"}
@@ -258,6 +355,9 @@ function StakeModal() {
                       title={content.title}
                       content={content.content}
                       key={content.title + index}
+                      tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}

@@ -19,7 +19,6 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
-  IconButton,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
@@ -34,8 +33,7 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
-
+import BasicTooltip from "common/tooltip";
 function StakeGraph() {
   const labelStyles = {
     mt: "2",
@@ -127,32 +125,8 @@ function BottomContent(props: {
             {title}
           </Text>
           {tooltip ? (
-            <Tooltip
-              label={tooltipMessage}
-              bg={colorMode === "dark" ? "#1f2128" : "#fff"}
-              borderRadius={"3px"}
-              aria-label="A tooltip"
-           
-              defaultIsOpen={false}
-              color={colorMode === "light" ? "#07070c" : "#8b8b93"}
-              fontSize="12px"
-              border={
-                colorMode === "light"
-                  ? "solid 1px #e8edf2"
-                  : "solid 1px #313442"
-              }
-            >
-              <IconButton
-                aria-label="Search database"
-                h={"16px"}
-                minW={"16px"}
-                icon={<QuestionOutlineIcon />}
-                bg={"transparent"}
-                p={0}
-                _hover={{ bg: "transparent" }}
-                _active={{ bg: "transparent" }}
-              />
-            </Tooltip>
+          
+            <BasicTooltip label={tooltipMessage} />
           ) : (
             <></>
           )}
@@ -164,33 +138,10 @@ function BottomContent(props: {
         >
           {content}
         </Text>
-        {secondTooltip? <Tooltip
-              label={secondTooltip}
-              bg={colorMode === "dark" ? "#1f2128" : "#fff"}
-              borderRadius={"3px"}
-              aria-label="A tooltip"
-              defaultIsOpen={false}
-              color={colorMode === "light" ? "#07070c" : "#8b8b93"}
-              fontSize="12px"
-              border={
-                colorMode === "light"
-                  ? "solid 1px #e8edf2"
-                  : "solid 1px #313442"
-              }
-             
-            >
-              <IconButton
-                aria-label="Search database"
-                h={"16px"}
-                minW={"16px"}
-                ml={'6px'}
-                icon={<QuestionOutlineIcon />}
-                bg={"transparent"}
-                p={0}
-                _hover={{ bg: "transparent" }}
-                _active={{ bg: "transparent" }}
-              />
-            </Tooltip>:<></> }
+        {secondTooltip?
+     
+        <BasicTooltip label={secondTooltip} />
+            :<></> }
        
         </Flex>
 
@@ -228,29 +179,8 @@ function Tile(props: {
         >
           {title}
         </Text>
-        <Tooltip
-          label={tooltip}
-          bg={colorMode === "dark" ? "#1f2128" : "#fff"}
-          borderRadius={"3px"}
-          aria-label="A tooltip"
-          defaultIsOpen={false}
-          color={colorMode === "light" ? "#07070c" : "#8b8b93"}
-          fontSize="12px"
-          border={
-            colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"
-          }
-        >
-          <IconButton
-            aria-label="Search database"
-            h={"16px"}
-            minW={"16px"}
-            icon={<QuestionOutlineIcon />}
-            bg={"transparent"}
-            p={0}
-            _hover={{ bg: "transparent" }}
-            _active={{ bg: "transparent" }}
-          />
-        </Tooltip>
+      
+        <BasicTooltip label={tooltip} />
       </Flex>
 
       <Flex fontWeight={"bold"} h={"33px"}>

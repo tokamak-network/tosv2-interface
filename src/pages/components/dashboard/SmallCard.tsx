@@ -2,7 +2,7 @@ import { Flex, Text, useColorMode,Tooltip,IconButton } from "@chakra-ui/react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useMemo } from "react";
 import { Dashboard_SmallCardType } from "types/dashboard";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import BasicTooltip from "common/tooltip";
 
 const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
   const { title, price, priceUnit, priceChangePercent, style, tooltip, tooltipMessage } = props;
@@ -59,30 +59,7 @@ const {colorMode}  = useColorMode()
       >
         {title}
       </Text>
-      <Tooltip
-          label={tooltipMessage? tooltipMessage:""}
-          bg={colorMode === "dark" ? "#1f2128" : "#fff"}
-          borderRadius={"3px"}
-          color={colorMode==='light'? '#07070c': '#8b8b93'}
-          fontSize='12px'
-          border={
-            colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"
-          }
-        >
-          <IconButton
-            aria-label="Search database"
-            h={"16px"}
-            minW={"16px"}
-            icon={<QuestionOutlineIcon />}
-            bg={"transparent"}
-            p={0}
-            _hover={{ bg: "transparent" }}
-            _active={{ bg: "transparent" }}
-          />
-       
-
-       
-        </Tooltip>
+        <BasicTooltip label={tooltipMessage} />
       </Flex>
       
       <Flex justifyContent={"space-between"} alignItems={"center"}>

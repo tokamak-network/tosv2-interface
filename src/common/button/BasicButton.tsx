@@ -2,7 +2,7 @@ import { Box, Button, Tooltip, useColorMode, useTheme } from "@chakra-ui/react";
 import Image from "next/image";
 import { useCallback, useMemo } from "react";
 import QuestionIcon from "assets/icons/question.svg";
-
+import BasicTooltip from '../tooltip/index'
 type ButtonIconNames = "Question" | undefined;
 
 type BasicButtonProp = {
@@ -14,9 +14,11 @@ type BasicButtonProp = {
   onClick?: Function;
   iconName?: ButtonIconNames;
   iconLocation?: "left" | "right";
+  tooltip?:string
 };
 
-const getIcon = (iconName: ButtonIconNames) => {
+const getIcon = (iconName: ButtonIconNames, tooltip?: string) => {
+  const { colorMode } = useColorMode();
   const TooltipIcon = () => {
     switch (iconName) {
       case "Question":
@@ -27,14 +29,12 @@ const getIcon = (iconName: ButtonIconNames) => {
   };
 
   return (
-    <Tooltip hasArrow label="Search places" bg="red.600" zIndex={100}>
-      <TooltipIcon></TooltipIcon>
-    </Tooltip>
+  <BasicTooltip label={tooltip} />
   );
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const { name, w, h, isDisabled, style, onClick, iconName, iconLocation } =
+  const { name, w, h, isDisabled, style, onClick, iconName, iconLocation,tooltip } =
     props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -60,9 +60,9 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
       onClick={onClick ? () => onClick() : null}
       zIndex={10}
     >
-      {iconLocation === "left" && getIcon(iconName)}
+      {iconLocation === "left" && getIcon(iconName,tooltip)}
       <Box mx={"6px"}>{name}</Box>
-      {iconLocation === "right" && getIcon(iconName)}
+      {iconLocation === "right" && getIcon(iconName,tooltip)}
     </Button>
   );
 };
