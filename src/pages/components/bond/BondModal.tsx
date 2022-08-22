@@ -33,12 +33,15 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
+
 import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/components/commafy";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/components/number";
+
+import BasicTooltip from "common/tooltip";
 
 function StakeGraph() {
   const labelStyles = {
@@ -93,21 +96,6 @@ function StakeGraph() {
         <SliderMark value={156} {...labelStyles}>
           3y
         </SliderMark>
-
-        {/* <SliderMark value={25} {...labelStyles}>
-          25%
-        </SliderMark> */}
-        {/* <SliderMark
-          value={sliderValue}
-          textAlign="center"
-          bg="blue.500"
-          color="white"
-          mt="-10"
-          ml="-5"
-          w="12"
-        >
-          {sliderValue} STOS
-        </SliderMark> */}
         <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
           <SliderFilledTrack bg={"#2775ff"} />
         </SliderTrack>
@@ -136,8 +124,11 @@ function BottomContent(props: {
   title: string;
   content: string;
   tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string
+
 }) {
-  const { title, content, tooltip } = props;
+  const { title, content, tooltip, tooltipMessage,secondTooltip } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -148,7 +139,7 @@ function BottomContent(props: {
         fontSize={14}
         mt={"9px"}
       >
-        <Flex>
+        <Flex alignItems={'center'}>
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
             mr={"6px"}
@@ -156,20 +147,27 @@ function BottomContent(props: {
             {title}
           </Text>
           {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
+          
+            <BasicTooltip label={tooltipMessage} />
           ) : (
             <></>
           )}
         </Flex>
-
+        <Flex alignItems={'center'}>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
           fontWeight={600}
         >
           {content}
         </Text>
+        {secondTooltip?
+     
+        <BasicTooltip label={secondTooltip} />
+            :<></> }
+       
+        </Flex>
+
+       
       </Flex>
     </Flex>
   );
@@ -177,10 +175,13 @@ function BottomContent(props: {
 
 function Tile(props: {
   title: string;
-  content: string | undefined;
+
+  content: string| undefined;
   symbol?: string;
+  tooltip: string;
 }) {
-  const { title, content, symbol } = props;
+  const { title, content, symbol, tooltip } = props;
+
   const { colorMode } = useColorMode();
   return (
     <Box
@@ -202,9 +203,8 @@ function Tile(props: {
         >
           {title}
         </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
+      
+        <BasicTooltip label={tooltip} />
       </Flex>
 
       <Flex fontWeight={"bold"} h={"33px"}>
@@ -246,16 +246,21 @@ function BondModal() {
       title: "You Give",
       content: `${oldValues.stake_stake_modal_balance || "-"} ETH`,
       tooltip: false,
+      tooltipMessage: "",
     },
     {
       title: "You Will Get",
       content: `${bondInputData?.youWillGet || "-"}`,
       tooltip: true,
+      tooltipMessage: "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+      secondTooltip:'Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.'
+
     },
     {
       title: "End Time",
       content: `${bondInputData?.endTime || "-"}`,
       tooltip: true,
+      tooltipMessage: "LTOS can be unstaked after this time. ",
     },
   ];
 
@@ -331,19 +336,31 @@ function BondModal() {
                     <GridItem>
                       <Tile
                         title={"Bond Price"}
+
                         content={`${bondModalData?.bondPrice}`}
+
+                        tooltip={"Bonding price for 1 TOS in USD."}
+
                       />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"Market Price"}
+
                         content={`${bondModalData?.marketPrice}`}
+
+                        tooltip={"Market price for 1 TOS in USD."}
+
                       />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"Discount"}
+
                         content={`${bondModalData?.discount}`}
+
+                        tooltip={"Discount for bonding."}
+
                       />
                     </GridItem>
                     <GridItem>
@@ -351,13 +368,22 @@ function BondModal() {
                         title={"Min Bond"}
                         content={bondModalData?.minBond}
                         symbol={"ETH"}
+                        tooltip={
+                          "The recommended minimum amount to bond to offset the gas cost."
+                        }
                       />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"Max Bond"}
+
                         content={bondModalData?.maxBond}
                         symbol={"ETH"}
+                        symbol={"ETH"}
+                        tooltip={
+                          "The maximum bondable amount based on the current bond market capacity."
+                        }
+
                       />
                     </GridItem>
                     <GridItem>
@@ -365,6 +391,9 @@ function BondModal() {
                         title={"LTOS Index"}
                         content={bondModalData?.ltosIndex}
                         symbol={"TOS"}
+                        tooltip={
+                          "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                        }
                       />
                     </GridItem>
                   </Grid>
@@ -426,6 +455,8 @@ function BondModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}

@@ -5,25 +5,29 @@ import StakeCardContainer from "pages/components/stake/StakeCardContainer";
 import StakeModal from "pages/components/stake/StakeModal";
 import UnstakeModal from "pages/components/stake/UnstakeModal";
 import { StakeTopCardProps } from "types/stake";
+import UpdateModal from "pages/components/bond/UpdateModal";
 
 const Stake = () => {
   const theme = useTheme();
   const { colorMode } = useColorMode();  
   const cardList: StakeTopCardProps[] = [
     {
-      title: "TOS Price",
+      title: "Total Value Staked",
       price: "5,000,000,000",
       priceUnit: "$",
+      tooltip:'The total dollar value of all the LTOS.'
     },
     {
-      title: "Backing per TOS",
-      price: "1.00",
-      priceUnit: "$",
+      title: "TOS APY",
+      price: "1.00%",
+      priceUnit: undefined,
+      tooltip:'The annualized percentage yield in TOS for staking. This value is used to increase LTOS index at every rebase period.'
     },
     {
       title: "LTOS Index",
       price: "1.00",
       priceUnit: "$",
+      tooltip:'Number of TOS you get when you unstake 1 LTOS. LTOS index increases at every rebase period.'
     },
   ];
 
@@ -34,6 +38,7 @@ const Stake = () => {
       <StakeCardContainer></StakeCardContainer>
       <StakeModal></StakeModal>
       <UnstakeModal></UnstakeModal>
+      <UpdateModal></UpdateModal>
     </Flex>
   );
 };

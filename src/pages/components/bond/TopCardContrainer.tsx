@@ -1,25 +1,39 @@
-import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  useMediaQuery,
+  Tooltip,
+  IconButton,
+  useColorMode,
+} from "@chakra-ui/react";
 import { TopCardList } from "types";
 import TopCard from "./TopCard";
+import BasicTooltip from "common/tooltip";
 
 function MobileTopCard(props: {
-  cardList: { title: string; price: string; priceUnit: string }[];
+  cardList: {
+    title: string;
+    price: string;
+    priceUnit: string;
+    tooltip: string;
+  }[];
 }) {
   const { cardList } = props;
-
+  const { colorMode } = useColorMode();
   return (
     <Flex
       py={"18px"}
       pl={"15px"}
-      bgColor={"gray.600"}
+      bgColor={colorMode === 'dark'? "gray.600": 'white.100'}
       flexDir={"column"}
       borderWidth={1}
-      borderColor={"gray.600"}
+      borderColor={colorMode === 'dark'?"gray.600":'gray.900'}
       borderRadius={14}
       w={"100%"}
     >
       {cardList.map((cardData, index) => {
-        const { title, price, priceUnit } = cardData;
+        const { title, price, priceUnit,tooltip } = cardData;
 
         return (
           <Flex
@@ -27,16 +41,22 @@ function MobileTopCard(props: {
             key={title + index}
             mb={index !== cardList.length - 1 ? "24px" : 0}
           >
+            <Flex>
             <Text
-              color={"gray.100"}
+              color={colorMode === 'dark'?"gray.100":'gray.1000'}
               fontSize={12}
               fontWeight={600}
               h={17}
               mb={"7px"}
+              mr={'6px'}
             >
+             
               {title}
             </Text>
-            <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
+          
+              <BasicTooltip label={tooltip} />
+              </Flex>
+            <Text fontSize={22} color={colorMode === 'dark'? "white.200":'gray.800'} fontWeight={"bold"}>
               {priceUnit} {price}
             </Text>
           </Flex>
@@ -57,13 +77,14 @@ function TopCardContainer(props: { cardList: TopCardList }) {
       ) : (
         <Flex justifyContent={"space-between"} columnGap={"24px"}>
           {cardList?.map((cardData, index) => {
-            const { title, price, priceUnit } = cardData;
+            const { title, price, priceUnit,tooltip } = cardData;
             return (
               <TopCard
                 title={title}
                 price={price}
                 priceUnit={priceUnit}
                 key={title}
+                tooltip={tooltip}
               ></TopCard>
             );
           })}

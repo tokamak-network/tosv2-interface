@@ -3,7 +3,8 @@ import { TokenTypes } from "types";
 export type StakeTopCardProps = {
   title: string;
   price: string;
-  priceUnit: "$";
+  priceUnit: "$"|undefined;
+  tooltip: string;
 };
 
 export type StakeCardProps = {

@@ -10,11 +10,8 @@ import {
   color,
 } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
-import { QuestionOutlineIcon } from "@chakra-ui/icons";
-import question from "assets/icons/question.svg";
-// import Image from "next/image";
 import moment from "moment";
-
+import BasicTooltip from "common/tooltip";
 const selectedFilterState = selector({
   key: "selectedFilterState", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
@@ -60,7 +57,7 @@ function Graph(props: {
       // pl={'20px'}
       p={" 18px 20px 10px 20px"}
     >
-      <Flex flexDir={"row"}>
+      <Flex flexDir={"row"} alignItems="center">
         <Text
           mr="6px"
           fontSize={"12px"}
@@ -70,39 +67,7 @@ function Graph(props: {
           {title}{" "}
         </Text>
 
-        {/* <Tooltip
-          label={tooltipTitle}
-          aria-label="A tooltip"
-          placement="left"
-          isOpen
-          zIndex={100}
-          top={100}
-        >
-          <Image src={question} alt={""} />
-        </Tooltip> */}
-        <Tooltip
-          label={tooltipTitle}
-          closeOnClick={false}
-          bg={colorMode === "dark" ? "#1f2128" : "#fff"}
-          borderRadius={"3px"}
-          color={colorMode==='light'? '#07070c': '#8b8b93'}
-          fontSize='12px'
-          border={
-            colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"
-          }
-        >
-          <IconButton
-            aria-label="Search database"
-            h={"16px"}
-            w={"16px"}
-            icon={<QuestionOutlineIcon />}
-            bg={"transparent"}
-            p={0}
-            _hover={{ bg: "transparent" }}
-          />
-        </Tooltip>
-
-        {/* <Image src={question} /> */}
+        <BasicTooltip label={tooltipTitle} />
       </Flex>
       <Text
         color={colorMode === "dark" ? "white.100" : "gray.800"}

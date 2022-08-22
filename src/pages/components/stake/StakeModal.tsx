@@ -30,6 +30,7 @@ import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useCallback, useEffect, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
+
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
@@ -39,6 +40,9 @@ import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/components/commafy";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/components/number";
+import useUser from "hooks/useUser";
+import BasicTooltip from "common/tooltip/index";
+
 
 function StakeGraph() {
   const labelStyles = {
@@ -136,8 +140,13 @@ function BottomContent(props: {
   title: string;
   content: string;
   tooltip?: boolean;
+
+  tooltipMessage?: string;
+  secondTooltip?: string;
 }) {
-  const { title, content, tooltip } = props;
+  const { title, content, tooltip,
+    tooltipMessage,
+    secondTooltip, } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -148,28 +157,23 @@ function BottomContent(props: {
         fontSize={14}
         mt={"9px"}
       >
-        <Flex>
-          <Text
-            color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-            mr={"6px"}
-          >
-            {title}
-          </Text>
-          {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
-          ) : (
-            <></>
-          )}
-        </Flex>
 
+         <Flex>
+        <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"} mr={'6px'}>
+          {title}
+        </Text>
+        {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
+        </Flex>
+        <Flex>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
           fontWeight={600}
+          mr={'6px'}
         >
           {content}
         </Text>
+        {secondTooltip? <BasicTooltip label={secondTooltip} />:<></>}
+        </Flex>
       </Flex>
     </Flex>
   );
@@ -177,10 +181,12 @@ function BottomContent(props: {
 
 function Tile(props: {
   title: string;
-  content: string | undefined;
+  content: string;
   symbol?: string;
+  tooltip: string;
 }) {
-  const { title, content, symbol } = props;
+  const { title, content, symbol, tooltip } = props;
+
   const { colorMode } = useColorMode();
   return (
     <Box
@@ -202,9 +208,10 @@ function Tile(props: {
         >
           {title}
         </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
+
+
+        <BasicTooltip label={tooltip} />
+
       </Flex>
 
       <Flex fontWeight={"bold"} h={"33px"}>
@@ -213,7 +220,9 @@ function Tile(props: {
           fontSize={24}
           mr={2}
         >
+
           {content || "-"}
+
         </Text>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
@@ -228,7 +237,9 @@ function Tile(props: {
   );
 }
 
+
 function BondModal() {
+
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
@@ -251,12 +262,40 @@ function BondModal() {
       title: "You Will Get",
       content: `${bondInputData?.youWillGet || "-"}`,
       tooltip: true,
+      tooltipMessage: "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+      secondTooltip: "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
+    
     },
     {
       title: "End Time",
       content: `${bondInputData?.endTime || "-"}`,
       tooltip: true,
+
     },
+    {
+      title: "Current Balance",
+      content: "20 LTOS",
+      tooltip: true,
+      tooltipMessage: "Current LTOS balance without Lock-Up period",
+      secondTooltip: "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
+   
+    },
+    {
+      title: "New Balance",
+      content: "100 LTOS",
+      tooltip: true,
+      tooltipMessage: "ANew LTOS balance without Lock-Up period after staking.",
+      secondTooltip: "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
+   
+    },
+    // {
+    //   title: "Earn sTOS",
+    //   content: "1,000 sTOS",
+    // },
+    // {
+    //   title: "TOS APY",
+    //   content: "30%",
+    // },
   ];
 
   const callBond = useCallback(() => {
@@ -322,10 +361,26 @@ function BondModal() {
                   <Tile
                     title={"Next rebase"}
                     content={`${bondModalData?.bondPrice}`}
+                    tooltip={"Time left until LTOS index is increased."}
                   />
                   <Tile
                     title={"LTOS Index"}
                     content={`${bondModalData?.discount}`}
+                    symbol={"TOS"}
+                    tooltip={
+                      "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                    }
+                    
+                  />
+
+                  <Tile
+                    title={"LTOS Index"}
+                    content={"100"}
+                    symbol={"TOS"}
+                    tooltip={
+                      "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                    }
+
                   />
                 </Flex>
                 <Flex mb={"9px"}>
@@ -385,6 +440,10 @@ function BondModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
+
                     ></BottomContent>
                   );
                 })}

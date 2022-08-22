@@ -1,7 +1,6 @@
 import { Flex, useTheme,useColorMode } from "@chakra-ui/react";
 import BondCardContainer from "pages/components/bond/BondCardContainer";
 import BondModal from "pages/components/bond/BondModal";
-import UpdateModal from "./components/bond/UpdateModal";
 import TopCardContainer from "pages/components/bond/TopCardContrainer";
 import GraphContainer from "pages/components/dashboard/GraphContainer";
 import SmallCardContainer from "pages/components/dashboard/SmallCardContainer";
@@ -13,14 +12,16 @@ const Bond = () => {
   const { colorMode } = useColorMode();
   const cardList: BondTopCardProps[] = [
     {
-      title: "TOS Price",
+      title: "Treasury Balance",
       price: "5,000,000,000",
       priceUnit: "$",
+      tooltip:'Total values of non TOS assets held by the Treasury',
     },
     {
-      title: "Backing per TOS",
+      title: "TOS Price",
       price: "1.00",
       priceUnit: "$",
+      tooltip:'TOS market price',
     },
   ];
 
@@ -31,7 +32,7 @@ const Bond = () => {
       <TopCardContainer cardList={cardList}></TopCardContainer>
       <BondCardContainer></BondCardContainer>
       <BondModal></BondModal>
-      <UpdateModal></UpdateModal>
+     
     </Flex>
   );
 };

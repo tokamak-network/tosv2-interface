@@ -1,16 +1,18 @@
-import {  Flex, Text, useColorMode } from "@chakra-ui/react";
+import {  Flex, Text, useColorMode,Tooltip, IconButton } from "@chakra-ui/react";
 import { useMemo } from "react";
+import BasicTooltip from 'common/tooltip/index'
 
 type TopCardProps = {
   title: string;
   price: string;
   priceUnit: string;
   style?: any;
+  tooltip:string;
 };
 
 const TopCard: React.FC<TopCardProps> = (props) => {
   const { colorMode } = useColorMode();
-  const { title, price, priceUnit, style } = props;
+  const { title, price, priceUnit, style,tooltip } = props;
   
   const PriceContent = useMemo(() => {
     
@@ -73,15 +75,21 @@ const TopCard: React.FC<TopCardProps> = (props) => {
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       {...style}
     >
+      <Flex alignItems={'center'}   mb={"12px"}  h={17}>
       <Text
-        color={colorMode === "dark" ? "gray.100" : "gray.200"}
+        color={colorMode === "dark" ? "gray.100" : "gray.1000"}
         fontSize={12}
         fontWeight={600}
         h={17}
-        mb={"12px"}
+      
+        mr={'6px'}
       >
         {title}
       </Text>
+     
+              <BasicTooltip label={tooltip} />
+      </Flex>
+     
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex
           fontWeight={"bold"}

@@ -24,11 +24,11 @@ import { selectedModalState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
-import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import question from "assets/icons/question.svg";
-import { TextInput, BalanceInput } from "common/input/TextInput";
+import BasicTooltip from "common/tooltip/index";
+import { StringValueNode } from "graphql";
 
 function StakeGraph() {
   const labelStyles = {
@@ -96,8 +96,8 @@ function StakeGraph() {
   );
 }
 
-function Tile(props: { title: string; content: string; symbol?: string }) {
-  const { title, content, symbol } = props;
+function Tile(props: { title: string; content: string; symbol?: string;  tooltip: string; }) {
+  const { title, content, symbol,tooltip } = props;
   const { colorMode } = useColorMode();
   return (
     <Box
@@ -119,9 +119,7 @@ function Tile(props: { title: string; content: string; symbol?: string }) {
         >
           {title}
         </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
+       <BasicTooltip label={tooltip} />
       </Flex>
 
       <Flex fontWeight={"bold"} h={"33px"}>
@@ -170,15 +168,16 @@ function UnstakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
-
+  const initialRef = useRef(null);
+const finalRef = useRef(null);
   const contentList = [
     {
-      title: "Unstakable Rewards",
-      content: "100 TOS",
+      title: "You Give",
+      content: "100 LTOS",
     },
     {
-      title: "TOS APY",
-      content: "30%",
+      title: "You Will Get",
+      content: "100 LTOS",
     },
   ];
 
@@ -187,6 +186,8 @@ function UnstakeModal() {
       isOpen={selectedModal === "stake_unstake_modal"}
       isCentered
       onClose={closeModal}
+      initialFocusRef={initialRef}
+      finalFocusRef={initialRef}
     >
       <ModalOverlay />
       <ModalContent
@@ -205,6 +206,7 @@ function UnstakeModal() {
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={20}
                   fontWeight={600}
+                
                 >
                   Unstake
                 </Text>
@@ -223,18 +225,18 @@ function UnstakeModal() {
               {/* Content Bottom */}
             
               <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile title={"Next Rebase"} content={"05:50:20"} />
+                  <Tile title={"Next Rebase"} content={"05:50:20"} tooltip={'Time left until LTOS index is increased.'}/>
 
-                  <Tile title={"LTOS Index"} content={"100"} symbol={"TOS"} />
+                  <Tile title={"LTOS Index"} content={"100"} symbol={"TOS"}  tooltip={'Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours.'}/>
                 </Flex>
-                <Flex mb={"9px"}>
+                {/* <Flex mb={"9px"}>
                   <BalanceInput
                     w={"100%"}
                     h={45}
                     atomKey={"stake_stake_modal_balance"}
                   ></BalanceInput>
-                </Flex>
-                <Flex
+                </Flex> */}
+                {/* <Flex
                   fontSize={12}
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
@@ -243,7 +245,7 @@ function UnstakeModal() {
                 >
                   <Text>Your Balance</Text>
                   <Text>1,000 WTON</Text>
-                </Flex>
+                </Flex> */}
                  
             </Flex>
             <Flex flexDir={"column"} rowGap={"9px"} px={"50px"} mb={'30px'}>
@@ -253,11 +255,12 @@ function UnstakeModal() {
                       title={content.title}
                       content={content.content}
                       key={content.title + index}
+          
                     ></BottomContent>
                   );
                 })}
               </Flex>
-            <Flex flexDir={"column"} alignItems={"center"} rowGap={"15px"}>
+            <Flex flexDir={"column"} alignItems={"center"} rowGap={"15px"}   ref={initialRef}>
               <SubmitButton w={460} h={42} name="Unstake"></SubmitButton>
               {/* <SubmitButton
                 w={460}
