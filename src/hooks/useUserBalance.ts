@@ -4,12 +4,13 @@ import { convertNumber } from "utils/number";
 import useCallContract from "hooks/useCallContract";
 
 const useUserBalance = () => {
-  const { account } = useWeb3React();
+  const { account, library } = useWeb3React();
   const { TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT } = useCallContract();
 
-  const [userTonBalance, setUserTonBalance] = useState<string>("");
-  const [userWTonBalance, setUserWTonBalance] = useState<string>("");
-  const [userTOSBalance, setUserTOSBalance] = useState<string>("");
+  const [userTonBalance, setUserTonBalance] = useState<string>("-");
+  const [userWTonBalance, setUserWTonBalance] = useState<string>("-");
+  const [userTOSBalance, setUserTOSBalance] = useState<string>("-");
+  const [userETHBalance, setUserETHBalance] = useState<string>("-");
 
   useEffect(() => {
     async function fetchBalance() {
@@ -20,6 +21,7 @@ const useUserBalance = () => {
         const ton = await TON_CONTRACT.balanceOf(account);
         const wton = await WTON_CONTRACT.balanceOf(account);
         const tos = await TOS_CONTRACT.balanceOf(account);
+        const eth = await library?.getBalance(account);
 
         const convertedTon = convertNumber({
           amount: ton.toString(),
@@ -34,10 +36,15 @@ const useUserBalance = () => {
           amount: tos.toString(),
           localeString: true,
         });
+        const convertedEth = convertNumber({
+          amount: eth.toString(),
+          localeString: true,
+        });
 
-        setUserTonBalance(convertedTon || "0.00");
-        setUserWTonBalance(convertedWTon || "0.00");
-        setUserTOSBalance(convertedWTon || "0.00");
+        setUserTonBalance(convertedTon || "-");
+        setUserWTonBalance(convertedWTon || "-");
+        setUserTOSBalance(convertedWTon || "-");
+        setUserETHBalance(convertedEth || "-");
       } catch (e) {
         console.log("*****fetch balance err*****");
         console.log(e);
@@ -46,9 +53,9 @@ const useUserBalance = () => {
     if (account) {
       fetchBalance();
     }
-  }, [account, TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT]);
+  }, [account, TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT, library]);
 
-  return { userTonBalance, userWTonBalance, userTOSBalance };
+  return { userTonBalance, userWTonBalance, userTOSBalance, userETHBalance };
 };
 
 export default useUserBalance;

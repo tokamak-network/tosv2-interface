@@ -98,9 +98,6 @@ function useInputData(inputAmount: string, inputPeriod: number) {
     getEstimatedReward,
   ]);
 
-  console.log("--");
-  console.log(bondInputData);
-
   return {
     bondInputData,
   };

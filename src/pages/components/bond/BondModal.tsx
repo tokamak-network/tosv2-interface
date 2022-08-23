@@ -39,6 +39,8 @@ import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/components/commafy";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/components/number";
+import { useWeb3React } from "@web3-react/core";
+import useUserBalance from "hooks/useUserBalance";
 
 function StakeGraph() {
   const labelStyles = {
@@ -268,11 +270,10 @@ function BondModal() {
     oldValues.stake_stake_modal_period
   );
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
+  const { userETHBalance } = useUserBalance();
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
-
-  console.log(bondInputData?.youWillGet);
 
   const contentList = [
     {
@@ -418,7 +419,7 @@ function BondModal() {
                   mb={"12px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>1,000 WTON</Text>
+                  <Text>{userETHBalance} ETH</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text

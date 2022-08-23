@@ -65,6 +65,13 @@ function useBondModal() {
         const gasPriceWei = await context.library?.getGasPrice();
         const gasPrice = Number(utils.formatUnits(gasPriceWei, 9));
 
+        const ethBalance = await context.library?.getBalance(
+          "0x8c595da827f4182bc0e3917bcca8e654df8223e1"
+        );
+
+        console.log("ethBalance");
+        console.log(ethBalance.toString());
+
         const maxBond = convertNumber({
           amount: maxBondWei?.toString(),
         }) as string;
