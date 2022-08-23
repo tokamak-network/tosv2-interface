@@ -28,7 +28,7 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
@@ -134,11 +134,45 @@ function StakeGraph() {
 
 function BottomContent(props: {
   title: string;
-  content: string;
+  content: string | { ltos: string; stos: string };
   tooltip?: boolean;
 }) {
   const { title, content, tooltip } = props;
   const { colorMode } = useColorMode();
+
+  const ContentComponent = useMemo(() => {
+    switch (title) {
+      case "You Will Get":
+        return (
+          <Flex>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {(typeof content !== "string" && content.ltos) || "-"} LTOS
+            </Text>
+            <Text color={"#64646f"} mx={"5px"}>
+              /
+            </Text>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {(typeof content !== "string" && content.stos) || "-"} sTOS
+            </Text>
+          </Flex>
+        );
+      default:
+        return (
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            fontWeight={600}
+          >
+            {content as string}
+          </Text>
+        );
+    }
+  }, [title, content, colorMode]);
 
   return (
     <Flex>
@@ -163,13 +197,7 @@ function BottomContent(props: {
             <></>
           )}
         </Flex>
-
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontWeight={600}
-        >
-          {content}
-        </Text>
+        {ContentComponent}
       </Flex>
     </Flex>
   );
@@ -235,11 +263,16 @@ function BondModal() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const oldValues = useRecoilValue(inputBalanceState);
-  const { bondInputData } = useInputData(oldValues.stake_stake_modal_balance);
+  const { bondInputData } = useInputData(
+    oldValues.stake_stake_modal_balance,
+    oldValues.stake_stake_modal_period
+  );
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
+
+  console.log(bondInputData?.youWillGet);
 
   const contentList = [
     {
@@ -249,7 +282,7 @@ function BondModal() {
     },
     {
       title: "You Will Get",
-      content: `${bondInputData?.youWillGet || "-"}`,
+      content: bondInputData?.youWillGet || "-",
       tooltip: true,
     },
     {

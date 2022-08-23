@@ -1,18 +1,23 @@
 import useModal from "hooks/useModal";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { BondCardProps } from "types/bond";
 import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";
 import commafy from "@/components/commafy";
 import useCallContract from "hooks/useCallContract";
 import { convertNumber, convertToWei } from "@/components/number";
 import { BigNumber } from "ethers";
+import moment from "moment";
+import Decimal from "decimal.js";
 
 type BondInputData = {
-  youWillGet: string;
+  youWillGet: {
+    ltos: string;
+    stos: string;
+  };
   endTime: string;
 };
 
-function useInputData(inputAmount: string) {
+function useInputData(inputAmount: string, inputPeriod: number) {
   const { selectedModalData } = useModal();
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
@@ -20,13 +25,47 @@ function useInputData(inputAmount: string) {
     undefined
   );
 
-  const { BondDepositoryProxy_CONTRACT, StakingV2Proxy_CONTRACT } =
-    useCallContract();
+  const {
+    BondDepositoryProxy_CONTRACT,
+    StakingV2Proxy_CONTRACT,
+    LockTOS_CONTRACT,
+  } = useCallContract();
+
+  // set Estimated reward;
+  const getEstimatedReward = useCallback(
+    async (date: number) => {
+      if (
+        inputAmount !== "" &&
+        inputAmount !== "0" &&
+        inputAmount !== undefined &&
+        inputPeriod > 0 &&
+        LockTOS_CONTRACT
+      ) {
+        const maxTime = await LockTOS_CONTRACT.maxTime();
+        const maxPeriod = parseInt(maxTime);
+        const numValue = Number(inputAmount.replaceAll(",", ""));
+        const avgProfit = numValue / maxPeriod;
+        const estimatedReward = avgProfit * (date - moment().unix());
+        const deciamlNum = new Decimal(estimatedReward);
+        const resultNum = deciamlNum.toFixed(3, Decimal.ROUND_HALF_UP);
+        const result = Number(resultNum).toFixed(2);
+        return String(Number(result));
+      }
+      return "-";
+    },
+    [LockTOS_CONTRACT, inputPeriod, inputAmount]
+  );
 
   useEffect(() => {
     const fetchListdata = async () => {
       if (inputAmount === "") {
-        return;
+        return setBondInputData({
+          youWillGet: {
+            ltos: "-",
+            stos: "-",
+          },
+          endTime: "-",
+        });
       }
       if (BondDepositoryProxy_CONTRACT && StakingV2Proxy_CONTRACT) {
         const tosAmount =
@@ -36,9 +75,13 @@ function useInputData(inputAmount: string) {
           );
         const stakingIndex = await StakingV2Proxy_CONTRACT.possibleIndex();
         const LTOS_BN = BigNumber.from(tosAmount).div(stakingIndex);
+        const endTime = await getEstimatedReward(inputPeriod);
         setBondInputData({
-          youWillGet: convertNumber({ amount: LTOS_BN.toString() }) as string,
-          endTime: "",
+          youWillGet: {
+            ltos: `${convertNumber({ amount: LTOS_BN.toString() }) as string}`,
+            stos: "",
+          },
+          endTime,
         });
       }
     };
@@ -51,7 +94,12 @@ function useInputData(inputAmount: string) {
     StakingV2Proxy_CONTRACT,
     marketId,
     inputAmount,
+    inputPeriod,
+    getEstimatedReward,
   ]);
+
+  console.log("--");
+  console.log(bondInputData);
 
   return {
     bondInputData,

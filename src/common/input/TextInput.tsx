@@ -34,9 +34,6 @@ const TextInput: React.FC<InputProp> = (props) => {
     setValue({ ...oldValues, [atomKey]: event.target.value });
   };
 
-  console.log("--");
-  console.log(value);
-
   return (
     <InputGroup w={w || 270} {...style}>
       <Input

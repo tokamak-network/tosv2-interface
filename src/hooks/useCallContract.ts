@@ -12,6 +12,7 @@ import StakingV2Abi from "services/abis/StakingV2.json";
 import StakingV2ProxyAbi from "services/abis/StakingV2Proxy.json";
 import BondDepositoryAbi from "services/abis/BondDepository.json";
 import BondDepositoryProxyAbi from "services/abis/BondDepositoryProxy.json";
+import LockTOSAbi from "services/abis/LockTOS.json";
 
 import useContract from "hooks/useContract";
 import CONTRACT_ADDRESS from "services/addresses/contract";
@@ -29,6 +30,7 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
     StakingV2Proxy,
     BondDepository,
     BondDepositoryProxy,
+    LockTOS,
   } = CONTRACT_ADDRESS;
 
   const TON_CONTRACT = useContract(TON_ADDRESS, TON.abi);
@@ -55,6 +57,7 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
     BondDepositoryProxy,
     BondDepositoryAbi.abi
   );
+  const LockTOS_CONTRACT = useContract(LockTOS, LockTOSAbi.abi);
 
   return {
     TON_CONTRACT,
@@ -70,6 +73,7 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
     StakingV2Proxy_CONTRACT,
     BondDepository_CONTRACT,
     BondDepositoryProxy_CONTRACT,
+    LockTOS_CONTRACT,
   };
 };
 
