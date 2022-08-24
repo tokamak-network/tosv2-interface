@@ -321,6 +321,7 @@ function BondModal() {
     oldValues.stake_stake_modal_period,
     BondDepositoryProxy_CONTRACT,
     marketId,
+    fiveDaysLockup,
   ]);
 
   return (

@@ -235,7 +235,10 @@ function BondModal() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const oldValues = useRecoilValue(inputBalanceState);
-  const { bondInputData } = useInputData(oldValues.stake_stake_modal_balance);
+  const { bondInputData } = useInputData(
+    oldValues.stake_stake_modal_balance,
+    oldValues.stake_stake_modal_period
+  );
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
 
   const propData = selectedModalData as BondCardProps;
