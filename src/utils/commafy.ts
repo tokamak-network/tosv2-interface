@@ -2,6 +2,9 @@ function commafy(num: number | string | undefined) {
   if (num === undefined) {
     return;
   }
+  if (num === 0 || num === "0") {
+    return "0.00";
+  }
   let str = num.toString().split(".");
   if (str[0].length >= 4) {
     str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,");
