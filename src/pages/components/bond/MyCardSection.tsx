@@ -40,6 +40,7 @@ function MyCardSection() {
           info={cardData.info}
           tokenType={cardData.tokenType}
           key={cardData.tokenType + index}
+          isOver={cardData.isOver}
         ></MyCard>
       ))}
     </SimpleGrid>
