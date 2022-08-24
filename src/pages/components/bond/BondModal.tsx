@@ -271,6 +271,7 @@ function BondModal() {
   );
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
+  const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
@@ -301,6 +302,14 @@ function BondModal() {
         convertToWei(oldValues.stake_stake_modal_balance),
         oldValues.stake_stake_modal_period
       );
+      if (fiveDaysLockup) {
+        return BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
+          marketId,
+          convertToWei(oldValues.stake_stake_modal_balance),
+          oldValues.stake_stake_modal_period,
+          { value: convertToWei(oldValues.stake_stake_modal_balance) }
+        );
+      }
       return BondDepositoryProxy_CONTRACT.ETHDeposit(
         marketId,
         convertToWei(oldValues.stake_stake_modal_balance),
@@ -431,7 +440,9 @@ function BondModal() {
                   <CustomCheckBox
                     pageKey="Bond_screen"
                     value={""}
-                    valueKey={""}
+                    valueKey={"Bond_Modal"}
+                    state={fiveDaysLockup}
+                    setState={setFiveDaysLockup}
                   ></CustomCheckBox>
                   <Text ml={"9px"}>5 days Lock-Up</Text>
                   <TextInput

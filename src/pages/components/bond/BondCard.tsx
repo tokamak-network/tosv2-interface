@@ -1,4 +1,4 @@
-import { convertTimeStamp, getNowTimeStamp } from "@/components/convertTime";
+import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import BasicButton from "common/button/BasicButton";

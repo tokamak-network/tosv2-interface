@@ -65,13 +65,6 @@ function useBondModal() {
         const gasPriceWei = await context.library?.getGasPrice();
         const gasPrice = Number(utils.formatUnits(gasPriceWei, 9));
 
-        const ethBalance = await context.library?.getBalance(
-          "0x8c595da827f4182bc0e3917bcca8e654df8223e1"
-        );
-
-        console.log("ethBalance");
-        console.log(ethBalance.toString());
-
         const maxBond = convertNumber({
           amount: maxBondWei?.toString(),
         }) as string;
@@ -90,7 +83,6 @@ function useBondModal() {
         // ex:
         // gasPrice = 30 gwei, Discount = 5% = 0.05
         // Min Bond = 285,753 x 30 / 1e9 / 0.05 = 0.1714518 ETH
-
         const minbond = (285753 * gasPrice) / 1e9 / discount;
 
         setBondModalData({

@@ -15,13 +15,12 @@ function BondCardSection() {
   const { loading, error, data } = useQuery(GET_BOND_LIST, {
     variables: {
       period: "-1",
-      limit: 1,
     },
   });
 
   useEffect(() => {
     if (data) {
-      const { bonds } = data.getBondList[0];
+      const bonds = data.getBondList;
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
         const { bondPrice, capacity, index, tokenLogo, totalSold, endTime } =
           bond;

@@ -1,7 +1,7 @@
 import { Box, Checkbox, Input, useColorMode, useTheme } from "@chakra-ui/react";
 import useCheckbox from "hooks/useCheckbox";
 import usePathName from "hooks/usePathName";
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { PageKey, Pages } from "types";
 
 type CheckBoxProp = {
@@ -14,6 +14,8 @@ type CheckBoxProp = {
   pageKey: PageKey;
   isError?: boolean;
   isChecked?: boolean;
+  state?: boolean;
+  setState?: React.Dispatch<SetStateAction<boolean>>;
 };
 
 const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
@@ -27,6 +29,8 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
     pageKey,
     isError,
     isChecked,
+    state,
+    setState,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -34,39 +38,43 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   const { pathName } = usePathName();
   const [isCheckedAll, setIsChecked] = useState<boolean>(false);
 
-  // console.log(selectedCheckbox);
+  // useEffect(() => {
+  //   const isCheckedAll = selectedCheckbox?.filter((data) => {
+  //     if (data.pageKey === pageKey) {
+  //       return data.values === "selectAll";
+  //     }
+  //   });
 
-  useEffect(() => {
-    const isCheckedAll = selectedCheckbox?.filter((data) => {
-      if (data.pageKey === pageKey) {
-        return data.values === "selectAll";
-      }
-    });
+  //   if (isCheckedAll) {
+  //     return setIsChecked(isCheckedAll.length > 0);
+  //   }
+  // }, [selectedCheckbox, pageKey]);
 
-    if (isCheckedAll) {
-      return setIsChecked(isCheckedAll.length > 0);
-    }
-  }, [selectedCheckbox, pageKey]);
-
-  useEffect(() => {
-    // (async () => {
-    // })();
-  }, [isCheckedAll]);
+  // useEffect(() => {
+  //   // (async () => {
+  //   // })();
+  // }, [isCheckedAll]);
 
   return (
     <Checkbox
       size={"lg"}
-      style={{ borderRadius: "4px", borderColor: colorMode === 'dark'? '#535353':'#c6cbd9' }}
-      isChecked={isCheckedAll}
+      style={{
+        borderRadius: "4px",
+        borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
+      }}
+      isChecked={state}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = e.target.checked;
-        setIsChecked(isChecked);
-        setThisCheckboxValue({
-          page: pathName as Pages,
-          values: value,
-          key: `${pathName}_${valueKey}`,
-          pageKey,
-        });
+        if (setState) {
+          setState(isChecked);
+        }
+        // setIsChecked(isChecked);
+        // setThisCheckboxValue({
+        //   page: pathName as Pages,
+        //   values: isChecked,
+        //   key: `${pathName}_${valueKey}`,
+        //   pageKey,
+        // });
       }}
     ></Checkbox>
   );
