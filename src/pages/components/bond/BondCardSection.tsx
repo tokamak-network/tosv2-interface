@@ -29,8 +29,7 @@ function BondCardSection() {
           bondingPrice: bondPrice,
           discountRate: "0.5%",
           tokenType: "ETH",
-          totalSold: `temp`,
-          // `${commafy(totalSold)} TOS`,
+          totalSold: `${commafy(totalSold)} TOS`,
           endTime,
           index,
         };
