@@ -4,12 +4,14 @@ import ARROW_RIGHT from "assets/icons/arrow-right.svg";
 import { useState } from "react";
 import SubmitButton from "common/button/SubmitButton";
 import useModal from "hooks/useModal";
+import useUserBalance from "hooks/useUserBalance";
 
 function StakeTitle() {
   const [radioValue, setRadioValue] = useState<"All" | "Bond" | "Stake">("All");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const { openModal } = useModal("stake_stake_modal");
   const { colorMode } = useColorMode();
+  const { userLTOSBalance, userSTOSBalance } = useUserBalance();
   return (
     <Flex
       // h={"31px"}
@@ -19,7 +21,10 @@ function StakeTitle() {
       justifyContent={"space-between"}
       w={"100%"}
     >
-      <Flex justifyContent={smallerThan1040 ? "space-between" : {}}>
+      <Flex
+        justifyContent={smallerThan1040 ? "space-between" : {}}
+        alignItems={"center"}
+      >
         <Text
           fontSize={22}
           fontWeight={600}
@@ -29,9 +34,9 @@ function StakeTitle() {
           My Staked
         </Text>
 
-        <Flex>
+        <Flex alignItems={"center"}>
           <Text fontSize={14} color={"blue.200"} mr={"6px"}>
-            My sTOS : 100 sTOS
+            Balance : {userLTOSBalance} LTOS / {userSTOSBalance}sTOS
           </Text>
           <Image src={ARROW_RIGHT} alt={"ARROW_RIGHT"}></Image>
         </Flex>

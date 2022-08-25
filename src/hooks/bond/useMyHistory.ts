@@ -1,5 +1,5 @@
 import { convertNumber } from "@/components/number";
-import { getTimeDiff } from "@/components/time";
+import { isTimeOver } from "@/components/time";
 import { useQuery } from "@apollo/client";
 import { useWeb3React } from "@web3-react/core";
 import { GET_BOND_MYHISTORY } from "graphql/bond/getBond";
@@ -40,7 +40,7 @@ function useMyHistory() {
             const { ltos, marketId, tosPrice } = data;
             const convertedLtos = convertNumber({ amount: ltos.toString() });
             const bondPrice = (1 / tosPrice) * 1e18 * ethPrice;
-            const isOver = getTimeDiff(Number(blockTimestamp));
+            const isOver = isTimeOver(Number(blockTimestamp));
 
             const cardData: MyCardProps = {
               info: [

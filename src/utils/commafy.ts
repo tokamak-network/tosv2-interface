@@ -1,6 +1,6 @@
-function commafy(num: number | string | undefined) {
+function commafy(num: number | string) {
   if (num === undefined) {
-    return;
+    return num;
   }
   if (num === 0 || num === "0") {
     return "0.00";

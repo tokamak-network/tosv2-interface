@@ -1,5 +1,6 @@
 import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
+import useStakeList from "hooks/stake/useStakeList";
 import usePagination from "hooks/usePagination";
 import { useEffect, useState } from "react";
 import { StakeCardProps } from "types/stake";
@@ -10,124 +11,9 @@ function StakeCardSection() {
   const [cardList, setCardList] = useState<StakeCardProps[]>([]);
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { rowNum, currentPageList, setCurrentPage } = usePagination(cardList);
+  const { stakeCards } = useStakeList();
 
-  useEffect(() => {
-    const dummyData: StakeCardProps[] = [
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-    ];
-    setCardList(dummyData);
-  }, []);
+  console.log(stakeCards);
 
   return (
     <Flex flexDir={"column"}>
@@ -138,17 +24,16 @@ function StakeCardSection() {
         justifyContent={isSmallerThan750 ? "center" : ""}
         flexWrap={"wrap"}
       >
-        {currentPageList?.map((cardData, index) => (
-          <StakeCard
-            amount={cardData.amount}
-            discountRate={cardData.discountRate}
-            lockupPeriod={cardData.lockupPeriod}
-            lockupPeriodDate={cardData.lockupPeriodDate}
-            tokenType={cardData.tokenType}
-            isDisabled={cardData.isDisabled}
-            key={cardData.amount + index}
-          ></StakeCard>
-        ))}
+        {stakeCards?.map((cardData: StakeCardProps, index: number) => {
+          if (cardData) {
+            return (
+              <StakeCard
+                cardData={cardData}
+                key={cardData.principal + index}
+              ></StakeCard>
+            );
+          }
+        })}
       </Flex>
       <StakeScreenBottom
         rowNum={rowNum}

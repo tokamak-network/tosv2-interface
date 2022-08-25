@@ -16,15 +16,18 @@ function ContentComponent(props: {
 
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
-      <Text color={colorMode === 'dark'? "gray.100": 'gray.1000'}>{title}</Text>
-      <Text color={colorMode === 'dark'?"white.200": 'gray.800'}>{content}</Text>
+      <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
+        {title}
+      </Text>
+      <Text color={colorMode === "dark" ? "white.200" : "gray.800"}>
+        {content}
+      </Text>
     </Flex>
   );
 }
 
 function MyCard(props: MyCardProps) {
-  const { info, tokenType } = props;
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const { info, tokenType, isOver } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -33,7 +36,7 @@ function MyCard(props: MyCardProps) {
       w={"362px"}
       h={"200px"}
       borderWidth={1}
-      borderColor={colorMode === "dark" ?"gray3600":'gray.900'}
+      borderColor={colorMode === "dark" ? "gray3600" : "gray.900"}
       borderRadius={10}
       bg={colorMode === "dark" ? "gray.600" : "white.100"}
       pt={"18px"}
@@ -48,7 +51,7 @@ function MyCard(props: MyCardProps) {
             fontWeight={600}
             textAlign={"center"}
             lineHeight={"46px"}
-            color={colorMode === 'light'? 'gray.800' :"white.200"}
+            color={colorMode === "light" ? "gray.800" : "white.200"}
             ml={"12px"}
           >
             {tokenType}
@@ -56,12 +59,12 @@ function MyCard(props: MyCardProps) {
         </Flex>
         <Flex
           fontSize={12}
-          color={isDisabled ? "blue.200" : "red.100"}
+          color={isOver ? "blue.200" : "red.100"}
           textAlign={"center"}
           alignItems="center"
           justifyContent={"center"}
         >
-          <Text>{isDisabled ? "Unlocked" : "Locked"}</Text>
+          <Text>{isOver ? "Unlocked" : "Locked"}</Text>
         </Flex>
       </Flex>
       {info?.map((infoData, index: number) => {
@@ -80,9 +83,11 @@ function MyCard(props: MyCardProps) {
         mb={"21px"}
         color={"#eaeaf4"}
       >
-        <Text color={colorMode ==='dark'? '#eaeaf4':'#16161e'}>2022. 12. 26 12:58 ~ 12. 31 12:59</Text>
+        <Text color={colorMode === "dark" ? "#eaeaf4" : "#16161e"}>
+          2022. 12. 26 12:58 ~ 12. 31 12:59
+        </Text>
       </Flex>
-      <Flex alignItems="center" justifyContent={isDisabled ? "" : "center"}>
+      {/* <Flex alignItems="center" justifyContent={isDisabled ? "" : "center"}>
         {isDisabled && (
           <>
             <CustomCheckBox
@@ -95,12 +100,7 @@ function MyCard(props: MyCardProps) {
             </Text>
           </>
         )}
-        {/* <BasicButton
-          name={isDisabled ? "Pending" : "Unstake"}
-          h={"33px"}
-          isDisabled={isDisabled}
-        ></BasicButton> */}
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 }

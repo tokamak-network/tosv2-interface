@@ -9,7 +9,7 @@ function getNowTimeStamp() {
   return moment().unix();
 }
 
-function getTimeDiff(timeStamp: number) {
+function isTimeOver(timeStamp: number) {
   const nowTimeStamp = getNowTimeStamp();
   const timeDiff = nowTimeStamp - timeStamp;
   return timeDiff > 0;
@@ -22,4 +22,4 @@ function getTimeLeft(timeStamp: number, daysDiff: number, format?: string) {
   return timeLeft;
 }
 
-export { convertTimeStamp, getNowTimeStamp, getTimeDiff };
+export { convertTimeStamp, getNowTimeStamp, isTimeOver };

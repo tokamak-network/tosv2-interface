@@ -19,12 +19,11 @@ function BondCardContainer() {
         onClick={setTab}
       ></TabButton>
       <Flex
-        justifyContent={tab === 0 ? "flex-end" : "space-between"}
+        justifyContent={tab === 0 ? "flex-end" : "flex-end"}
         mt={"30px"}
         mb={"27px"}
         alignItems="center"
       >
-        {tab === 1 && account && <StakeCheckbox></StakeCheckbox>}
         {tab === 0 || (tab === 1 && account && <SortSelect></SortSelect>)}
       </Flex>
       {tab === 0 ? (

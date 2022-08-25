@@ -32,20 +32,21 @@ function ContentComponent(props: {
   );
 }
 
-function StakeCard(props: StakeCardProps) {
-  const {
-    amount,
-    discountRate,
-    lockupPeriod,
-    lockupPeriodDate,
-    tokenType,
-    isDisabled,
-  } = props;
+function StakeCard(props: { cardData: StakeCardProps }) {
+  const { cardData } = props;
+  console.log(cardData);
+
   const { openModal: openUnstakeModal } = useModal("stake_unstake_modal");
   const { openModal } = useModal("stake_stake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
   const { colorMode } = useColorMode();
+
+  if (!cardData) {
+    return null;
+  }
+
+  const isDisabled = cardData.isOver;
 
   return (
     <Flex
@@ -62,7 +63,7 @@ function StakeCard(props: StakeCardProps) {
     >
       <Flex mb={"18px"} justifyContent={"space-between"}>
         <Flex>
-          <TokenSymbol tokenType={tokenType}></TokenSymbol>
+          <TokenSymbol tokenType={cardData.tokenType}></TokenSymbol>
           <Text
             fontSize={20}
             fontWeight={600}
@@ -71,10 +72,10 @@ function StakeCard(props: StakeCardProps) {
             color={colorMode === "dark" ? "white.200" : "gray.800"}
             ml={"12px"}
           >
-            {tokenType}
+            {cardData.tokenType}
           </Text>
         </Flex>
-        <Flex>
+        {/* <Flex>
           <Image src={BondIcon} alt={"BondIcon"}></Image>
           <Flex
             fontSize={12}
@@ -86,22 +87,22 @@ function StakeCard(props: StakeCardProps) {
           >
             <Text>{isDisabled ? "No Lock-Up" : "Locked"}</Text>
           </Flex>
-        </Flex>
+        </Flex> */}
       </Flex>
 
       <ContentComponent
         title="Staked"
-        content={amount}
+        content={`${cardData.staked.ltos} / ${cardData.staked.stos}`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
         title="Principal"
-        content={discountRate}
+        content={`${cardData.principal}`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
         title="End Time"
-        content={lockupPeriod}
+        content={cardData.endTime}
       ></ContentComponent>
       <Flex
         alignItems="center"
@@ -113,7 +114,7 @@ function StakeCard(props: StakeCardProps) {
           <Flex w={"100%"} justifyContent={"center"} mb={"21px"}>
             <CustomCheckBox
               value={{ test: "test" }}
-              valueKey={amount}
+              valueKey={""}
               pageKey={"Stake_screen"}
             ></CustomCheckBox>
             <Text

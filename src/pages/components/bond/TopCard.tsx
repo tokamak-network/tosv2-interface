@@ -1,9 +1,9 @@
-import {  Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Flex, Text, useColorMode } from "@chakra-ui/react";
 import { useMemo } from "react";
 
 type TopCardProps = {
   title: string;
-  price: string;
+  price: string | number;
   priceUnit: string;
   style?: any;
 };
@@ -11,29 +11,27 @@ type TopCardProps = {
 const TopCard: React.FC<TopCardProps> = (props) => {
   const { colorMode } = useColorMode();
   const { title, price, priceUnit, style } = props;
-  
+
   const PriceContent = useMemo(() => {
-    
     switch (priceUnit) {
       case "$":
         return (
           <Flex>
-          <Text
-           fontSize={22}
-           color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
-           fontWeight={"bold"}
-          >
-            {priceUnit}
-          </Text>
-          <Text
-           
-            fontSize={22}
-            color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
-            fontWeight={"bold"}
+            <Text
+              fontSize={22}
+              color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
+              fontWeight={"bold"}
             >
-            {price}
-          </Text>
-        </Flex>
+              {priceUnit}
+            </Text>
+            <Text
+              fontSize={22}
+              color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
+              fontWeight={"bold"}
+            >
+              {price}
+            </Text>
+          </Flex>
         );
       default:
         return (
@@ -50,13 +48,14 @@ const TopCard: React.FC<TopCardProps> = (props) => {
               ml={"5px"}
               color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
               fontSize={14}
-              pb={"3px"}>
+              pb={"3px"}
+            >
               {priceUnit}
             </Text>
           </Flex>
         );
     }
-  }, [price, priceUnit,colorMode]);
+  }, [price, priceUnit, colorMode]);
 
   return (
     <Flex
