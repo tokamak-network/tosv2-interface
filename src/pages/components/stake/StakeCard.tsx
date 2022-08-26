@@ -34,8 +34,6 @@ function ContentComponent(props: {
 
 function StakeCard(props: { cardData: StakeCardProps }) {
   const { cardData } = props;
-  console.log(cardData);
-
   const { openModal: openUnstakeModal } = useModal("stake_unstake_modal");
   const { openModal } = useModal("stake_stake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
@@ -45,8 +43,8 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   if (!cardData) {
     return null;
   }
-
-  const isDisabled = cardData.isOver;
+  const { isOver, stakedType, tokenType } = cardData;
+  const isDisabled = isOver;
 
   return (
     <Flex
@@ -63,7 +61,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
     >
       <Flex mb={"18px"} justifyContent={"space-between"}>
         <Flex>
-          <TokenSymbol tokenType={cardData.tokenType}></TokenSymbol>
+          <TokenSymbol tokenType={tokenType}></TokenSymbol>
           <Text
             fontSize={20}
             fontWeight={600}
@@ -72,11 +70,13 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             color={colorMode === "dark" ? "white.200" : "gray.800"}
             ml={"12px"}
           >
-            {cardData.tokenType}
+            {tokenType}
           </Text>
         </Flex>
-        {/* <Flex>
-          <Image src={BondIcon} alt={"BondIcon"}></Image>
+        <Flex>
+          {stakedType === "Bonding" && (
+            <Image src={BondIcon} alt={"BondIcon"}></Image>
+          )}
           <Flex
             fontSize={12}
             color={isDisabled ? "green.100" : "red.100"}
@@ -87,7 +87,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
           >
             <Text>{isDisabled ? "No Lock-Up" : "Locked"}</Text>
           </Flex>
-        </Flex> */}
+        </Flex>
       </Flex>
 
       <ContentComponent
@@ -110,7 +110,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         flexDir={"column"}
         mt={"auto"}
       >
-        {isDisabled === false && (
+        {isOver && (
           <Flex w={"100%"} justifyContent={"center"} mb={"21px"}>
             <CustomCheckBox
               value={{ test: "test" }}
@@ -128,7 +128,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         )}
         <Flex justifyContent={"space-between"} w={"100%"}>
           <BasicButton
-            name={isDisabled ? "Update" : "Stake"}
+            name={isDisabled ? "Stake" : "Update"}
             h={"33px"}
             onClick={openModal}
             style={smallerThan1040 ? { width: "100%" } : {}}
@@ -136,7 +136,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             iconLocation={isDisabled ? "right" : undefined}
           ></BasicButton>
           <BasicButton
-            isDisabled={isDisabled}
+            isDisabled={!isDisabled}
             name={"Unstake"}
             h={"33px"}
             onClick={openUnstakeModal}

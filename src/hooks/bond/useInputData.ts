@@ -61,8 +61,8 @@ function useInputData(inputAmount: string, inputPeriod: number) {
       if (inputAmount === "") {
         return setBondInputData({
           youWillGet: {
-            ltos: "-",
-            stos: "-",
+            ltos: "0",
+            stos: "0",
           },
           endTime: "-",
         });

@@ -38,22 +38,24 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   const { pathName } = usePathName();
   const [isCheckedAll, setIsChecked] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   const isCheckedAll = selectedCheckbox?.filter((data) => {
-  //     if (data.pageKey === pageKey) {
-  //       return data.values === "selectAll";
-  //     }
-  //   });
+  useEffect(() => {
+    const isCheckedAll = selectedCheckbox?.filter((data) => {
+      if (data.pageKey === pageKey) {
+        return data.values === "selectAll";
+      }
+    });
 
-  //   if (isCheckedAll) {
-  //     return setIsChecked(isCheckedAll.length > 0);
-  //   }
-  // }, [selectedCheckbox, pageKey]);
+    if (isCheckedAll) {
+      return setIsChecked(isCheckedAll.length > 0);
+    }
+  }, [selectedCheckbox, pageKey]);
 
   // useEffect(() => {
   //   // (async () => {
   //   // })();
   // }, [isCheckedAll]);
+
+  console.log(selectedCheckbox);
 
   return (
     <Checkbox

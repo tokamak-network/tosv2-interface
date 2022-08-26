@@ -13,11 +13,11 @@ function useStakeList() {
   );
 
   const { account } = useWeb3React();
-  const { StakingV2Proxy_CONTRACT } = useCallContract();
+  const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
 
   useEffect(() => {
     const fetchData = async () => {
-      if (StakingV2Proxy_CONTRACT && account) {
+      if (StakingV2Proxy_CONTRACT && LockTOS_CONTRACT && account) {
         //index0 -> meaningless
         //index1 -> TOS Staking without lockup
         //from index2 -> need to check with stakeInfo()
@@ -34,10 +34,14 @@ function useStakeList() {
             );
             const LTOSWei = stakedInfo.ltos.toString();
             const principalWei = stakedInfo.deposit.toString();
+            const principal = `${convertNumber({
+              amount: principalWei,
+            })} TOS`;
             const endTime = convertTimeStamp(
               stakedInfo.endTime.toString(),
               "YYYY.MM.DD HH:mm"
             );
+            const ltos = `${convertNumber({ amount: LTOSWei })} LTOS`;
             const isOver = isTimeOver(stakedInfo.endTime.toString());
             if (index === 1) {
               //   return example
@@ -53,32 +57,36 @@ function useStakeList() {
             if (index > 1) {
               const marketId = stakedInfo.marketId.toString();
               if (marketId) {
-                const connectId = await StakingV2Proxy_CONTRACT.connectId(
+                const connectIdBN = await StakingV2Proxy_CONTRACT.connectId(
                   marketId
                 );
+                const connectId = connectIdBN.toString();
+
                 //BOND without lockup periods
-                if (connectId.toString() === "0") {
+                if (connectId === "0") {
                   return {
                     staked: {
-                      ltos: convertNumber({ amount: LTOSWei }),
-                      stos: "",
+                      ltos,
+                      stos: `${0} sTOS`,
                     },
-                    principal: "",
+                    principal,
                     isOver,
-                    stakedType: "TOS Staking",
+                    stakedType: "Bonding",
                     endTime,
                     tokenType: "ETH",
                   };
                 }
                 //BOND with lockup periods
+                //Need to get sTOS Balance
+                const sTOSwei = await LockTOS_CONTRACT.balanceOfLock(connectId);
                 return {
                   staked: {
-                    ltos: convertNumber({ amount: LTOSWei }),
-                    stos: "",
+                    ltos,
+                    stos: convertNumber({ amount: sTOSwei.toString() }),
                   },
-                  principal: "test",
+                  principal,
                   isOver,
-                  stakedType: "TOS Staking",
+                  stakedType: "Bonding",
                   endTime,
                   tokenType: "ETH",
                 };
@@ -86,10 +94,10 @@ function useStakeList() {
               //TOS Staking with lockup periods
               return {
                 staked: {
-                  ltos: convertNumber({ amount: LTOSWei }),
+                  ltos,
                   stos: "",
                 },
-                principal: "",
+                principal,
                 isOver,
                 stakedType: "TOS Staking",
                 endTime,

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { BondRawdata, BondCardProps } from "types/bond";
 import BondCard from "./BondCard";
 import commafy from "utils/commafy";
+import usePrice from "hooks/usePrice";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
@@ -17,16 +18,17 @@ function BondCardSection() {
       period: "-1",
     },
   });
+  const { priceData } = usePrice();
 
   useEffect(() => {
-    if (data) {
+    if (data && priceData) {
       const bonds = data.getBondList;
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
-        const { bondPrice, capacity, index, tokenLogo, totalSold, endTime } =
-          bond;
+        const { capacity, index, tokenLogo, totalSold, endTime } = bond;
+        const bondPrice = (1 / priceData.tosPrice) * 1e18 * priceData.ethPrice;
         return {
           bondCapacity: commafy(capacity),
-          bondingPrice: bondPrice,
+          bondingPrice: commafy(bondPrice),
           discountRate: "0.5%",
           tokenType: "ETH",
           totalSold: `${commafy(totalSold)} TOS`,
@@ -36,7 +38,7 @@ function BondCardSection() {
       });
       setCardList(dum);
     }
-  }, [data]);
+  }, [data, priceData]);
 
   return (
     <Flex

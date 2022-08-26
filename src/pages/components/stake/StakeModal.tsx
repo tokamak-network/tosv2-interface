@@ -28,7 +28,7 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
@@ -39,6 +39,9 @@ import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/components/commafy";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/components/number";
+import { useWeb3React } from "@web3-react/core";
+import useUserBalance from "hooks/useUserBalance";
+import useStakeV2 from "hooks/contract/useStakeV2";
 
 function StakeGraph() {
   const labelStyles = {
@@ -134,11 +137,45 @@ function StakeGraph() {
 
 function BottomContent(props: {
   title: string;
-  content: string;
+  content: string | { ltos: string; stos: string };
   tooltip?: boolean;
 }) {
   const { title, content, tooltip } = props;
   const { colorMode } = useColorMode();
+
+  const ContentComponent = useMemo(() => {
+    switch (title) {
+      case "You Will Get":
+        return (
+          <Flex>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {(typeof content !== "string" && content.ltos) || "-"} LTOS
+            </Text>
+            <Text color={"#64646f"} mx={"5px"}>
+              /
+            </Text>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {(typeof content !== "string" && content.stos) || "-"} sTOS
+            </Text>
+          </Flex>
+        );
+      default:
+        return (
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            fontWeight={600}
+          >
+            {content as string}
+          </Text>
+        );
+    }
+  }, [title, content, colorMode]);
 
   return (
     <Flex>
@@ -163,13 +200,7 @@ function BottomContent(props: {
             <></>
           )}
         </Flex>
-
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontWeight={600}
-        >
-          {content}
-        </Text>
+        {ContentComponent}
       </Flex>
     </Flex>
   );
@@ -183,13 +214,7 @@ function Tile(props: {
   const { title, content, symbol } = props;
   const { colorMode } = useColorMode();
   return (
-    <Box
-      display={"flex"}
-      flexDir={"column"}
-      w={"152px"}
-      alignItems={"center"}
-      mb={"15px"}
-    >
+    <Box display={"flex"} flexDir={"column"} mb={"15px"} alignItems={"center"}>
       <Flex alignItems={"center"}>
         <Text
           color={colorMode === "dark" ? "gray.100" : "gray.1000"}
@@ -228,31 +253,36 @@ function Tile(props: {
   );
 }
 
-function BondModal() {
+function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
+  const { stakeV2 } = useStakeV2();
   const oldValues = useRecoilValue(inputBalanceState);
   const { bondInputData } = useInputData(
     oldValues.stake_stake_modal_balance,
     oldValues.stake_stake_modal_period
   );
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
+  const { userTOSBalance } = useUserBalance();
+  const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
 
+  console.log(stakeV2);
+
   const contentList = [
     {
       title: "You Give",
-      content: `${oldValues.stake_stake_modal_balance || "-"} ETH`,
+      content: `${oldValues.stake_stake_modal_balance || "0"} ETH`,
       tooltip: false,
     },
     {
       title: "You Will Get",
-      content: `${bondInputData?.youWillGet || "-"}`,
+      content: bondInputData?.youWillGet || "0",
       tooltip: true,
     },
     {
@@ -264,12 +294,14 @@ function BondModal() {
 
   const callBond = useCallback(() => {
     if (BondDepositoryProxy_CONTRACT) {
-      console.log("---");
-      console.log(
-        marketId,
-        convertToWei(oldValues.stake_stake_modal_balance),
-        oldValues.stake_stake_modal_period
-      );
+      if (!fiveDaysLockup) {
+        return BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
+          marketId,
+          convertToWei(oldValues.stake_stake_modal_balance),
+          oldValues.stake_stake_modal_period,
+          { value: convertToWei(oldValues.stake_stake_modal_balance) }
+        );
+      }
       return BondDepositoryProxy_CONTRACT.ETHDeposit(
         marketId,
         convertToWei(oldValues.stake_stake_modal_balance),
@@ -281,6 +313,7 @@ function BondModal() {
     oldValues.stake_stake_modal_period,
     BondDepositoryProxy_CONTRACT,
     marketId,
+    fiveDaysLockup,
   ]);
 
   return (
@@ -322,20 +355,18 @@ function BondModal() {
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
                 <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile
-                    title={"Next rebase"}
-                    content={`${bondModalData?.bondPrice}`}
-                  />
+                  <Tile title={"Next Rebase"} content={stakeV2?.nextRebase} />
                   <Tile
                     title={"LTOS Index"}
-                    content={`${bondModalData?.discount}`}
+                    content={stakeV2?.ltosIndex}
+                    symbol={"TOS"}
                   />
                 </Flex>
                 <Flex mb={"9px"}>
                   <BalanceInput
                     w={"100%"}
                     h={45}
-                    placeHolder={"Enter an amount of ETH"}
+                    placeHolder={"Enter an amount of TOS"}
                     atomKey={"stake_stake_modal_balance"}
                   ></BalanceInput>
                 </Flex>
@@ -347,7 +378,7 @@ function BondModal() {
                   mb={"12px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>1,000 WTON</Text>
+                  <Text>{userTOSBalance} TOS</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text
@@ -359,7 +390,9 @@ function BondModal() {
                   <CustomCheckBox
                     pageKey="Bond_screen"
                     value={""}
-                    valueKey={""}
+                    valueKey={"Bond_Modal"}
+                    state={fiveDaysLockup}
+                    setState={setFiveDaysLockup}
                   ></CustomCheckBox>
                   <Text ml={"9px"}>5 days Lock-Up</Text>
                   <TextInput
@@ -423,4 +456,4 @@ function BondModal() {
   );
 }
 
-export default BondModal;
+export default StakeModal;

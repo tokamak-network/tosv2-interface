@@ -8,6 +8,7 @@ import useCallContract from "hooks/useCallContract";
 import { convertNumber } from "@/components/number";
 import { useWeb3React } from "@web3-react/core";
 import { ethers, utils } from "ethers";
+import usePrice from "hooks/usePrice";
 
 type BondModalData = {
   bondPrice: string;
@@ -48,10 +49,11 @@ function useBondModal() {
     useCallContract();
 
   const context = useWeb3React();
+  const { priceData } = usePrice();
 
   useEffect(() => {
     async function fetchAsyncData() {
-      if (propData && apiData && BondDepositoryProxy_CONTRACT) {
+      if (propData && apiData && priceData && BondDepositoryProxy_CONTRACT) {
         const marketData = await BondDepositoryProxy_CONTRACT?.viewMarket(
           propData.index
         );
@@ -71,11 +73,11 @@ function useBondModal() {
         const ltosIndex = convertNumber({
           amount: ltosIndexWei?.toString(),
         }) as string;
-        const bondPrice = propData.bondingPrice;
+        const bondPrice = (1 / priceData.tosPrice) * 1e18 * priceData.ethPrice;
         const marketPrice = commafy(apiData.getDashboard[0].tosPrice);
         const discount =
           Number(marketPrice) -
-          Number(bondPrice) /
+          Number(propData.bondingPrice) /
             (Number(commafy(apiData.getDashboard[0].tosPrice)) * 100);
 
         //minbond
@@ -107,6 +109,7 @@ function useBondModal() {
     BondDepositoryProxy_CONTRACT,
     StakingV2Proxy_CONTRACT,
     context?.library,
+    priceData,
   ]);
 
   return {

@@ -302,7 +302,7 @@ function BondModal() {
         convertToWei(oldValues.stake_stake_modal_balance),
         oldValues.stake_stake_modal_period
       );
-      if (fiveDaysLockup) {
+      if (!fiveDaysLockup) {
         return BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
           marketId,
           convertToWei(oldValues.stake_stake_modal_balance),
