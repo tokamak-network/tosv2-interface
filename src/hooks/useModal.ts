@@ -1,7 +1,7 @@
 import { modalData, modalState } from "atom/global/modal";
 import { useRecoilState } from "recoil";
 
-function useModal(modalType?: string, modalDataObj?: {}) {
+function useModal<T extends U>(modalType?: string, modalDataObj?: {}) {
   const [selectedModal, setSelectedModal] = useRecoilState(modalState);
   const [selectedModalData, setSelectedModalData] = useRecoilState(modalData);
 

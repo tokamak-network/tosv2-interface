@@ -34,7 +34,12 @@ function ContentComponent(props: {
 
 function StakeCard(props: { cardData: StakeCardProps }) {
   const { cardData } = props;
-  const { openModal: openUnstakeModal } = useModal("stake_unstake_modal");
+  const { openModal: openUnstakeModal } = useModal(
+    "stake_unstake_modal",
+    cardData && cardData.stakedType === "LTOS Staking"
+      ? { hasInput: true, stakedId: cardData.stakedId }
+      : { hasInput: false, stakedId: cardData?.stakedId }
+  );
   const { openModal } = useModal("stake_stake_modal");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
@@ -43,6 +48,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   if (!cardData) {
     return null;
   }
+
   const { isOver, stakedType, tokenType } = cardData;
   const isDisabled = isOver;
 
@@ -70,11 +76,11 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             color={colorMode === "dark" ? "white.200" : "gray.800"}
             ml={"12px"}
           >
-            {tokenType}
+            {stakedType === "Bond" ? `${tokenType} Bond` : stakedType}
           </Text>
         </Flex>
         <Flex>
-          {stakedType === "Bonding" && (
+          {stakedType === "Bond" && (
             <Image src={BondIcon} alt={"BondIcon"}></Image>
           )}
           <Flex
@@ -132,7 +138,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             h={"33px"}
             onClick={openModal}
             style={smallerThan1040 ? { width: "100%" } : {}}
-            iconName={isDisabled ? "Question" : undefined}
+            iconName={isDisabled ? undefined : "Question"}
             iconLocation={isDisabled ? "right" : undefined}
           ></BasicButton>
           <BasicButton

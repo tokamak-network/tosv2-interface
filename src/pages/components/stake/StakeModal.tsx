@@ -42,6 +42,10 @@ import { convertToWei } from "@/components/number";
 import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useStakeV2 from "hooks/contract/useStakeV2";
+import CONTRACT_ADDRESS from "services/addresses/contract";
+import { BigNumber } from "ethers";
+import useUser from "hooks/useUser";
+import Tile from "../common/modal/Tile";
 
 function StakeGraph() {
   const labelStyles = {
@@ -51,11 +55,11 @@ function StakeGraph() {
   };
   const [sliderValue, setSliderValue] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
-  const oldValues = useRecoilValue(inputBalanceState);
+  const inputValues = useRecoilValue(inputBalanceState);
   const [value, setValue] = useRecoilState(inputState);
 
   useEffect(() => {
-    setValue({ ...oldValues, stake_stake_modal_period: sliderValue });
+    setValue({ ...inputValues, stake_stake_modal_period: sliderValue });
   }, [sliderValue]);
 
   // useEffect(() => {
@@ -206,53 +210,6 @@ function BottomContent(props: {
   );
 }
 
-function Tile(props: {
-  title: string;
-  content: string | undefined;
-  symbol?: string;
-}) {
-  const { title, content, symbol } = props;
-  const { colorMode } = useColorMode();
-  return (
-    <Box display={"flex"} flexDir={"column"} mb={"15px"} alignItems={"center"}>
-      <Flex alignItems={"center"}>
-        <Text
-          color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-          h={"17px"}
-          mb={"3px"}
-          fontWeight={600}
-          fontSize={12}
-          textAlign="center"
-          mr={"6px"}
-        >
-          {title}
-        </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
-      </Flex>
-
-      <Flex fontWeight={"bold"} h={"33px"}>
-        <Text
-          color={colorMode === "dark" ? "white.100" : "gray.800"}
-          fontSize={24}
-          mr={2}
-        >
-          {content || "-"}
-        </Text>
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontSize={14}
-          pt={"5px"}
-          lineHeight={"33px"}
-        >
-          {symbol ? symbol : ""}
-        </Text>
-      </Flex>
-    </Box>
-  );
-}
-
 function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -260,24 +217,25 @@ function StakeModal() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
-  const oldValues = useRecoilValue(inputBalanceState);
+  const inputValues = useRecoilValue(inputBalanceState);
   const { bondInputData } = useInputData(
-    oldValues.stake_stake_modal_balance,
-    oldValues.stake_stake_modal_period
+    inputValues.stake_stake_modal_balance,
+    inputValues.stake_stake_modal_period
   );
-  const { BondDepositoryProxy_CONTRACT } = useCallContract();
+  const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
+  const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
+  const { userData } = useUser();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
+  const [isAllowance, setIsAllowance] = useState<boolean>(false);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
 
-  console.log(stakeV2);
-
   const contentList = [
     {
       title: "You Give",
-      content: `${oldValues.stake_stake_modal_balance || "0"} ETH`,
+      content: `${inputValues.stake_stake_modal_balance || "0"} ETH`,
       tooltip: false,
     },
     {
@@ -292,29 +250,46 @@ function StakeModal() {
     },
   ];
 
-  const callBond = useCallback(() => {
-    if (BondDepositoryProxy_CONTRACT) {
-      if (!fiveDaysLockup) {
-        return BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
-          marketId,
-          convertToWei(oldValues.stake_stake_modal_balance),
-          oldValues.stake_stake_modal_period,
-          { value: convertToWei(oldValues.stake_stake_modal_balance) }
+  const callStake = useCallback(() => {
+    //Mainnet_maxPeriod = 3years
+    //Rinkeby_maxPeriod = 39312
+    if (StakingV2Proxy_CONTRACT) {
+      if (fiveDaysLockup) {
+        return StakingV2Proxy_CONTRACT.stake(
+          convertToWei(inputValues.stake_stake_modal_balance)
         );
       }
-      return BondDepositoryProxy_CONTRACT.ETHDeposit(
-        marketId,
-        convertToWei(oldValues.stake_stake_modal_balance),
-        { value: convertToWei(oldValues.stake_stake_modal_balance) }
+      return StakingV2Proxy_CONTRACT.stakeGetStos(
+        convertToWei(inputValues.stake_stake_modal_balance),
+        inputValues.stake_stake_modal_period
       );
     }
   }, [
-    oldValues.stake_stake_modal_balance,
-    oldValues.stake_stake_modal_period,
-    BondDepositoryProxy_CONTRACT,
-    marketId,
+    inputValues.stake_stake_modal_balance,
+    inputValues.stake_stake_modal_period,
+    StakingV2Proxy_CONTRACT,
     fiveDaysLockup,
   ]);
+
+  const callApprove = useCallback(async () => {
+    if (TOS_CONTRACT) {
+      const totalSupply = await TOS_CONTRACT.totalSupply();
+      return TOS_CONTRACT.approve(StakingV2Proxy, totalSupply);
+    }
+  }, [TOS_CONTRACT, StakingV2Proxy]);
+
+  useEffect(() => {
+    if (userData) {
+      const { tosAllowance } = userData;
+      if (tosAllowance === 0) {
+        return setIsAllowance(false);
+      }
+      if (tosAllowance >= Number(inputValues.stake_stake_modal_balance)) {
+        return setIsAllowance(true);
+      }
+      return setIsAllowance(false);
+    }
+  }, [userData, inputValues.stake_stake_modal_balance]);
 
   return (
     <Modal
@@ -427,12 +402,21 @@ function StakeModal() {
               </Flex>
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
-              <SubmitButton
-                w={460}
-                h={42}
-                name="Bond"
-                onClick={callBond}
-              ></SubmitButton>
+              {isAllowance ? (
+                <SubmitButton
+                  w={460}
+                  h={42}
+                  name="Stake"
+                  onClick={callStake}
+                ></SubmitButton>
+              ) : (
+                <SubmitButton
+                  w={460}
+                  h={42}
+                  name="Approve"
+                  onClick={callApprove}
+                ></SubmitButton>
+              )}
             </Flex>
             <Flex
               fontSize={11}

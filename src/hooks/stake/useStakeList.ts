@@ -36,12 +36,16 @@ function useStakeList() {
             const principalWei = stakedInfo.deposit.toString();
             const principal = `${convertNumber({
               amount: principalWei,
+              localeString: true,
             })} TOS`;
             const endTime = convertTimeStamp(
               stakedInfo.endTime.toString(),
               "YYYY.MM.DD HH:mm"
             );
-            const ltos = `${convertNumber({ amount: LTOSWei })} LTOS`;
+            const ltos = `${convertNumber({
+              amount: LTOSWei,
+              localeString: true,
+            })} LTOS`;
             const isOver = isTimeOver(stakedInfo.endTime.toString());
             if (index === 1) {
               //   return example
@@ -53,15 +57,26 @@ function useStakeList() {
               if (stakedInfo.deposit.toString() === "0") {
                 return undefined;
               }
+              return {
+                staked: {
+                  ltos,
+                  stos: `${0} sTOS`,
+                },
+                principal,
+                isOver,
+                stakedType: "LTOS Staking",
+                endTime,
+                tokenType: "TOS",
+                stakedId,
+              };
             }
             if (index > 1) {
               const marketId = stakedInfo.marketId.toString();
-              if (marketId) {
-                const connectIdBN = await StakingV2Proxy_CONTRACT.connectId(
-                  marketId
-                );
-                const connectId = connectIdBN.toString();
-
+              const connectIdBN = await StakingV2Proxy_CONTRACT.connectId(
+                stakedId
+              );
+              const connectId = connectIdBN.toString();
+              if (marketId !== "0") {
                 //BOND without lockup periods
                 if (connectId === "0") {
                   return {
@@ -71,9 +86,10 @@ function useStakeList() {
                     },
                     principal,
                     isOver,
-                    stakedType: "Bonding",
+                    stakedType: "Bond",
                     endTime,
                     tokenType: "ETH",
+                    stakedId,
                   };
                 }
                 //BOND with lockup periods
@@ -82,26 +98,36 @@ function useStakeList() {
                 return {
                   staked: {
                     ltos,
-                    stos: convertNumber({ amount: sTOSwei.toString() }),
+                    stos: `${convertNumber({
+                      amount: sTOSwei.toString(),
+                      localeString: true,
+                    })} sTOS`,
                   },
                   principal,
                   isOver,
-                  stakedType: "Bonding",
+                  stakedType: "Bond",
                   endTime,
                   tokenType: "ETH",
+                  stakedId,
                 };
               }
               //TOS Staking with lockup periods
+              const sTOSwei = await LockTOS_CONTRACT.balanceOfLock(connectId);
+
               return {
                 staked: {
                   ltos,
-                  stos: "",
+                  stos: `${convertNumber({
+                    amount: sTOSwei.toString(),
+                    localeString: true,
+                  })} sTOS`,
                 },
                 principal,
                 isOver,
-                stakedType: "TOS Staking",
+                stakedType: "Staking",
                 endTime,
                 tokenType: "TOS",
+                stakedId,
               };
             }
           })
@@ -114,7 +140,7 @@ function useStakeList() {
       console.log("**useStakeList err**");
       console.log(e);
     });
-  }, [StakingV2Proxy_CONTRACT, account]);
+  }, [StakingV2Proxy_CONTRACT, account, LockTOS_CONTRACT]);
 
   return { stakeCards };
 }

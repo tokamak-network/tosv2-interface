@@ -2,6 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
 import { convertNumber } from "utils/number";
 import useCallContract from "hooks/useCallContract";
+import { useBlockNumber } from "./useBlockNumber";
 
 const useUserBalance = () => {
   const { account, library } = useWeb3React();
@@ -12,6 +13,7 @@ const useUserBalance = () => {
     LockTOS_CONTRACT,
     StakingV2Proxy_CONTRACT,
   } = useCallContract();
+  const { blockNumber } = useBlockNumber();
 
   const [userTonBalance, setUserTonBalance] = useState<string>("-");
   const [userWTonBalance, setUserWTonBalance] = useState<string>("-");
@@ -87,6 +89,7 @@ const useUserBalance = () => {
     LockTOS_CONTRACT,
     StakingV2Proxy_CONTRACT,
     library,
+    blockNumber,
   ]);
 
   return {

@@ -59,6 +59,8 @@ const TextInput: React.FC<InputProp> = (props) => {
         outline="none"
         errorBorderColor={"#e23738"}
         //@ts-ignore
+        defaultValue={value.atomKey}
+        //@ts-ignore
         value={value.atomKey}
         onChange={onChange}
       ></Input>

@@ -15,7 +15,8 @@ export type StakeCardProps =
       principal: string;
       endTime: string;
       isOver: boolean;
-      stakedType: "TOS Staking" | "Bonding";
+      stakedType: "Staking" | "LTOS Staking" | "Bond";
       tokenType: TokenTypes;
+      stakedId: string;
     }
   | undefined;
