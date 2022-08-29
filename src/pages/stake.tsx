@@ -5,7 +5,7 @@ import StakeCardContainer from "pages/components/stake/StakeCardContainer";
 import StakeModal from "pages/components/stake/StakeModal";
 import UnstakeModal from "pages/components/stake/UnstakeModal";
 import UpdateModal from "pages/components/stake/UpdateModal";
-import UpdateModalAfterEndTime from "pages/components/stake/updateModalAfterEndTime";
+import UpdateModalAfterEndTime from "pages/components/stake/UpdateModalAfterEndTime";
 
 const Stake = () => {
   const theme = useTheme();

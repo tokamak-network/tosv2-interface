@@ -46,6 +46,9 @@ import CONTRACT_ADDRESS from "services/addresses/contract";
 import { BigNumber } from "ethers";
 import useUser from "hooks/useUser";
 import Tile from "../common/modal/Tile";
+import { stake_updateModal_state } from "atom/stake/input";
+import useStakeInput from "hooks/stake/useStakeInput";
+import useInput from "hooks/useInput";
 
 function StakeGraph() {
   const labelStyles = {
@@ -57,15 +60,6 @@ function StakeGraph() {
   const [showTooltip, setShowTooltip] = useState(false);
   const inputValues = useRecoilValue(inputBalanceState);
   const [value, setValue] = useRecoilState(inputState);
-
-  useEffect(() => {
-    setValue({ ...inputValues, stake_stake_modal_period: sliderValue });
-  }, [sliderValue]);
-
-  // useEffect(() => {
-  //   console.log(value.stake_stake_modal_period);
-  //   setSliderValue(Number(value.stake_stake_modal_period));
-  // }, [value.stake_stake_modal_period]);
 
   const { colorMode } = useColorMode();
   return (
@@ -217,10 +211,8 @@ function UpdateModalAfterEndTime() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
-  const [inputLtos, setInputLtos] = useState<string | undefined>(undefined);
-  const [inputStos, setInputStos] = useState<string | undefined>(undefined);
-  const [inputPeriod, setInputPeriod] = useState<number | undefined>(undefined);
   const [addTos, setAddTos] = useState<boolean>(false);
+  const { inputValue } = useInput("Stake_screen", "update_modal");
 
   // const { bondInputData } = useInputData(inputLtos || "0", inputPeriod || 0);
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
@@ -234,7 +226,7 @@ function UpdateModalAfterEndTime() {
   const contentList = [
     {
       title: "You Give",
-      content: `${inputLtos || "0"} ETH`,
+      content: `${inputValue.stake_updateModal_ltos_balance || "0"} ETH`,
       tooltip: false,
     },
     {
@@ -252,16 +244,36 @@ function UpdateModalAfterEndTime() {
   const callUpdate = useCallback(() => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
-    if (StakingV2Proxy_CONTRACT && stakeId && inputLtos && inputPeriod) {
+    if (
+      StakingV2Proxy_CONTRACT &&
+      stakeId &&
+      inputValue.stake_updateModal_period
+    ) {
+      if (addTos && inputValue.stake_updateModal_tos_balance) {
+        return StakingV2Proxy_CONTRACT[
+          "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
+        ](
+          stakeId,
+          convertToWei(inputValue.stake_updateModal_tos_balance),
+          inputValue.stake_updateModal_period
+        );
+      }
       //after endTime
-      //resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _periodWeeks)
-      return StakingV2Proxy_CONTRACT.resetStakeGetStosAfterLock(
+      //resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks)
+      console.log(
         stakeId,
-        convertToWei(inputLtos),
-        inputPeriod
+        convertToWei(inputValue.stake_updateModal_ltos_balance),
+        inputValue.stake_updateModal_period
+      );
+      return StakingV2Proxy_CONTRACT[
+        "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
+      ](
+        stakeId,
+        convertToWei(inputValue.stake_updateModal_ltos_balance),
+        inputValue.stake_updateModal_period
       );
     }
-  }, [inputLtos, inputPeriod, StakingV2Proxy_CONTRACT, stakeId]);
+  }, [StakingV2Proxy_CONTRACT, stakeId, addTos, inputValue]);
 
   const callApprove = useCallback(async () => {
     if (TOS_CONTRACT) {
@@ -271,19 +283,18 @@ function UpdateModalAfterEndTime() {
   }, [TOS_CONTRACT, StakingV2Proxy]);
 
   useEffect(() => {
-    if (userData) {
+    if (userData && inputValue.stake_updateModal_tos_balance) {
       const { tosAllowance } = userData;
+
       if (tosAllowance === 0) {
         return setIsAllowance(false);
       }
-      if (tosAllowance >= Number(inputStos)) {
+      if (tosAllowance >= Number(inputValue.stake_updateModal_tos_balance)) {
         return setIsAllowance(true);
       }
       return setIsAllowance(false);
     }
-  }, [userData, inputStos]);
-
-  console.log(addTos);
+  }, [userData, inputValue.stake_updateModal_tos_balance]);
 
   return (
     <Modal
@@ -311,7 +322,6 @@ function UpdateModalAfterEndTime() {
                 >
                   Update
                 </Text>
-
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}
@@ -341,7 +351,10 @@ function UpdateModalAfterEndTime() {
                       w={"335px"}
                       h={45}
                       placeHolder={"Enter an amount of LTOS"}
-                      atomKey={"stake_stake_modal_balance"}
+                      atomKey={"stake_updateModal_ltos_balance"}
+                      pageKey={"Stake_screen"}
+                      recoilKey={"update_modal"}
+                      isDisabled={addTos}
                     ></BalanceInput>
                   </Flex>
                   <Flex>
@@ -364,19 +377,21 @@ function UpdateModalAfterEndTime() {
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
-                  mb={addTos ? "9px" : "12px"}
+                  mb={"12px"}
                 >
                   <Text>Your Balance</Text>
                   <Text>{userLTOSBalance} LTOS</Text>
                 </Flex>
                 {addTos && (
                   <Flex mb={"12px"} flexDir={"column"}>
-                    <Flex>
+                    <Flex mb={"9px"}>
                       <BalanceInput
                         w={"100%"}
                         h={45}
                         placeHolder={"Enter an amount of TOS"}
-                        atomKey={"stake_stake_modal_balance"}
+                        pageKey={"Stake_screen"}
+                        recoilKey={"update_modal"}
+                        atomKey={"stake_updateModal_tos_balance"}
                       ></BalanceInput>
                     </Flex>
                     <Flex
@@ -401,7 +416,9 @@ function UpdateModalAfterEndTime() {
                   <TextInput
                     w={"170px"}
                     h={"39px"}
-                    atomKey={"stake_stake_modal_period"}
+                    pageKey={"Stake_screen"}
+                    recoilKey={"update_modal"}
+                    atomKey={"stake_updateModal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
                   ></TextInput>
@@ -430,19 +447,28 @@ function UpdateModalAfterEndTime() {
               </Flex>
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
-              {isAllowance ? (
+              {addTos ? (
+                isAllowance ? (
+                  <SubmitButton
+                    w={460}
+                    h={42}
+                    name="Update"
+                    onClick={callUpdate}
+                  ></SubmitButton>
+                ) : (
+                  <SubmitButton
+                    w={460}
+                    h={42}
+                    name="Approve"
+                    onClick={callApprove}
+                  ></SubmitButton>
+                )
+              ) : (
                 <SubmitButton
                   w={460}
                   h={42}
                   name="Update"
                   onClick={callUpdate}
-                ></SubmitButton>
-              ) : (
-                <SubmitButton
-                  w={460}
-                  h={42}
-                  name="Approve"
-                  onClick={callApprove}
                 ></SubmitButton>
               )}
             </Flex>

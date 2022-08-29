@@ -7,8 +7,11 @@ import {
   useTheme,
 } from "@chakra-ui/react";
 import { inputBalanceState, inputState } from "atom/global/input";
-import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import useInput from "hooks/useInput";
+import React, { SetStateAction } from "react";
+import { RecoilLoadable, useRecoilState, useRecoilValue } from "recoil";
+import { PageKey } from "types";
+import { Stake_InputKey } from "types/atom";
 
 type InputProp = {
   placeHolder?: string;
@@ -19,25 +22,35 @@ type InputProp = {
   isError?: boolean;
   atomKey: string;
   style?: any;
+  pageKey?: PageKey;
+  recoilKey?: Stake_InputKey;
 };
 
 const TextInput: React.FC<InputProp> = (props) => {
-  const { placeHolder, w, h, isDisabled, atomKey, inputValue, isError, style } =
-    props;
+  const {
+    placeHolder,
+    w,
+    h,
+    isDisabled,
+    atomKey,
+    isError,
+    style,
+    pageKey,
+    recoilKey,
+  } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
-  const oldValues = useRecoilValue(inputBalanceState);
-  const [value, setValue] = useRecoilState(inputState);
-
+  const { inputValue, value, setValue } = useInput(pageKey!, recoilKey!);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...oldValues, [atomKey]: event.target.value });
+    setValue({ ...inputValue, [atomKey]: event.target.value });
   };
 
   return (
     <InputGroup w={w || 270} {...style}>
       <Input
         isInvalid={isError}
+        isDisabled={isDisabled}
         w={w || 270}
         h={h || 45}
         ml={"auto"}
@@ -45,7 +58,13 @@ const TextInput: React.FC<InputProp> = (props) => {
         borderWidth={1}
         borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
         fontSize={14}
-        color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
+        color={
+          colorMode === "light"
+            ? "gray.800"
+            : isDisabled
+            ? "#64646f"
+            : "#f1f1f1"
+        }
         _placeholder={{ color: "#64646f" }}
         placeholder={placeHolder}
         _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
@@ -59,9 +78,7 @@ const TextInput: React.FC<InputProp> = (props) => {
         outline="none"
         errorBorderColor={"#e23738"}
         //@ts-ignore
-        defaultValue={value.atomKey}
-        //@ts-ignore
-        value={value.atomKey}
+        value={value?.atomKey}
         onChange={onChange}
       ></Input>
       <InputRightElement
@@ -71,7 +88,12 @@ const TextInput: React.FC<InputProp> = (props) => {
         mr={"12px"}
         cursor={"pointer"}
       >
-        <Flex w={"30px"} h={"20px"} color={"#2775ff"}>
+        <Flex
+          w={"30px"}
+          h={"20px"}
+          color={"#64646f"}
+          _hover={{ color: "#2775ff" }}
+        >
           Max
         </Flex>
       </InputRightElement>
@@ -80,20 +102,33 @@ const TextInput: React.FC<InputProp> = (props) => {
 };
 
 function BalanceInput(props: InputProp) {
-  const { placeHolder, w, h, isDisabled, atomKey, isError } = props;
+  const {
+    placeHolder,
+    w,
+    h,
+    isDisabled,
+    atomKey,
+    isError,
+    pageKey,
+    recoilKey,
+  } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const oldValues = useRecoilValue(inputBalanceState);
-  const [value, setValue] = useRecoilState(inputState);
+
+  const { inputValue, value, setValue } = useInput(pageKey!, recoilKey!);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...oldValues, [atomKey]: event.target.value });
+    setValue({ ...inputValue, [atomKey]: event.target.value });
   };
+
+  console.log("--recoilKey");
+  console.log(pageKey, recoilKey);
 
   return (
     <InputGroup>
       <Input
         isInvalid={isError}
+        isDisabled={isDisabled}
         w={w || 270}
         h={h || 45}
         ml={"auto"}
@@ -115,7 +150,7 @@ function BalanceInput(props: InputProp) {
         errorBorderColor={"#e23738"}
         outline="none"
         //@ts-ignore
-        value={value.atomKey}
+        value={value?.atomKey}
         onChange={onChange}
       ></Input>
       <InputRightElement
@@ -125,7 +160,12 @@ function BalanceInput(props: InputProp) {
         mr={"12px"}
         cursor={"pointer"}
       >
-        <Flex w={"30px"} h={"20px"} color={"#2775ff"}>
+        <Flex
+          w={"30px"}
+          h={"20px"}
+          color={"#64646f"}
+          _hover={{ color: "#2775ff" }}
+        >
           Max
         </Flex>
       </InputRightElement>

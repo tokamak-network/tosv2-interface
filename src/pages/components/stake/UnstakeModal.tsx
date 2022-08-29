@@ -36,6 +36,7 @@ import useCallContract from "hooks/useCallContract";
 import { convertToWei } from "@/components/number";
 import useUnstake from "hooks/stake/useUnstake";
 import commafy from "@/components/commafy";
+import useInput from "hooks/useInput";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -65,20 +66,14 @@ function UnstakeModal() {
   const [hasInput, setHasInput] = useState<boolean>(false);
   const { stakeV2 } = useStakeV2();
   const { userLTOSBalance } = useUserBalance();
-  const { inputValues } = useInputValue();
+  const { inputValue } = useInput("Stake_screen", "unstake_modal");
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { unstakeData, youWillGet } = useUnstake(selectedModalData.stakedId);
-
-  console.log("--unstakeData");
-  console.log(selectedModalData.stakedId);
-  console.log(unstakeData);
 
   const contentList = [
     {
       title: "You Give",
-      content: `${
-        commafy(inputValues.stake_unstake_modal_balance) || "0"
-      } LTOS`,
+      content: `${commafy(inputValue.stake_unstake_modal_balance) || "0"} LTOS`,
     },
     {
       title: "You Will Get",
@@ -89,7 +84,7 @@ function UnstakeModal() {
   const callUnstake = useCallback(async () => {
     if (StakingV2Proxy_CONTRACT) {
       if (hasInput) {
-        const amount = convertToWei(inputValues.stake_unstake_modal_balance);
+        const amount = convertToWei(inputValue.stake_unstakeModal_balance);
         const tosAmount = StakingV2Proxy_CONTRACT.getLtosToTos(amount);
         //claimForSimpleType(uint256 _stakeId, uint256 _claimAmount)
         return StakingV2Proxy_CONTRACT.claimForSimpleType(
@@ -102,7 +97,7 @@ function UnstakeModal() {
   }, [
     hasInput,
     StakingV2Proxy_CONTRACT,
-    inputValues.stake_unstake_modal_balance,
+    inputValue.stake_unstakeModal_balance,
     selectedModalData,
   ]);
 
@@ -165,8 +160,10 @@ function UnstakeModal() {
                     <BalanceInput
                       w={"100%"}
                       h={45}
+                      pageKey={"Stake_screen"}
+                      recoilKey={"unstake_modal"}
                       placeHolder={"Enter an amount of LTOS"}
-                      atomKey={"stake_unstake_modal_balance"}
+                      atomKey={"stake_unstakeModal_balance"}
                     ></BalanceInput>
                   </Flex>
                   <Flex

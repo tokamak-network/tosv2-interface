@@ -46,6 +46,7 @@ import CONTRACT_ADDRESS from "services/addresses/contract";
 import { BigNumber } from "ethers";
 import useUser from "hooks/useUser";
 import Tile from "../common/modal/Tile";
+import useInput from "hooks/useInput";
 
 function StakeGraph() {
   const labelStyles = {
@@ -55,17 +56,17 @@ function StakeGraph() {
   };
   const [sliderValue, setSliderValue] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
-  const inputValues = useRecoilValue(inputBalanceState);
+  const inputValue = useRecoilValue(inputBalanceState);
   const [value, setValue] = useRecoilState(inputState);
 
-  useEffect(() => {
-    setValue({ ...inputValues, stake_stake_modal_period: sliderValue });
-  }, [sliderValue]);
+  // useEffect(() => {
+  //   setValue({ ...inputValue, });
+  // }, [sliderValue]);
 
   // useEffect(() => {
-  //   console.log(value.stake_stake_modal_period);
-  //   setSliderValue(Number(value.stake_stake_modal_period));
-  // }, [value.stake_stake_modal_period]);
+  //   console.log(value.stake_modal_period);
+  //   setSliderValue(Number(value.stake_modal_period));
+  // }, [value.stake_modal_period]);
 
   const { colorMode } = useColorMode();
   return (
@@ -217,10 +218,10 @@ function StakeModal() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
-  const inputValues = useRecoilValue(inputBalanceState);
+  const { inputValue } = useInput("Stake_screen", "stake_modal");
   const { bondInputData } = useInputData(
-    inputValues.stake_stake_modal_balance,
-    inputValues.stake_stake_modal_period
+    inputValue.stake_modal_balance,
+    inputValue.stake_modal_period
   );
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
@@ -235,7 +236,7 @@ function StakeModal() {
   const contentList = [
     {
       title: "You Give",
-      content: `${inputValues.stake_stake_modal_balance || "0"} ETH`,
+      content: `${inputValue.stake_modal_balance || "0"} ETH`,
       tooltip: false,
     },
     {
@@ -256,17 +257,17 @@ function StakeModal() {
     if (StakingV2Proxy_CONTRACT) {
       if (fiveDaysLockup) {
         return StakingV2Proxy_CONTRACT.stake(
-          convertToWei(inputValues.stake_stake_modal_balance)
+          convertToWei(inputValue.stake_modal_balance)
         );
       }
       return StakingV2Proxy_CONTRACT.stakeGetStos(
-        convertToWei(inputValues.stake_stake_modal_balance),
-        inputValues.stake_stake_modal_period
+        convertToWei(inputValue.stake_modal_balance),
+        inputValue.stake_modal_period
       );
     }
   }, [
-    inputValues.stake_stake_modal_balance,
-    inputValues.stake_stake_modal_period,
+    inputValue.stake_modal_balance,
+    inputValue.stake_modal_period,
     StakingV2Proxy_CONTRACT,
     fiveDaysLockup,
   ]);
@@ -284,12 +285,12 @@ function StakeModal() {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
       }
-      if (tosAllowance >= Number(inputValues.stake_stake_modal_balance)) {
+      if (tosAllowance >= Number(inputValue.stake_modal_balance)) {
         return setIsAllowance(true);
       }
       return setIsAllowance(false);
     }
-  }, [userData, inputValues.stake_stake_modal_balance]);
+  }, [userData, inputValue.stake_modal_balance]);
 
   return (
     <Modal
@@ -342,7 +343,9 @@ function StakeModal() {
                     w={"100%"}
                     h={45}
                     placeHolder={"Enter an amount of TOS"}
-                    atomKey={"stake_stake_modal_balance"}
+                    pageKey={"Stake_screen"}
+                    recoilKey={"stake_modal"}
+                    atomKey={"stake_modal_balance"}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -373,9 +376,12 @@ function StakeModal() {
                   <TextInput
                     w={"170px"}
                     h={"39px"}
-                    atomKey={"stake_stake_modal_period"}
+                    pageKey={"Stake_screen"}
+                    recoilKey={"stake_modal"}
+                    atomKey={"stake_modal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
+                    isDisabled={fiveDaysLockup}
                   ></TextInput>
                 </Flex>
               </Flex>
