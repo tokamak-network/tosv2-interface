@@ -34,7 +34,7 @@ import useUserBalance from "hooks/useUserBalance";
 import useInputValue from "hooks/useInputValue";
 import useCallContract from "hooks/useCallContract";
 import { convertToWei } from "@/components/number";
-import useUnstake from "hooks/stake/useUnstake";
+import useUnstake from "hooks/stake/useUnstakeModalData";
 import commafy from "@/components/commafy";
 import useInput from "hooks/useInput";
 
@@ -73,13 +73,15 @@ function UnstakeModal() {
   const contentList = [
     {
       title: "You Give",
-      content: `${commafy(inputValue.stake_unstake_modal_balance) || "0"} LTOS`,
+      content: `${commafy(inputValue.stake_unstakeModal_balance) || "0"} LTOS`,
     },
     {
       title: "You Will Get",
       content: `${youWillGet} TOS`,
     },
   ];
+
+  console.log(inputValue);
 
   const callUnstake = useCallback(async () => {
     if (StakingV2Proxy_CONTRACT) {
