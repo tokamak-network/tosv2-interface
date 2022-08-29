@@ -55,7 +55,7 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   //   // })();
   // }, [isCheckedAll]);
 
-  console.log(selectedCheckbox);
+  // console.log(selectedCheckbox);
 
   return (
     <Checkbox

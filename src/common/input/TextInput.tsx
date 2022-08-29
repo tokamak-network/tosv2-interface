@@ -121,9 +121,6 @@ function BalanceInput(props: InputProp) {
     setValue({ ...inputValue, [atomKey]: event.target.value });
   };
 
-  console.log("--recoilKey");
-  console.log(pageKey, recoilKey);
-
   return (
     <InputGroup>
       <Input

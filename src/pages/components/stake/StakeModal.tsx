@@ -47,6 +47,7 @@ import { BigNumber } from "ethers";
 import useUser from "hooks/useUser";
 import Tile from "../common/modal/Tile";
 import useInput from "hooks/useInput";
+import useStakeModaldata from "hooks/stake/useStakeModalData";
 
 function StakeGraph() {
   const labelStyles = {
@@ -151,6 +152,16 @@ function BottomContent(props: {
   const ContentComponent = useMemo(() => {
     switch (title) {
       case "You Will Get":
+        if (typeof content === "string") {
+          return (
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {content as string}
+            </Text>
+          );
+        }
         return (
           <Flex>
             <Text
@@ -219,10 +230,7 @@ function StakeModal() {
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue } = useInput("Stake_screen", "stake_modal");
-  const { bondInputData } = useInputData(
-    inputValue.stake_modal_balance,
-    inputValue.stake_modal_period
-  );
+  const { stakeModalInputData } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
@@ -233,23 +241,48 @@ function StakeModal() {
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
 
-  const contentList = [
-    {
-      title: "You Give",
-      content: `${inputValue.stake_modal_balance || "0"} ETH`,
-      tooltip: false,
-    },
-    {
-      title: "You Will Get",
-      content: bondInputData?.youWillGet || "0",
-      tooltip: true,
-    },
-    {
-      title: "End Time",
-      content: `${bondInputData?.endTime || "-"}`,
-      tooltip: true,
-    },
-  ];
+  console.log(stakeModalInputData);
+
+  const contentList = fiveDaysLockup
+    ? [
+        {
+          title: "You Give",
+          content: `${inputValue.stake_modal_balance || "0"} TOS`,
+          tooltip: false,
+        },
+        {
+          title: "You Will Get",
+          content: `${stakeModalInputData?.youWillGet.ltos || "0"} LTOS`,
+          tooltip: true,
+        },
+        {
+          title: "Current Balance",
+          content: `${stakeModalInputData?.currentBalance || "0"} LTOS`,
+          tooltip: true,
+        },
+        {
+          title: "New Balance",
+          content: `${stakeModalInputData?.newBalance || "0"} LTOS`,
+          tooltip: true,
+        },
+      ]
+    : [
+        {
+          title: "You Give",
+          content: `${inputValue.stake_modal_balance || "0"} TOS`,
+          tooltip: false,
+        },
+        {
+          title: "You Will Get",
+          content: stakeModalInputData?.youWillGet || "0",
+          tooltip: true,
+        },
+        {
+          title: "End Time",
+          content: `${stakeModalInputData?.endTime || "-"}`,
+          tooltip: true,
+        },
+      ];
 
   const callStake = useCallback(() => {
     //Mainnet_maxPeriod = 3years
