@@ -9,9 +9,9 @@ type CheckBoxProp = {
   w?: number;
   h?: number;
   isDisabled?: boolean;
-  value: any;
-  valueKey: any;
-  pageKey: PageKey;
+  value?: any;
+  valueKey?: any;
+  pageKey?: PageKey;
   isError?: boolean;
   isChecked?: boolean;
   state?: boolean;

@@ -22,7 +22,6 @@ function useUnstake(stakeId: string | string[]) {
         const maxValueData = await StakingV2Proxy_CONTRACT.claimableTos(
           stakeId
         );
-        console.log(maxValueData.toString());
         const maxValue = convertNumber({
           amount: maxValueData.toString(),
           round: false,

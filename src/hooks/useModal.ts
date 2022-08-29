@@ -1,9 +1,11 @@
+import { defaultValue, inputState } from "atom/global/input";
 import { modalData, modalState } from "atom/global/modal";
 import { useRecoilState } from "recoil";
 
-function useModal<T extends U>(modalType?: string, modalDataObj?: {}) {
+function useModal(modalType?: string, modalDataObj?: {}) {
   const [selectedModal, setSelectedModal] = useRecoilState(modalState);
   const [selectedModalData, setSelectedModalData] = useRecoilState(modalData);
+  const [value, setValue] = useRecoilState(inputState);
 
   const openModal = () => {
     if (modalType) {
@@ -18,6 +20,7 @@ function useModal<T extends U>(modalType?: string, modalDataObj?: {}) {
   const closeModal = () => {
     setSelectedModal("");
     setSelectedModalData({});
+    setValue(defaultValue);
   };
 
   return { openModal, closeModal, selectedModal, selectedModalData };

@@ -2,6 +2,7 @@ import commafy from "@/components/commafy";
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp, isTimeOver } from "@/components/time";
 import { useWeb3React } from "@web3-react/core";
+import { useBlockNumber } from "hooks/useBlockNumber";
 import useCallContract from "hooks/useCallContract";
 import usePrice from "hooks/usePrice";
 import { useEffect, useState } from "react";
@@ -14,6 +15,7 @@ function useStakeList() {
 
   const { account } = useWeb3React();
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
+  const { blockNumber } = useBlockNumber();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,7 +142,7 @@ function useStakeList() {
       console.log("**useStakeList err**");
       console.log(e);
     });
-  }, [StakingV2Proxy_CONTRACT, account, LockTOS_CONTRACT]);
+  }, [StakingV2Proxy_CONTRACT, account, LockTOS_CONTRACT, blockNumber]);
 
   return { stakeCards };
 }

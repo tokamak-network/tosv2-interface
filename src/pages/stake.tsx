@@ -4,6 +4,8 @@ import PageLayout from "pages/components/layout/PageLayout";
 import StakeCardContainer from "pages/components/stake/StakeCardContainer";
 import StakeModal from "pages/components/stake/StakeModal";
 import UnstakeModal from "pages/components/stake/UnstakeModal";
+import UpdateModal from "pages/components/stake/UpdateModal";
+import UpdateModalAfterEndTime from "pages/components/stake/updateModalAfterEndTime";
 
 const Stake = () => {
   const theme = useTheme();
@@ -18,6 +20,8 @@ const Stake = () => {
       <StakeCardContainer></StakeCardContainer>
       <StakeModal></StakeModal>
       <UnstakeModal></UnstakeModal>
+      <UpdateModal></UpdateModal>
+      <UpdateModalAfterEndTime></UpdateModalAfterEndTime>
     </Flex>
   );
 };

@@ -41,6 +41,15 @@ function StakeCard(props: { cardData: StakeCardProps }) {
       : { hasInput: false, stakedId: cardData?.stakedId }
   );
   const { openModal } = useModal("stake_stake_modal");
+  const { openModal: openUpdateModal } = useModal("stake_update_modal", {
+    stakeId: cardData?.stakedId,
+  });
+  const { openModal: openUpdateAfterEndTimeModal } = useModal(
+    "stake_updateAfterEndTime_modal",
+    {
+      stakeId: cardData?.stakedId,
+    }
+  );
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
   const { colorMode } = useColorMode();
@@ -134,9 +143,15 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         )}
         <Flex justifyContent={"space-between"} w={"100%"}>
           <BasicButton
-            name={isDisabled ? "Stake" : "Update"}
+            name={stakedType === "LTOS Staking" ? "Stake" : "Update"}
             h={"33px"}
-            onClick={openModal}
+            onClick={
+              stakedType === "LTOS Staking"
+                ? openModal
+                : isOver
+                ? openUpdateAfterEndTimeModal
+                : openUpdateModal
+            }
             style={smallerThan1040 ? { width: "100%" } : {}}
             iconName={isDisabled ? undefined : "Question"}
             iconLocation={isDisabled ? "right" : undefined}
