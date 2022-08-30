@@ -46,6 +46,9 @@ import CONTRACT_ADDRESS from "services/addresses/contract";
 import { BigNumber } from "ethers";
 import useUser from "hooks/useUser";
 import Tile from "../common/modal/Tile";
+import useStakeId from "hooks/contract/useStakeId";
+import useInput from "hooks/useInput";
+import useUpdateModalData from "hooks/stake/useUpdateModalData";
 
 function StakeGraph() {
   const labelStyles = {
@@ -149,14 +152,14 @@ function BottomContent(props: {
 
   const ContentComponent = useMemo(() => {
     switch (title) {
-      case "You Will Get":
+      case "Current Balance":
         return (
           <Flex>
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
             >
-              {(typeof content !== "string" && content.ltos) || "-"} LTOS
+              {typeof content !== "string" && content.ltos} LTOS
             </Text>
             <Text color={"#64646f"} mx={"5px"}>
               /
@@ -165,7 +168,27 @@ function BottomContent(props: {
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
             >
-              {(typeof content !== "string" && content.stos) || "-"} sTOS
+              {typeof content !== "string" && content.stos} sTOS
+            </Text>
+          </Flex>
+        );
+      case "New Balance":
+        return (
+          <Flex>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {typeof content !== "string" && content.ltos} LTOS
+            </Text>
+            <Text color={"#64646f"} mx={"5px"}>
+              /
+            </Text>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {typeof content !== "string" && content.stos} sTOS
             </Text>
           </Flex>
         );
@@ -217,38 +240,40 @@ function UpdateModal() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
-  const inputValues = useRecoilValue(inputBalanceState);
-  const { bondInputData } = useInputData(
-    inputValues.stake_stake_modal_balance,
-    inputValues.stake_stake_modal_period
-  );
+  const { inputValue } = useInput("Stake_screen", "update_modal");
+  // const { bondInputData } = useInputData(
+  //   inputValue.stake_stake_modal_balance,
+  //   inputValue.stake_stake_modal_period
+  // );
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
   const { userData } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
 
-  const stakeId = selectedModalData.stakeId;
+  const { stakeId } = useStakeId();
+  const { currentBalance, newBalance, currentEndTime, newEndTime } =
+    useUpdateModalData();
 
   const contentList = [
     {
       title: "You Give",
-      content: `${inputValues.stake_stake_modal_balance || "0"} TOS`,
+      content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
       tooltip: false,
     },
     {
       title: "Current Balance",
-      content: "0",
+      content: currentBalance,
       tooltip: true,
     },
     {
       title: "New Balance",
-      content: `${"-"}`,
+      content: newBalance,
       tooltip: true,
     },
     {
       title: "Current End Time",
-      content: `${"-"}`,
+      content: currentEndTime,
       tooltip: true,
     },
     {
@@ -268,13 +293,13 @@ function UpdateModal() {
         "increaseBeforeEndOrNonEnd(uint256,uint256,uint256)"
       ](
         stakeId,
-        convertToWei(inputValues.stake_stake_modal_balance),
-        inputValues.stake_stake_modal_period
+        convertToWei(inputValue.stake_updateModal_tos_balance),
+        inputValue.stake_updateModal_period
       );
     }
   }, [
-    inputValues.stake_stake_modal_balance,
-    inputValues.stake_stake_modal_period,
+    inputValue.stake_updateModal_tos_balance,
+    inputValue.stake_updateModal_period,
     StakingV2Proxy_CONTRACT,
     stakeId,
   ]);
@@ -292,12 +317,12 @@ function UpdateModal() {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
       }
-      if (tosAllowance >= Number(inputValues.stake_stake_modal_balance)) {
+      if (tosAllowance >= Number(inputValue.stake_updateModal_tos_balance)) {
         return setIsAllowance(true);
       }
       return setIsAllowance(false);
     }
-  }, [userData, inputValues.stake_stake_modal_balance]);
+  }, [userData, inputValue.stake_updateModal_tos_balance]);
 
   return (
     <Modal
@@ -350,7 +375,9 @@ function UpdateModal() {
                     w={"100%"}
                     h={45}
                     placeHolder={"Enter an amount of TOS"}
-                    atomKey={"stake_stake_modal_balance"}
+                    pageKey={"Stake_screen"}
+                    recoilKey={"update_modal"}
+                    atomKey={"stake_updateModal_tos_balance"}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -379,8 +406,10 @@ function UpdateModal() {
                   <TextInput
                     w={"170px"}
                     h={"39px"}
-                    atomKey={"stake_stake_modal_period"}
+                    atomKey={"stake_updateModal_period"}
                     placeHolder={"1 Weeks"}
+                    pageKey={"Stake_screen"}
+                    recoilKey={"update_modal"}
                     style={{ marginLeft: "auto" }}
                   ></TextInput>
                 </Flex>

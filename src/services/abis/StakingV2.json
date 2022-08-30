@@ -580,7 +580,7 @@
           "type": "uint256"
         }
       ],
-      "name": "balanceOfId",
+      "name": "remainedLtos",
       "outputs": [
         {
           "internalType": "uint256",
@@ -1026,25 +1026,6 @@
     {
       "inputs": [],
       "name": "rebasePerEpoch",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "_stakeId",
-          "type": "uint256"
-        }
-      ],
-      "name": "remainedLtos",
       "outputs": [
         {
           "internalType": "uint256",

@@ -87,8 +87,6 @@ function UnstakeModal() {
     },
   ];
 
-  console.log(unstakeData);
-
   const callUnstake = useCallback(async () => {
     if (StakingV2Proxy_CONTRACT) {
       if (hasInput) {

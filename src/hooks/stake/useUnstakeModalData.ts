@@ -26,7 +26,7 @@ function useUnstakeModalData(stakeId: string | string[]) {
   useEffect(() => {
     async function fetchUnstakeData() {
       if (StakingV2Proxy_CONTRACT && stakeId) {
-        const maxValueBN = await StakingV2Proxy_CONTRACT.balanceOfId(stakeId);
+        const maxValueBN = await StakingV2Proxy_CONTRACT.remainedLtos(stakeId);
         // const maxValueData = await StakingV2Proxy_CONTRACT.claimableTos(
         //   stakeId
         // );
@@ -79,7 +79,7 @@ function useUnstakeModalData(stakeId: string | string[]) {
   useEffect(() => {
     async function fetchUnstakeData() {
       if (StakingV2Proxy_CONTRACT && stakeV2?.ltosIndexBN) {
-        const maxValueBN = await StakingV2Proxy_CONTRACT.balanceOfId(stakeId);
+        const maxValueBN = await StakingV2Proxy_CONTRACT.remainedLtos(stakeId);
         const maxValue = BigNumber.from(maxValueBN).mul(stakeV2.ltosIndexBN);
         const convertedGetMaxTosAmount = convertNumber({
           amount: maxValue.toString(),

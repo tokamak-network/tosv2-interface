@@ -95,7 +95,7 @@ function useStakeModaldata() {
           account,
           userStakedList[1]
         );
-        const currentBalanceWei = await StakingV2Proxy_CONTRACT.balanceOfId(
+        const currentBalanceWei = await StakingV2Proxy_CONTRACT.remainedLtos(
           simpleStakeId.toString()
         );
         const currentBalance =
