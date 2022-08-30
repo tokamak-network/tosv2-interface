@@ -13,8 +13,6 @@ function StakeCardSection() {
   const { rowNum, currentPageList, setCurrentPage } = usePagination(cardList);
   const { stakeCards } = useStakeList();
 
-  console.log(stakeCards);
-
   return (
     <Flex flexDir={"column"}>
       <Flex

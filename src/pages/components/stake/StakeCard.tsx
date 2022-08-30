@@ -67,6 +67,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
       w={smallerThan1040 ? "100%" : "31.9%"}
       h={smallerThan1040 ? "" : "273px"}
       minW={["336px", "310px", "362px"]}
+      bg={colorMode === "light" ? "white.100" : "#1f2128"}
       borderWidth={1}
       borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
       borderRadius={10}

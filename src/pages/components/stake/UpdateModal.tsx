@@ -278,7 +278,7 @@ function UpdateModal() {
     },
     {
       title: "New End Time",
-      content: `${"-"}`,
+      content: newEndTime,
       tooltip: true,
     },
   ];

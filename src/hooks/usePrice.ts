@@ -24,7 +24,7 @@ function usePrice() {
 
   useEffect(() => {
     if (data && TokenData) {
-      const tosPrice = data.getDashboard[0].tosPrice;
+      const tosPrice = data.getDashboard[0]?.tosPrice || "0";
       const {
         getTokenPrice: { price: ethPrice },
       } = TokenData;

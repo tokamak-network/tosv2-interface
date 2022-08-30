@@ -5,6 +5,7 @@ import useStakeId from "hooks/contract/useStakeId";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
+import useStosReward from "./useStosReward";
 
 type Balance = {
   ltos: string;
@@ -33,6 +34,7 @@ function useUpdateModalData(): UseUpdateModalData {
   const { stakeId } = useStakeId();
   const { modalContractData } = useModalContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
+  const { stosReward } = useStosReward();
 
   //current
   useEffect(() => {
@@ -64,17 +66,16 @@ function useUpdateModalData(): UseUpdateModalData {
         //new balance
         //case1
         //Only increate amount
-        console.log(inputValue);
         if (
           inputValue.stake_updateModal_tos_balance !== "" &&
-          inputValue.stake_updateModal_period === 39312
+          inputValue.stake_updateModal_period === ""
         ) {
           console.log("--1--");
           const tosAmount = convertToWei(
             inputValue.stake_updateModal_tos_balance
           );
           const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
-          const LTOS_BN = BigNumber.from(tosAmount).div(LTOS_Index);
+          const LTOS_BN = BigNumber.from(tosAmount).mod(LTOS_Index);
           const remainedLtos = await StakingV2Proxy_CONTRACT.remainedLtos(
             stakeId
           );
@@ -83,9 +84,11 @@ function useUpdateModalData(): UseUpdateModalData {
             convertNumber({ amount: newLTOS.toString(), localeString: true }) ||
             "0";
 
+          const newEndTime = modalContractData?.currentEndTime;
+          setNewEndTime(newEndTime);
           return setNewBalance({
             ltos,
-            stos: "0",
+            stos: stosReward,
           });
         }
 
@@ -112,7 +115,13 @@ function useUpdateModalData(): UseUpdateModalData {
       console.log("**useUpdateModalData2 err**");
       console.log(e);
     });
-  }, [stakeId, StakingV2Proxy_CONTRACT, inputValue]);
+  }, [
+    stakeId,
+    StakingV2Proxy_CONTRACT,
+    inputValue,
+    stosReward,
+    modalContractData,
+  ]);
 
   return {
     currentBalance,
