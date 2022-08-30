@@ -68,20 +68,26 @@ function UnstakeModal() {
   const { userLTOSBalance } = useUserBalance();
   const { inputValue } = useInput("Stake_screen", "unstake_modal");
   const { StakingV2Proxy_CONTRACT } = useCallContract();
-  const { unstakeData, youWillGet } = useUnstake(selectedModalData.stakedId);
+  const { unstakeData, youWillGet, youWillGetMax } = useUnstake(
+    selectedModalData.stakedId
+  );
 
   const contentList = [
     {
       title: "You Give",
-      content: `${commafy(inputValue.stake_unstakeModal_balance) || "0"} LTOS`,
+      content: hasInput
+        ? `${commafy(inputValue.stake_unstakeModal_balance) || "0"} LTOS`
+        : `${unstakeData?.maxValue || "0"} LTOS`,
     },
     {
       title: "You Will Get",
-      content: `${youWillGet} TOS`,
+      content: hasInput
+        ? `${youWillGet || "0"} TOS`
+        : `${youWillGetMax || "0"} TOS`,
     },
   ];
 
-  console.log(inputValue);
+  console.log(unstakeData);
 
   const callUnstake = useCallback(async () => {
     if (StakingV2Proxy_CONTRACT) {
@@ -176,7 +182,7 @@ function UnstakeModal() {
                     px={"6px"}
                   >
                     <Text>Your Balance</Text>
-                    <Text>{userLTOSBalance} LTOS</Text>
+                    <Text>{unstakeData?.maxValue || "0"} LTOS</Text>
                   </Flex>
                 </Flex>
               )}

@@ -4,6 +4,7 @@ import useStakeV2 from "hooks/contract/useStakeV2";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import useInputValue from "hooks/useInputValue";
+import useUser from "hooks/useUser";
 import { useEffect, useState } from "react";
 
 type UseUnstake = {
@@ -15,6 +16,9 @@ function useUnstakeModalData(stakeId: string | string[]) {
     undefined
   );
   const [youWillGet, setYouWillGet] = useState<string | undefined>(undefined);
+  const [youWillGetMax, setYouWillGetMax] = useState<string | undefined>(
+    undefined
+  );
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { inputValue } = useInput("Stake_screen", "unstake_modal");
   const { stakeV2 } = useStakeV2();
@@ -22,19 +26,21 @@ function useUnstakeModalData(stakeId: string | string[]) {
   useEffect(() => {
     async function fetchUnstakeData() {
       if (StakingV2Proxy_CONTRACT && stakeId) {
-        const balanceOfId = await StakingV2Proxy_CONTRACT.balanceOfId(stakeId);
-        const maxValueData = await StakingV2Proxy_CONTRACT.claimableTos(
-          stakeId
-        );
+        const maxValueBN = await StakingV2Proxy_CONTRACT.balanceOfId(stakeId);
+        // const maxValueData = await StakingV2Proxy_CONTRACT.claimableTos(
+        //   stakeId
+        // );
         const maxValue = convertNumber({
-          amount: maxValueData.toString(),
+          amount: maxValueBN.toString(),
           round: false,
         });
-        if (maxValue) return setUnstakeData({ maxValue });
+        if (maxValue) {
+          return setUnstakeData({ maxValue });
+        }
       }
     }
     fetchUnstakeData().catch((e) => {
-      console.log("**useUnstake err**");
+      console.log("**useUnstake fetchUnstakeData1 err**");
       console.log(e);
     });
   }, [stakeId, StakingV2Proxy_CONTRACT]);
@@ -65,12 +71,31 @@ function useUnstakeModalData(stakeId: string | string[]) {
       return setYouWillGet("0");
     }
     fetchUnstakeData().catch((e) => {
-      console.log("**useUnstake err**");
+      console.log("**useUnstake fetchUnstakeData2 err**");
       console.log(e);
     });
   }, [StakingV2Proxy_CONTRACT, inputValue.stake_unstakeModal_balance, stakeV2]);
 
-  return { unstakeData, youWillGet };
+  useEffect(() => {
+    async function fetchUnstakeData() {
+      if (StakingV2Proxy_CONTRACT && stakeV2?.ltosIndexBN) {
+        const maxValueBN = await StakingV2Proxy_CONTRACT.balanceOfId(stakeId);
+        const maxValue = BigNumber.from(maxValueBN).mul(stakeV2.ltosIndexBN);
+        const convertedGetMaxTosAmount = convertNumber({
+          amount: maxValue.toString(),
+          localeString: true,
+        });
+        return setYouWillGetMax(convertedGetMaxTosAmount);
+      }
+      return setYouWillGet("0");
+    }
+    fetchUnstakeData().catch((e) => {
+      console.log("**useUnstake fetchUnstakeData3 err**");
+      console.log(e);
+    });
+  }, [StakingV2Proxy_CONTRACT, stakeId, stakeV2]);
+
+  return { unstakeData, youWillGet, youWillGetMax };
 }
 
 export default useUnstakeModalData;

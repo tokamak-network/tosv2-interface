@@ -8,6 +8,7 @@ import useUserBalance from "./useUserBalance";
 
 type UseUser = {
   tosAllowance: number;
+  stakeList: string[];
 };
 
 function useUser() {
@@ -16,13 +17,16 @@ function useUser() {
   const { account } = useWeb3React();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { blockNumber } = useBlockNumber();
+  const { StakingV2Proxy_CONTRACT } = useCallContract();
 
   useEffect(() => {
     async function fetchUseUser() {
-      if (TOS_CONTRACT && account) {
+      if (TOS_CONTRACT && account && StakingV2Proxy_CONTRACT) {
         const allowance = await TOS_CONTRACT.allowance(account, StakingV2Proxy);
+        const stakeList = await StakingV2Proxy_CONTRACT.stakingOf(account);
         return setUserData({
           tosAllowance: Number(convertNumber({ amount: allowance.toString() })),
+          stakeList,
         });
       }
     }
@@ -32,7 +36,13 @@ function useUser() {
         console.log(e);
       }
     });
-  }, [TOS_CONTRACT, account, StakingV2Proxy, blockNumber]);
+  }, [
+    TOS_CONTRACT,
+    account,
+    StakingV2Proxy,
+    blockNumber,
+    StakingV2Proxy_CONTRACT,
+  ]);
 
   return { userData };
 }

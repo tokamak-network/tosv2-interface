@@ -241,8 +241,6 @@ function StakeModal() {
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
 
-  console.log(stakeModalInputData);
-
   const contentList = fiveDaysLockup
     ? [
         {
