@@ -8,9 +8,10 @@ type UseModalContract = {
   ltosBalance: string;
   stosBalance: string;
   currentEndTime: string;
+  currentEndTimeStamp: number;
 };
 
-function useModalContract() {
+function useModalContract(): UseModalContract | undefined {
   const [modalContractData, setModalContractData] = useState<
     UseModalContract | undefined
   >(undefined);
@@ -40,11 +41,13 @@ function useModalContract() {
           stakeInfo.endTime,
           "YYYY. MM.DD. HH:mm"
         );
+        const currentEndTimeStamp = Number(stakeInfo.endTime.toString());
 
         setModalContractData({
           ltosBalance,
           stosBalance,
           currentEndTime,
+          currentEndTimeStamp,
         });
       }
     }
@@ -54,7 +57,7 @@ function useModalContract() {
     });
   }, [stakeId, connectId, StakingV2Proxy_CONTRACT, LockTOS_CONTRACT]);
 
-  return { modalContractData };
+  return modalContractData;
 }
 
 export default useModalContract;

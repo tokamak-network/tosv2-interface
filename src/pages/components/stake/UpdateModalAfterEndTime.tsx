@@ -49,6 +49,7 @@ import Tile from "../common/modal/Tile";
 import { stake_updateModal_state } from "atom/stake/input";
 import useStakeInput from "hooks/stake/useStakeInput";
 import useInput from "hooks/useInput";
+import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
 
 function StakeGraph() {
   const labelStyles = {
@@ -214,19 +215,23 @@ function UpdateModalAfterEndTime() {
   const [addTos, setAddTos] = useState<boolean>(false);
   const { inputValue } = useInput("Stake_screen", "update_modal");
 
-  // const { bondInputData } = useInputData(inputLtos || "0", inputPeriod || 0);
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance, userLTOSBalance } = useUserBalance();
   const { userData } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
+  const { newBalance, newEndTime } = useUpdateModalAfterEndTime();
 
   const stakeId = selectedModalData.stakeId;
 
   const contentList = [
     {
       title: "You Give",
-      content: `${inputValue.stake_updateModal_ltos_balance || "0"} ETH`,
+      content: `${
+        addTos
+          ? inputValue.stake_updateModal_tos_balance
+          : inputValue.stake_updateModal_ltos_balance || "0"
+      } ${addTos ? "TOS" : "LTOS"}`,
       tooltip: false,
     },
     {
@@ -236,7 +241,7 @@ function UpdateModalAfterEndTime() {
     },
     {
       title: "End Time",
-      content: "-",
+      content: newEndTime,
       tooltip: true,
     },
   ];
@@ -260,6 +265,9 @@ function UpdateModalAfterEndTime() {
       }
       //after endTime
       //resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks)
+      console.log(
+        "resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks"
+      );
       console.log(
         stakeId,
         convertToWei(inputValue.stake_updateModal_ltos_balance),

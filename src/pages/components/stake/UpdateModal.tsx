@@ -49,6 +49,7 @@ import Tile from "../common/modal/Tile";
 import useStakeId from "hooks/contract/useStakeId";
 import useInput from "hooks/useInput";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
+import useStosReward from "hooks/stake/useStosReward";
 
 function StakeGraph() {
   const labelStyles = {
@@ -241,19 +242,17 @@ function UpdateModal() {
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue } = useInput("Stake_screen", "update_modal");
-  // const { bondInputData } = useInputData(
-  //   inputValue.stake_stake_modal_balance,
-  //   inputValue.stake_stake_modal_period
-  // );
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
   const { userData } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-
+  const [inputError, setInputError] = useState<boolean>(false);
+  const [btnDisable, setBtnDisable] = useState<boolean>(false);
   const { stakeId } = useStakeId();
-  const { currentBalance, newBalance, currentEndTime, newEndTime } =
+  const { currentBalance, newBalance, currentEndTime, newEndTime, leftWeeks } =
     useUpdateModalData();
+  const { maxWeeks } = useStosReward();
 
   const contentList = [
     {
@@ -324,6 +323,28 @@ function UpdateModal() {
     }
   }, [userData, inputValue.stake_updateModal_tos_balance]);
 
+  useEffect(() => {
+    if (inputValue.stake_updateModal_period && leftWeeks) {
+      const inputPeriod = inputValue.stake_updateModal_period;
+      if (inputPeriod < leftWeeks) {
+        return setInputError(true);
+      }
+      return setInputError(false);
+    }
+  }, [inputValue, leftWeeks]);
+
+  useEffect(() => {
+    if (inputError) {
+      return setBtnDisable(true);
+    }
+    if (inputValue.stake_updateModal_tos_balance) {
+      if (inputValue.stake_updateModal_tos_balance === "") {
+        return setBtnDisable(true);
+      }
+    }
+    return setBtnDisable(false);
+  }, [inputError, inputValue]);
+
   return (
     <Modal
       isOpen={selectedModal === "stake_update_modal"}
@@ -378,6 +399,7 @@ function UpdateModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     atomKey={"stake_updateModal_tos_balance"}
+                    maxValue={Number(userTOSBalance.replaceAll(",", ""))}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -402,7 +424,13 @@ function UpdateModal() {
                     h={"39px"}
                     border={"1px solid #313442"}
                     borderRadius={8}
-                  ></Flex>
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    fontSize={14}
+                    color={"#64646f"}
+                  >
+                    <Text>{leftWeeks} Weeks</Text>
+                  </Flex>
                   <TextInput
                     w={"170px"}
                     h={"39px"}
@@ -411,6 +439,9 @@ function UpdateModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     style={{ marginLeft: "auto" }}
+                    maxValue={maxWeeks}
+                    isError={inputError}
+                    errorMsg={"Invalid Weeks"}
                   ></TextInput>
                 </Flex>
               </Flex>
@@ -442,12 +473,17 @@ function UpdateModal() {
                   w={460}
                   h={42}
                   name="Update"
+                  isDisabled={btnDisable}
                   onClick={callUpdate}
                 ></SubmitButton>
               ) : (
                 <SubmitButton
                   w={460}
                   h={42}
+                  isDisabled={
+                    inputValue.stake_updateModal_tos_balance === "" ||
+                    Number(inputValue.stake_updateModal_tos_balance) > 0
+                  }
                   name="Approve"
                   onClick={callApprove}
                 ></SubmitButton>

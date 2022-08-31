@@ -1,9 +1,12 @@
 import { atom, selector } from "recoil";
 
+//stake & update max weeks
+const maxPeriod = 156;
+
 //stake modal states
 const stake_stakeModal_defaultValue = {
-  stake_modal_period: 39312,
-  stake_modal_balance: "",
+  stake_modal_period: maxPeriod,
+  stake_modal_balance: "0",
 };
 
 const stake_stakeModal_input = atom({
@@ -21,7 +24,7 @@ const stake_stakeModal_state = selector({
 
 //unstake modal states
 const stake_unstakeModal_defaultValue = {
-  stake_unstakeModal_balance: "",
+  stake_unstakeModal_balance: "0",
 };
 
 const stake_unstakeModal_input = atom({
@@ -39,9 +42,9 @@ const stake_unstakeModal_state = selector({
 
 //update modal states
 const stake_updateModal_defaultValue = {
-  stake_updateModal_period: 39312,
-  stake_updateModal_ltos_balance: "",
-  stake_updateModal_tos_balance: "",
+  stake_updateModal_period: maxPeriod,
+  stake_updateModal_ltos_balance: undefined,
+  stake_updateModal_tos_balance: undefined,
 };
 
 const stake_updateModal_inputState = atom({

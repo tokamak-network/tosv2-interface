@@ -1,9 +1,12 @@
 import { convertNumber, convertToWei } from "@/components/number";
+import { getNowTimeStamp } from "@/components/time";
 import { BigNumber } from "ethers";
+import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
 import useStakeId from "hooks/contract/useStakeId";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import useStosReward from "./useStosReward";
 
@@ -17,6 +20,7 @@ type UseUpdateModalData = {
   newBalance: Balance;
   currentEndTime: string;
   newEndTime: string;
+  leftWeeks: number;
 };
 
 const defaultBalanceValue = {
@@ -30,11 +34,14 @@ function useUpdateModalData(): UseUpdateModalData {
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
   const [currentEndTime, setCurrentEndTime] = useState<string>("-");
   const [newEndTime, setNewEndTime] = useState<string>("-");
+  const [leftWeeks, setLeftWeeks] = useState<number | undefined>(undefined);
+
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
-  const { modalContractData } = useModalContract();
+  const modalContractData = useModalContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward } = useStosReward();
+  const { epochUnit } = useLockTOS();
 
   //current
   useEffect(() => {
@@ -45,19 +52,25 @@ function useUpdateModalData(): UseUpdateModalData {
         const stos = modalContractData.stosBalance;
         const currentBalance = { ltos, stos };
         const currentEndTime = modalContractData.currentEndTime;
+        const currentEndTimeStamp = modalContractData.currentEndTimeStamp;
 
+        setCurrentEndTime(currentEndTime);
         setCurrentBalance(currentBalance);
 
-        //current end time
-        const stakeInfo = await StakingV2Proxy_CONTRACT.stakeInfo(stakeId);
-        setCurrentEndTime(currentEndTime);
+        //weeks left
+        const now = getNowTimeStamp();
+        const timeDiff = currentEndTimeStamp - now;
+        const timeLeft = timeDiff / epochUnit;
+        setLeftWeeks(Math.ceil(timeLeft));
+
+        console.log(now, timeDiff, timeLeft, epochUnit);
       }
     }
     fetchUpdateModalData().catch((e) => {
       console.log("**useUpdateModalData1 err**");
       console.log(e);
     });
-  }, [stakeId, StakingV2Proxy_CONTRACT, modalContractData]);
+  }, [stakeId, StakingV2Proxy_CONTRACT, modalContractData, epochUnit]);
 
   //new
   useEffect(() => {
@@ -85,7 +98,7 @@ function useUpdateModalData(): UseUpdateModalData {
             "0";
 
           const newEndTime = modalContractData?.currentEndTime;
-          setNewEndTime(newEndTime);
+          setNewEndTime(newEndTime || "-");
           return setNewBalance({
             ltos,
             stos: stosReward,
@@ -128,6 +141,7 @@ function useUpdateModalData(): UseUpdateModalData {
     newBalance,
     currentEndTime,
     newEndTime,
+    leftWeeks,
   };
 }
 

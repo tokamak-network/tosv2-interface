@@ -1,5 +1,6 @@
 import { getNowTimeStamp } from "@/components/time";
 import Decimal from "decimal.js";
+import useModalContract from "hooks/contract/useModalContract";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
@@ -7,27 +8,33 @@ import { useEffect, useState } from "react";
 type UseStosReward = {
   stosReward: string;
   newEndTime: string;
+  maxWeeks: number;
 };
 
 function useStosReward(): UseStosReward {
   const [stosReward, setStosRewards] = useState<string>("0");
   const [newEndTime, setNewEndTime] = useState<string>("-");
+  const [maxWeeks, setMaxWeeks] = useState<number>(0);
   const { LockTOS_CONTRACT } = useCallContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
+  const modalContractData = useModalContract();
 
   useEffect(() => {
     async function fetchStosRewardData() {
       if (
         LockTOS_CONTRACT &&
         inputValue.stake_updateModal_tos_balance &&
-        inputValue.stake_updateModal_period
+        inputValue.stake_updateModal_period &&
+        modalContractData?.currentEndTimeStamp
       ) {
-        const value = inputValue.stake_updateModal_tos_balance;
-        const weekPeriod = inputValue.stake_updateModal_period;
-
-        if (value === "" || weekPeriod === "") {
-          return;
-        }
+        const value =
+          inputValue.stake_updateModal_tos_balance === ""
+            ? 0
+            : inputValue.stake_updateModal_tos_balance;
+        const weekPeriod =
+          inputValue.stake_updateModal_period === ""
+            ? 1
+            : inputValue.stake_updateModal_period;
 
         const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
         const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
@@ -54,9 +61,45 @@ function useStosReward(): UseStosReward {
     LockTOS_CONTRACT,
     inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period,
+    modalContractData,
   ]);
 
-  return { stosReward, newEndTime };
+  useEffect(() => {
+    async function fetchStosRewardData() {
+      if (
+        LockTOS_CONTRACT &&
+        inputValue.stake_updateModal_period &&
+        modalContractData?.currentEndTimeStamp
+      ) {
+        //calculate max weeks
+        const weekPeriod = inputValue.stake_updateModal_period;
+
+        if (weekPeriod === "") {
+          return;
+        }
+
+        const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
+        const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
+        const now = getNowTimeStamp();
+        const endTime = modalContractData?.currentEndTimeStamp;
+        const timeLeft = endTime - now;
+        const maxPeriod = maxTime - timeLeft;
+        const maxWeeks = Math.floor(maxPeriod / oneWeek);
+
+        return setMaxWeeks(maxWeeks);
+      }
+    }
+    fetchStosRewardData().catch((e) => {
+      console.log("**fetchStosRewardData err**");
+      console.log(e);
+    });
+  }, [
+    LockTOS_CONTRACT,
+    inputValue.stake_updateModal_period,
+    modalContractData,
+  ]);
+
+  return { stosReward, newEndTime, maxWeeks };
 }
 
 export default useStosReward;

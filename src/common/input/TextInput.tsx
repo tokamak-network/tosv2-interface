@@ -3,11 +3,15 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  NumberInput,
+  NumberInputField,
+  Text,
   useColorMode,
   useTheme,
 } from "@chakra-ui/react";
 import { inputBalanceState, inputState } from "atom/global/input";
 import useInput from "hooks/useInput";
+import { max } from "moment";
 import React, { SetStateAction } from "react";
 import { RecoilLoadable, useRecoilState, useRecoilValue } from "recoil";
 import { PageKey } from "types";
@@ -20,10 +24,27 @@ type InputProp = {
   isDisabled?: boolean;
   inputValue?: string | number | any;
   isError?: boolean;
+  errorMsg?: string;
   atomKey: string;
   style?: any;
   pageKey?: PageKey;
   recoilKey?: Stake_InputKey;
+  maxValue?: string | number;
+};
+
+type NumberInputProp = {
+  placeHolder?: string;
+  w?: number | string;
+  h?: number | string;
+  isDisabled?: boolean;
+  inputValue?: string | number | any;
+  isError?: boolean;
+  errorMsg?: string;
+  atomKey: string;
+  style?: any;
+  pageKey?: PageKey;
+  recoilKey?: Stake_InputKey;
+  maxValue?: number;
 };
 
 const TextInput: React.FC<InputProp> = (props) => {
@@ -37,6 +58,8 @@ const TextInput: React.FC<InputProp> = (props) => {
     style,
     pageKey,
     recoilKey,
+    maxValue,
+    errorMsg,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -47,7 +70,7 @@ const TextInput: React.FC<InputProp> = (props) => {
   };
 
   return (
-    <InputGroup w={w || 270} {...style}>
+    <InputGroup w={w || 270} pos={"relative"} {...style}>
       <Input
         isInvalid={isError}
         isDisabled={isDisabled}
@@ -69,18 +92,32 @@ const TextInput: React.FC<InputProp> = (props) => {
         placeholder={placeHolder}
         _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
         focusBorderColor="none"
-        _focus={{
-          outline: "none",
-          color: colorMode === "light" ? "gray.800" : "#f1f1f1",
-          boxShadow: "",
-          borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
-        }}
+        _focus={
+          isError
+            ? {}
+            : {
+                outline: "none",
+                color: colorMode === "light" ? "gray.800" : "#f1f1f1",
+                boxShadow: "",
+                borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
+              }
+        }
         outline="none"
         errorBorderColor={"#e23738"}
-        //@ts-ignore
-        value={value?.atomKey}
+        value={value[atomKey]}
         onChange={onChange}
       ></Input>
+      {isError && (
+        <Flex
+          pos="absolute"
+          bottom={"-22px"}
+          fontSize={12}
+          color={"#e23738"}
+          pl={"16px"}
+        >
+          <Text>{errorMsg}</Text>
+        </Flex>
+      )}
       <InputRightElement
         ml={"30px"}
         w={"30px"}
@@ -93,6 +130,9 @@ const TextInput: React.FC<InputProp> = (props) => {
           h={"20px"}
           color={"#64646f"}
           _hover={{ color: "#2775ff" }}
+          onClick={() =>
+            maxValue && setValue({ ...inputValue, [atomKey]: maxValue })
+          }
         >
           Max
         </Flex>
@@ -101,7 +141,7 @@ const TextInput: React.FC<InputProp> = (props) => {
   );
 };
 
-function BalanceInput(props: InputProp) {
+function BalanceInput(props: NumberInputProp) {
   const {
     placeHolder,
     w,
@@ -111,6 +151,7 @@ function BalanceInput(props: InputProp) {
     isError,
     pageKey,
     recoilKey,
+    maxValue,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -123,7 +164,7 @@ function BalanceInput(props: InputProp) {
 
   return (
     <InputGroup>
-      <Input
+      <NumberInput
         isInvalid={isError}
         isDisabled={isDisabled}
         w={w || 270}
@@ -146,10 +187,15 @@ function BalanceInput(props: InputProp) {
         }}
         errorBorderColor={"#e23738"}
         outline="none"
-        //@ts-ignore
-        value={value?.atomKey}
-        onChange={onChange}
-      ></Input>
+        value={value[atomKey]}
+      >
+        <NumberInputField
+          h={"100%"}
+          placeholder={placeHolder}
+          onChange={onChange}
+          border={{}}
+        ></NumberInputField>
+      </NumberInput>
       <InputRightElement
         ml={"30px"}
         w={"30px"}
@@ -162,6 +208,9 @@ function BalanceInput(props: InputProp) {
           h={"20px"}
           color={"#64646f"}
           _hover={{ color: "#2775ff" }}
+          onClick={() =>
+            maxValue && setValue({ ...inputValue, [atomKey]: String(maxValue) })
+          }
         >
           Max
         </Flex>
