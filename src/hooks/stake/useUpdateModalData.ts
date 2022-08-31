@@ -1,5 +1,5 @@
 import { convertNumber, convertToWei } from "@/components/number";
-import { getNowTimeStamp } from "@/components/time";
+import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import { BigNumber } from "ethers";
 import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
@@ -40,7 +40,9 @@ function useUpdateModalData(): UseUpdateModalData {
   const { stakeId } = useStakeId();
   const modalContractData = useModalContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
-  const { stosReward } = useStosReward();
+  const { stosReward, unlockTime } = useStosReward(
+    inputValue.stake_updateModal_period
+  );
   const { epochUnit } = useLockTOS();
 
   //current
@@ -87,15 +89,15 @@ function useUpdateModalData(): UseUpdateModalData {
           const tosAmount = convertToWei(
             inputValue.stake_updateModal_tos_balance
           );
-          const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
-          const LTOS_BN = BigNumber.from(tosAmount).mod(LTOS_Index);
-          const remainedLtos = await StakingV2Proxy_CONTRACT.remainedLtos(
-            stakeId
-          );
-          const newLTOS = BigNumber.from(LTOS_BN).add(remainedLtos);
+          const newLTOS =
+            await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
+
           const ltos =
-            convertNumber({ amount: newLTOS.toString(), localeString: true }) ||
-            "0";
+            convertNumber({
+              amount: newLTOS.toString(),
+              localeString: true,
+              round: false,
+            }) || "0";
 
           const newEndTime = modalContractData?.currentEndTime;
           setNewEndTime(newEndTime || "-");
@@ -112,6 +114,9 @@ function useUpdateModalData(): UseUpdateModalData {
           inputValue.stake_updateModal_period !== ""
         ) {
           console.log("--2--");
+          return setNewEndTime(
+            convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
+          );
         }
 
         //case3
@@ -121,6 +126,25 @@ function useUpdateModalData(): UseUpdateModalData {
           inputValue.stake_updateModal_period !== ""
         ) {
           console.log("--3--");
+          const tosAmount = convertToWei(
+            inputValue.stake_updateModal_tos_balance
+          );
+          const newLTOS =
+            await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
+
+          const ltos =
+            convertNumber({
+              amount: newLTOS.toString(),
+              localeString: true,
+              round: false,
+            }) || "0";
+          setNewBalance({
+            ltos,
+            stos: stosReward,
+          });
+          return setNewEndTime(
+            convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
+          );
         }
       }
     }

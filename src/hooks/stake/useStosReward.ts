@@ -1,5 +1,6 @@
-import { getNowTimeStamp } from "@/components/time";
+import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import Decimal from "decimal.js";
+import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
@@ -9,15 +10,18 @@ type UseStosReward = {
   stosReward: string;
   newEndTime: string;
   maxWeeks: number;
+  unlockTime: number;
 };
 
-function useStosReward(): UseStosReward {
+function useStosReward(inputPeriod?: number): UseStosReward {
   const [stosReward, setStosRewards] = useState<string>("0");
   const [newEndTime, setNewEndTime] = useState<string>("-");
   const [maxWeeks, setMaxWeeks] = useState<number>(0);
+  const [unlockTime, setUnlockTime] = useState<number>(0);
   const { LockTOS_CONTRACT } = useCallContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const modalContractData = useModalContract();
+  const { epochUnit } = useLockTOS();
 
   useEffect(() => {
     async function fetchStosRewardData() {
@@ -99,7 +103,23 @@ function useStosReward(): UseStosReward {
     modalContractData,
   ]);
 
-  return { stosReward, newEndTime, maxWeeks };
+  useEffect(() => {
+    //endTime
+    async function calculateUnlockTime() {
+      if (LockTOS_CONTRACT && inputPeriod) {
+        const unlockTimeStamp =
+          getNowTimeStamp() + inputPeriod * Number(epochUnit);
+        return setUnlockTime(unlockTimeStamp);
+      }
+    }
+
+    calculateUnlockTime().catch((e) => {
+      console.log("**fetchStosRewardData3 err**");
+      console.log(e);
+    });
+  }, [LockTOS_CONTRACT, inputPeriod, epochUnit]);
+
+  return { stosReward, newEndTime, maxWeeks, unlockTime };
 }
 
 export default useStosReward;

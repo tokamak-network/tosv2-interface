@@ -80,7 +80,8 @@ function useUnstakeModalData(stakeId: string | string[]) {
     async function fetchUnstakeData() {
       if (StakingV2Proxy_CONTRACT && stakeV2?.ltosIndexBN) {
         const maxValueBN = await StakingV2Proxy_CONTRACT.remainedLtos(stakeId);
-        const maxValue = BigNumber.from(maxValueBN).mul(stakeV2.ltosIndexBN);
+        const maxValue =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(maxValueBN);
         const convertedGetMaxTosAmount = convertNumber({
           amount: maxValue.toString(),
           localeString: true,
