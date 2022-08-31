@@ -34,7 +34,7 @@ function useUpdateModalData(): UseUpdateModalData {
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
   const [currentEndTime, setCurrentEndTime] = useState<string>("-");
   const [newEndTime, setNewEndTime] = useState<string>("-");
-  const [leftWeeks, setLeftWeeks] = useState<number | undefined>(undefined);
+  const [leftWeeks, setLeftWeeks] = useState<number>(1);
 
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
