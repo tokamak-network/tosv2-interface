@@ -21,7 +21,6 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { selectedModalData, selectedModalState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
@@ -41,6 +40,8 @@ import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/components/number";
 import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
+import useInput from "hooks/useInput";
+import { Bond_BondModal } from "types/atom";
 
 function StakeGraph() {
   const labelStyles = {
@@ -50,12 +51,6 @@ function StakeGraph() {
   };
   const [sliderValue, setSliderValue] = useState(0);
   const [showTooltip, setShowTooltip] = useState(false);
-  const oldValues = useRecoilValue(inputBalanceState);
-  const [value, setValue] = useRecoilState(inputState);
-
-  useEffect(() => {
-    setValue({ ...oldValues, stake_stake_modal_period: sliderValue });
-  }, [sliderValue]);
 
   // useEffect(() => {
   //   console.log(value.stake_stake_modal_period);
@@ -264,10 +259,10 @@ function BondModal() {
   const { closeModal } = useModal();
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
-  const oldValues = useRecoilValue(inputBalanceState);
+  const { inputValue } = useInput("Bond_screen", "bond_modal");
   const { bondInputData } = useInputData(
-    oldValues.stake_stake_modal_balance,
-    oldValues.stake_stake_modal_period
+    inputValue.bond_modal_balance,
+    inputValue.bond_modal_period
   );
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
@@ -279,7 +274,7 @@ function BondModal() {
   const contentList = [
     {
       title: "You Give",
-      content: `${oldValues.stake_stake_modal_balance || "-"} ETH`,
+      content: `${inputValue.bond_modal_balance || "-"} ETH`,
       tooltip: false,
     },
     {
@@ -295,34 +290,34 @@ function BondModal() {
   ];
 
   const callBond = useCallback(() => {
-    if (BondDepositoryProxy_CONTRACT) {
-      console.log("---");
-      console.log(
-        marketId,
-        convertToWei(oldValues.stake_stake_modal_balance),
-        oldValues.stake_stake_modal_period
-      );
-      if (!fiveDaysLockup) {
+    if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
+      const inputAmount = inputValue.bond_modal_balance;
+
+      if (!fiveDaysLockup && inputValue.bond_modal_period) {
+        console.log("---ETHDepositWithSTOS()---");
+        console.log(
+          marketId,
+          convertToWei(inputAmount),
+          inputValue.bond_modal_period
+        );
         return BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
           marketId,
-          convertToWei(oldValues.stake_stake_modal_balance),
-          oldValues.stake_stake_modal_period,
-          { value: convertToWei(oldValues.stake_stake_modal_balance) }
+          convertToWei(inputAmount),
+          inputValue.bond_modal_period,
+          { value: convertToWei(inputAmount) }
         );
       }
+      console.log("---ETHDeposit()---");
+      console.log(marketId, convertToWei(inputAmount), {
+        value: convertToWei(inputAmount),
+      });
       return BondDepositoryProxy_CONTRACT.ETHDeposit(
         marketId,
-        convertToWei(oldValues.stake_stake_modal_balance),
-        { value: convertToWei(oldValues.stake_stake_modal_balance) }
+        convertToWei(inputAmount),
+        { value: convertToWei(inputAmount) }
       );
     }
-  }, [
-    oldValues.stake_stake_modal_balance,
-    oldValues.stake_stake_modal_period,
-    BondDepositoryProxy_CONTRACT,
-    marketId,
-    fiveDaysLockup,
-  ]);
+  }, [inputValue, BondDepositoryProxy_CONTRACT, marketId, fiveDaysLockup]);
 
   return (
     <Modal
@@ -418,7 +413,9 @@ function BondModal() {
                     w={"100%"}
                     h={45}
                     placeHolder={"Enter an amount of ETH"}
-                    atomKey={"stake_stake_modal_balance"}
+                    pageKey={"Bond_screen"}
+                    recoilKey={"bond_modal"}
+                    atomKey={"bond_modal_balance"}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -449,7 +446,9 @@ function BondModal() {
                   <TextInput
                     w={"170px"}
                     h={"39px"}
-                    atomKey={"stake_stake_modal_period"}
+                    pageKey={"Bond_screen"}
+                    recoilKey={"bond_modal"}
+                    atomKey={"bond_modal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
                   ></TextInput>

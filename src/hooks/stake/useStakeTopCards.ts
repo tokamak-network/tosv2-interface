@@ -1,4 +1,5 @@
 import commafy from "@/components/commafy";
+import useStakeV2 from "hooks/contract/useStakeV2";
 import useCallContract from "hooks/useCallContract";
 import usePrice from "hooks/usePrice";
 import { useEffect, useState } from "react";
@@ -25,6 +26,7 @@ function useStakeTopCards() {
 
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { priceData } = usePrice();
+  const { stakeV2 } = useStakeV2();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,9 +42,6 @@ function useStakeTopCards() {
         const rebasePerEpoch = await StakingV2Proxy_CONTRACT.rebasePerEpoch();
         const TOS_APY = (1 + rebasePerEpoch / 1e18) * 1095;
 
-        //Calcaulte LTOS Index
-        const LTOS_INDEX = possibleIndex / 1e18;
-
         setStakeTopCards([
           {
             title: "Total Value Staked",
@@ -56,7 +55,7 @@ function useStakeTopCards() {
           },
           {
             title: "LTOS Index",
-            price: commafy(LTOS_INDEX),
+            price: stakeV2?.ltosIndex || "-",
             priceUnit: "TOS",
           },
         ]);
@@ -66,7 +65,7 @@ function useStakeTopCards() {
       console.log("**useStakeTopCards err**");
       console.log(e);
     });
-  }, [StakingV2Proxy_CONTRACT, priceData]);
+  }, [StakingV2Proxy_CONTRACT, priceData, stakeV2?.ltosIndex]);
 
   return { stakeTopCards };
 }

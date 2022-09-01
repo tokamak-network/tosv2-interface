@@ -7,9 +7,9 @@ import {
   stake_updateModal_state,
 } from "atom/stake/input";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { Stake_InputKey } from "types/atom";
+import { InputKey } from "types/atom";
 
-function useStakeInput(key: Stake_InputKey): {
+function useStakeInput(key: InputKey): {
   inputValue: any;
   value: any;
   setValue: any;

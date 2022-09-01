@@ -15,7 +15,7 @@ import { max } from "moment";
 import React, { SetStateAction } from "react";
 import { RecoilLoadable, useRecoilState, useRecoilValue } from "recoil";
 import { PageKey } from "types";
-import { Stake_InputKey } from "types/atom";
+import { InputKey } from "types/atom";
 
 type InputProp = {
   placeHolder?: string;
@@ -28,7 +28,7 @@ type InputProp = {
   atomKey: string;
   style?: any;
   pageKey?: PageKey;
-  recoilKey?: Stake_InputKey;
+  recoilKey?: InputKey;
   maxValue?: string | number;
 };
 
@@ -43,7 +43,7 @@ type NumberInputProp = {
   atomKey: string;
   style?: any;
   pageKey?: PageKey;
-  recoilKey?: Stake_InputKey;
+  recoilKey?: InputKey;
   maxValue?: number;
 };
 
