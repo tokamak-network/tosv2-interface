@@ -18,7 +18,7 @@ function useMyHistory() {
 
   const { data, loading, error } = useQuery(GET_BOND_MYHISTORY, {
     variables: {
-      account: "0x8c595DA827F4182bC0E3917BccA8e654DF8223E1",
+      account,
     },
   });
   const { data: TokenData } = useQuery(GET_TOKEN_PRICE, {
@@ -50,7 +50,9 @@ function useMyHistory() {
                 },
                 {
                   title: "Bond Price",
-                  content: `$ ${bondPrice}`,
+                  content: `$ ${bondPrice.toLocaleString(undefined, {
+                    maximumFractionDigits: 2,
+                  })}`,
                 },
                 {
                   title: "Lock-Up Period",

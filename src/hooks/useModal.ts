@@ -17,7 +17,6 @@ function useModal(
       setSelectedModal(modalType);
     }
     if (modalDataObj) {
-      console.log(modalDataObj);
       setSelectedModalData(modalDataObj);
     }
   };

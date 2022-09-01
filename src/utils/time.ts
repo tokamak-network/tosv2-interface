@@ -12,7 +12,7 @@ function getNowTimeStamp() {
 function isTimeOver(timeStamp: number) {
   const nowTimeStamp = getNowTimeStamp();
   const timeDiff = nowTimeStamp - timeStamp;
-  return timeDiff > 0;
+  return timeDiff < 0;
 }
 
 function getTimeLeft(timeStamp: number, daysDiff: number, format?: string) {
