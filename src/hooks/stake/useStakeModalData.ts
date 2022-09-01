@@ -11,6 +11,7 @@ import Decimal from "decimal.js";
 import { useWeb3React } from "@web3-react/core";
 import useInput from "hooks/useInput";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import useUser from "hooks/useUser";
 
 type stakeModalInputData = {
   youWillGet: {
@@ -40,6 +41,7 @@ function useStakeModaldata() {
     LockTOS_CONTRACT,
   } = useCallContract();
   const { account } = useWeb3React();
+  const { simpleStakingId } = useUser();
 
   // set Estimated reward;
   const getEstimatedReward = useCallback(
@@ -83,20 +85,24 @@ function useStakeModaldata() {
         BondDepositoryProxy_CONTRACT &&
         StakingV2Proxy_CONTRACT &&
         LockTOS_CONTRACT &&
-        account
+        account &&
+        simpleStakingId
       ) {
         const tosAmount = convertToWei(inputAmount);
         const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
         const LTOS_BN = BigNumber.from(tosAmount).div(LTOS_Index);
 
+        //youWIllGet
+        const youWillGetLTOS =
+          await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
+        const ltos =
+          convertNumber({
+            amount: youWillGetLTOS.toString(),
+            localeString: true,
+          }) || "0";
         //currentBalance
-        const userStakedList = await StakingV2Proxy_CONTRACT.stakingOf(account);
-        const simpleStakeId = await StakingV2Proxy_CONTRACT.userStakings(
-          account,
-          userStakedList[1]
-        );
         const currentBalanceWei = await StakingV2Proxy_CONTRACT.remainedLtos(
-          simpleStakeId.toString()
+          simpleStakingId.toString()
         );
         const currentBalance =
           convertNumber({
@@ -105,7 +111,9 @@ function useStakeModaldata() {
           }) || "0";
 
         //new balance
-        const newBalanceBN = BigNumber.from(currentBalanceWei).add(LTOS_BN);
+        const newBalanceBN = BigNumber.from(currentBalanceWei).add(
+          convertToWei(LTOS_BN.toString())
+        );
         const newBalance =
           convertNumber({ amount: newBalanceBN.toString() }) || "0";
 
@@ -120,7 +128,7 @@ function useStakeModaldata() {
 
         setStakeModalInputData({
           youWillGet: {
-            ltos: `${convertNumber({ amount: LTOS_BN.toString() }) as string}`,
+            ltos,
             stos,
           },
           currentBalance,
@@ -142,6 +150,7 @@ function useStakeModaldata() {
     getEstimatedReward,
     account,
     LockTOS_CONTRACT,
+    simpleStakingId,
   ]);
 
   return {

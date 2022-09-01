@@ -48,6 +48,7 @@ import useUser from "hooks/useUser";
 import Tile from "../common/modal/Tile";
 import useInput from "hooks/useInput";
 import useStakeModaldata from "hooks/stake/useStakeModalData";
+import useStosReward from "hooks/stake/useStosReward";
 
 function StakeGraph() {
   const labelStyles = {
@@ -234,12 +235,16 @@ function StakeModal() {
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
-  const { userData } = useUser();
+  const { stakeList, tosAllowance } = useUser();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
+  const { maxWeeks } = useStosReward();
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
+
+  console.log(stakeModalInputData);
+  console.log(stakeModalInputData?.youWillGet.ltos);
 
   const contentList = fiveDaysLockup
     ? [
@@ -311,8 +316,7 @@ function StakeModal() {
   }, [TOS_CONTRACT, StakingV2Proxy]);
 
   useEffect(() => {
-    if (userData) {
-      const { tosAllowance } = userData;
+    if (tosAllowance) {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
       }
@@ -321,7 +325,7 @@ function StakeModal() {
       }
       return setIsAllowance(false);
     }
-  }, [userData, inputValue.stake_modal_balance]);
+  }, [tosAllowance, inputValue.stake_modal_balance]);
 
   return (
     <Modal
@@ -377,6 +381,7 @@ function StakeModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
+                    maxValue={Number(userTOSBalance)}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -413,6 +418,7 @@ function StakeModal() {
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
                     isDisabled={fiveDaysLockup}
+                    maxValue={maxWeeks}
                   ></TextInput>
                 </Flex>
               </Flex>

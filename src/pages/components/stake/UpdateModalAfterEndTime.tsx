@@ -218,7 +218,7 @@ function UpdateModalAfterEndTime() {
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance, userLTOSBalance } = useUserBalance();
-  const { userData } = useUser();
+  const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const { newBalance, newEndTime } = useUpdateModalAfterEndTime();
 
@@ -291,9 +291,7 @@ function UpdateModalAfterEndTime() {
   }, [TOS_CONTRACT, StakingV2Proxy]);
 
   useEffect(() => {
-    if (userData && inputValue.stake_updateModal_tos_balance) {
-      const { tosAllowance } = userData;
-
+    if (tosAllowance && inputValue.stake_updateModal_tos_balance) {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
       }
@@ -302,7 +300,7 @@ function UpdateModalAfterEndTime() {
       }
       return setIsAllowance(false);
     }
-  }, [userData, inputValue.stake_updateModal_tos_balance]);
+  }, [tosAllowance, inputValue.stake_updateModal_tos_balance]);
 
   return (
     <Modal

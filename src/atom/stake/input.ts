@@ -6,7 +6,7 @@ const maxPeriod = 156;
 //stake modal states
 const stake_stakeModal_defaultValue = {
   stake_modal_period: maxPeriod,
-  stake_modal_balance: "0",
+  stake_modal_balance: undefined,
 };
 
 const stake_stakeModal_input = atom({
@@ -24,7 +24,7 @@ const stake_stakeModal_state = selector({
 
 //unstake modal states
 const stake_unstakeModal_defaultValue = {
-  stake_unstakeModal_balance: "0",
+  stake_unstakeModal_balance: undefined,
 };
 
 const stake_unstakeModal_input = atom({

@@ -4,7 +4,6 @@ import useStakeV2 from "hooks/contract/useStakeV2";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import useInputValue from "hooks/useInputValue";
-import useUser from "hooks/useUser";
 import { useEffect, useState } from "react";
 
 type UseUnstake = {
