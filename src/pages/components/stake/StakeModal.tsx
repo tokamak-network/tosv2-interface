@@ -193,10 +193,19 @@ function StakeModal() {
     //Rinkeby_maxPeriod = 39312
     if (StakingV2Proxy_CONTRACT) {
       if (fiveDaysLockup) {
+        console.log("---stake()---");
+        console.log(inputValue.stake_modal_balance);
+
         return StakingV2Proxy_CONTRACT.stake(
           convertToWei(inputValue.stake_modal_balance)
         );
       }
+      console.log("---stakeGetStos()---");
+      console.log(
+        convertToWei(inputValue.stake_modal_balance),
+        inputValue.stake_modal_period
+      );
+
       return StakingV2Proxy_CONTRACT.stakeGetStos(
         convertToWei(inputValue.stake_modal_balance),
         inputValue.stake_modal_period
@@ -254,7 +263,6 @@ function StakeModal() {
                 >
                   Stake
                 </Text>
-
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}
@@ -282,7 +290,7 @@ function StakeModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
-                    maxValue={Number(userTOSBalance)}
+                    maxValue={Number(userTOSBalance.replaceAll(",", ""))}
                   ></BalanceInput>
                 </Flex>
                 <Flex

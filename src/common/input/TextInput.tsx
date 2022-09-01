@@ -1,4 +1,5 @@
 import {
+  Button,
   Flex,
   Input,
   InputGroup,
@@ -7,6 +8,7 @@ import {
   NumberInputField,
   Text,
   useColorMode,
+  useFocusOnPointerDown,
   useTheme,
 } from "@chakra-ui/react";
 import { inputBalanceState, inputState } from "atom/global/input";
@@ -118,24 +120,22 @@ const TextInput: React.FC<InputProp> = (props) => {
           <Text>{errorMsg}</Text>
         </Flex>
       )}
-      <InputRightElement
-        ml={"30px"}
-        w={"30px"}
-        fontSize={14}
-        mr={"12px"}
-        cursor={"pointer"}
-      >
-        <Flex
+      <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
+        <Button
           w={"30px"}
           h={"20px"}
           color={"#64646f"}
           _hover={{ color: "#2775ff" }}
+          bg={"none"}
+          fontSize={14}
+          fontWeight={"normal"}
+          isDisabled={isDisabled}
           onClick={() =>
             maxValue && setValue({ ...inputValue, [atomKey]: maxValue })
           }
         >
           Max
-        </Flex>
+        </Button>
       </InputRightElement>
     </InputGroup>
   );
@@ -196,24 +196,22 @@ function BalanceInput(props: NumberInputProp) {
           border={{}}
         ></NumberInputField>
       </NumberInput>
-      <InputRightElement
-        ml={"30px"}
-        w={"30px"}
-        fontSize={14}
-        mr={"12px"}
-        cursor={"pointer"}
-      >
-        <Flex
+      <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
+        <Button
           w={"30px"}
           h={"20px"}
           color={"#64646f"}
           _hover={{ color: "#2775ff" }}
+          bg={"none"}
+          fontSize={14}
+          fontWeight={"normal"}
+          isDisabled={isDisabled}
           onClick={() =>
             maxValue && setValue({ ...inputValue, [atomKey]: String(maxValue) })
           }
         >
           Max
-        </Flex>
+        </Button>
       </InputRightElement>
     </InputGroup>
   );

@@ -29,17 +29,18 @@ function StakeGraph() {
     ml: "-2.5",
     fontSize: "sm",
   };
-  const { inputValue } = useInput("Stake_screen", "stake_modal");
-  const [sliderValue, setSliderValue] = useState(0);
-
+  const { inputValue, value, setValue } = useInput(
+    "Stake_screen",
+    "stake_modal"
+  );
+  const [sliderValue, setSliderValue] = useState<number>(0);
   const [showTooltip, setShowTooltip] = useState(false);
 
-  // useEffect(() => {
-  //   setValue({ ...inputValue, });
-  // }, [sliderValue]);
+  useEffect(() => {
+    setValue({ ...inputValue, stake_modal_period: sliderValue });
+  }, [sliderValue]);
 
   useEffect(() => {
-    console.log(inputValue.stake_modal_period);
     setSliderValue(Number(inputValue.stake_modal_period));
   }, [inputValue.stake_modal_period]);
 
@@ -47,16 +48,17 @@ function StakeGraph() {
   return (
     <Flex w={"100%"} h="70px" pos="relative">
       <Slider
+        focusThumbOnChange={false}
         aria-label="slider-ex-1"
         defaultValue={0}
         min={0}
         max={156}
         value={sliderValue}
-        onChange={(val: any) => setSliderValue(val)}
+        onChange={(val: number) => setSliderValue(val)}
         h={"10px"}
         alignSelf={"end"}
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
+        // onMouseEnter={() => setShowTooltip(true)}
+        // onMouseLeave={() => setShowTooltip(false)}
       >
         <SliderMark value={0} {...labelStyles}>
           7d
