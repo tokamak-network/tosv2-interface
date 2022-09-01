@@ -49,7 +49,7 @@ function useUnstakeModalData(stakeId: string | string[]) {
       if (
         StakingV2Proxy_CONTRACT &&
         inputValue.stake_unstakeModal_balance &&
-        stakeV2.ltosIndexBN
+        stakeV2?.ltosIndexBN
       ) {
         if (inputValue.stake_unstakeModal_balance === "") {
           return setYouWillGet("0");
