@@ -33,13 +33,14 @@ function BondCard(props: { data: BondCardProps }) {
   const { openModal } = useModal("bond_bond_modal", data);
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
-  const [isOpen, setIsOpen] = useState(true);
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const splitedTimeDiff = convertTimeStamp(timeDiff, `DD.HH.mm`).split(".");
-  const bondIsDisabled = timeDiff < 1;
+
+  const [isOpen, setIsOpen] = useState(timeDiff >= 0);
+  const bondIsDisabled = timeDiff < 0;
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
     : `${splitedTimeDiff[0]} days ${splitedTimeDiff[1]} hours ${splitedTimeDiff[2]} min`;

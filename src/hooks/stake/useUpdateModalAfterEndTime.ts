@@ -28,7 +28,10 @@ function useUpdateModalAfterEndTime(): UseUpdateMAfterEndTime {
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const { inputValue } = useInput("Stake_screen", "update_modal");
-  const { stosReward } = useStosReward();
+  const { stosReward } = useStosReward(
+    inputValue.stake_updateModal_tos_balance,
+    inputValue.stake_updateModal_period
+  );
 
   //new
   useEffect(() => {

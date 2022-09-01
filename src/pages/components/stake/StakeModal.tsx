@@ -29,7 +29,7 @@ import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
-import useInputData from "hooks/bond/useInputData";
+import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/components/commafy";
 import { BondCardProps } from "types/bond";

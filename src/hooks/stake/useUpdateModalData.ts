@@ -41,6 +41,7 @@ function useUpdateModalData(): UseUpdateModalData {
   const modalContractData = useModalContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward, unlockTime } = useStosReward(
+    inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period
   );
   const { epochUnit } = useLockTOS();

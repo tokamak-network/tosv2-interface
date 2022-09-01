@@ -33,7 +33,7 @@ import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
-import useInputData from "hooks/bond/useInputData";
+import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/components/commafy";
 import { BondCardProps } from "types/bond";
@@ -43,6 +43,7 @@ import useUserBalance from "hooks/useUserBalance";
 import useInput from "hooks/useInput";
 import { Bond_BondModal } from "types/atom";
 import StakeGraph from "../common/modal/StakeGraph";
+import useBondModalInputData from "hooks/bond/useBondModalInputData";
 
 function BottomContent(props: {
   title: string;
@@ -177,16 +178,16 @@ function BondModal() {
   );
   const { selectedModalData, selectedModal, closeModal } = useModal();
   const { bondModalData } = useBondModal();
-  const { bondInputData } = useInputData(
-    inputValue.bond_modal_balance,
-    inputValue.bond_modal_period
-  );
+  const { youWillGet, endTime, stosReward } = useBondModalInputData();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
+
+  // console.log(youWillGet);
+  // console.log(stosReward);
 
   const contentList = [
     {
@@ -196,12 +197,16 @@ function BondModal() {
     },
     {
       title: "You Will Get",
-      content: bondInputData?.youWillGet || "-",
+      content:
+        {
+          ltos: youWillGet || "0",
+          stos: fiveDaysLockup ? "0" : stosReward || "0",
+        } || "-",
       tooltip: true,
     },
     {
       title: "End Time",
-      content: `${bondInputData?.endTime || "-"}`,
+      content: endTime || "-",
       tooltip: true,
     },
   ];
