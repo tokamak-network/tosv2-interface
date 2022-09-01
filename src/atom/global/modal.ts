@@ -17,6 +17,7 @@ const selectedModalState = selector({
     return selectedModalState;
   },
 });
+
 const selectedModalData = selector({
   key: "selectedModalData", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {

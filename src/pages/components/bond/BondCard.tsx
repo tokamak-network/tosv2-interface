@@ -30,7 +30,7 @@ function ContentComponent(props: {
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
   const { data } = props;
-  const { openModal } = useModal("bond_modal", data);
+  const { openModal } = useModal("bond_bond_modal", data);
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const [isOpen, setIsOpen] = useState(true);

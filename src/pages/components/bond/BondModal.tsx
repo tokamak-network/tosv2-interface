@@ -42,92 +42,7 @@ import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useInput from "hooks/useInput";
 import { Bond_BondModal } from "types/atom";
-
-function StakeGraph() {
-  const labelStyles = {
-    mt: "2",
-    ml: "-2.5",
-    fontSize: "sm",
-  };
-  const [sliderValue, setSliderValue] = useState(0);
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  // useEffect(() => {
-  //   console.log(value.stake_stake_modal_period);
-  //   setSliderValue(Number(value.stake_stake_modal_period));
-  // }, [value.stake_stake_modal_period]);
-
-  const { colorMode } = useColorMode();
-  return (
-    <Flex w={"100%"} h="70px" pos="relative">
-      <Slider
-        aria-label="slider-ex-1"
-        defaultValue={0}
-        min={0}
-        max={156}
-        value={sliderValue}
-        onChange={(val: any) => setSliderValue(val)}
-        h={"10px"}
-        alignSelf={"end"}
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-      >
-        <SliderMark value={0} {...labelStyles}>
-          7d
-        </SliderMark>
-        <SliderMark value={8} {...labelStyles}>
-          1m
-        </SliderMark>
-        <SliderMark value={24} {...labelStyles}>
-          6m
-        </SliderMark>
-        <SliderMark value={52} {...labelStyles}>
-          1y
-        </SliderMark>
-        <SliderMark value={104} {...labelStyles}>
-          2y
-        </SliderMark>
-        <SliderMark value={156} {...labelStyles}>
-          3y
-        </SliderMark>
-
-        {/* <SliderMark value={25} {...labelStyles}>
-          25%
-        </SliderMark> */}
-        {/* <SliderMark
-          value={sliderValue}
-          textAlign="center"
-          bg="blue.500"
-          color="white"
-          mt="-10"
-          ml="-5"
-          w="12"
-        >
-          {sliderValue} STOS
-        </SliderMark> */}
-        <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
-          <SliderFilledTrack bg={"#2775ff"} />
-        </SliderTrack>
-        <Tooltip
-          color={colorMode === "light" ? "#07070c" : "#f1f1f1"}
-          placement="top"
-          bg={"transparent"}
-          w={"50px"}
-          display="flex"
-          alignItems="center"
-          justifyContent={"center"}
-          textAlign="center"
-          fontSize={"15px"}
-          fontWeight={600}
-          isOpen={showTooltip}
-          label={`${sliderValue} sTOS`}
-        >
-          <SliderThumb />
-        </Tooltip>
-      </Slider>
-    </Flex>
-  );
-}
+import StakeGraph from "../common/modal/StakeGraph";
 
 function BottomContent(props: {
   title: string;
@@ -256,10 +171,12 @@ function Tile(props: {
 function BondModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal } = useModal();
-  const { selectedModalData, selectedModal } = useModal();
+  const { inputValue, setValue, setResetValue } = useInput(
+    "Bond_screen",
+    "bond_modal"
+  );
+  const { selectedModalData, selectedModal, closeModal } = useModal();
   const { bondModalData } = useBondModal();
-  const { inputValue } = useInput("Bond_screen", "bond_modal");
   const { bondInputData } = useInputData(
     inputValue.bond_modal_balance,
     inputValue.bond_modal_period
@@ -319,11 +236,16 @@ function BondModal() {
     }
   }, [inputValue, BondDepositoryProxy_CONTRACT, marketId, fiveDaysLockup]);
 
+  function closeThisModal() {
+    setResetValue();
+    closeModal();
+  }
+
   return (
     <Modal
-      isOpen={selectedModal === "bond_modal"}
+      isOpen={selectedModal === "bond_bond_modal"}
       isCentered
-      onClose={closeModal}
+      onClose={() => closeThisModal()}
     >
       <ModalOverlay />
       <ModalContent
@@ -355,7 +277,7 @@ function BondModal() {
                   pos={"absolute"}
                   right={"1.56em"}
                   cursor={"pointer"}
-                  onClick={() => closeModal()}
+                  onClick={() => closeThisModal()}
                 >
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
                 </Flex>
@@ -416,6 +338,7 @@ function BondModal() {
                     pageKey={"Bond_screen"}
                     recoilKey={"bond_modal"}
                     atomKey={"bond_modal_balance"}
+                    maxValue={Number(userETHBalance.replaceAll(",", ""))}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -451,11 +374,16 @@ function BondModal() {
                     atomKey={"bond_modal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
+                    isDisabled={fiveDaysLockup}
                   ></TextInput>
                 </Flex>
               </Flex>
               <Flex px={"49px"} mb={"30px"}>
-                <StakeGraph></StakeGraph>
+                <StakeGraph
+                  pageKey={"Bond_screen"}
+                  subKey={"bond_modal"}
+                  periodKey={"bond_modal_period"}
+                ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
               <Flex

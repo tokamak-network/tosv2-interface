@@ -22,27 +22,37 @@ import {
 } from "@chakra-ui/react";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
+import { PageKey } from "types";
+import { InputKey } from "types/atom";
 
-function StakeGraph() {
+type PeriodKey =
+  | "bond_modal_period"
+  | "stake_modal_balance"
+  | "stake_updateModal_period";
+
+function StakeGraph(props: {
+  pageKey: PageKey;
+  subKey: InputKey;
+  periodKey: PeriodKey;
+}) {
+  const { pageKey, subKey, periodKey } = props;
   const labelStyles = {
     mt: "2",
     ml: "-2.5",
     fontSize: "sm",
   };
-  const { inputValue, value, setValue } = useInput(
-    "Stake_screen",
-    "stake_modal"
-  );
+  const { inputValue, value, setValue } = useInput(pageKey, subKey);
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [showTooltip, setShowTooltip] = useState(false);
 
   useEffect(() => {
-    setValue({ ...inputValue, stake_modal_period: sliderValue });
+    setValue({ ...inputValue, [periodKey]: sliderValue });
   }, [sliderValue]);
 
   useEffect(() => {
-    setSliderValue(Number(inputValue.stake_modal_period));
-  }, [inputValue.stake_modal_period]);
+    if (inputValue[periodKey])
+      return setSliderValue(Number(inputValue[periodKey]));
+  }, [inputValue, periodKey]);
 
   const { colorMode } = useColorMode();
   return (

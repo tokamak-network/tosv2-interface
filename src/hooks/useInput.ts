@@ -1,14 +1,17 @@
+import { useEffect } from "react";
 import { PageKey } from "types";
-import { Stake_InputKey, Bond_InputKey } from "types/atom";
+import { InputKey } from "types/atom";
 import useBondInput from "./bond/useBondInput";
 import useStakeInput from "./stake/useStakeInput";
+import useModal from "./useModal";
 
-function useInput(key: PageKey, subKey: Bond_InputKey | Stake_InputKey) {
-  const { inputValue, value, setValue } = useStakeInput(subKey);
+function useInput(key: PageKey, subKey: InputKey) {
+  const { inputValue, value, setValue, resetValue } = useStakeInput(subKey);
   const {
     inputValue: bondInputValue,
     value: bondValue,
     setValue: setBondvalue,
+    resetValue: setResetBondValue,
   } = useBondInput(subKey);
 
   switch (key) {
@@ -23,6 +26,7 @@ function useInput(key: PageKey, subKey: Bond_InputKey | Stake_InputKey) {
         inputValue: bondInputValue,
         value: bondValue,
         setValue: setBondvalue,
+        setResetValue: setResetBondValue,
       };
     default:
       return {

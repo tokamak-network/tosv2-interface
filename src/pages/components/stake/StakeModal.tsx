@@ -44,7 +44,7 @@ import Tile from "../common/modal/Tile";
 import useInput from "hooks/useInput";
 import useStakeModaldata from "hooks/stake/useStakeModalData";
 import useStosReward from "hooks/stake/useStosReward";
-import StakeGraph from "./StakeGraph";
+import StakeGraph from "../common/modal/StakeGraph";
 
 function BottomContent(props: {
   title: string;
@@ -332,7 +332,11 @@ function StakeModal() {
                 </Flex>
               </Flex>
               <Flex px={"49px"} mb={"30px"}>
-                <StakeGraph></StakeGraph>
+                <StakeGraph
+                  pageKey={"Stake_screen"}
+                  subKey={"stake_modal"}
+                  periodKey={"stake_modal_balance"}
+                ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
               <Flex
