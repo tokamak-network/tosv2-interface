@@ -19,7 +19,7 @@ function MobileTopCard(props: { cardList: StakeTopCardProps[] }) {
       w={"100%"}
     >
       {cardList.map((cardData, index) => {
-        const { title, price, priceUnit } = cardData;
+        const { title, price, priceUnit, tooltip } = cardData;
 
         return (
           <Flex
@@ -57,13 +57,14 @@ function TopCardContainer() {
       ) : (
         <Flex justifyContent={"space-between"} columnGap={"24px"}>
           {bondTopsCards?.map((cardData, index) => {
-            const { title, price, priceUnit } = cardData;
+            const { title, price, priceUnit,tooltip } = cardData;
             return (
               <TopCard
                 title={title}
                 price={price}
                 priceUnit={priceUnit}
                 key={title}
+                tooltip={tooltip}
               ></TopCard>
             );
           })}
