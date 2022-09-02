@@ -1,11 +1,11 @@
 import { Flex, useTheme, useColorMode } from "@chakra-ui/react";
-import TopCardContainer from "pages/components/bond/TopCardContrainer";
 import PageLayout from "pages/components/layout/PageLayout";
 import StakeCardContainer from "pages/components/stake/StakeCardContainer";
 import StakeModal from "pages/components/stake/StakeModal";
 import UnstakeModal from "pages/components/stake/UnstakeModal";
 import UpdateModal from "pages/components/stake/UpdateModal";
 import UpdateModalAfterEndTime from "pages/components/stake/UpdateModalAfterEndTime";
+import TopCardContainer from "./components/common/card/TopCardContainer";
 
 const Stake = () => {
   const theme = useTheme();
@@ -16,7 +16,7 @@ const Stake = () => {
       bg={colorMode === "light" ? "#fafbfc" : "black.100"}
     >
       <PageLayout></PageLayout>
-      <TopCardContainer></TopCardContainer>
+      <TopCardContainer pageKey={"Stake_screen"}></TopCardContainer>
       <StakeCardContainer></StakeCardContainer>
       <StakeModal></StakeModal>
       <UnstakeModal></UnstakeModal>
