@@ -390,7 +390,8 @@ function BondModal() {
                     state={fiveDaysLockup}
                     setState={setFiveDaysLockup}
                   ></CustomCheckBox>
-                  <Text ml={"9px"}>5 days Lock-Up</Text>
+                  <Text ml={"9px"} mr='6px'>5 days Lock-Up</Text>
+                  <BasicTooltip label="No sTOS is given for 5 day Lock-up option"/>
                   <TextInput
                     w={"170px"}
                     h={"39px"}
