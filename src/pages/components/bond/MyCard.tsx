@@ -27,7 +27,7 @@ function ContentComponent(props: {
 }
 
 function MyCard(props: MyCardProps) {
-  const { info, tokenType, isOver } = props;
+  const { info, tokenType, isOver, lockUpDate } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -84,23 +84,9 @@ function MyCard(props: MyCardProps) {
         color={"#eaeaf4"}
       >
         <Text color={colorMode === "dark" ? "#eaeaf4" : "#16161e"}>
-          2022. 12. 26 12:58 ~ 12. 31 12:59
+          {lockUpDate}
         </Text>
       </Flex>
-      {/* <Flex alignItems="center" justifyContent={isDisabled ? "" : "center"}>
-        {isDisabled && (
-          <>
-            <CustomCheckBox
-              pageKey="Bond_screen"
-              value={""}
-              valueKey={""}
-            ></CustomCheckBox>
-            <Text ml={"9px"} mr={"20px"}>
-              Select
-            </Text>
-          </>
-        )}
-      </Flex> */}
     </Flex>
   );
 }
