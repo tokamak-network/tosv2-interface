@@ -11,15 +11,21 @@ function getNowTimeStamp() {
 
 function isTimeOver(timeStamp: number) {
   const nowTimeStamp = getNowTimeStamp();
-  const timeDiff = nowTimeStamp - timeStamp;
+  const timeDiff = timeStamp - nowTimeStamp;
   return timeDiff < 0;
 }
 
-function getTimeLeft(timeStamp: number, daysDiff: number, format?: string) {
-  const timeLeft = moment(timeStamp)
+function getTimeLeft(
+  timeStamp: number,
+  daysDiff: number,
+  format?: string,
+  diffType?: "d" | "w" | "m" | "y"
+) {
+  const timeLeft = moment
+    .unix(timeStamp)
     .add(daysDiff, "d")
     .format(format || "MM.DD HH:mm:ss");
   return timeLeft;
 }
 
-export { convertTimeStamp, getNowTimeStamp, isTimeOver };
+export { convertTimeStamp, getNowTimeStamp, isTimeOver, getTimeLeft };

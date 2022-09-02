@@ -17,6 +17,7 @@ function MyCardSection() {
           tokenType={cardData.tokenType}
           key={cardData.tokenType + index}
           isOver={cardData.isOver}
+          lockUpDate={cardData.lockUpDate}
         ></MyCard>
       ))}
     </SimpleGrid>

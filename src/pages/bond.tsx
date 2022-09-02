@@ -10,21 +10,6 @@ import BondTip from "pages/components/bond/BondTip";
 const Bond = () => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const cardList: BondTopCardProps[] = [
-    {
-      title: "TOS Price",
-      price: "5,000,000,000",
-      priceUnit: "$",
-      tooltip:'Total values of non TOS assets held by the Treasury',
-    },
-    {
-      title: "Backing per TOS",
-      price: "1.00",
-      priceUnit: "$",
-      tooltip:'TOS market price',
-
-    },
-  ];
 
   return (
     <Flex

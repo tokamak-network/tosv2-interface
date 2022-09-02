@@ -181,13 +181,14 @@ function BondModal() {
   );
   const { selectedModalData, selectedModal, closeModal } = useModal();
   const { bondModalData } = useBondModal();
-  const { youWillGet, endTime, stosReward } = useBondModalInputData();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
+
+  const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
 
   // console.log(youWillGet);
   // console.log(stosReward);

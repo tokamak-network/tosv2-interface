@@ -30,19 +30,20 @@ export type BondRawdata = {
 export type MyCardProps = {
   info: { title: string; content: string }[];
   tokenType: TokenTypes;
+  lockUpDate: string;
   isOver: boolean;
 };
 
 export type GetMyHistory = {
-  contract: String;
-  contractName: String;
-  eventName: String;
-  from: String;
+  contract: string;
+  contractName: string;
+  eventName: string;
+  from: string;
   data: any;
-  chainId: Number;
-  blockNumber: Number;
-  transactionHash: String;
-  blockTimestamp: Number;
+  chainId: number;
+  blockNumber: number;
+  transactionHash: string;
+  blockTimestamp: number;
   createdTime: Date;
   updated: Date;
 };

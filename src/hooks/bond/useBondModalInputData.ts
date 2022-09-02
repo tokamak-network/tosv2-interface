@@ -10,41 +10,58 @@ type UseUnstake = {
   endTime: string | undefined;
 };
 
-function useBondModalInputData(): UseUnstake {
+function useBondModalInputData(marketId: number): UseUnstake {
   const [youWillGet, setYouWillGet] = useState<string | undefined>(undefined);
   const [endTime, setEndTime] = useState<string | undefined>(undefined);
+  const [stosReward, setStosReward] = useState<string | undefined>(undefined);
 
-  const { StakingV2Proxy_CONTRACT } = useCallContract();
+  const { StakingV2Proxy_CONTRACT, BondDepositoryProxy_CONTRACT } =
+    useCallContract();
   const { inputValue } = useInput("Bond_screen", "bond_modal");
-  const { newEndTime, stosReward } = useStosReward(
+  const { newEndTime } = useStosReward(
     inputValue?.bond_modal_balance,
     inputValue?.bond_modal_period
   );
 
   useEffect(() => {
-    async function fetchUnstakeData() {
-      if (StakingV2Proxy_CONTRACT && inputValue?.bond_modal_balance) {
+    async function fetchBondModalInputData() {
+      if (
+        StakingV2Proxy_CONTRACT &&
+        BondDepositoryProxy_CONTRACT &&
+        inputValue?.bond_modal_balance
+      ) {
         const ethAmount = inputValue.bond_modal_balance;
         const ethAmountWei = convertToWei(ethAmount);
         const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
           ethAmountWei
         );
         const ltos = convertNumber({ amount: LTOS_BN, localeString: true });
+
+        //stosReward
+        const bondList = await BondDepositoryProxy_CONTRACT.getBond();
+        console.log(bondList);
+        //         const tosPrice = StakingV2Proxy_CONTRACT.
+        // StakingV2Proxy_CONTRACT.BondDepository.calculateTosAmountForAsset(, ethAmountWei);
+
         return setYouWillGet(ltos);
       }
     }
-    fetchUnstakeData().catch((e) => {
-      console.log("**useBondInputData1 err**");
+    fetchBondModalInputData().catch((e) => {
+      console.log("**useBondModalInputData1 err**");
       console.log(e);
     });
-  }, [inputValue?.bond_modal_balance, StakingV2Proxy_CONTRACT]);
+  }, [
+    inputValue?.bond_modal_balance,
+    StakingV2Proxy_CONTRACT,
+    BondDepositoryProxy_CONTRACT,
+  ]);
 
   useEffect(() => {
-    async function fetchUnstakeData() {
+    async function fetchBondModalInputData() {
       return setEndTime(newEndTime);
     }
-    fetchUnstakeData().catch((e) => {
-      console.log("**useBondInputData2 err**");
+    fetchBondModalInputData().catch((e) => {
+      console.log("**useBondModalInputData2 err**");
       console.log(e);
     });
   }, [newEndTime]);
