@@ -7,16 +7,6 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 
 function GraphContainer() {
-  // const {
-  //   loading,
-  //   error,
-  //   data: testData,
-  // } = useQuery(GET_DASHBOARD, {
-  //   variables: {
-  //     period: "-1",
-  //     limit: 1,
-  //   },
-  // });
 
   const { loading, error, data } = useQuery(GET_DASHBOARD, {
     variables: {
@@ -30,54 +20,6 @@ function GraphContainer() {
   const [totalStakedDatas, setTotalStakedDatas] = useState<any[]>([]);
   const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
 
-  // const data = [
-  //   {
-  //     id: "#2775ff",
-  //     color: "hsl(218, 100%, 58%)",
-  //     data: [
-  //       {
-  //         x: 1656641961,
-  //         y: 500,
-  //       },
-  //       {
-  //         x: 1656814761,
-  //         y: 1000,
-  //       },
-  //       {
-  //         x: 1656987561,
-  //         y: 1750,
-  //       },
-  //       {
-  //         x: 1657160361,
-  //         y: 2000,
-  //       },
-  //       {
-  //         x: 1657333161,
-  //         y: 2400,
-  //       },
-  //       {
-  //         x: 1657505961,
-  //         y: 2800,
-  //       },
-  //       {
-  //         x: 1657678761,
-  //         y: 2500,
-  //       },
-  //       {
-  //         x: 1657851561,
-  //         y: 4000,
-  //       },
-  //       {
-  //         x: 1658024361,
-  //         y: 4100,
-  //       },
-  //       {
-  //         x: 1658197161,
-  //         y: 5000,
-  //       },
-  //     ],
-  //   },
-  // ];
   const data3 = [
     {
       id: "#1",

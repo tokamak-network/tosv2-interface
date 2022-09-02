@@ -18,9 +18,9 @@ function MyHistory() {
 
   return (
     <Flex flexDir={"column"} alignItems={"center"}>
-      <Text fontSize={24} fontWeight={600} color={"white.200"} mb={"24px"}>
+      {/* <Text fontSize={24} fontWeight={600} color={"white.200"} mb={"24px"}>
         Before connecting Wallet
-      </Text>
+      </Text> */}
       <SubmitButton
         name="Connect Wallet"
         w={"240px"}

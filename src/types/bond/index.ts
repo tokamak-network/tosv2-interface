@@ -4,6 +4,7 @@ export type BondTopCardProps = {
   title: string;
   price: string;
   priceUnit: "$";
+  tooltip: string;
 };
 
 export type BondCardProps = {
@@ -14,6 +15,7 @@ export type BondCardProps = {
   endTime: number;
   tokenType: TokenTypes;
   index: number;
+  tooltip?: string;
 };
 
 export type BondRawdata = {
