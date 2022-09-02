@@ -222,10 +222,7 @@ function GraphContainer() {
   useEffect(() => {
     if (data) {
       const graphData = getGraphData();
-    
-    
-      
-      
+
       const marketCap = graphData.map((arrayData: any, index: number) => {
         return {
           x: moment(arrayData.createdAt).unix(),
@@ -241,13 +238,9 @@ function GraphContainer() {
         },
       ];
 
-      // console.log(marketCapData);
-      
-
       setMarketCapDatas(marketCapData);
       const totalStaked = graphData.map((arrayData: any, index: number) => {
         return {
-
           x: moment(arrayData.createdAt).unix(),
           y: Number(arrayData.totalValueStaked),
         };
@@ -262,11 +255,8 @@ function GraphContainer() {
       ];
       setTotalStakedDatas(totalStakedData);
 
-
-
       const runway = graphData.map((arrayData: any, index: number) => {
         return {
-
           x: moment(arrayData.createdAt).unix(),
           y: Number(arrayData.runway),
         };
@@ -300,10 +290,9 @@ function GraphContainer() {
     }
   };
 
-
   return (
     <Flex flexDir={"column"}>
-      <GraphFilter  setFilter={setFilteredValue}></GraphFilter>
+      <GraphFilter setFilter={setFilteredValue}></GraphFilter>
       <Flex
         w={"100%"}
         columnGap={"1.5%"}
@@ -314,14 +303,27 @@ function GraphContainer() {
         <Graph
           data={marketCapDatas}
           title="Market Cap"
-          amount={marketCapDatas[0]? `$ ${Number(marketCapDatas[0].data[marketCapDatas[0].data.length-1].y).toLocaleString(undefined, { maximumFractionDigits: 2 })}`: ''}
+          amount={
+            marketCapDatas[0]
+              ? `$ ${Number(
+                  marketCapDatas[0].data[marketCapDatas[0].data.length - 1].y
+                ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+              : ""
+          }
           tooltipTitle="“Market Cap” represents the total
           dollar value of TOS in circulation."
         ></Graph>
         <Graph
           data={totalStakedDatas}
           title="Total Value Staked"
-          amount={totalStakedDatas[0]? `$ ${Number(totalStakedDatas[0].data[totalStakedDatas[0].data.length-1].y).toLocaleString(undefined, { maximumFractionDigits: 2 })}`: ''}
+          amount={
+            totalStakedDatas[0]
+              ? `$ ${Number(
+                  totalStakedDatas[0].data[totalStakedDatas[0].data.length - 1]
+                    .y
+                ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+              : ""
+          }
           tooltipTitle="“Total Value Staked” represents 
           the total dollar value of all the LTOS. 
           LTOS represents TOS that are staked
@@ -339,7 +341,7 @@ function GraphContainer() {
         <Graph
           data={runwayDatas}
           title="Runway"
-          amount={`${runwayDatas[0]? runwayDatas[0].data.length :''} Days`}
+          amount={`${runwayDatas[0] ? runwayDatas[0].data.length : ""} Days`}
           tooltipTitle="“Runway” represents the number of days
           that staking interest can be sustained 
           by the protocol."
