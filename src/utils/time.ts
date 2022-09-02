@@ -15,7 +15,12 @@ function isTimeOver(timeStamp: number) {
   return timeDiff < 0;
 }
 
-function getTimeLeft(timeStamp: number, daysDiff: number, format?: string) {
+function getTimeLeft(
+  timeStamp: number,
+  daysDiff: number,
+  format?: string,
+  diffType?: "d" | "w" | "m" | "y"
+) {
   const timeLeft = moment
     .unix(timeStamp)
     .add(daysDiff, "d")

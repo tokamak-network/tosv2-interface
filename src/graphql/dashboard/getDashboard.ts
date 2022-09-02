@@ -4,6 +4,7 @@ const GET_DASHBOARD = gql`
   query GetDashboard($period: String!, $limit: Int!) {
     getDashboard(period: $period, limit: $limit) {
       tosPrice
+      treasuryBalance
     }
   }
 `;

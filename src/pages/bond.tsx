@@ -10,18 +10,6 @@ import BondTip from "pages/components/bond/BondTip";
 const Bond = () => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const cardList: BondTopCardProps[] = [
-    {
-      title: "TOS Price",
-      price: "5,000,000,000",
-      priceUnit: "$",
-    },
-    {
-      title: "Backing per TOS",
-      price: "1.00",
-      priceUnit: "$",
-    },
-  ];
 
   return (
     <Flex
