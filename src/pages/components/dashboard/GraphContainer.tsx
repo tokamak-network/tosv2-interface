@@ -3,66 +3,81 @@ import Graph from "./Graph";
 import GraphFilter from "./GraphFilter";
 import { useQuery } from "@apollo/client";
 import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";
+import { useEffect, useState } from "react";
+import moment from "moment";
+
 function GraphContainer() {
-  const {
-    loading,
-    error,
-    data: testData,
-  } = useQuery(GET_DASHBOARD, {
+  // const {
+  //   loading,
+  //   error,
+  //   data: testData,
+  // } = useQuery(GET_DASHBOARD, {
+  //   variables: {
+  //     period: "-1",
+  //     limit: 1,
+  //   },
+  // });
+
+  const { loading, error, data } = useQuery(GET_DASHBOARD, {
     variables: {
-      period: "-1",
-      limit: 1,
+      period: "1",
+      limit: 365,
     },
   });
 
-  const data = [
-    {
-      id: "#2775ff",
-      color: "hsl(218, 100%, 58%)",
-      data: [
-        {
-          x: 1656641961,
-          y: 500,
-        },
-        {
-          x: 1656814761,
-          y: 1000,
-        },
-        {
-          x: 1656987561,
-          y: 1750,
-        },
-        {
-          x: 1657160361,
-          y: 2000,
-        },
-        {
-          x: 1657333161,
-          y: 2400,
-        },
-        {
-          x: 1657505961,
-          y: 2800,
-        },
-        {
-          x: 1657678761,
-          y: 2500,
-        },
-        {
-          x: 1657851561,
-          y: 4000,
-        },
-        {
-          x: 1658024361,
-          y: 4100,
-        },
-        {
-          x: 1658197161,
-          y: 5000,
-        },
-      ],
-    },
-  ];
+  const [filteredValue, setFilteredValue] = useState("1 Week");
+  const [marketCapDatas, setMarketCapDatas] = useState<any[]>([]);
+  const [totalStakedDatas, setTotalStakedDatas] = useState<any[]>([]);
+  const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
+
+  // const data = [
+  //   {
+  //     id: "#2775ff",
+  //     color: "hsl(218, 100%, 58%)",
+  //     data: [
+  //       {
+  //         x: 1656641961,
+  //         y: 500,
+  //       },
+  //       {
+  //         x: 1656814761,
+  //         y: 1000,
+  //       },
+  //       {
+  //         x: 1656987561,
+  //         y: 1750,
+  //       },
+  //       {
+  //         x: 1657160361,
+  //         y: 2000,
+  //       },
+  //       {
+  //         x: 1657333161,
+  //         y: 2400,
+  //       },
+  //       {
+  //         x: 1657505961,
+  //         y: 2800,
+  //       },
+  //       {
+  //         x: 1657678761,
+  //         y: 2500,
+  //       },
+  //       {
+  //         x: 1657851561,
+  //         y: 4000,
+  //       },
+  //       {
+  //         x: 1658024361,
+  //         y: 4100,
+  //       },
+  //       {
+  //         x: 1658197161,
+  //         y: 5000,
+  //       },
+  //     ],
+  //   },
+  // ];
   const data3 = [
     {
       id: "#1",
@@ -204,9 +219,91 @@ function GraphContainer() {
     },
   ];
 
+  useEffect(() => {
+    if (data) {
+      const graphData = getGraphData();
+    
+    
+      
+      
+      const marketCap = graphData.map((arrayData: any, index: number) => {
+        return {
+          x: moment(arrayData.createdAt).unix(),
+          y: Number(arrayData.marketCap),
+        };
+      });
+
+      const marketCapData = [
+        {
+          id: "#2775ff",
+          color: "hsl(218, 100%, 58%)",
+          data: marketCap,
+        },
+      ];
+
+      // console.log(marketCapData);
+      
+
+      setMarketCapDatas(marketCapData);
+      const totalStaked = graphData.map((arrayData: any, index: number) => {
+        return {
+
+          x: moment(arrayData.createdAt).unix(),
+          y: Number(arrayData.totalValueStaked),
+        };
+      });
+
+      const totalStakedData = [
+        {
+          id: "#2775ff",
+          color: "hsl(218, 100%, 58%)",
+          data: totalStaked,
+        },
+      ];
+      setTotalStakedDatas(totalStakedData);
+
+
+
+      const runway = graphData.map((arrayData: any, index: number) => {
+        return {
+
+          x: moment(arrayData.createdAt).unix(),
+          y: Number(arrayData.runway),
+        };
+      });
+      const runwayData = [
+        {
+          id: "#2775ff",
+          color: "hsl(218, 100%, 58%)",
+          data: runway,
+        },
+      ];
+
+      setRunwayDatas(runwayData);
+    }
+  }, [filteredValue, data]);
+
+  const getGraphData = () => {
+    switch (filteredValue) {
+      case "1 Week":
+        return data.getDashboard.slice(0, 2);
+      case "1 Month":
+        return data.getDashboard.slice(0, 3);
+      case "3 Months":
+        return data.getDashboard.slice(0, 4);
+      case "6 Months":
+        return data.getDashboard.slice(0, 5);
+      case "1 Year":
+        return data.getDashboard.slice(0, 23);
+      default:
+        return data;
+    }
+  };
+
+
   return (
     <Flex flexDir={"column"}>
-      <GraphFilter></GraphFilter>
+      <GraphFilter  setFilter={setFilteredValue}></GraphFilter>
       <Flex
         w={"100%"}
         columnGap={"1.5%"}
@@ -215,28 +312,37 @@ function GraphContainer() {
         justifyContent="center"
       >
         <Graph
-          data={data}
+          data={marketCapDatas}
           title="Market Cap"
-          amount="$ 1,000,000,000"
-          tooltipTitle="tooltip"
+          amount={marketCapDatas[0]? `$ ${Number(marketCapDatas[0].data[marketCapDatas[0].data.length-1].y).toLocaleString(undefined, { maximumFractionDigits: 2 })}`: ''}
+          tooltipTitle="“Market Cap” represents the total
+          dollar value of TOS in circulation."
         ></Graph>
         <Graph
-          data={data}
+          data={totalStakedDatas}
           title="Total Value Staked"
-          amount="$ 1,000,000,000"
-          tooltipTitle="tooltip"
-        ></Graph>
-        <Graph
-          data={data}
-          title="Treasury Balance"
-          amount="$ 1,000,000,000"
-          tooltipTitle="tooltip"
+          amount={totalStakedDatas[0]? `$ ${Number(totalStakedDatas[0].data[totalStakedDatas[0].data.length-1].y).toLocaleString(undefined, { maximumFractionDigits: 2 })}`: ''}
+          tooltipTitle="“Total Value Staked” represents 
+          the total dollar value of all the LTOS. 
+          LTOS represents TOS that are staked
+          and their staking interest."
         ></Graph>
         <Graph
           data={data3}
+          title="Treasury Balance"
+          amount="$ 1,000,000,000"
+          tooltipTitle="“Treasury Balance” represents the 
+          total dollar value of non-TOS assets
+          owned by the treasury that can be
+          used for backing each TOS."
+        ></Graph>
+        <Graph
+          data={runwayDatas}
           title="Runway"
-          amount="100 Days"
-          tooltipTitle="tooltip"
+          amount={`${runwayDatas[0]? runwayDatas[0].data.length :''} Days`}
+          tooltipTitle="“Runway” represents the number of days
+          that staking interest can be sustained 
+          by the protocol."
         ></Graph>
       </Flex>
     </Flex>
