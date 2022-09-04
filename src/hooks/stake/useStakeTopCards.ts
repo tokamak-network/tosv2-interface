@@ -11,16 +11,19 @@ function useStakeTopCards() {
       title: "Total Value Staked",
       price: "-",
       priceUnit: "$",
+      tooltip:'The total dollar value of all the LTOS.'
     },
     {
       title: "TOS APY",
       price: "-",
       priceUnit: "%",
+      tooltip:'The annualized percentage yield in TOS for staking. This value is used to increase LTOS index at every rebase period.'
     },
     {
       title: "LTOS Index",
       price: "-",
       priceUnit: "TOS",
+      tooltip:'Number of TOS you get when you unstake 1 LTOS. LTOS index increases at every rebase period.'
     },
   ]);
 
@@ -47,17 +50,21 @@ function useStakeTopCards() {
             title: "Total Value Staked",
             price: commafy(TVS),
             priceUnit: "$",
+            tooltip:'The total dollar value of all the LTOS.'
           },
           {
             title: "TOS APY",
             price: commafy(TOS_APY),
             priceUnit: "%",
+            tooltip:'The annualized percentage yield in TOS for staking. This value is used to increase LTOS index at every rebase period.'
           },
           {
             title: "LTOS Index",
             price: stakeV2?.ltosIndex || "-",
             priceUnit: "TOS",
+            tooltip:'Number of TOS you get when you unstake 1 LTOS. LTOS index increases at every rebase period.'
           },
+          
         ]);
       }
     };

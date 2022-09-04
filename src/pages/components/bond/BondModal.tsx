@@ -45,6 +45,7 @@ import { Bond_BondModal } from "types/atom";
 import StakeGraph from "../common/modal/StakeGraph";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import BasicTooltip from "common/tooltip";
+import Tile from "../common/modal/Tile";
 
 function BottomContent(props: {
   title: string;
@@ -120,57 +121,6 @@ function BottomContent(props: {
   );
 }
 
-function Tile(props: {
-  title: string;
-  content: string | undefined;
-  symbol?: string;
-  tooltip: string;
-}) {
-  const { title, content, symbol,tooltip } = props;
-  const { colorMode } = useColorMode();
-  return (
-    <Box
-      display={"flex"}
-      flexDir={"column"}
-      w={"152px"}
-      alignItems={"center"}
-      mb={"15px"}
-    >
-      <Flex alignItems={"center"}>
-        <Text
-          color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-          h={"17px"}
-          mb={"3px"}
-          fontWeight={600}
-          fontSize={12}
-          textAlign="center"
-          mr={"6px"}
-        >
-          {title}
-        </Text>
-        <BasicTooltip label={tooltip} />
-      </Flex>
-
-      <Flex fontWeight={"bold"} h={"33px"}>
-        <Text
-          color={colorMode === "dark" ? "white.100" : "gray.800"}
-          fontSize={24}
-          mr={2}
-        >
-          {content || "-"}
-        </Text>
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontSize={14}
-          pt={"5px"}
-          lineHeight={"33px"}
-        >
-          {symbol ? symbol : ""}
-        </Text>
-      </Flex>
-    </Box>
-  );
-}
 
 function BondModal() {
   const theme = useTheme();
@@ -302,8 +252,9 @@ function BondModal() {
                   <Grid
                     templateColumns="repeat(3, 1fr)"
                     templateRows="repeat(2, 1fr)"
+                    w={'100%'}
                   >
-                    <GridItem>
+                    <GridItem display={'flex'} justifyContent='center' >
                       <Tile
                         title={"Bond Price"}
                         content={`${bondModalData?.bondPrice}`}

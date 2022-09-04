@@ -1,13 +1,15 @@
 import { Box, Flex, Text, useColorMode, Tooltip } from "@chakra-ui/react";
 import Image from "next/image";
 import question from "assets/icons/question.svg";
+import BasicTooltip from "common/tooltip";
 
 function Tile(props: {
   title: string;
   content: string | undefined;
   symbol?: string;
+  tooltip: string;
 }) {
-  const { title, content, symbol } = props;
+  const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
   return (
     <Box display={"flex"} flexDir={"column"} mb={"15px"} alignItems={"center"}>
@@ -23,9 +25,7 @@ function Tile(props: {
         >
           {title}
         </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
+        <BasicTooltip label={tooltip} />
       </Flex>
 
       <Flex fontWeight={"bold"} h={"33px"}>

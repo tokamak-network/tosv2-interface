@@ -8,11 +8,6 @@ import {
   ModalContent,
   useTheme,
   useColorMode,
-  Link,
-  Box,
-  Input,
-  Grid,
-  GridItem,
   Tooltip,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
@@ -45,13 +40,16 @@ import useInput from "hooks/useInput";
 import useStakeModaldata from "hooks/stake/useStakeModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
+import BasicTooltip from "common/tooltip/index";
 
 function BottomContent(props: {
   title: string;
   content: string | { ltos: string; stos: string };
   tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string;
 }) {
-  const { title, content, tooltip } = props;
+  const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -59,12 +57,16 @@ function BottomContent(props: {
       case "You Will Get":
         if (typeof content === "string") {
           return (
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-            >
-              {content as string}
-            </Text>
+            <Flex>
+              <Text
+                color={colorMode === "dark" ? "white.200" : "gray.800"}
+                fontWeight={600}
+                mr="6px"
+              >
+                {content as string}
+              </Text>
+              <BasicTooltip label={secondTooltip} />
+            </Flex>
           );
         }
         return (
@@ -72,9 +74,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr={"6px"}
             >
               {(typeof content !== "string" && content.ltos) || "-"} LTOS
             </Text>
+            <BasicTooltip label={secondTooltip} />
             <Text color={"#64646f"} mx={"5px"}>
               /
             </Text>
@@ -88,12 +92,14 @@ function BottomContent(props: {
         );
       default:
         return (
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-          >
-            {content as string}
-          </Text>
+          <Flex>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {content as string}
+            </Text>
+          </Flex>
         );
     }
   }, [title, content, colorMode]);
@@ -113,13 +119,7 @@ function BottomContent(props: {
           >
             {title}
           </Text>
-          {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
-          ) : (
-            <></>
-          )}
+          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
         </Flex>
         {ContentComponent}
       </Flex>
@@ -153,21 +153,29 @@ function StakeModal() {
           title: "You Give",
           content: `${inputValue.stake_modal_balance || "0"} TOS`,
           tooltip: false,
+          tooltipMessage: "",
         },
         {
           title: "You Will Get",
           content: `${stakeModalInputData?.youWillGet.ltos || "0"} LTOS`,
           tooltip: true,
+          tooltipMessage:
+            "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+          secondTooltip:
+            "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
         },
         {
           title: "Current Balance",
           content: `${stakeModalInputData?.currentBalance || "0"} LTOS`,
           tooltip: true,
+          tooltipMessage: "Current LTOS balance without Lock-Up period",
         },
         {
           title: "New Balance",
           content: `${stakeModalInputData?.newBalance || "0"} LTOS`,
           tooltip: true,
+          tooltipMessage:
+            "New LTOS balance without Lock-Up period after staking. ",
         },
       ]
     : [
@@ -175,16 +183,22 @@ function StakeModal() {
           title: "You Give",
           content: `${inputValue.stake_modal_balance || "0"} TOS`,
           tooltip: false,
+          tooltipMessage: "",
         },
         {
           title: "You Will Get",
           content: stakeModalInputData?.youWillGet || "0",
           tooltip: true,
+          tooltipMessage:
+            "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+          secondTooltip:
+            "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
         },
         {
           title: "End Time",
           content: `${stakeModalInputData?.endTime || "-"}`,
           tooltip: true,
+          tooltipMessage: "LTOS can be unstaked after this time. ",
         },
       ];
 
@@ -275,11 +289,16 @@ function StakeModal() {
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
                 <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile title={"Next Rebase"} content={stakeV2?.nextRebase} />
+                  <Tile
+                    title={"Next Rebase"}
+                    content={stakeV2?.nextRebase}
+                    tooltip="Time left until LTOS index is increased."
+                  />
                   <Tile
                     title={"LTOS Index"}
                     content={stakeV2?.ltosIndex}
                     symbol={"TOS"}
+                    tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
                   />
                 </Flex>
                 <Flex mb={"9px"}>
@@ -352,6 +371,8 @@ function StakeModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}

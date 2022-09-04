@@ -50,6 +50,7 @@ import useStakeId from "hooks/contract/useStakeId";
 import useInput from "hooks/useInput";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useStosReward from "hooks/stake/useStosReward";
+import BasicTooltip from "common/tooltip/index";
 
 function StakeGraph() {
   const labelStyles = {
@@ -147,8 +148,10 @@ function BottomContent(props: {
   title: string;
   content: string | { ltos: string; stos: string };
   tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string;
 }) {
-  const { title, content, tooltip } = props;
+  const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -159,9 +162,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr="6px"
             >
               {typeof content !== "string" && content.ltos} LTOS
             </Text>
+            <BasicTooltip label={secondTooltip} />
             <Text color={"#64646f"} mx={"5px"}>
               /
             </Text>
@@ -179,9 +184,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr="6px"
             >
               {typeof content !== "string" && content.ltos} LTOS
             </Text>
+            <BasicTooltip label={secondTooltip} />
             <Text color={"#64646f"} mx={"5px"}>
               /
             </Text>
@@ -220,13 +227,7 @@ function BottomContent(props: {
           >
             {title}
           </Text>
-          {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
-          ) : (
-            <></>
-          )}
+          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
         </Flex>
         {ContentComponent}
       </Flex>
@@ -259,26 +260,37 @@ function UpdateModal() {
       title: "You Give",
       content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
       tooltip: false,
+      tooltipMessage: "",
     },
     {
       title: "Current Balance",
       content: currentBalance,
       tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS before the update.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
     },
     {
       title: "New Balance",
       content: newBalance,
       tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS after the update.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
     },
     {
       title: "Current End Time",
       content: currentEndTime,
       tooltip: true,
+      tooltipMessage:
+        "Lock-Up period end time before the update.before the update.",
     },
     {
       title: "New End Time",
       content: newEndTime,
       tooltip: true,
+      tooltipMessage:
+        "Lock-Up period end time after the update.before the update.",
     },
   ];
 
@@ -383,11 +395,18 @@ function UpdateModal() {
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
                 <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile title={"Next Rebase"} content={stakeV2?.nextRebase} />
+                  <Tile
+                    title={"Next Rebase"}
+                    content={stakeV2?.nextRebase}
+                    tooltip={"Time left until LTOS index is increased."}
+                  />
                   <Tile
                     title={"LTOS Index"}
                     content={stakeV2?.ltosIndex}
                     symbol={"TOS"}
+                    tooltip={
+                      "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                    }
                   />
                 </Flex>
                 <Flex mb={"9px"}>
@@ -418,6 +437,7 @@ function UpdateModal() {
                   >
                     New Lock-Up Period
                   </Text>
+
                   <Flex
                     w={"120px"}
                     h={"39px"}
@@ -428,7 +448,8 @@ function UpdateModal() {
                     fontSize={14}
                     color={"#64646f"}
                   >
-                    <Text>{leftWeeks} Weeks</Text>
+                    <Text mr="6px">{leftWeeks} Weeks</Text>
+                    <BasicTooltip label={"The current lock-up period. The new Lock-Up Period has to be equal or greater than this."} />
                   </Flex>
                   <TextInput
                     w={"170px"}
@@ -461,6 +482,8 @@ function UpdateModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}

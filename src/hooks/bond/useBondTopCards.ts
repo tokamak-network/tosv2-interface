@@ -13,7 +13,7 @@ function useBondTopCards() {
       title: "Treasury Balance",
       price: "-",
       priceUnit: "$",
-      tooltip:'Total values of non TOS assets held by the Treasury'
+      tooltip:'Total value of non TOS assets held by the Treasury'
     },
     {
       title: "TOS Price",
@@ -46,7 +46,7 @@ function useBondTopCards() {
             title: "Treasury Balance",
             price: commafy(treasuryBalance),
             priceUnit: "$",
-            tooltip:'Total values of non TOS assets held by the Treasury'
+            tooltip:'Total value of non TOS assets held by the Treasury'
           },
           {
             title: "TOS Price",
