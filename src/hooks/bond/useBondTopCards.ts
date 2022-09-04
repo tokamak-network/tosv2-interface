@@ -13,11 +13,13 @@ function useBondTopCards() {
       title: "Treasury Balance",
       price: "-",
       priceUnit: "$",
+      tooltip:'Total values of non TOS assets held by the Treasury'
     },
     {
       title: "TOS Price",
       price: "-",
       priceUnit: "$",
+      tooltip:'TOS market price'
     },
   ]);
 
@@ -41,11 +43,13 @@ function useBondTopCards() {
             title: "Treasury Balance",
             price: commafy(treasuryBalance),
             priceUnit: "$",
+            tooltip:'Total values of non TOS assets held by the Treasury'
           },
           {
             title: "TOS Price",
             price: commafy(tosPrice),
             priceUnit: "$",
+            tooltip:'TOS market price'
           },
         ]);
       }

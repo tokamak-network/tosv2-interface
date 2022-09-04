@@ -44,13 +44,16 @@ import useInput from "hooks/useInput";
 import { Bond_BondModal } from "types/atom";
 import StakeGraph from "../common/modal/StakeGraph";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
+import BasicTooltip from "common/tooltip";
 
 function BottomContent(props: {
   title: string;
   content: string | { ltos: string; stos: string };
   tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string;
 }) {
-  const { title, content, tooltip } = props;
+  const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -61,9 +64,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr={'6px'}
             >
               {(typeof content !== "string" && content.ltos) || "-"} LTOS
-            </Text>
+            </Text> 
+            <BasicTooltip label={secondTooltip} />
             <Text color={"#64646f"} mx={"5px"}>
               /
             </Text>
@@ -95,7 +100,7 @@ function BottomContent(props: {
         fontSize={14}
         mt={"9px"}
       >
-        <Flex>
+        <Flex  alignItems={'center'}>
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
             mr={"6px"}
@@ -103,12 +108,11 @@ function BottomContent(props: {
             {title}
           </Text>
           {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
-          ) : (
-            <></>
-          )}
+          
+          <BasicTooltip label={tooltipMessage} />
+        ) : (
+          <></>
+        )}
         </Flex>
         {ContentComponent}
       </Flex>
@@ -120,8 +124,9 @@ function Tile(props: {
   title: string;
   content: string | undefined;
   symbol?: string;
+  tooltip: string;
 }) {
-  const { title, content, symbol } = props;
+  const { title, content, symbol,tooltip } = props;
   const { colorMode } = useColorMode();
   return (
     <Box
@@ -143,9 +148,7 @@ function Tile(props: {
         >
           {title}
         </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
+        <BasicTooltip label={tooltip} />
       </Flex>
 
       <Flex fontWeight={"bold"} h={"33px"}>
@@ -192,6 +195,7 @@ function BondModal() {
       title: "You Give",
       content: `${inputValue.bond_modal_balance || "-"} ETH`,
       tooltip: false,
+      tooltipMessage: "",
     },
     {
       title: "You Will Get",
@@ -201,11 +205,15 @@ function BondModal() {
           stos: fiveDaysLockup ? "0" : stosReward || "0",
         } || "-",
       tooltip: true,
+      tooltipMessage: "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+      secondTooltip:'Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.'
+
     },
     {
       title: "End Time",
       content: endTime || "-",
       tooltip: true,
+      tooltipMessage: "LTOS can be unstaked after this time. ",
     },
   ];
 
@@ -296,18 +304,21 @@ function BondModal() {
                       <Tile
                         title={"Bond Price"}
                         content={`${bondModalData?.bondPrice}`}
+                        tooltip={"Bonding price for 1 TOS in USD."}
                       />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"Market Price"}
                         content={`${bondModalData?.marketPrice}`}
+                        tooltip={"Market price for 1 TOS in USD."}
                       />
                     </GridItem>
                     <GridItem>
                       <Tile
                         title={"Discount"}
                         content={`${bondModalData?.discount}`}
+                        tooltip={"Discount for bonding."}
                       />
                     </GridItem>
                     <GridItem>
@@ -315,6 +326,9 @@ function BondModal() {
                         title={"Min Bond"}
                         content={bondModalData?.minBond}
                         symbol={"ETH"}
+                        tooltip={
+                          "The recommended minimum amount to bond to offset the gas cost."
+                        }
                       />
                     </GridItem>
                     <GridItem>
@@ -322,6 +336,9 @@ function BondModal() {
                         title={"Max Bond"}
                         content={bondModalData?.maxBond}
                         symbol={"ETH"}
+                        tooltip={
+                          "The maximum bondable amount based on the current bond market capacity."
+                        }
                       />
                     </GridItem>
                     <GridItem>
@@ -329,6 +346,9 @@ function BondModal() {
                         title={"LTOS Index"}
                         content={bondModalData?.ltosIndex}
                         symbol={"TOS"}
+                        tooltip={
+                          "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                        }
                       />
                     </GridItem>
                   </Grid>
@@ -368,7 +388,8 @@ function BondModal() {
                     state={fiveDaysLockup}
                     setState={setFiveDaysLockup}
                   ></CustomCheckBox>
-                  <Text ml={"9px"}>5 days Lock-Up</Text>
+                  <Text ml={"9px"} mr='6px'>5 days Lock-Up</Text>
+                  <BasicTooltip label="No sTOS is given for 5 day Lock-up option"/>
                   <TextInput
                     w={"170px"}
                     h={"39px"}
@@ -402,6 +423,8 @@ function BondModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}

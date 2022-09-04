@@ -1,10 +1,24 @@
-import { Flex, Text, useColorMode } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  useColorMode,
+ 
+} from "@chakra-ui/react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useMemo } from "react";
 import { Dashboard_SmallCardType } from "types/dashboard";
+import BasicTooltip from "common/tooltip";
 
 const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
-  const { title, price, priceUnit, priceChangePercent, style } = props;
+  const {
+    title,
+    price,
+    priceUnit,
+    priceChangePercent,
+    style,
+    tooltip,
+    tooltipMessage,
+  } = props;
   const [width] = useWindowDimensions();
   const isMobile = width < 490;
   const { colorMode } = useColorMode();
@@ -60,15 +74,19 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       {...style}
     >
+      <Flex>
       <Text
         color={"gray.100"}
         fontSize={12}
         fontWeight={600}
         h={17}
         mb={"12px"}
+        mr={"6px"}
       >
         {title}
       </Text>
+      <BasicTooltip label={tooltipMessage} />
+      </Flex>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex
           fontSize={22}

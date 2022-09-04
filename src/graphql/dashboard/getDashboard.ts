@@ -3,8 +3,16 @@ import { gql } from "@apollo/client";
 const GET_DASHBOARD = gql`
   query GetDashboard($period: String!, $limit: Int!) {
     getDashboard(period: $period, limit: $limit) {
+      _id
+      chainId
+      createdAt
+      marketCap
+      runway
       tosPrice
+      tosSupply
+      totalValueStaked
       treasuryBalance
+      updatedAt
     }
   }
 `;

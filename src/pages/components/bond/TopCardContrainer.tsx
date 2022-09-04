@@ -1,8 +1,6 @@
 import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
 import useBondTopCards from "hooks/bond/useBondTopCards";
-import useStakeTopCards from "hooks/stake/useStakeTopCards";
-import { useMemo } from "react";
-import { PageKey, TopCardList } from "types";
+import { TopCardList } from "types";
 import { StakeTopCardProps } from "types/stake";
 import TopCard from "./TopCard";
 
@@ -48,32 +46,18 @@ function MobileTopCard(props: { cardList: StakeTopCardProps[] }) {
   );
 }
 
-function TopCardContainer(props: { pageKey: PageKey }) {
-  const { pageKey } = props;
+function TopCardContainer() {
   const [smallerThan510] = useMediaQuery("(max-width: 510px)");
   const { bondTopsCards } = useBondTopCards();
-  const { stakeTopCards } = useStakeTopCards();
-
-  const cardList = useMemo(() => {
-    switch (pageKey) {
-      case "Bond_screen":
-        return bondTopsCards;
-      case "Stake_screen":
-        return stakeTopCards;
-      default:
-        return [];
-    }
-  }, [pageKey, bondTopsCards, stakeTopCards]);
 
   return (
     <Flex flexDir={"column"}>
       {smallerThan510 ? (
-        <MobileTopCard cardList={cardList}></MobileTopCard>
+        <MobileTopCard cardList={bondTopsCards}></MobileTopCard>
       ) : (
         <Flex justifyContent={"space-between"} columnGap={"24px"}>
           {bondTopsCards?.map((cardData, index) => {
             const { title, price, priceUnit,tooltip } = cardData;
-
             return (
               <TopCard
                 title={title}
