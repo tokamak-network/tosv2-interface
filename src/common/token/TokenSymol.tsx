@@ -5,8 +5,8 @@ import TOS_SYMBOL from "assets/icons/TOS.svg";
 import { TokenTypes } from "types";
 import { Flex } from "@chakra-ui/react";
 
-function TokenSymbol(props: { tokenType: TokenTypes; h?: string; w?: string }) {
-  const { tokenType, h, w } = props;
+function TokenSymbol(props: { tokenType: TokenTypes; h?: string; w?: string; imageH? :string; imageW?:string }) {
+  const { tokenType, h, w,imageH, imageW } = props;
   switch (tokenType) {
     case "ETH":
       return (
@@ -21,8 +21,8 @@ function TokenSymbol(props: { tokenType: TokenTypes; h?: string; w?: string }) {
           <Image
             src={ETH_SYMBOL}
             alt={""}
-            height={"30px"}
-            width={"30px"}
+            height={imageH|| "30px"}
+            width={ imageW||"30px"}
           ></Image>
         </Flex>
       );

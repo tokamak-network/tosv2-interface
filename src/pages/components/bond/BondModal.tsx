@@ -228,11 +228,13 @@ function BondModal() {
                   tokenType={"ETH"}
                   h={"30px"}
                   w={"30px"}
+                  imageH='18px'
                 ></TokenSymbol>
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={20}
                   fontWeight={600}
+                  ml='9px'
                 >
                   ETH BOND
                 </Text>
