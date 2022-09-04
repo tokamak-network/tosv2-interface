@@ -28,9 +28,6 @@ function useBondTopCards() {
     },
   });
 
-  console.log("--data--");
-  console.log(data);
-
   useEffect(() => {
     const fetchData = async () => {
       if (

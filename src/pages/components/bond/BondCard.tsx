@@ -37,6 +37,7 @@ function BondCard(props: { data: BondCardProps }) {
   const { tryActivation } = useWallet();
 
   const timeDiff = data?.endTime - getNowTimeStamp();
+  console.log(timeDiff);
   const splitedTimeDiff = convertTimeStamp(timeDiff, `DD.HH.mm`).split(".");
 
   const [isOpen, setIsOpen] = useState(timeDiff >= 0);

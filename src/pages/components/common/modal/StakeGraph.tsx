@@ -27,7 +27,7 @@ import { InputKey } from "types/atom";
 
 type PeriodKey =
   | "bond_modal_period"
-  | "stake_modal_balance"
+  | "stake_modal_period"
   | "stake_updateModal_period";
 
 function StakeGraph(props: {

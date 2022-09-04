@@ -38,8 +38,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
         const ltos = convertNumber({ amount: LTOS_BN, localeString: true });
 
         //stosReward
-        const bondList = await BondDepositoryProxy_CONTRACT.getBond();
-        console.log(bondList);
+        // const bondList = await BondDepositoryProxy_CONTRACT.getBond();
         //         const tosPrice = StakingV2Proxy_CONTRACT.
         // StakingV2Proxy_CONTRACT.BondDepository.calculateTosAmountForAsset(, ethAmountWei);
 

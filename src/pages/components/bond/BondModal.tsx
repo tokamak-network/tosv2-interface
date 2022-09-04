@@ -187,9 +187,6 @@ function BondModal() {
 
   const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
 
-  // console.log(youWillGet);
-  // console.log(stosReward);
-
   const contentList = [
     {
       title: "You Give",

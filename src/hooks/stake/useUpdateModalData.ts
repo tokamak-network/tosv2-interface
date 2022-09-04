@@ -159,6 +159,7 @@ function useUpdateModalData(): UseUpdateModalData {
     inputValue,
     stosReward,
     modalContractData,
+    unlockTime,
   ]);
 
   return {

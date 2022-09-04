@@ -12,11 +12,11 @@ import { useWeb3React } from "@web3-react/core";
 import useInput from "hooks/useInput";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import useUser from "hooks/useUser";
+import useStosReward from "./useStosReward";
 
 type stakeModalInputData = {
   youWillGet: {
     ltos: string;
-    stos: string;
   };
   currentBalance: string;
   newBalance: string;
@@ -34,6 +34,7 @@ function useStakeModaldata() {
   const [stakeModalInputData, setStakeModalInputData] = useState<
     stakeModalInputData | undefined
   >(undefined);
+  const { stosReward } = useStosReward(inputAmount, inputPeriod);
 
   const {
     BondDepositoryProxy_CONTRACT,
@@ -117,9 +118,6 @@ function useStakeModaldata() {
         const newBalance =
           convertNumber({ amount: newBalanceBN.toString() }) || "0";
 
-        //stos reward
-        const stos = await getEstimatedReward(inputPeriod);
-
         //endTime
         const sTosEpochUnit = await LockTOS_CONTRACT.epochUnit();
         const unlockTimeStamp =
@@ -129,7 +127,6 @@ function useStakeModaldata() {
         setStakeModalInputData({
           youWillGet: {
             ltos,
-            stos,
           },
           currentBalance,
           newBalance,
@@ -155,6 +152,7 @@ function useStakeModaldata() {
 
   return {
     stakeModalInputData,
+    stosReward,
   };
 }
 

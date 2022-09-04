@@ -135,7 +135,7 @@ function StakeModal() {
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue } = useInput("Stake_screen", "stake_modal");
-  const { stakeModalInputData } = useStakeModaldata();
+  const { stakeModalInputData, stosReward } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
@@ -178,7 +178,11 @@ function StakeModal() {
         },
         {
           title: "You Will Get",
-          content: stakeModalInputData?.youWillGet || "0",
+          content:
+            {
+              ltos: stakeModalInputData?.youWillGet.ltos,
+              stos: stosReward,
+            } || "0",
           tooltip: true,
         },
         {
@@ -335,7 +339,7 @@ function StakeModal() {
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"stake_modal"}
-                  periodKey={"stake_modal_balance"}
+                  periodKey={"stake_modal_period"}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
