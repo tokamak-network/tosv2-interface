@@ -7,6 +7,8 @@ import { BondRawdata, BondCardProps } from "types/bond";
 import BondCard from "./BondCard";
 import commafy from "utils/commafy";
 import usePrice from "hooks/usePrice";
+import useCallContract from "hooks/useCallContract";
+import { convertNumber } from "@/components/number";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
@@ -23,15 +25,34 @@ function BondCardSection() {
   useEffect(() => {
     if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {
       const bonds = data.getBondList;
+      const { ethPrice, tosPrice } = priceData;
       console.log("--bonds");
       console.log(bonds);
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
-        const { capacity, index, tokenLogo, totalSold, endTime } = bond;
-        const bondPrice = (1 / priceData.tosPrice) * 1e18 * priceData.ethPrice;
+        const {
+          capacity,
+          index,
+          tokenLogo,
+          totalSold,
+          endTime,
+          bondPrice: _tosPrice,
+        } = bond;
+        const bondPrice = (1 / _tosPrice) * 1e18 * ethPrice;
+        console.log(tosPrice, bondPrice);
+
+        const num = Number(convertNumber({ amount: bondPrice.toString() }));
+
+        const discount = ((tosPrice - num) / tosPrice) * 100;
+
+        console.log(discount);
+
         return {
           bondCapacity: commafy(capacity),
-          bondingPrice: commafy(bondPrice),
-          discountRate: "0.5%",
+          bondingPrice: convertNumber({
+            amount: bondPrice.toString(),
+            localeString: true,
+          }),
+          discountRate: `${commafy(discount)}%`,
           tokenType: "ETH",
           totalSold: `${commafy(totalSold)} TOS`,
           endTime,
