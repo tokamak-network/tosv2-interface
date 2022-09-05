@@ -168,26 +168,37 @@ function UpdateModal() {
       title: "You Give",
       content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
       tooltip: false,
+      tooltipMessage: "",
     },
     {
       title: "Current Balance",
       content: currentBalance,
       tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS before the update.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
     },
     {
       title: "New Balance",
       content: newBalance,
       tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS after the update.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
     },
     {
       title: "Current End Time",
       content: currentEndTime,
       tooltip: true,
+      tooltipMessage:
+        "Lock-Up period end time before the update.before the update.",
     },
     {
       title: "New End Time",
       content: newEndTime,
       tooltip: true,
+      tooltipMessage:
+        "Lock-Up period end time after the update.before the update.",
     },
   ];
 
@@ -292,11 +303,18 @@ function UpdateModal() {
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
                 <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile title={"Next Rebase"} content={stakeV2?.nextRebase} />
+                  <Tile
+                    title={"Next Rebase"}
+                    content={stakeV2?.nextRebase}
+                    tooltip={"Time left until LTOS index is increased."}
+                  />
                   <Tile
                     title={"LTOS Index"}
                     content={stakeV2?.ltosIndex}
                     symbol={"TOS"}
+                    tooltip={
+                      "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                    }
                   />
                 </Flex>
                 <Flex mb={"9px"}>
