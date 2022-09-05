@@ -38,8 +38,8 @@ const useUserBalance = () => {
         const wton = await WTON_CONTRACT.balanceOf(account);
         const tos = await TOS_CONTRACT.balanceOf(account);
         const eth = await library?.getBalance(account);
-        const LTOS = await LockTOS_CONTRACT.balanceOf(account);
-        const sTOS = await StakingV2Proxy_CONTRACT.balanceOf(account);
+        const LTOS = await StakingV2Proxy_CONTRACT.balanceOf(account);
+        const sTOS = await LockTOS_CONTRACT.balanceOf(account);
 
         const convertedTon = convertNumber({
           amount: ton.toString(),
