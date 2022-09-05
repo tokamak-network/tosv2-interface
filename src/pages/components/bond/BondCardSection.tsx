@@ -25,9 +25,6 @@ function BondCardSection() {
       const bonds = data.getBondList;
       console.log("--bonds");
       console.log(bonds);
-
-      console.log("--priceData");
-      console.log(priceData);
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
         const { capacity, index, tokenLogo, totalSold, endTime } = bond;
         const bondPrice = (1 / priceData.tosPrice) * 1e18 * priceData.ethPrice;

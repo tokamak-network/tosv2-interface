@@ -51,6 +51,7 @@ import useInput from "hooks/useInput";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
+import ArrowImg from "assets/icons/arrow-right2.svg";
 
 function BottomContent(props: {
   title: string;
@@ -357,8 +358,11 @@ function UpdateModal() {
                   >
                     <Text>{leftWeeks} Weeks</Text>
                   </Flex>
+                  <Flex ml={"16px"}>
+                    <Image src={ArrowImg} alt={"ArrowImg"}></Image>
+                  </Flex>
                   <TextInput
-                    w={"170px"}
+                    w={"150px"}
                     h={"39px"}
                     atomKey={"stake_updateModal_period"}
                     placeHolder={"1 Weeks"}

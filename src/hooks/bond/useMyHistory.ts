@@ -26,6 +26,7 @@ function useMyHistory() {
   const { data, loading, error } = useQuery(GET_BOND_MYHISTORY, {
     variables: {
       account,
+      period: "-1",
     },
   });
   const { data: TokenData } = useQuery(GET_TOKEN_PRICE, {

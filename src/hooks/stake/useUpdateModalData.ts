@@ -78,10 +78,17 @@ function useUpdateModalData(): UseUpdateModalData {
   //new
   useEffect(() => {
     async function fetchUpdateModalData() {
-      if (StakingV2Proxy_CONTRACT && stakeId && inputValue) {
+      if (
+        StakingV2Proxy_CONTRACT &&
+        stakeId &&
+        inputValue &&
+        modalContractData
+      ) {
         //new balance
         //case1
         //Only increate amount
+        const ltosBN = modalContractData.ltosBN;
+        const stosBN = modalContractData.stosBN;
         if (
           inputValue.stake_updateModal_tos_balance !== "" &&
           inputValue.stake_updateModal_period === ""
@@ -90,9 +97,9 @@ function useUpdateModalData(): UseUpdateModalData {
           const tosAmount = convertToWei(
             inputValue.stake_updateModal_tos_balance
           );
-          const newLTOS =
+          const possibleLTOS =
             await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
-
+          const newLTOS = BigNumber.from(possibleLTOS).add(ltosBN);
           const ltos =
             convertNumber({
               amount: newLTOS.toString(),

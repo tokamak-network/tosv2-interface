@@ -116,10 +116,12 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         content={`${cardData.principal}`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
-      <ContentComponent
-        title="End Time"
-        content={cardData.endTime}
-      ></ContentComponent>
+      {stakedType !== "LTOS Staking" && (
+        <ContentComponent
+          title="End Time"
+          content={cardData.endTime}
+        ></ContentComponent>
+      )}
       <Flex
         alignItems="center"
         justifyContent={smallerThan1440 ? "flex-end" : "center"}
@@ -154,7 +156,9 @@ function StakeCard(props: { cardData: StakeCardProps }) {
                 : openUpdateModal
             }
             style={smallerThan1040 ? { width: "100%" } : {}}
-            tooltip={'You can increase sTOS by using “Update” function. This costs less gas than using the “Stake” function.'}
+            tooltip={
+              "You can increase sTOS by using “Update” function. This costs less gas than using the “Stake” function."
+            }
           ></BasicButton>
           <BasicButton
             isDisabled={!isDisabled}

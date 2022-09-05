@@ -1,5 +1,6 @@
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp } from "@/components/time";
+import { BigNumber } from "ethers";
 import useCallContract from "hooks/useCallContract";
 import { useEffect, useState } from "react";
 import useStakeId from "./useStakeId";
@@ -7,6 +8,8 @@ import useStakeId from "./useStakeId";
 type UseModalContract = {
   ltosBalance: string;
   stosBalance: string;
+  ltosBN: BigNumber;
+  stosBN: BigNumber;
   currentEndTime: string;
   currentEndTimeStamp: number;
 };
@@ -46,6 +49,8 @@ function useModalContract(): UseModalContract | undefined {
         setModalContractData({
           ltosBalance,
           stosBalance,
+          ltosBN: ltosBalanceBN,
+          stosBN: stosBalanceBN,
           currentEndTime,
           currentEndTimeStamp,
         });
