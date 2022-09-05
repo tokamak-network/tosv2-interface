@@ -2,6 +2,7 @@ import { Box, Button, Tooltip, useColorMode, useTheme } from "@chakra-ui/react";
 import Image from "next/image";
 import { useCallback, useMemo } from "react";
 import QuestionIcon from "assets/icons/question.svg";
+import BasicTooltip from "common/tooltip/index";
 
 type ButtonIconNames = "Question" | undefined;
 
@@ -14,6 +15,7 @@ type BasicButtonProp = {
   onClick?: Function;
   iconName?: ButtonIconNames;
   iconLocation?: "left" | "right";
+  tooltip?:string;
 };
 
 const getIcon = (iconName: ButtonIconNames) => {
@@ -27,14 +29,12 @@ const getIcon = (iconName: ButtonIconNames) => {
   };
 
   return (
-    <Tooltip hasArrow label="Search places" bg="red.600" zIndex={100}>
-      <TooltipIcon></TooltipIcon>
-    </Tooltip>
+   <BasicTooltip label="You can increase sTOS by using “Update” function. This costs less gas than using the “Stake” function. "/>
   );
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const { name, w, h, isDisabled, style, onClick, iconName, iconLocation } =
+  const { name, w, h, isDisabled, style, onClick, iconName, iconLocation,tooltip } =
     props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -63,6 +63,7 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
       {iconLocation === "left" && getIcon(iconName)}
       <Box mx={"6px"}>{name}</Box>
       {iconLocation === "right" && getIcon(iconName)}
+      {name === 'Update'? <BasicTooltip label={tooltip}/> :<></>}
     </Button>
   );
 };

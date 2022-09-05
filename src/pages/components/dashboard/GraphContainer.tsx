@@ -7,10 +7,9 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 
 function GraphContainer() {
-
   const { loading, error, data } = useQuery(GET_DASHBOARD, {
     variables: {
-      period: "1",
+      period: "-1",
       limit: 365,
     },
   });
@@ -19,7 +18,7 @@ function GraphContainer() {
   const [marketCapDatas, setMarketCapDatas] = useState<any[]>([]);
   const [totalStakedDatas, setTotalStakedDatas] = useState<any[]>([]);
   const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
-
+  const [treasuryBalanceDatas, setTreasuryBalanceDatas] = useState<any[]>([]);
   const data3 = [
     {
       id: "#1",
@@ -176,7 +175,7 @@ function GraphContainer() {
         {
           id: "#2775ff",
           color: "hsl(218, 100%, 58%)",
-          data: marketCap,
+          data: [...marketCap].reverse(),
         },
       ];
 
@@ -192,7 +191,7 @@ function GraphContainer() {
         {
           id: "#2775ff",
           color: "hsl(218, 100%, 58%)",
-          data: totalStaked,
+          data: [...totalStaked].reverse(),
         },
       ];
       setTotalStakedDatas(totalStakedData);
@@ -207,26 +206,43 @@ function GraphContainer() {
         {
           id: "#2775ff",
           color: "hsl(218, 100%, 58%)",
-          data: runway,
+          data: [...runway].reverse(),
         },
       ];
 
       setRunwayDatas(runwayData);
+
+      const treasuryBalance = graphData.map((arrayData: any, index: number) => {
+        return {
+          x: moment(arrayData.createdAt).unix(),
+          y: Number(arrayData.treasuryBalance),
+        };
+      });
+
+      const treasuryData = [
+        {
+        id: "#2775ff",
+        color: "hsl(218, 100%, 58%)",
+        data: [...treasuryBalance].reverse(),
+        }
+      ]
+
+      setTreasuryBalanceDatas(treasuryData)
     }
   }, [filteredValue, data]);
 
   const getGraphData = () => {
     switch (filteredValue) {
       case "1 Week":
-        return data.getDashboard.slice(0, 2);
+        return data.getDashboard.slice(0, 6);
       case "1 Month":
-        return data.getDashboard.slice(0, 3);
+        return data.getDashboard.slice(0, 29);
       case "3 Months":
-        return data.getDashboard.slice(0, 4);
+        return data.getDashboard.slice(0, 89);
       case "6 Months":
-        return data.getDashboard.slice(0, 5);
+        return data.getDashboard.slice(0, 181);
       case "1 Year":
-        return data.getDashboard.slice(0, 23);
+        return data.getDashboard.slice(0, 364);
       default:
         return data;
     }
@@ -272,9 +288,13 @@ function GraphContainer() {
           and their staking interest."
         ></Graph>
         <Graph
-          data={data3}
+          data={treasuryBalanceDatas}
           title="Treasury Balance"
-          amount="$ 1,000,000,000"
+          amount={treasuryBalanceDatas[0]
+            ? `$ ${Number(
+              treasuryBalanceDatas[0].data[treasuryBalanceDatas[0].data.length - 1]
+                  .y
+              ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`:''}
           tooltipTitle="“Treasury Balance” represents the 
           total dollar value of non-TOS assets
           owned by the treasury that can be
