@@ -11,7 +11,7 @@ function StakeTitle() {
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const { openModal } = useModal("stake_stake_modal");
   const { colorMode } = useColorMode();
-  const { userLTOSBalance, userSTOSBalance } = useUserBalance();
+  const { userLTOSBalance, userSTOSBalance, userTOSBalance } = useUserBalance();
   return (
     <Flex
       // h={"31px"}
@@ -36,7 +36,8 @@ function StakeTitle() {
 
         <Flex alignItems={"center"}>
           <Text fontSize={14} color={"blue.200"} mr={"6px"}>
-            Balance : {userLTOSBalance} LTOS / {userSTOSBalance}sTOS
+            Balance : {userLTOSBalance} LTOS / {userSTOSBalance}sTOS /
+            {userTOSBalance} / TOS
           </Text>
           <Image src={ARROW_RIGHT} alt={"ARROW_RIGHT"}></Image>
         </Flex>

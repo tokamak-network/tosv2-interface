@@ -401,21 +401,22 @@ function UpdateModal() {
                 ></SubmitButton>
               )}
             </Flex>
-            <Flex
-              fontSize={11}
-              color={"#64646f"}
-              textAlign="center"
-              w={"100%"}
-              mb={"24px"}
-            >
-              <Text
+            {!isAllowance && (
+              <Flex
+                fontSize={11}
+                color={"#64646f"}
+                textAlign="center"
                 w={"100%"}
-                color={colorMode === "dark" ? "gray.200" : "gray.700"}
+                mb={"24px"}
               >
-                If this is First time bonding, Please approve Tonstarter to use
-                your DAI for bonding.
-              </Text>
-            </Flex>
+                <Text
+                  w={"100%"}
+                  color={colorMode === "dark" ? "gray.200" : "gray.700"}
+                >
+                  Please approve your TOS to use this service
+                </Text>
+              </Flex>
+            )}
           </Flex>
         </ModalBody>
       </ModalContent>

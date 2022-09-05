@@ -73,12 +73,12 @@ function StakeGraph(props: {
         <SliderMark value={0} {...labelStyles}>
           7d
         </SliderMark>
-        <SliderMark value={8} {...labelStyles}>
+        {/* <SliderMark value={8} {...labelStyles}>
           1m
         </SliderMark>
         <SliderMark value={24} {...labelStyles}>
           6m
-        </SliderMark>
+        </SliderMark> */}
         <SliderMark value={52} {...labelStyles}>
           1y
         </SliderMark>

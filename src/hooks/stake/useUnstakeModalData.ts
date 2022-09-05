@@ -59,7 +59,7 @@ function useUnstakeModalData(stakeId: string | string[]) {
         //   inputAmount
         // );
         const getTosAmount = BigNumber.from(inputAmount).mul(
-          stakeV2.ltosIndexBN
+          stakeV2.ltosIndexBN.toString()
         );
         const convertedGetTosAmount = convertNumber({
           amount: getTosAmount.toString(),
