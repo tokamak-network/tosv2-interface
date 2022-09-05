@@ -11,16 +11,19 @@ function useStakeTopCards() {
       title: "Total Value Staked",
       price: "-",
       priceUnit: "$",
+      tooltip: "",
     },
     {
       title: "TOS APY",
       price: "-",
       priceUnit: "%",
+      tooltip: "",
     },
     {
       title: "LTOS Index",
       price: "-",
       priceUnit: "TOS",
+      tooltip: "",
     },
   ]);
 
@@ -47,16 +50,19 @@ function useStakeTopCards() {
             title: "Total Value Staked",
             price: commafy(TVS),
             priceUnit: "$",
+            tooltip: "",
           },
           {
             title: "TOS APY",
             price: commafy(TOS_APY),
             priceUnit: "%",
+            tooltip: "",
           },
           {
             title: "LTOS Index",
             price: stakeV2?.ltosIndex || "-",
             priceUnit: "TOS",
+            tooltip: "",
           },
         ]);
       }
