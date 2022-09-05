@@ -13,29 +13,19 @@ type BasicButtonProp = {
   isDisabled?: boolean;
   style?: any;
   onClick?: Function;
-  iconName?: ButtonIconNames;
-  iconLocation?: "left" | "right";
-  tooltip?:string;
-};
-
-const getIcon = (iconName: ButtonIconNames) => {
-  const TooltipIcon = () => {
-    switch (iconName) {
-      case "Question":
-        return <Image src={QuestionIcon} alt={"QuestionIcon"}></Image>;
-      default:
-        return null;
-    }
-  };
-
-  return (
-   <BasicTooltip label="You can increase sTOS by using “Update” function. This costs less gas than using the “Stake” function. "/>
-  );
+  tooltip?: string;
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const { name, w, h, isDisabled, style, onClick, iconName, iconLocation,tooltip } =
-    props;
+  const {
+    name,
+    w,
+    h,
+    isDisabled,
+    style,
+    onClick,
+    tooltip,
+  } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   return (
@@ -60,10 +50,9 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
       onClick={onClick ? () => onClick() : null}
       zIndex={10}
     >
-      {iconLocation === "left" && getIcon(iconName)}
       <Box mx={"6px"}>{name}</Box>
-      {iconLocation === "right" && getIcon(iconName)}
-      {name === 'Update'? <BasicTooltip label={tooltip}/> :<></>}
+
+      {name === "Update" ? <BasicTooltip label={tooltip} /> : <></>}
     </Button>
   );
 };
