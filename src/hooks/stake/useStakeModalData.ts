@@ -75,7 +75,6 @@ function useStakeModaldata() {
         return setStakeModalInputData({
           youWillGet: {
             ltos: "0",
-            stos: "0",
           },
           currentBalance: "0",
           newBalance: "0",
