@@ -4,7 +4,7 @@ import useStosReward from "hooks/stake/useStosReward";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
-import JSBI from "JSBI";
+import JSBI from "jsbi";
 
 type UseUnstake = {
   youWillGet: string | undefined;

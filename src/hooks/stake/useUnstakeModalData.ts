@@ -57,10 +57,15 @@ function useUnstakeModalData(stakeId: string | string[]) {
         const inputAmount = convertToWei(inputValue.stake_unstakeModal_balance);
         // const getTosAmount = await StakingV2Proxy_CONTRACT.getLtosToTos(
         //   inputAmount
+
+        const getTosAmount =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(inputAmount);
+
+        console.log(getTosAmount);
+
+        // const getTosAmount = BigNumber.from(inputAmount).mul(
+        //   stakeV2.ltosIndexBN.toString()
         // );
-        const getTosAmount = BigNumber.from(inputAmount).mul(
-          stakeV2.ltosIndexBN.toString()
-        );
         const convertedGetTosAmount = convertNumber({
           amount: getTosAmount.toString(),
           localeString: true,
