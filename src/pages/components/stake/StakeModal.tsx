@@ -48,7 +48,7 @@ import StakeGraph from "../common/modal/StakeGraph";
 
 function BottomContent(props: {
   title: string;
-  content: string | { ltos: string; stos: string };
+  content: string | { ltos: string | undefined; stos: string };
   tooltip?: boolean;
 }) {
   const { title, content, tooltip } = props;
