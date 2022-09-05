@@ -64,10 +64,10 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr={'6px'}
+              mr={"6px"}
             >
               {(typeof content !== "string" && content.ltos) || "-"} LTOS
-            </Text> 
+            </Text>
             <BasicTooltip label={secondTooltip} />
             <Text color={"#64646f"} mx={"5px"}>
               /
@@ -100,19 +100,14 @@ function BottomContent(props: {
         fontSize={14}
         mt={"9px"}
       >
-        <Flex  alignItems={'center'}>
+        <Flex alignItems={"center"}>
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
             mr={"6px"}
           >
             {title}
           </Text>
-          {tooltip ? (
-          
-          <BasicTooltip label={tooltipMessage} />
-        ) : (
-          <></>
-        )}
+          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
         </Flex>
         {ContentComponent}
       </Flex>
@@ -126,7 +121,7 @@ function Tile(props: {
   symbol?: string;
   tooltip: string;
 }) {
-  const { title, content, symbol,tooltip } = props;
+  const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
   return (
     <Box
@@ -205,9 +200,10 @@ function BondModal() {
           stos: fiveDaysLockup ? "0" : stosReward || "0",
         } || "-",
       tooltip: true,
-      tooltipMessage: "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-      secondTooltip:'Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.'
-
+      tooltipMessage:
+        "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
     },
     {
       title: "End Time",
@@ -388,8 +384,10 @@ function BondModal() {
                     state={fiveDaysLockup}
                     setState={setFiveDaysLockup}
                   ></CustomCheckBox>
-                  <Text ml={"9px"} mr='6px'>5 days Lock-Up</Text>
-                  <BasicTooltip label="No sTOS is given for 5 day Lock-up option"/>
+                  <Text ml={"9px"} mr="6px">
+                    5 days Lock-Up
+                  </Text>
+                  <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
                   <TextInput
                     w={"170px"}
                     h={"39px"}
@@ -438,7 +436,7 @@ function BondModal() {
                 onClick={callBond}
               ></SubmitButton>
             </Flex>
-            <Flex
+            {/* <Flex
               fontSize={11}
               color={"#64646f"}
               textAlign="center"
@@ -452,7 +450,7 @@ function BondModal() {
                 If this is First time bonding, Please approve Tonstarter to use
                 your DAI for bonding.
               </Text>
-            </Flex>
+            </Flex> */}
           </Flex>
         </ModalBody>
       </ModalContent>
