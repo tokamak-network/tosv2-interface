@@ -152,16 +152,24 @@ function UnstakeModal() {
             </Flex>
             {/* Content Area*/}
             <Flex w={"100%"} flexDir={"column"} mb={"30px"}>
-              {hasInput && (
+              {/* {hasInput && ( */}
                 <Flex w={"100%"} flexDir={"column"} px={"120px"} mb={"30px"}>
                   <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                    <Tile title={"Next Rebase"} content={stakeV2?.nextRebase} />
+                    <Tile
+                      title={"Next Rebase"}
+                      content={stakeV2?.nextRebase}
+                      tooltip="Time left until LTOS index is increased."
+                    />
                     <Tile
                       title={"LTOS Index"}
                       content={stakeV2?.ltosIndex}
                       symbol={"TOS"}
+                      tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+
                     />
                   </Flex>
+                  {hasInput && (
+                    <Flex flexDir={'column'}>
                   <Flex mb={"9px"}>
                     <BalanceInput
                       w={"100%"}
@@ -182,8 +190,10 @@ function UnstakeModal() {
                     <Text>Your Balance</Text>
                     <Text>{unstakeData?.maxValue || "0"} LTOS</Text>
                   </Flex>
+                  </Flex>
+                  )}
                 </Flex>
-              )}
+              {/* )} */}
               {/* Content Bottom */}
               <Flex flexDir={"column"} rowGap={"9px"} px={"50px"}>
                 {contentList.map((content, index) => {

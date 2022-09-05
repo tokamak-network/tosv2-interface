@@ -71,7 +71,7 @@ function TopCardContainer(props: { pageKey: PageKey }) {
         <MobileTopCard cardList={cardList}></MobileTopCard>
       ) : (
         <Flex justifyContent={"space-between"} columnGap={"24px"}>
-          {bondTopsCards?.map((cardData, index) => {
+          {cardList?.map((cardData, index) => {
             const { title, price, priceUnit,tooltip } = cardData;
 
             return (
