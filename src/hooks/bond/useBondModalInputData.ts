@@ -15,7 +15,9 @@ type UseUnstake = {
 function useBondModalInputData(marketId: number): UseUnstake {
   const [youWillGet, setYouWillGet] = useState<string | undefined>(undefined);
   const [endTime, setEndTime] = useState<string | undefined>(undefined);
-  const [stosReward, setStosReward] = useState<string | undefined>(undefined);
+  const [inputTosAmount, setInputTosAmount] = useState<string | undefined>(
+    undefined
+  );
 
   const {
     StakingV2Proxy_CONTRACT,
@@ -25,6 +27,10 @@ function useBondModalInputData(marketId: number): UseUnstake {
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const { newEndTime } = useStosReward(
     inputValue?.bond_modal_balance,
+    inputValue?.bond_modal_period
+  );
+  const { stosReward } = useStosReward(
+    Number(inputTosAmount),
     inputValue?.bond_modal_period
   );
 
@@ -111,14 +117,15 @@ function useBondModalInputData(marketId: number): UseUnstake {
           );
 
         console.log("tosPrice, ethAmount");
-        console.log(tosPrice, ethAmountWei);
+        console.log(tosPrice.toString(), ethAmountWei);
 
         const rebasePerEpoch = await StakingV2Proxy_CONTRACT.rebasePerEpoch();
         const stosEpochUnit = await LockTOS_CONTRACT.epochUnit();
         const epochAfter = await StakingV2Proxy_CONTRACT.epoch();
-        const lockPeriod_BN = convertToWei(lockPeriod);
-        console.log(lockPeriod_BN);
-        const n = BigNumber.from(lockPeriod_BN)
+        // const lockPeriod_BN = convertToWei(lockPeriod);
+        // console.log("lockPeriod_BN");
+        // console.log(lockPeriod_BN);
+        const n = BigNumber.from(lockPeriod)
           .mul(stosEpochUnit)
           .div(epochAfter.length_);
         const bnAmountCompound = await calculateCompound({
@@ -138,17 +145,17 @@ function useBondModalInputData(marketId: number): UseUnstake {
         console.log("amountCompound");
         console.log(amountCompound.toString());
         const gweiAmountCompound = Math.floor(
-          parseFloat(ethers.utils.formatUnits(amountCompound, "gwei"))
+          parseFloat(ethers.utils.formatUnits(amountCompound, "wei"))
         );
-        console.log("gweiAmountCompound");
+        console.log("gweiAmountCompoundWei");
         console.log(gweiAmountCompound.toString());
-        const stosRewardAmount = convertNumber({
-          amount: gweiAmountCompound.toString(),
-          localeString: true,
+        console.log(ethers.utils.formatUnits(amountCompound, "wei"));
+        const inputTosAmount = convertNumber({
+          amount: ethers.utils.formatUnits(amountCompound, "wei").toString(),
         });
 
-        console.log(stosRewardAmount);
-        setStosReward(stosRewardAmount);
+        console.log(inputTosAmount);
+        setInputTosAmount(inputTosAmount);
 
         return setYouWillGet(ltos);
       }
