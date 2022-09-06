@@ -116,8 +116,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
             ethAmountWei
           );
 
-        console.log("tosPrice, ethAmount");
-        console.log(tosPrice.toString(), ethAmountWei);
+        // console.log("tosPrice, ethAmount");
+        // console.log(tosPrice.toString(), ethAmountWei);
 
         const rebasePerEpoch = await StakingV2Proxy_CONTRACT.rebasePerEpoch();
         const stosEpochUnit = await LockTOS_CONTRACT.epochUnit();
@@ -133,31 +133,28 @@ function useBondModalInputData(marketId: number): UseUnstake {
           rebasePerEpoch,
           n,
         });
-        console.log("tosValuation", "rebasePerEpoch", "n");
-        console.log(
-          tosValuation.toString(),
-          rebasePerEpoch.toString(),
-          n.toString()
-        );
+        // console.log("tosValuation", "rebasePerEpoch", "n");
+        // console.log(
+        //   tosValuation.toString(),
+        //   rebasePerEpoch.toString(),
+        //   n.toString()
+        // );
         const amountCompound = ethers.BigNumber.from(
           bnAmountCompound.toString()
         );
-        console.log("amountCompound");
-        console.log(amountCompound.toString());
+        // console.log("amountCompound");
+        // console.log(amountCompound.toString());
         const gweiAmountCompound = Math.floor(
           parseFloat(ethers.utils.formatUnits(amountCompound, "wei"))
         );
-        console.log("gweiAmountCompoundWei");
-        console.log(gweiAmountCompound.toString());
-        console.log(ethers.utils.formatUnits(amountCompound, "wei"));
+        // console.log("gweiAmountCompoundWei");
+        // console.log(gweiAmountCompound.toString());
+        // console.log(ethers.utils.formatUnits(amountCompound, "wei"));
         const inputTosAmount = convertNumber({
           amount: ethers.utils.formatUnits(amountCompound, "wei").toString(),
         });
 
-        console.log(inputTosAmount);
-        setInputTosAmount(inputTosAmount);
-
-        return setYouWillGet(ltos);
+        return setInputTosAmount(inputTosAmount);
       }
     }
     fetchBondModalInputData().catch((e) => {
@@ -170,6 +167,49 @@ function useBondModalInputData(marketId: number): UseUnstake {
     BondDepositoryProxy_CONTRACT,
     LockTOS_CONTRACT,
     marketId,
+  ]);
+
+  useEffect(() => {
+    async function fetchLtosData() {
+      if (
+        StakingV2Proxy_CONTRACT &&
+        BondDepositoryProxy_CONTRACT &&
+        inputValue?.bond_modal_balance
+      ) {
+        const ethAmount = inputValue.bond_modal_balance;
+        const ethAmountWei = convertToWei(ethAmount);
+        const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
+          marketId
+        );
+        const tosPrice = bondList.tosPrice;
+        const tosAmount =
+          await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
+            tosPrice,
+            ethAmountWei
+          );
+
+        console.log("gogo");
+        console.log(tosPrice.toString());
+        console.log(ethAmountWei.toString());
+        console.log(tosAmount.toString());
+
+        const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
+          tosAmount
+        );
+        const ltos = convertNumber({ amount: LTOS_BN, localeString: true });
+
+        return setYouWillGet(ltos);
+      }
+    }
+    fetchLtosData().catch((e) => {
+      console.log("**useBondModalInputData3 err**");
+      console.log(e);
+    });
+  }, [
+    StakingV2Proxy_CONTRACT,
+    BondDepositoryProxy_CONTRACT,
+    marketId,
+    inputValue?.bond_modal_balance,
   ]);
 
   useEffect(() => {

@@ -45,6 +45,7 @@ import { Bond_BondModal } from "types/atom";
 import StakeGraph from "../common/modal/StakeGraph";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import BasicTooltip from "common/tooltip";
+import { getNowTimeStamp, getTimeLeft, convertTimeStamp } from "utils/time";
 
 function BottomContent(props: {
   title: string;
@@ -179,11 +180,12 @@ function BondModal() {
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
+  const fiveDaysLater = getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm");
+  const [fiveDaysLockupEndTime, setFiveDaysLockupEndTime] =
+    useState(fiveDaysLater);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
-
-  console.log(propData);
 
   const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
 
@@ -209,11 +211,24 @@ function BondModal() {
     },
     {
       title: "End Time",
-      content: endTime || "-",
+      content: fiveDaysLockup ? fiveDaysLockupEndTime : endTime || "-",
       tooltip: true,
       tooltipMessage: "LTOS can be unstaked after this time. ",
     },
   ];
+
+  useEffect(() => {
+    if (fiveDaysLockup) {
+      setInterval(() => {
+        const fiveDaysLater = getTimeLeft(
+          getNowTimeStamp(),
+          5,
+          "YYYY. MM.DD. HH:mm"
+        );
+        setFiveDaysLockupEndTime(fiveDaysLater);
+      }, 1000);
+    }
+  }, [fiveDaysLockup]);
 
   const callBond = useCallback(() => {
     if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
