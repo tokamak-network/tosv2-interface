@@ -20,7 +20,7 @@ function getTimeLeft(
   daysDiff: number,
   format?: string,
   diffType?: "d" | "w" | "m" | "y"
-) {
+): string {
   const timeLeft = moment
     .unix(timeStamp)
     .add(daysDiff, "d")
@@ -28,4 +28,28 @@ function getTimeLeft(
   return timeLeft;
 }
 
-export { convertTimeStamp, getNowTimeStamp, isTimeOver, getTimeLeft };
+function getDuration(
+  timeStamp: number,
+  format?: string
+): { days: number; hours: number; mins: number } {
+  const min = 60;
+  const hour = 3600;
+  const day = 86400;
+
+  const days = Math.floor(timeStamp / day);
+  const hours = Math.floor((timeStamp - day * days) / hour);
+  const mins = Math.floor((timeStamp - day * days - hour * hours) / min);
+  return {
+    days,
+    hours,
+    mins,
+  };
+}
+
+export {
+  convertTimeStamp,
+  getNowTimeStamp,
+  isTimeOver,
+  getTimeLeft,
+  getDuration,
+};

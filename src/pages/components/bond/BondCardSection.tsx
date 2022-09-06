@@ -38,13 +38,8 @@ function BondCardSection() {
           bondPrice: _tosPrice,
         } = bond;
         const bondPrice = (1 / _tosPrice) * 1e18 * ethPrice;
-        console.log(tosPrice, bondPrice);
-
         const num = Number(convertNumber({ amount: bondPrice.toString() }));
-
         const discount = ((tosPrice - num) / tosPrice) * 100;
-
-        console.log(discount);
 
         return {
           bondCapacity: commafy(capacity),

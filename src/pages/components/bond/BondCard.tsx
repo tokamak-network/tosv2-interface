@@ -1,4 +1,8 @@
-import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import {
+  convertTimeStamp,
+  getDuration,
+  getNowTimeStamp,
+} from "@/components/time";
 import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import BasicButton from "common/button/BasicButton";
@@ -37,13 +41,13 @@ function BondCard(props: { data: BondCardProps }) {
   const { tryActivation } = useWallet();
 
   const timeDiff = data?.endTime - getNowTimeStamp();
-  const splitedTimeDiff = convertTimeStamp(timeDiff, `DD.HH.mm`).split(".");
+  const countDown = getDuration(timeDiff);
 
   const [isOpen, setIsOpen] = useState(timeDiff >= 0);
   const bondIsDisabled = timeDiff < 0;
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
-    : `${splitedTimeDiff[0]} days ${splitedTimeDiff[1]} hours ${splitedTimeDiff[2]} min`;
+    : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
 
   //vierport ref 1134px
   return (
