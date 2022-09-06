@@ -46,6 +46,7 @@ import StakeGraph from "../common/modal/StakeGraph";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import BasicTooltip from "common/tooltip";
 import { getNowTimeStamp, getTimeLeft, convertTimeStamp } from "utils/time";
+import useCustomToast from "hooks/useToast";
 
 function BottomContent(props: {
   title: string;
@@ -188,6 +189,16 @@ function BondModal() {
   const marketId = propData.index;
 
   const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
+  const { toast: successToast } = useCustomToast({
+    status: "success",
+    title: "Success",
+    description: "Tx is successfully pending!",
+  });
+  const { toast: errToast } = useCustomToast({
+    status: "error",
+    title: "Tx fail to send",
+    description: "something went wrong",
+  });
 
   const contentList = [
     {
@@ -230,33 +241,45 @@ function BondModal() {
     }
   }, [fiveDaysLockup]);
 
-  const callBond = useCallback(() => {
-    if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
-      const inputAmount = inputValue.bond_modal_balance;
+  const callBond = useCallback(async () => {
+    try {
+      if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
+        const inputAmount = inputValue.bond_modal_balance;
 
-      if (!fiveDaysLockup && inputValue.bond_modal_period) {
-        console.log("---ETHDepositWithSTOS()---");
-        console.log(
+        if (!fiveDaysLockup && inputValue.bond_modal_period) {
+          console.log("---ETHDepositWithSTOS()---");
+          console.log(
+            marketId,
+            convertToWei(inputAmount),
+            inputValue.bond_modal_period
+          );
+          const tx = BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
+            marketId,
+            convertToWei(inputAmount),
+            inputValue.bond_modal_period,
+            { value: convertToWei(inputAmount) }
+          );
+          if (tx) {
+            const receipt = await tx.wait();
+            console.log(receipt);
+            return successToast();
+          } else {
+            return errToast();
+          }
+        }
+        console.log("---ETHDeposit()---");
+        console.log(marketId, convertToWei(inputAmount), {
+          value: convertToWei(inputAmount),
+        });
+        return await BondDepositoryProxy_CONTRACT.ETHDeposit(
           marketId,
           convertToWei(inputAmount),
-          inputValue.bond_modal_period
-        );
-        return BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
-          marketId,
-          convertToWei(inputAmount),
-          inputValue.bond_modal_period,
           { value: convertToWei(inputAmount) }
         );
       }
-      console.log("---ETHDeposit()---");
-      console.log(marketId, convertToWei(inputAmount), {
-        value: convertToWei(inputAmount),
-      });
-      return BondDepositoryProxy_CONTRACT.ETHDeposit(
-        marketId,
-        convertToWei(inputAmount),
-        { value: convertToWei(inputAmount) }
-      );
+    } catch (e) {
+      console.log(e);
+      return errToast();
     }
   }, [inputValue, BondDepositoryProxy_CONTRACT, marketId, fiveDaysLockup]);
 
