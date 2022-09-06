@@ -183,6 +183,8 @@ function BondModal() {
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
 
+  console.log(propData);
+
   const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
 
   const contentList = [
@@ -299,7 +301,7 @@ function BondModal() {
                     <GridItem>
                       <Tile
                         title={"Bond Price"}
-                        content={`${bondModalData?.bondPrice}`}
+                        content={`${propData?.bondingPrice}`}
                         tooltip={"Bonding price for 1 TOS in USD."}
                       />
                     </GridItem>
@@ -313,7 +315,7 @@ function BondModal() {
                     <GridItem>
                       <Tile
                         title={"Discount"}
-                        content={`${bondModalData?.discount}`}
+                        content={`${propData?.discountRate}`}
                         tooltip={"Discount for bonding."}
                       />
                     </GridItem>
