@@ -50,7 +50,10 @@ function GraphContainer() {
     },
   ];
   return (
-    <Flex w={"100%"} justifyContent="space-between" mt="24px">
+    <Flex w={"100%"}  columnGap={"1.5%"}
+    rowGap={"24px"}
+    flexWrap={"wrap"}
+    justifyContent="center" mt="24px">
       <Graph
         data={data}
         title="Total sTOS"

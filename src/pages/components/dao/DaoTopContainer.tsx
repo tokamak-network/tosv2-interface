@@ -5,6 +5,8 @@ import {
   useTheme,
   Link,
   Button,
+  useMediaQuery
+  
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -17,6 +19,7 @@ function DaoTopContainer() {
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
   const theme = useTheme();
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const sendToStake = () => {
     router.push("/stake");
   };
@@ -25,7 +28,7 @@ function DaoTopContainer() {
     <Flex
       display={isOpen ? "Flex" : "none"}
       w={"100%"}
-      mb="60px"
+      mb={smallerThan1024?'30px' :"60px"}
       flexDir={"column"}
       justifyContent={"center"}
       alignItems="center"
@@ -45,7 +48,7 @@ function DaoTopContainer() {
         color={colorMode === "dark" ? "gray.100" : "gray.1000"}
         textAlign="center"
         fontSize={"14px"}
-        mb="40px"
+        mb={smallerThan1024?'30px' :"40px"}
         lineHeight={1.71}
         letterSpacing="0.35px"
         fontWeight={"normal"}
@@ -67,7 +70,7 @@ function DaoTopContainer() {
         color={colorMode === "light" ? "gray.800" : "white.200"}
         letterSpacing="0.55px"
         fontWeight="bold"
-        mt="60px"
+        mt={smallerThan1024? '45px':"60px"}
       >
         Governance
       </Text>

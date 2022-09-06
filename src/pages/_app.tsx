@@ -27,12 +27,16 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ColorModeScript initialColorMode={theme.initialColorMode} />
         <ChakraProvider resetCSS theme={theme}>
           <RecoilRoot>
-            <Flex minH={"100vh"} w={"100%"} px={["12px", "24px", "0px"]}>
+            <Flex minH={"100vh"} w={"100%"} >
               <NavBar></NavBar>
               {/* PC VIEW = 1136px */}
               {/* TABLET VIEW = 1040px */}
               {/* MOBILE VIEW = 360px */}
-              <Flex justifyContent="center" w={"100%"} alignItems="center">
+              <Flex flexDir={'column'} w={"100%"} >
+              <Header
+                    walletopen={() => handleWalletModalOpen("wallet")}
+                  ></Header>
+              <Flex justifyContent="center" w={"100%"} alignItems="center" px={["12px", "24px", "0px"]}>
                 <Flex
                   maxW={["100%", "100%", "1136px"]}
                   flexDir={"column"}
@@ -40,14 +44,14 @@ function MyApp({ Component, pageProps }: AppProps) {
                   w={"100%"}
                   minH={"100vh"}
                 >
-                  <Header
-                    walletopen={() => handleWalletModalOpen("wallet")}
-                  ></Header>
+                 
                   <Component {...pageProps} />
                   <Footer></Footer>
                   <WalletModal isOpen={isModalOpen} onClose={onClose} />
                 </Flex>
               </Flex>
+              </Flex>
+             
             </Flex>
           </RecoilRoot>
         </ChakraProvider>

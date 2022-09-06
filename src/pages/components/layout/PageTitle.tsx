@@ -72,7 +72,7 @@ const PageTitle = () => {
               <Text mx={"7px"}>{">"}</Text>
               <Text color={"blue.200"}>{pathName}</Text>
             </Flex>
-            <Flex>
+          { pathName !== 'DAO' && (<Flex>
               <Image
                 src={
                   colorMode === "dark"
@@ -89,7 +89,7 @@ const PageTitle = () => {
                 {convertTimeStamp(getNowTimeStamp(), "YYYY.MM.DD HH:mm")}{" "}
                 (UTC+9)
               </Text>
-            </Flex>
+            </Flex>)}
           </Flex>
         );
     }

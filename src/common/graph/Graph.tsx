@@ -1,6 +1,6 @@
 import { selector, useRecoilValue } from "recoil";
 import { filterState } from "atom//dashboard";
-import { Flex, Text, Tooltip, useColorMode } from "@chakra-ui/react";
+import { Flex, Text, Tooltip, useColorMode ,useMediaQuery} from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import question from "assets/icons/question.svg";
 import Image from "next/image";
@@ -35,11 +35,14 @@ function Graph(props: {
   };
 
   const selectedFilter = useRecoilValue(selectedFilterState);
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
   return (
     <Flex
       w={"100%"}
       minWidth={"336px"}
-      maxWidth={"556px"}
+      // maxWidth={smallerThan1024? "556px":'476px'}
+      maxWidth={'556px'}
       h={"350px"}
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       borderRadius={14}

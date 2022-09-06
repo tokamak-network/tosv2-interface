@@ -30,7 +30,7 @@ function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
 
   return (
-    <Flex cursor={"pointer"} onClick={() => setIsOpen(true)}>
+    <Flex cursor={"pointer"} onClick={() => setIsOpen(true)} ml={'12px'}>
       <Image src={BUGER_ICON} alt={"burger_icon"}></Image>
     </Flex>
   );
@@ -62,7 +62,7 @@ function Header(props:HeaderProps) {
     <Flex
       w={"100%"}
       justifyContent={["space-between", "space-between", "end"]}
-      pr={[0, "11px", "35px"]}
+      pr={['10px', "11px", "35px"]}
       pt={"24px"}
       h={"96px"}
       borderBottom={colorMode === "light" ? "1px solid #e8edf2" : ""}
