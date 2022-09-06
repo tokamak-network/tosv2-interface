@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+    <path style="fill:none" d="M0 0h24v24H0z"/>
+    <path data-name="선 48" transform="translate(15.811 13.936)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" d="M4.95 4.95 0 0"/>
+    <path data-name="패스 1017" d="m13.81 11.935-3.54 3.54a2 2 0 0 1-2.83 0l-4.24-4.24a2 2 0 0 1 0-2.83l7.07-7.07a2 2 0 0 1 2.83 0l4.24 4.24a2 2 0 0 1 0 2.83z" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" transform="translate(2 2)"/>
+    <path data-name="선 49" transform="translate(2.75 21.375)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" d="M0 0h6"/>
+    <path data-name="선 50" transform="translate(7.311 8.295)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" d="m0 0 7.07 7.07"/>
+</svg>
