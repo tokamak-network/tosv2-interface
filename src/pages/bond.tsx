@@ -7,6 +7,7 @@ import PageLayout from "pages/components/layout/PageLayout";
 import { BondTopCardProps } from "types/bond";
 import BondTip from "pages/components/bond/BondTip";
 import TopCardContainer from "./components/common/card/TopCardContainer";
+
 const Bond = () => {
   const theme = useTheme();
   const { colorMode } = useColorMode();

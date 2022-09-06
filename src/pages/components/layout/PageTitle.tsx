@@ -11,6 +11,22 @@ import { useWindowDimensions } from "hooks/useWindowDimensions";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 
+const UpdatedOn = () => {
+  const { colorMode } = useColorMode();
+  return (
+    <Flex>
+      <Image
+        src={colorMode === "dark" ? CALENDAR_ICON_DARK : CALENDAR_ICON_LIGHT}
+        alt={"CALENDAR_ICON"}
+      ></Image>
+      <Text color={colorMode === "light" ? "#7e7e8f" : "#8b8b93"} ml={"7px"}>
+        Updated on {convertTimeStamp(getNowTimeStamp(), "YYYY.MM.DD HH:mm")}{" "}
+        (UTC+9)
+      </Text>
+    </Flex>
+  );
+};
+
 const PageTitle = () => {
   const { pathName } = usePathName();
   const [width] = useWindowDimensions();
@@ -39,22 +55,7 @@ const PageTitle = () => {
               <Text mx={"7px"}>{">"}</Text>
               <Text color={"blue.200"}>Bondlist</Text>
             </Flex>
-            <Flex>
-              <Image
-                src={
-                  colorMode === "dark"
-                    ? CALENDAR_ICON_DARK
-                    : CALENDAR_ICON_LIGHT
-                }
-                alt={"CALENDAR_ICON"}
-              ></Image>
-              <Text
-                color={colorMode === "light" ? "#7e7e8f" : "#8b8b93"}
-                ml={"7px"}
-              >
-                Updated on 2022.06.01 20:00 (UTC+9)
-              </Text>
-            </Flex>
+            <UpdatedOn></UpdatedOn>
           </Flex>
         );
       default:
@@ -72,24 +73,7 @@ const PageTitle = () => {
               <Text mx={"7px"}>{">"}</Text>
               <Text color={"blue.200"}>{pathName}</Text>
             </Flex>
-            <Flex>
-              <Image
-                src={
-                  colorMode === "dark"
-                    ? CALENDAR_ICON_DARK
-                    : CALENDAR_ICON_LIGHT
-                }
-                alt={"CALENDAR_ICON"}
-              ></Image>
-              <Text
-                color={colorMode === "light" ? "#7e7e8f" : "#8b8b93"}
-                ml={"7px"}
-              >
-                Updated on{" "}
-                {convertTimeStamp(getNowTimeStamp(), "YYYY.MM.DD HH:mm")}{" "}
-                (UTC+9)
-              </Text>
-            </Flex>
+            <UpdatedOn></UpdatedOn>
           </Flex>
         );
     }
