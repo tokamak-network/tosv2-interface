@@ -103,7 +103,7 @@ function BottomContent(props: {
           </Flex>
         );
     }
-  }, [title, content, colorMode]);
+  }, [title, content, colorMode, secondTooltip]);
 
   return (
     <Flex>
@@ -144,6 +144,8 @@ function StakeModal() {
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+
   const { maxWeeks } = useStosReward();
 
   const propData = selectedModalData as BondCardProps;
@@ -270,6 +272,17 @@ function StakeModal() {
       return setIsAllowance(false);
     }
   }, [tosAllowance, inputValue.stake_modal_balance, isApproving]);
+
+  useEffect(() => {
+    if (
+      inputValue.stake_modal_balance === undefined ||
+      inputValue.stake_modal_balance === "" ||
+      inputValue.stake_modal_period === undefined
+    ) {
+      return setBtnDisabled(true);
+    }
+    return setBtnDisabled(false);
+  }, [inputValue, fiveDaysLockup]);
 
   function closeThisModal() {}
 
@@ -407,6 +420,7 @@ function StakeModal() {
                   h={42}
                   name="Stake"
                   onClick={callStake}
+                  isDisabled={btnDisabled}
                 ></SubmitButton>
               ) : (
                 <SubmitButton
@@ -414,6 +428,7 @@ function StakeModal() {
                   h={42}
                   name="Approve"
                   onClick={callApprove}
+                  isDisabled={btnDisabled}
                   isLoading={isApproving}
                 ></SubmitButton>
               )}
