@@ -1,5 +1,11 @@
 import { useToast } from "@chakra-ui/react";
-import toastConfig from "constants/toast";
+import { selectedTxState } from "atom/global/tx";
+import {
+  successContainerStyle,
+  errorContainerStyle,
+  toastConfig,
+} from "constants/toast";
+import { useRecoilState } from "recoil";
 
 type ToastPayload = {
   status: "success" | "error";
@@ -9,36 +15,43 @@ type ToastPayload = {
   isClosable?: boolean;
 };
 
-function useCustomToast(props: ToastPayload) {
+function useCustomToast(props?: ToastPayload) {
   const toast = useToast();
+  const [txPending, setTxPending] = useRecoilState(selectedTxState);
 
-  // \function setTx<T>(contract: Promise<T>) {
-  //   try {
-  //     const receipt = await contract;
-
-  //   } catch (err) {
-  //     store.dispatch(setTxPending({ tx: false }));
-  //     store.dispatch(
-  //       //@ts-ignore
-  //       openToast({
-  //         payload: {
-  //           status: "error",
-  //           title: "Tx fail to send",
-  //           description: `something went wrong`,
-  //           duration: 5000,
-  //           isClosable: true,
-  //         },
-  //       })
-  //     );
-  //   }
-  // }
+  async function setTx<T>(contract: Promise<T>) {
+    try {
+      const receipt = await contract;
+      setTxPending(true);
+      if (receipt) {
+        setTxPending(false);
+        return toast({
+          status: "success",
+          title: "Tx fail to send",
+          description: `something went wrong`,
+          ...successContainerStyle,
+          ...toastConfig,
+        });
+      }
+    } catch (err) {
+      setTxPending(false);
+      return toast({
+        status: "error",
+        title: "Tx fail to send",
+        description: `something went wrong`,
+        ...errorContainerStyle,
+        ...toastConfig,
+      });
+    }
+  }
 
   return {
-    toast: () =>
+    sendToast: () =>
       toast({
         ...toastConfig,
         ...props,
       }),
+    setTx,
   };
 }
 

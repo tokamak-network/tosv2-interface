@@ -92,7 +92,7 @@ function BottomContent(props: {
           </Text>
         );
     }
-  }, [title, content, colorMode]);
+  }, [title, content, colorMode, secondTooltip]);
 
   return (
     <Flex>
@@ -189,16 +189,8 @@ function BondModal() {
   const marketId = propData.index;
 
   const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
-  const { toast: successToast } = useCustomToast({
-    status: "success",
-    title: "Success",
-    description: "Tx is successfully pending!",
-  });
-  const { toast: errToast } = useCustomToast({
-    status: "error",
-    title: "Tx fail to send",
-    description: "something went wrong",
-  });
+
+  const { setTx } = useCustomToast();
 
   const contentList = [
     {
@@ -253,35 +245,39 @@ function BondModal() {
             convertToWei(inputAmount),
             inputValue.bond_modal_period
           );
-          const tx = BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
+          const tx = await BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
             marketId,
             convertToWei(inputAmount),
             inputValue.bond_modal_period,
             { value: convertToWei(inputAmount) }
           );
-          if (tx) {
-            const receipt = await tx.wait();
-            console.log(receipt);
-            return successToast();
-          } else {
-            return errToast();
-          }
+          setTx(tx);
+          return closeModal();
         }
         console.log("---ETHDeposit()---");
         console.log(marketId, convertToWei(inputAmount), {
           value: convertToWei(inputAmount),
         });
-        return await BondDepositoryProxy_CONTRACT.ETHDeposit(
+        const tx = await BondDepositoryProxy_CONTRACT.ETHDeposit(
           marketId,
           convertToWei(inputAmount),
           { value: convertToWei(inputAmount) }
         );
+        setTx(tx);
+        return closeModal();
       }
     } catch (e) {
       console.log(e);
-      return errToast();
+      // return errToast();
     }
-  }, [inputValue, BondDepositoryProxy_CONTRACT, marketId, fiveDaysLockup]);
+  }, [
+    inputValue,
+    BondDepositoryProxy_CONTRACT,
+    marketId,
+    fiveDaysLockup,
+    setTx,
+    closeModal,
+  ]);
 
   function closeThisModal() {
     setResetValue();
