@@ -27,8 +27,8 @@ function useCustomToast(props?: ToastPayload) {
         setTxPending(false);
         return toast({
           status: "success",
-          title: "Tx fail to send",
-          description: `something went wrong`,
+          title: "Success",
+          description: `Tx is successfully pending!`,
           ...successContainerStyle,
           ...toastConfig,
         });

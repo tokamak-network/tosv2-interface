@@ -41,6 +41,7 @@ import useStakeModaldata from "hooks/stake/useStakeModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
 import BasicTooltip from "common/tooltip/index";
+import useCustomToast from "hooks/useToast";
 
 function BottomContent(props: {
   title: string;
@@ -142,10 +143,13 @@ function StakeModal() {
   const { stakeList, tosAllowance } = useUser();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
+  const [isApproving, setIsApproving] = useState<boolean>(false);
   const { maxWeeks } = useStosReward();
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData.index;
+
+  const { setTx } = useCustomToast();
 
   const contentList = fiveDaysLockup
     ? [
@@ -237,11 +241,23 @@ function StakeModal() {
   ]);
 
   const callApprove = useCallback(async () => {
-    if (TOS_CONTRACT) {
-      const totalSupply = await TOS_CONTRACT.totalSupply();
-      return TOS_CONTRACT.approve(StakingV2Proxy, totalSupply);
+    try {
+      if (TOS_CONTRACT) {
+        setIsApproving(true);
+        const totalSupply = await TOS_CONTRACT.totalSupply();
+        const tx = await TOS_CONTRACT.approve(StakingV2Proxy, totalSupply);
+
+        setTx(tx);
+
+        if (tx) {
+          await tx.wait();
+          setIsApproving(false);
+        }
+      }
+    } catch (e) {
+      setIsApproving(false);
     }
-  }, [TOS_CONTRACT, StakingV2Proxy]);
+  }, [TOS_CONTRACT, StakingV2Proxy, setTx]);
 
   useEffect(() => {
     if (tosAllowance) {
@@ -253,7 +269,9 @@ function StakeModal() {
       }
       return setIsAllowance(false);
     }
-  }, [tosAllowance, inputValue.stake_modal_balance]);
+  }, [tosAllowance, inputValue.stake_modal_balance, isApproving]);
+
+  function closeThisModal() {}
 
   return (
     <Modal
@@ -396,6 +414,7 @@ function StakeModal() {
                   h={42}
                   name="Approve"
                   onClick={callApprove}
+                  isLoading={isApproving}
                 ></SubmitButton>
               )}
             </Flex>
