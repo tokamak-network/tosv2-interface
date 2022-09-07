@@ -139,11 +139,11 @@ function MobileStatisticContainer(props: { title: string; data: any }) {
       borderRadius={14}
       borderWidth={1}
       flexDir="column"
-      alignItems={"center"}
-      py={"30px"}
+      alignItems={'center'}
+      py={'30px'}
       borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
     >
-      <Text
+       <Text
         fontSize={"22px"}
         fontWeight="bold"
         letterSpacing={"0.55px"}
@@ -154,40 +154,36 @@ function MobileStatisticContainer(props: { title: string; data: any }) {
       </Text>
       {data.map((stat: any, index: number) => {
         return (
-          <Flex
-            flexDir={"column"}
-            alignItems="center"
-            key={`${index}_${stat.title}`}
-          >
-            <Text
-              fontSize={"14px"}
-              fontWeight={600}
-              letterSpacing={"0.14px"}
-              color={"blue.200"}
-              mb={"6px"}
-            >
-              {stat.title}
-            </Text>
-            <Text
-              fontSize={"21px"}
-              fontWeight={600}
-              mb="24px"
-              letterSpacing={"normal"}
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-            >
-              {stat.value}{" "}
-              <span style={{ fontSize: "14px" }}>{stat.symbol}</span>
-            </Text>
-          </Flex>
-        );
+            <Flex flexDir={'column'} alignItems='center' key={index}>
+              <Text
+                fontSize={"14px"}
+                fontWeight={600}
+                letterSpacing={"0.14px"}
+                color={"blue.200"}
+                mb={"6px"}
+              >
+                {stat.title}
+              </Text>
+              <Text
+                fontSize={"21px"}
+                fontWeight={600}
+                mb='24px'
+                letterSpacing={"normal"}
+                color={colorMode === "dark" ? "white.200" : "gray.800"}
+              >
+                {stat.value}{" "}
+                <span style={{ fontSize: "14px" }}>{stat.symbol}</span>
+              </Text>
+            </Flex>
+        )
       })}
     </Flex>
   );
 }
 
 function MobileUtilityContainer(props: { title: string; data: any }) {
-  const { colorMode } = useColorMode();
-  const { title, data } = props;
+    const { colorMode } = useColorMode();
+    const { title, data } = props;
   return (
     <Flex
       w={"100%"}
@@ -198,11 +194,11 @@ function MobileUtilityContainer(props: { title: string; data: any }) {
       borderRadius={14}
       borderWidth={1}
       flexDir="column"
-      alignItems={"center"}
-      py={"30px"}
+      alignItems={'center'}
+      py={'30px'}
       borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
     >
-      <Text
+       <Text
         fontSize={"22px"}
         fontWeight="bold"
         letterSpacing={"0.55px"}
@@ -213,33 +209,29 @@ function MobileUtilityContainer(props: { title: string; data: any }) {
       </Text>
       {data.map((stat: any, index: number) => {
         return (
-          <Flex
-            flexDir={"column"}
-            alignItems="center"
-            key={`${index}_${stat.title}`}
-          >
-            <Text
-              fontSize={"14px"}
-              fontWeight={600}
-              letterSpacing={"0.14px"}
-              color={"blue.200"}
-              mb={"6px"}
-            >
-              {stat.title}
-            </Text>
-            <Text
-              w="204px"
-              fontSize={"14px"}
-              fontWeight={"normal"}
-              letterSpacing={"0.35px"}
-              mb="24px"
-              color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-              textAlign="center"
-            >
-              {stat.value}
-            </Text>
-          </Flex>
-        );
+            <Flex flexDir={'column'} alignItems='center' key={index}>
+             <Text
+                fontSize={"14px"}
+                fontWeight={600}
+                letterSpacing={"0.14px"}
+                color={"blue.200"}
+                mb={"6px"}
+              >
+                {stat.title}
+              </Text>
+              <Text
+                w="204px"
+                fontSize={"14px"}
+                fontWeight={"normal"}
+                letterSpacing={"0.35px"}
+                mb='24px'
+                color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+                textAlign="center"
+              >
+                {stat.value}
+              </Text>
+            </Flex>
+        )
       })}
     </Flex>
   );
@@ -285,7 +277,7 @@ function StatisticContainer() {
   return (
     <Flex>
       {smallerThan1024 ? (
-        <Flex flexDir={"column"} w={"100%"} alignItems="center" rowGap={"18px"}>
+        <Flex flexDir={"column"} w={"100%"} alignItems="center" rowGap={'18px'}>
           <MobileStatisticContainer title="DAO statistics" data={statistics} />
           <MobileUtilityContainer title="sTOS Utility" data={utilities} />
         </Flex>

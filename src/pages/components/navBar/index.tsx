@@ -26,7 +26,7 @@ import DAO_GRAY_ICON from "assets/icons/DAO-gray.svg";
 import BOND_LIGHT_HOVER from "assets/icons/bond-LightHover.svg";
 import STAKE_LIGHT_HOVER from "assets/icons/stake-LightHover.svg";
 import DASHBOARD_LIGHT_HOVER from "assets/icons/dashboard-LightHover.svg";
-import DAO_LIGHT_HOVER from "assets/icons/dao-LightHover.svg";
+import DAO_LIGHT_HOVER from "assets/icons/DAO-LightHover.svg";
 
 import MEDIUM_ICON from "assets/icons/medium.svg";
 import TWITTER_ICON from "assets/icons/twitter.svg";
