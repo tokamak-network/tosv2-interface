@@ -94,8 +94,8 @@ function useMyHistory() {
                   content: `${convertedLtos} LTOS / ${
                     hasPeriodWeeks
                       ? convertNumber({ amount: tosBalance.toString() })
-                      : "0"
-                  } TOS`,
+                      : "-"
+                  } sTOS`,
                 },
                 {
                   title: "Bond Price",

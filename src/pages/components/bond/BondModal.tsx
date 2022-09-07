@@ -220,6 +220,12 @@ function BondModal() {
     },
   ];
 
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    setFiveDaysLockup(false);
+    closeModal();
+  }, [closeModal, setResetValue]);
+
   useEffect(() => {
     if (fiveDaysLockup) {
       setInterval(() => {
@@ -252,7 +258,7 @@ function BondModal() {
             { value: convertToWei(inputAmount) }
           );
           setTx(tx);
-          return closeModal();
+          return closeThisModal();
         }
         console.log("---ETHDeposit()---");
         console.log(marketId, convertToWei(inputAmount), {
@@ -264,7 +270,7 @@ function BondModal() {
           { value: convertToWei(inputAmount) }
         );
         setTx(tx);
-        return closeModal();
+        return closeThisModal();
       }
     } catch (e) {
       console.log(e);
@@ -276,13 +282,8 @@ function BondModal() {
     marketId,
     fiveDaysLockup,
     setTx,
-    closeModal,
+    closeThisModal,
   ]);
-
-  function closeThisModal() {
-    setResetValue();
-    closeModal();
-  }
 
   return (
     <Modal
