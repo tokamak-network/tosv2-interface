@@ -20,6 +20,7 @@ function useInput(key: PageKey, subKey: InputKey) {
         inputValue,
         value,
         setValue,
+        setResetValue: resetValue,
       };
     case "Bond_screen":
       return {

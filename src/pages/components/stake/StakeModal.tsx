@@ -135,7 +135,7 @@ function StakeModal() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
-  const { inputValue } = useInput("Stake_screen", "stake_modal");
+  const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
   const { stakeModalInputData, stosReward } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
@@ -212,7 +212,13 @@ function StakeModal() {
         },
       ];
 
-  const callStake = useCallback(() => {
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    setFiveDaysLockup(false);
+    closeModal();
+  }, [setResetValue, closeModal]);
+
+  const callStake = useCallback(async () => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
     if (StakingV2Proxy_CONTRACT) {
@@ -220,9 +226,11 @@ function StakeModal() {
         console.log("---stake()---");
         console.log(inputValue.stake_modal_balance);
 
-        return StakingV2Proxy_CONTRACT.stake(
+        const tx = await StakingV2Proxy_CONTRACT.stake(
           convertToWei(inputValue.stake_modal_balance)
         );
+        setTx(tx);
+        return closeThisModal();
       }
       console.log("---stakeGetStos()---");
       console.log(
@@ -230,16 +238,20 @@ function StakeModal() {
         inputValue.stake_modal_period
       );
 
-      return StakingV2Proxy_CONTRACT.stakeGetStos(
+      const tx = await StakingV2Proxy_CONTRACT.stakeGetStos(
         convertToWei(inputValue.stake_modal_balance),
         inputValue.stake_modal_period
       );
+      setTx(tx);
+      return closeThisModal();
     }
   }, [
     inputValue.stake_modal_balance,
     inputValue.stake_modal_period,
     StakingV2Proxy_CONTRACT,
     fiveDaysLockup,
+    closeThisModal,
+    setTx,
   ]);
 
   const callApprove = useCallback(async () => {
@@ -284,13 +296,11 @@ function StakeModal() {
     return setBtnDisabled(false);
   }, [inputValue, fiveDaysLockup]);
 
-  function closeThisModal() {}
-
   return (
     <Modal
       isOpen={selectedModal === "stake_stake_modal"}
       isCentered
-      onClose={closeModal}
+      onClose={closeThisModal}
     >
       <ModalOverlay />
       <ModalContent
@@ -316,7 +326,7 @@ function StakeModal() {
                   pos={"absolute"}
                   right={"1.56em"}
                   cursor={"pointer"}
-                  onClick={() => closeModal()}
+                  onClick={() => closeThisModal()}
                 >
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
                 </Flex>
