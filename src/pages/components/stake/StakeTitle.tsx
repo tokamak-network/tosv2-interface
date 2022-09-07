@@ -53,6 +53,7 @@ function StakeTitle() {
           }
           onClick={openModal}
           iconName={"Plus"}
+          iconLocation={'left'}
         ></SubmitButton>
       </Flex>
     </Flex>

@@ -1,5 +1,5 @@
 import { Flex, SimpleGrid } from "@chakra-ui/react";
-import Graph from "./Graph";
+import Graph from "common/graph/Graph";
 import GraphFilter from "./GraphFilter";
 import { useQuery } from "@apollo/client";
 import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";

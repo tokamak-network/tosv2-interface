@@ -7,8 +7,8 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import PlusIcon from "assets/icons/Plus.png";
-
-type IconTypes = "Plus" | undefined;
+import ResourcesIcon from "assets/icons/resources_icon@3x.png";
+type IconTypes = "Plus" | "ResourcesIcon" | undefined;
 
 type SubmitButtonProp = {
   name: string;
@@ -19,6 +19,7 @@ type SubmitButtonProp = {
   style?: {};
   onClick?: Function;
   iconName?: IconTypes;
+  iconLocation?: string;
 };
 
 const getIcon = (iconName: IconTypes) => {
@@ -31,13 +32,32 @@ const getIcon = (iconName: IconTypes) => {
           style={{ overflow: "visible" }}
         ></Image>
       );
+
+    case "ResourcesIcon":
+      return (
+        <Image
+          src={ResourcesIcon}
+          alt={"ResourcesIcon"}
+          style={{ overflow: "visible" }}
+        />
+      );
     default:
       return null;
   }
 };
 
 const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
-  const { name, w, h, isDisabled, isLoading, style, onClick, iconName } = props;
+  const {
+    name,
+    w,
+    h,
+    isDisabled,
+    isLoading,
+    style,
+    onClick,
+    iconName,
+    iconLocation,
+  } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const icon = getIcon(iconName);
@@ -56,8 +76,11 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       onClick={() => onClick && onClick()}
       {...style}
     >
-      {icon}
-      <Text ml={icon ? "8px" : "0px"}>{name}</Text>
+      {iconLocation === "left" && getIcon(iconName)}
+      <Text ml={icon ? "8px" : "0px"} mr={icon ? "23px" : "0px"}>
+        {name}
+      </Text>
+      {iconLocation === "right" && getIcon(iconName)}
     </Button>
   );
 };
