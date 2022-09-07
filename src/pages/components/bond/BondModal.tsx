@@ -46,7 +46,7 @@ import StakeGraph from "../common/modal/StakeGraph";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import BasicTooltip from "common/tooltip";
 import { getNowTimeStamp, getTimeLeft, convertTimeStamp } from "utils/time";
-import useCustomToast from "hooks/useToast";
+import useCustomToast from "hooks/useCustomToast";
 
 function BottomContent(props: {
   title: string;

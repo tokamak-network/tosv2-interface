@@ -30,6 +30,8 @@ function useUser(): UseUser {
         const allowance = await TOS_CONTRACT.allowance(account, StakingV2Proxy);
         const stakeList = await StakingV2Proxy_CONTRACT.stakingOf(account);
 
+        console.log(stakeList[1].toString());
+
         return setUserData({
           tosAllowance: Number(convertNumber({ amount: allowance.toString() })),
           stakeList,

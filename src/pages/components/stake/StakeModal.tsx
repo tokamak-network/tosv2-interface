@@ -41,7 +41,7 @@ import useStakeModaldata from "hooks/stake/useStakeModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
 import BasicTooltip from "common/tooltip/index";
-import useCustomToast from "hooks/useToast";
+import useCustomToast from "hooks/useCustomToast";
 
 function BottomContent(props: {
   title: string;

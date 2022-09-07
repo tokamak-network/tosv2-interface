@@ -37,6 +37,8 @@ import { convertToWei } from "@/components/number";
 import useUnstake from "hooks/stake/useUnstakeModalData";
 import commafy from "@/components/commafy";
 import useInput from "hooks/useInput";
+import useUser from "hooks/useUser";
+import useCustomToast from "hooks/useCustomToast";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -66,11 +68,16 @@ function UnstakeModal() {
   const [hasInput, setHasInput] = useState<boolean>(false);
   const { stakeV2 } = useStakeV2();
   const { userLTOSBalance } = useUserBalance();
-  const { inputValue } = useInput("Stake_screen", "unstake_modal");
+  const { inputValue, setResetValue } = useInput(
+    "Stake_screen",
+    "unstake_modal"
+  );
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { unstakeData, youWillGet, youWillGetMax } = useUnstake(
     selectedModalData.stakedId
   );
+  const { simpleStakingId } = useUser();
+  const { setTx } = useCustomToast();
 
   const contentList = [
     {
@@ -87,24 +94,43 @@ function UnstakeModal() {
     },
   ];
 
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    closeModal();
+  }, [setResetValue, closeModal]);
+
   const callUnstake = useCallback(async () => {
     if (StakingV2Proxy_CONTRACT) {
-      if (hasInput) {
-        const amount = convertToWei(inputValue.stake_unstakeModal_balance);
-        const tosAmount = StakingV2Proxy_CONTRACT.getLtosToTos(amount);
+      if (hasInput && simpleStakingId) {
+        const ltosAmount = convertToWei(inputValue.stake_unstakeModal_balance);
         //claimForSimpleType(uint256 _stakeId, uint256 _claimAmount)
-        return StakingV2Proxy_CONTRACT.claimForSimpleType(
-          selectedModalData.stakedId,
-          tosAmount
+        console.log(
+          "--claimForSimpleType(uint256 _stakeId, uint256 _claimAmount)--"
         );
+        console.log(simpleStakingId, ltosAmount);
+        const tx = await StakingV2Proxy_CONTRACT.claimForSimpleType(
+          simpleStakingId,
+          ltosAmount
+        );
+        setTx(tx);
+        return closeThisModal();
       }
-      return StakingV2Proxy_CONTRACT.unstake(selectedModalData.stakedId);
+      console.log("--unstake(uint256 _stakeId)--");
+      console.log(selectedModalData.stakedId);
+      const tx = await StakingV2Proxy_CONTRACT.unstake(
+        selectedModalData.stakedId
+      );
+      setTx(tx);
+      return closeThisModal();
     }
   }, [
     hasInput,
     StakingV2Proxy_CONTRACT,
     inputValue.stake_unstakeModal_balance,
     selectedModalData,
+    simpleStakingId,
+    closeThisModal,
+    setTx,
   ]);
 
   useEffect(() => {
@@ -118,7 +144,7 @@ function UnstakeModal() {
     <Modal
       isOpen={selectedModal === "stake_unstake_modal"}
       isCentered
-      onClose={closeModal}
+      onClose={closeThisModal}
     >
       <ModalOverlay />
       <ModalContent
@@ -144,7 +170,7 @@ function UnstakeModal() {
                   pos={"absolute"}
                   right={"1.56em"}
                   cursor={"pointer"}
-                  onClick={() => closeModal()}
+                  onClick={() => closeThisModal()}
                 >
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
                 </Flex>
@@ -153,46 +179,46 @@ function UnstakeModal() {
             {/* Content Area*/}
             <Flex w={"100%"} flexDir={"column"} mb={"30px"}>
               {/* {hasInput && ( */}
-                <Flex w={"100%"} flexDir={"column"} px={"120px"} mb={"30px"}>
-                  <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                    <Tile
-                      title={"Next Rebase"}
-                      content={stakeV2?.nextRebase}
-                      tooltip="Time left until LTOS index is increased."
-                    />
-                    <Tile
-                      title={"LTOS Index"}
-                      content={stakeV2?.ltosIndex}
-                      symbol={"TOS"}
-                      tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
-
-                    />
-                  </Flex>
-                  {hasInput && (
-                    <Flex flexDir={'column'}>
-                  <Flex mb={"9px"}>
-                    <BalanceInput
-                      w={"100%"}
-                      h={45}
-                      pageKey={"Stake_screen"}
-                      recoilKey={"unstake_modal"}
-                      placeHolder={"Enter an amount of LTOS"}
-                      atomKey={"stake_unstakeModal_balance"}
-                    ></BalanceInput>
-                  </Flex>
-                  <Flex
-                    fontSize={12}
-                    color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                    h={"17px"}
-                    justifyContent={"space-between"}
-                    px={"6px"}
-                  >
-                    <Text>Your Balance</Text>
-                    <Text>{unstakeData?.maxValue || "0"} LTOS</Text>
-                  </Flex>
-                  </Flex>
-                  )}
+              <Flex w={"100%"} flexDir={"column"} px={"120px"} mb={"30px"}>
+                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
+                  <Tile
+                    title={"Next Rebase"}
+                    content={stakeV2?.nextRebase}
+                    tooltip="Time left until LTOS index is increased."
+                  />
+                  <Tile
+                    title={"LTOS Index"}
+                    content={stakeV2?.ltosIndex}
+                    symbol={"TOS"}
+                    tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                  />
                 </Flex>
+                {hasInput && (
+                  <Flex flexDir={"column"}>
+                    <Flex mb={"9px"}>
+                      <BalanceInput
+                        w={"100%"}
+                        h={45}
+                        pageKey={"Stake_screen"}
+                        recoilKey={"unstake_modal"}
+                        placeHolder={"Enter an amount of LTOS"}
+                        atomKey={"stake_unstakeModal_balance"}
+                        maxValue={Number(unstakeData?.maxValue) || 0}
+                      ></BalanceInput>
+                    </Flex>
+                    <Flex
+                      fontSize={12}
+                      color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
+                      h={"17px"}
+                      justifyContent={"space-between"}
+                      px={"6px"}
+                    >
+                      <Text>Your Balance</Text>
+                      <Text>{unstakeData?.maxValue || "0"} LTOS</Text>
+                    </Flex>
+                  </Flex>
+                )}
+              </Flex>
               {/* )} */}
               {/* Content Bottom */}
               <Flex flexDir={"column"} rowGap={"9px"} px={"50px"}>

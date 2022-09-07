@@ -61,8 +61,6 @@ function useUnstakeModalData(stakeId: string | string[]) {
         const getTosAmount =
           await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(inputAmount);
 
-        console.log(getTosAmount);
-
         // const getTosAmount = BigNumber.from(inputAmount).mul(
         //   stakeV2.ltosIndexBN.toString()
         // );
