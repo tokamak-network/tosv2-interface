@@ -154,7 +154,7 @@ function MobileStatisticContainer(props: { title: string; data: any }) {
       </Text>
       {data.map((stat: any, index: number) => {
         return (
-            <Flex flexDir={'column'} alignItems='center' >
+            <Flex flexDir={'column'} alignItems='center' key={index}>
               <Text
                 fontSize={"14px"}
                 fontWeight={600}
@@ -209,7 +209,7 @@ function MobileUtilityContainer(props: { title: string; data: any }) {
       </Text>
       {data.map((stat: any, index: number) => {
         return (
-            <Flex flexDir={'column'} alignItems='center'>
+            <Flex flexDir={'column'} alignItems='center' key={index}>
              <Text
                 fontSize={"14px"}
                 fontWeight={600}
