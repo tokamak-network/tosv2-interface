@@ -8,10 +8,12 @@ import StakeCard from "./StakeCard";
 import StakeScreenBottom from "./StakeScreenBottom";
 
 function StakeCardSection() {
-  const [cardList, setCardList] = useState<StakeCardProps[]>([]);
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
-  const { rowNum, currentPageList, setCurrentPage } = usePagination(cardList);
   const { stakeCards } = useStakeList();
+  const { pageSize, currentPageList, setCurrentPage } =
+    usePagination(stakeCards);
+
+  console.log(currentPageList);
 
   return (
     <Flex flexDir={"column"}>
@@ -22,7 +24,7 @@ function StakeCardSection() {
         justifyContent={isSmallerThan750 ? "center" : ""}
         flexWrap={"wrap"}
       >
-        {stakeCards?.map((cardData: StakeCardProps, index: number) => {
+        {currentPageList?.map((cardData: StakeCardProps, index: number) => {
           if (cardData) {
             return (
               <StakeCard
@@ -34,7 +36,7 @@ function StakeCardSection() {
         })}
       </Flex>
       <StakeScreenBottom
-        rowNum={rowNum}
+        pageSize={pageSize}
         setCurrentPage={setCurrentPage}
       ></StakeScreenBottom>
     </Flex>

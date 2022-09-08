@@ -1,24 +1,32 @@
 import { useEffect, useState } from "react";
 
-function usePagination(listArr: any[]) {
+function usePagination(listArr: any[] | undefined) {
   //Desktop size
-  const [pageSize, setPageSize] = useState<number>(12);
-  const [rowNum, setRowNum] = useState<number>(1);
+  const [pageCardSize, setPageCardSize] = useState<number>(12);
+  const [pageSize, setPageSize] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [currentPageList, setCurrentPageList] = useState<any[]>([]);
 
   useEffect(() => {
-    const pageLength = listArr.length / pageSize;
-    const pageNum = Math.floor(pageLength) + 1;
-    setRowNum(pageNum);
-  }, [listArr, pageSize]);
+    if (listArr) {
+      const pageLength = listArr.length / pageCardSize;
+      const pageNum = Math.floor(pageLength) + 1;
+      setPageSize(pageNum);
+    }
+  }, [listArr, pageCardSize]);
 
   useEffect(() => {
-    const currentPageData = listArr.slice(currentPage * 12, 12);
-    setCurrentPageList(currentPageData);
-  }, [rowNum, currentPage, listArr]);
+    if (listArr) {
+      console.log(currentPage);
+      const currentPageData =
+        currentPage === listArr.length
+          ? listArr.slice((currentPage - 1) * 12)
+          : listArr.slice((currentPage - 1) * 12 + 1, 12 * currentPage + 1);
+      setCurrentPageList(currentPageData);
+    }
+  }, [pageSize, currentPage, listArr]);
 
-  return { rowNum, currentPageList, setCurrentPage };
+  return { pageSize, currentPageList, setCurrentPage };
 }
 
 export default usePagination;
