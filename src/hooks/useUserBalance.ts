@@ -69,7 +69,7 @@ const useUserBalance = () => {
 
         setUserTonBalance(convertedTon || "-");
         setUserWTonBalance(convertedWTon || "-");
-        setUserTOSBalance(convertedWTon || "-");
+        setUserTOSBalance(convertedTos || "-");
         setUserETHBalance(convertedEth || "-");
         setUserLTOSBalance(convertedLTOS || "-");
         setUserSTOSBalance(convertedSTOS || "-");
