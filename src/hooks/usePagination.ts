@@ -4,7 +4,7 @@ function usePagination(listArr: any[] | undefined) {
   //Desktop size
   const [pageCardSize, setPageCardSize] = useState<number>(12);
   const [pageSize, setPageSize] = useState<number>(1);
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [currentPageList, setCurrentPageList] = useState<any[]>([]);
 
   useEffect(() => {
@@ -17,7 +17,6 @@ function usePagination(listArr: any[] | undefined) {
 
   useEffect(() => {
     if (listArr) {
-      console.log(currentPage);
       const currentPageData =
         currentPage === listArr.length
           ? listArr.slice((currentPage - 1) * 12)
@@ -26,7 +25,7 @@ function usePagination(listArr: any[] | undefined) {
     }
   }, [pageSize, currentPage, listArr]);
 
-  return { pageSize, currentPageList, setCurrentPage };
+  return { pageSize, currentPage, currentPageList, setCurrentPage };
 }
 
 export default usePagination;

@@ -10,10 +10,8 @@ import StakeScreenBottom from "./StakeScreenBottom";
 function StakeCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { stakeCards } = useStakeList();
-  const { pageSize, currentPageList, setCurrentPage } =
+  const { pageSize, currentPage, currentPageList, setCurrentPage } =
     usePagination(stakeCards);
-
-  console.log(currentPageList);
 
   return (
     <Flex flexDir={"column"}>
@@ -37,6 +35,7 @@ function StakeCardSection() {
       </Flex>
       <StakeScreenBottom
         pageSize={pageSize}
+        currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       ></StakeScreenBottom>
     </Flex>

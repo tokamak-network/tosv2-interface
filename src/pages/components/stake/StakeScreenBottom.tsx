@@ -8,9 +8,10 @@ import useModal from "hooks/useModal";
 
 function StakeScreenBottom(props: {
   setCurrentPage: React.Dispatch<SetStateAction<number>>;
+  currentPage: number;
   pageSize: number;
 }) {
-  const { setCurrentPage, pageSize } = props;
+  const { setCurrentPage, currentPage, pageSize } = props;
   const newArr = new Array(pageSize);
   const { openModal } = useModal("stake_stake_modal");
   const { colorMode } = useColorMode();
@@ -31,6 +32,7 @@ function StakeScreenBottom(props: {
           {pageButtonList?.map((page, index) => {
             return (
               <Pagination
+                currentPage={currentPage}
                 onClick={setCurrentPage}
                 pageNumber={index + 1}
                 key={`key_${index}`}

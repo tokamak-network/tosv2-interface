@@ -3,19 +3,24 @@ import { SetStateAction } from "react";
 
 type PaginationProps = {
   pageNumber: string | number;
+  currentPage: number;
   onClick: React.Dispatch<SetStateAction<number>>;
 };
 
 function Pagination(props: PaginationProps) {
-  const { pageNumber, onClick } = props;
+  const { pageNumber, currentPage, onClick } = props;
   const { colorMode } = useColorMode();
+  const isSelected = currentPage === Number(pageNumber);
+
+  console.log(isSelected);
 
   return (
     <Flex
       w={"40px"}
       h={"40px"}
       color={colorMode === "dark" ? "white.200" : "#2c2c35"}
-      _hover={{ color: "white.200", bgColor: "blue.100" }}
+      bg={isSelected ? "blue.100" : ""}
+      _hover={{ color: isSelected ? "white.200" : "blue.100" }}
       textAlign="center"
       lineHeight={"40px"}
       cursor={"pointer"}
