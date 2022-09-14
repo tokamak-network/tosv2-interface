@@ -239,6 +239,12 @@ function UnstakeModal() {
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}
+                isDisabled={
+                  unstakeData?.maxValue
+                    ? inputValue.stake_unstakeModal_balance >
+                      Number(unstakeData.maxValue)
+                    : false
+                }
               ></SubmitButton>
             </Flex>
           </Flex>
