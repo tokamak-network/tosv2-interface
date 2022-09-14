@@ -65,8 +65,6 @@ function useUpdateModalData(): UseUpdateModalData {
         const timeDiff = currentEndTimeStamp - now;
         const timeLeft = timeDiff / epochUnit;
         setLeftWeeks(Math.ceil(timeLeft));
-
-        console.log(now, timeDiff, timeLeft, epochUnit);
       }
     }
     fetchUpdateModalData().catch((e) => {
@@ -89,8 +87,11 @@ function useUpdateModalData(): UseUpdateModalData {
         //Only increate amount
         const ltosBN = modalContractData.ltosBN;
         const stosBN = modalContractData.stosBN;
+
+        console.log(inputValue);
+
         if (
-          inputValue.stake_updateModal_tos_balance !== "" &&
+          inputValue.stake_updateModal_ltos_balance !== "" &&
           inputValue.stake_updateModal_period === ""
         ) {
           console.log("--1--");
@@ -130,13 +131,16 @@ function useUpdateModalData(): UseUpdateModalData {
         //case3
         //increase amount and period
         if (
-          inputValue.stake_updateModal_tos_balance !== "" &&
+          inputValue.stake_updateModal_ltos_balance &&
+          inputValue.stake_updateModal_ltos_balance !== "" &&
           inputValue.stake_updateModal_period !== ""
         ) {
           console.log("--3--");
+
           const tosAmount = convertToWei(
             inputValue.stake_updateModal_tos_balance
           );
+
           const newLTOS =
             await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
 

@@ -151,7 +151,10 @@ function UpdateModal() {
   const { selectedModalData, selectedModal } = useModal();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
-  const { inputValue } = useInput("Stake_screen", "update_modal");
+  const { inputValue, setResetValue } = useInput(
+    "Stake_screen",
+    "update_modal"
+  );
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
@@ -163,45 +166,58 @@ function UpdateModal() {
   const { currentBalance, newBalance, currentEndTime, newEndTime, leftWeeks } =
     useUpdateModalData();
   const { maxWeeks } = useStosReward();
+  const ltosAmount = selectedModalData?.ltosAmount;
 
-  const contentList = [
-    {
-      title: "You Give",
-      content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
-      tooltip: false,
-      tooltipMessage: "",
-    },
-    {
-      title: "Current Balance",
-      content: currentBalance,
-      tooltip: true,
-      tooltipMessage: "Amount of LTOS and sTOS before the update.",
-      secondTooltip:
-        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
-    },
-    {
-      title: "New Balance",
-      content: newBalance,
-      tooltip: true,
-      tooltipMessage: "Amount of LTOS and sTOS after the update.",
-      secondTooltip:
-        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
-    },
-    {
-      title: "Current End Time",
-      content: currentEndTime,
-      tooltip: true,
-      tooltipMessage:
-        "Lock-Up period end time before the update.before the update.",
-    },
-    {
-      title: "New End Time",
-      content: newEndTime,
-      tooltip: true,
-      tooltipMessage:
-        "Lock-Up period end time after the update.before the update.",
-    },
-  ];
+  console.log(newBalance);
+  console.log(newEndTime);
+
+  const contentList = useMemo(
+    () => [
+      {
+        title: "You Give",
+        content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
+        tooltip: false,
+        tooltipMessage: "",
+      },
+      {
+        title: "Current Balance",
+        content: currentBalance,
+        tooltip: true,
+        tooltipMessage: "Amount of LTOS and sTOS before the update.",
+        secondTooltip:
+          "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      },
+      {
+        title: "New Balance",
+        content: { ltos: newBalance.ltos, stos: newBalance.stos },
+        tooltip: true,
+        tooltipMessage: "Amount of LTOS and sTOS after the update.",
+        secondTooltip:
+          "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      },
+      {
+        title: "Current End Time",
+        content: currentEndTime,
+        tooltip: true,
+        tooltipMessage:
+          "Lock-Up period end time before the update.before the update.",
+      },
+      {
+        title: "New End Time",
+        content: newEndTime,
+        tooltip: true,
+        tooltipMessage:
+          "Lock-Up period end time after the update.before the update.",
+      },
+    ],
+    [
+      inputValue.stake_updateModal_tos_balance,
+      currentBalance,
+      newBalance,
+      currentEndTime,
+      newEndTime,
+    ]
+  );
 
   const callUpdate = useCallback(() => {
     //Mainnet_maxPeriod = 3years
@@ -230,6 +246,11 @@ function UpdateModal() {
       return TOS_CONTRACT.approve(StakingV2Proxy, totalSupply);
     }
   }, [TOS_CONTRACT, StakingV2Proxy]);
+
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    closeModal();
+  }, [setResetValue, closeModal]);
 
   useEffect(() => {
     if (tosAllowance) {
@@ -269,7 +290,7 @@ function UpdateModal() {
     <Modal
       isOpen={selectedModal === "stake_update_modal"}
       isCentered
-      onClose={closeModal}
+      onClose={closeThisModal}
     >
       <ModalOverlay />
       <ModalContent
@@ -296,7 +317,7 @@ function UpdateModal() {
                   pos={"absolute"}
                   right={"1.56em"}
                   cursor={"pointer"}
-                  onClick={() => closeModal()}
+                  onClick={() => closeThisModal()}
                 >
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
                 </Flex>
@@ -325,8 +346,8 @@ function UpdateModal() {
                     placeHolder={"Enter an amount of TOS"}
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
-                    atomKey={"stake_updateModal_tos_balance"}
-                    maxValue={Number(userTOSBalance.replaceAll(",", ""))}
+                    atomKey={"stake_updateModal_ltos_balance"}
+                    maxValue={Number(ltosAmount?.replaceAll(",", ""))}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -337,7 +358,7 @@ function UpdateModal() {
                   mb={"12px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userTOSBalance} TOS</Text>
+                  <Text>{ltosAmount} LTOS</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text

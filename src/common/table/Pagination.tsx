@@ -12,8 +12,6 @@ function Pagination(props: PaginationProps) {
   const { colorMode } = useColorMode();
   const isSelected = currentPage === Number(pageNumber);
 
-  console.log(isSelected);
-
   return (
     <Flex
       w={"40px"}

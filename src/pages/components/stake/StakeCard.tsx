@@ -43,11 +43,13 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   const { openModal } = useModal("stake_stake_modal");
   const { openModal: openUpdateModal } = useModal("stake_update_modal", {
     stakeId: cardData?.stakedId,
+    ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
   });
   const { openModal: openUpdateAfterEndTimeModal } = useModal(
     "stake_updateAfterEndTime_modal",
     {
       stakeId: cardData?.stakedId,
+      ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
     }
   );
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");

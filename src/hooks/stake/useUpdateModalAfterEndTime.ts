@@ -65,7 +65,7 @@ function useUpdateModalAfterEndTime(): UseUpdateMAfterEndTime {
       }
     }
     fetchUpdateModalData().catch((e) => {
-      console.log("**useUpdateModalData2 err**");
+      console.log("**useUpdateModalAfterEndTimeData2 err**");
       console.log(e);
     });
   }, [stakeId, StakingV2Proxy_CONTRACT, inputValue, stosReward]);

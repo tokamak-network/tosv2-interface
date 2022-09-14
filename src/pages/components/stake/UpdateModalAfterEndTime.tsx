@@ -51,6 +51,7 @@ import useStakeInput from "hooks/stake/useStakeInput";
 import useInput from "hooks/useInput";
 import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
 import BasicTooltip from "common/tooltip/index";
+import constant from "constant";
 
 function StakeGraph() {
   const labelStyles = {
@@ -142,7 +143,7 @@ function BottomContent(props: {
   tooltipMessage?: string;
   secondTooltip?: string;
 }) {
-  const { title, content, tooltip,tooltipMessage, secondTooltip } = props;
+  const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -153,7 +154,7 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr='6px'
+              mr="6px"
             >
               {(typeof content !== "string" && content.ltos) || "-"} LTOS
             </Text>
@@ -170,19 +171,19 @@ function BottomContent(props: {
           </Flex>
         );
 
-        case 'You Give':
-          return (
-            <Flex>
+      case "You Give":
+        return (
+          <Flex>
             <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-            mr='6px'
-          >
-            {content as string}
-          </Text>
-             <BasicTooltip label={secondTooltip} />
-             </Flex>
-          )
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+              mr="6px"
+            >
+              {content as string}
+            </Text>
+            <BasicTooltip label={secondTooltip} />
+          </Flex>
+        );
       default:
         return (
           <Text
@@ -193,7 +194,7 @@ function BottomContent(props: {
           </Text>
         );
     }
-  }, [title, content, colorMode]);
+  }, [title, content, colorMode, secondTooltip]);
 
   return (
     <Flex>
@@ -226,7 +227,10 @@ function UpdateModalAfterEndTime() {
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const [addTos, setAddTos] = useState<boolean>(false);
-  const { inputValue } = useInput("Stake_screen", "update_modal");
+  const { inputValue, setResetValue } = useInput(
+    "Stake_screen",
+    "update_modal"
+  );
 
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
@@ -236,6 +240,7 @@ function UpdateModalAfterEndTime() {
   const { newBalance, newEndTime } = useUpdateModalAfterEndTime();
 
   const stakeId = selectedModalData.stakeId;
+  const ltosAmount = selectedModalData?.ltosAmount;
 
   const contentList = [
     {
@@ -246,21 +251,26 @@ function UpdateModalAfterEndTime() {
           : inputValue.stake_updateModal_ltos_balance || "0"
       } ${addTos ? "TOS" : "LTOS"}`,
       tooltip: true,
-      tooltipMessage: 'Amount of LTOS and TOS used for staking.',
-      secondTooltip:'Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.'
+      tooltipMessage: "Amount of LTOS and TOS used for staking.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
     },
     {
       title: "You Will Get",
-      content: "0",
+      content: addTos
+        ? { ltos: newBalance.ltos, stos: newBalance.stos }
+        : { ltos: newBalance.ltos, stos: "0" },
       tooltip: true,
-      tooltipMessage: 'Amount of LTOS, sTOS, and TOS you will get after the update. ',
-      secondTooltip:'Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.'
+      tooltipMessage:
+        "Amount of LTOS, sTOS, and TOS you will get after the update. ",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
     },
     {
       title: "New End Time",
       content: newEndTime,
       tooltip: true,
-      tooltipMessage:'LTOS can be unstaked after this time.'
+      tooltipMessage: "LTOS can be unstaked after this time.",
     },
   ];
 
@@ -308,6 +318,12 @@ function UpdateModalAfterEndTime() {
     }
   }, [TOS_CONTRACT, StakingV2Proxy]);
 
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    setAddTos(false);
+    closeModal();
+  }, [setResetValue, closeModal]);
+
   useEffect(() => {
     if (tosAllowance && inputValue.stake_updateModal_tos_balance) {
       if (tosAllowance === 0) {
@@ -324,7 +340,7 @@ function UpdateModalAfterEndTime() {
     <Modal
       isOpen={selectedModal === "stake_updateAfterEndTime_modal"}
       isCentered
-      onClose={closeModal}
+      onClose={closeThisModal}
     >
       <ModalOverlay />
       <ModalContent
@@ -350,7 +366,7 @@ function UpdateModalAfterEndTime() {
                   pos={"absolute"}
                   right={"1.56em"}
                   cursor={"pointer"}
-                  onClick={() => closeModal()}
+                  onClick={() => closeThisModal()}
                 >
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
                 </Flex>
@@ -384,6 +400,7 @@ function UpdateModalAfterEndTime() {
                       pageKey={"Stake_screen"}
                       recoilKey={"update_modal"}
                       isDisabled={addTos}
+                      maxValue={Number(ltosAmount?.replaceAll(",", ""))}
                     ></BalanceInput>
                   </Flex>
                   <Flex>
@@ -395,12 +412,16 @@ function UpdateModalAfterEndTime() {
                       ml={"14px"}
                       w={"51px"}
                       fontSize={12}
-                      mr='6px'
+                      mr="6px"
                       color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                     >
                       Add TOS
                     </Text>
-                    <BasicTooltip label={'f you want more sTOS, you can lock TOS in addition to restaking your LTOS. '} />
+                    <BasicTooltip
+                      label={
+                        "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
+                      }
+                    />
                   </Flex>
                 </Flex>
                 <Flex
@@ -409,11 +430,11 @@ function UpdateModalAfterEndTime() {
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
-                  w={'335px'}
-                  px='6px'
+                  w={"335px"}
+                  px="6px"
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userLTOSBalance} LTOS</Text>
+                  <Text>{ltosAmount} LTOS</Text>
                 </Flex>
                 {addTos && (
                   <Flex mb={"12px"} flexDir={"column"}>
@@ -425,6 +446,7 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"update_modal"}
                         atomKey={"stake_updateModal_tos_balance"}
+                        maxValue={Number(userTOSBalance.replaceAll(",", ""))}
                       ></BalanceInput>
                     </Flex>
                     <Flex
@@ -454,6 +476,7 @@ function UpdateModalAfterEndTime() {
                     atomKey={"stake_updateModal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
+                    maxValue={constant.LOCKTOS_maxWeeks}
                   ></TextInput>
                 </Flex>
               </Flex>
