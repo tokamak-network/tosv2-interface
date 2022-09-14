@@ -51,10 +51,6 @@ function useStakeTopCards() {
         const B = oneYearEpoch / Number(epochLength.toString());
         const TOS_APY = (A ** B - 1) * 100;
 
-        console.log(A);
-        console.log(B);
-        console.log(TOS_APY);
-
         setStakeTopCards([
           {
             title: "Total Value Staked",

@@ -45,17 +45,22 @@ function roundNumber(args: RoundFunc): string {
     args;
   const displayPoint = decimalPoints || 2;
   const number = new Decimal(r_amount);
+
   if (r_opt === "up") {
     const res = number.toFixed(r_maxDecimalDigits, Decimal.ROUND_UP);
     const fixedNum = Number(res).toFixed(displayPoint);
     return localeString === true
-      ? Number(fixedNum).toLocaleString(undefined, { minimumFractionDigits: 2 })
+      ? Number(fixedNum).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+        })
       : Number(res).toFixed(displayPoint);
   } else if (r_opt === "down") {
     const res = number.toFixed(r_maxDecimalDigits, Decimal.ROUND_DOWN);
     const fixedNum = Number(res).toFixed(displayPoint);
     return localeString === true
-      ? Number(fixedNum).toLocaleString(undefined, { minimumFractionDigits: 2 })
+      ? Number(fixedNum).toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+        })
       : Number(res).toFixed(displayPoint);
   }
   const res = number.toFixed(r_maxDecimalDigits, Decimal.ROUND_HALF_UP);
@@ -75,9 +80,10 @@ export function convertNumber(args: ConverNumberFunc): string | undefined {
       return "0.00";
     }
     const numAmount = BigNumber.from(amount);
+
     const numberType: string = type || "wei";
     const optRound = round || undefined;
-    const decimalPoint: number = decimalPlaces || 3;
+    const decimalPoint: number = decimalPlaces || 2;
     if (amount === undefined) {
       throw new Error(`amount is undefined`);
     }
@@ -87,7 +93,16 @@ export function convertNumber(args: ConverNumberFunc): string | undefined {
     switch (numberType) {
       case "wei":
         const weiAmount = utils.formatUnits(numAmount, 18);
+
+        if (numAmount.toString() === "80279767682707245220546") {
+          console.log("80279767682707245220546");
+          console.log(weiAmount);
+
+          console.log(weiAmount.toString());
+        }
+
         const weiAmountStr: string = weiAmount.toString();
+
         if (optRound === true) {
           return roundNumber({
             r_amount: weiAmountStr,
@@ -109,7 +124,7 @@ export function convertNumber(args: ConverNumberFunc): string | undefined {
         return roundNumber({
           r_amount: weiAmountStr,
           r_maxDecimalDigits: decimalPoint,
-          r_opt: "none",
+          r_opt: "down",
           localeString,
           decimalPoints,
         });
