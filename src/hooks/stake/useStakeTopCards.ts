@@ -44,7 +44,16 @@ function useStakeTopCards() {
 
         //Calculate TOS APY
         const rebasePerEpoch = await StakingV2Proxy_CONTRACT.rebasePerEpoch();
-        const TOS_APY = (1 + rebasePerEpoch / 1e18) * 1095;
+        const epoch = await StakingV2Proxy_CONTRACT.epoch();
+        const epochLength = epoch.length_;
+        const oneYearEpoch = 31536000;
+        const A = 1 + rebasePerEpoch / 1e18;
+        const B = oneYearEpoch / Number(epochLength.toString());
+        const TOS_APY = (A ** B - 1) * 100;
+
+        console.log(A);
+        console.log(B);
+        console.log(TOS_APY);
 
         setStakeTopCards([
           {

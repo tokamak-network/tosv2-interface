@@ -168,8 +168,8 @@ function UpdateModal() {
   const { maxWeeks } = useStosReward();
   const ltosAmount = selectedModalData?.ltosAmount;
 
-  console.log(newBalance);
-  console.log(newEndTime);
+  // console.log(newBalance);
+  // console.log(newEndTime);
 
   const contentList = useMemo(
     () => [
