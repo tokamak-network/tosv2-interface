@@ -38,8 +38,9 @@ function useStakeTopCards() {
 
         //Calculate TVS
         const totalLTOS = await StakingV2Proxy_CONTRACT.totalLtos();
-        const possibleIndex = await StakingV2Proxy_CONTRACT.possibleIndex();
-        const TVS = ((totalLTOS * 1e18) / (possibleIndex * 1e18)) * tosPrice;
+        const totalTOS =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(totalLTOS);
+        const TVS = (Number(totalTOS.toString()) / 1e18) * tosPrice;
 
         //Calculate TOS APY
         const rebasePerEpoch = await StakingV2Proxy_CONTRACT.rebasePerEpoch();
