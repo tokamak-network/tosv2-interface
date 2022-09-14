@@ -95,13 +95,25 @@ function StakeCard(props: { cardData: StakeCardProps }) {
           )}
           <Flex
             fontSize={12}
-            color={isDisabled ? "green.100" : "red.100"}
+            color={
+              stakedType === "LTOS Staking"
+                ? "green.100"
+                : isDisabled
+                ? "blue.200"
+                : "red.100"
+            }
             textAlign={"center"}
             alignItems="center"
             justifyContent={"center"}
             ml={"9px"}
           >
-            <Text>{isDisabled ? "No Lock-Up" : "Locked"}</Text>
+            <Text>
+              {stakedType === "LTOS Staking"
+                ? "No Lock-up"
+                : isDisabled
+                ? "Unlocked"
+                : "Locked"}
+            </Text>
           </Flex>
         </Flex>
       </Flex>
