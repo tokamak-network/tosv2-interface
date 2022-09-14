@@ -93,14 +93,6 @@ export function convertNumber(args: ConverNumberFunc): string | undefined {
     switch (numberType) {
       case "wei":
         const weiAmount = utils.formatUnits(numAmount, 18);
-
-        if (numAmount.toString() === "80279767682707245220546") {
-          console.log("80279767682707245220546");
-          console.log(weiAmount);
-
-          console.log(weiAmount.toString());
-        }
-
         const weiAmountStr: string = weiAmount.toString();
 
         if (optRound === true) {
