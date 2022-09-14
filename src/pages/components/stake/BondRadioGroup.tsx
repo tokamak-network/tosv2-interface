@@ -6,22 +6,28 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import { stake_filter_radio } from "atom/stake/filter";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 
 function StakeRadioGroup() {
-  const [radioValue, setRadioValue] = useState<"All" | "Bond" | "Stake">("All");
+  const [stakeRadioValue, setStakeRadioValue] =
+    useRecoilState(stake_filter_radio);
   const { colorMode } = useColorMode();
+
   return (
     <Flex fontSize={14} color={colorMode === "dark" ? "gray.100" : "#535362"}>
       <RadioGroup
-        onChange={(value: "All" | "Bond" | "Stake") => setRadioValue(value)}
-        value={radioValue}
+        onChange={(value: "All" | "Bond" | "Stake") =>
+          setStakeRadioValue(value)
+        }
+        value={stakeRadioValue}
       >
         <Stack direction="row" columnGap={"34px"} h={"100%"}>
           <Radio value="All">
             <Text
               color={
-                radioValue === "All"
+                stakeRadioValue === "All"
                   ? colorMode === "dark"
                     ? "white.200"
                     : "gray.800"
@@ -34,7 +40,7 @@ function StakeRadioGroup() {
           <Radio value="Bond">
             <Text
               color={
-                radioValue === "Bond"
+                stakeRadioValue === "Bond"
                   ? colorMode === "dark"
                     ? "white.200"
                     : "gray.800"
@@ -47,7 +53,7 @@ function StakeRadioGroup() {
           <Radio value="Stake">
             <Text
               color={
-                radioValue === "Stake"
+                stakeRadioValue === "Stake"
                   ? colorMode === "dark"
                     ? "white.200"
                     : "gray.800"

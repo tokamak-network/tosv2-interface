@@ -15,7 +15,6 @@ import { inputBalanceState, inputState } from "atom/global/input";
 import useInput from "hooks/useInput";
 import { max } from "moment";
 import React, { SetStateAction } from "react";
-import { RecoilLoadable, useRecoilState, useRecoilValue } from "recoil";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 

@@ -6,12 +6,43 @@ import { useEffect, useState } from "react";
 import { StakeCardProps } from "types/stake";
 import StakeCard from "./StakeCard";
 import StakeScreenBottom from "./StakeScreenBottom";
+import { useRecoilValue } from "recoil";
+import { stake_filter_radio } from "atom/stake/filter";
 
 function StakeCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { stakeCards } = useStakeList();
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
     usePagination(stakeCards);
+  const filterValue = useRecoilValue(stake_filter_radio);
+  const [cardList, setCardList] = useState(stakeCards);
+
+  useEffect(() => {
+    if (stakeCards) {
+      if (filterValue === "All") {
+        return setCardList(stakeCards);
+      }
+      if (filterValue === "Bond") {
+        const bondFilteredList = stakeCards.filter((stakeData) => {
+          if (stakeData?.stakedType === "Bond") {
+            return stakeData;
+          }
+        });
+        return setCardList(bondFilteredList);
+      }
+      if (filterValue === "Stake") {
+        const stakeFilteredList = stakeCards.filter((stakeData) => {
+          if (
+            stakeData?.stakedType === "LTOS Staking" ||
+            stakeData?.stakedType === "Staking"
+          ) {
+            return stakeData;
+          }
+        });
+        return setCardList(stakeFilteredList);
+      }
+    }
+  }, [stakeCards, filterValue]);
 
   return (
     <Flex flexDir={"column"}>
@@ -22,7 +53,7 @@ function StakeCardSection() {
         justifyContent={isSmallerThan750 ? "center" : ""}
         flexWrap={"wrap"}
       >
-        {currentPageList?.map((cardData: StakeCardProps, index: number) => {
+        {cardList?.map((cardData: StakeCardProps, index: number) => {
           if (cardData) {
             return (
               <StakeCard

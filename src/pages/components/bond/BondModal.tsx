@@ -394,7 +394,11 @@ function BondModal() {
                     pageKey={"Bond_screen"}
                     recoilKey={"bond_modal"}
                     atomKey={"bond_modal_balance"}
-                    maxValue={Number(userETHBalance.replaceAll(",", ""))}
+                    maxValue={
+                      bondModalData && bondModalData?.maxBond > userETHBalance
+                        ? Number(userETHBalance.replaceAll(",", ""))
+                        : Number(bondModalData?.maxBond.replaceAll(",", ""))
+                    }
                   ></BalanceInput>
                 </Flex>
                 <Flex
