@@ -14,4 +14,22 @@ const stake_filter_radio_state = selector({
   },
 });
 
-export { stake_filter_radio, stake_filter_radio_state };
+const stake_filter_sort = atom({
+  key: "stake_filter_sort",
+  default: "Earliest",
+});
+
+const stake_filter_sort_state = selector({
+  key: "stake_filter_sort_state", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const stakeFilterSortState = get(stake_filter_radio);
+    return stakeFilterSortState;
+  },
+});
+
+export {
+  stake_filter_radio,
+  stake_filter_radio_state,
+  stake_filter_sort,
+  stake_filter_sort_state,
+};
