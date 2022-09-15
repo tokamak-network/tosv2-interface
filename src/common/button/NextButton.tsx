@@ -9,8 +9,6 @@ function NextButton(props: {
 }) {
   const { currentPage, setCurrentPage, pageSize } = props;
   const { colorMode } = useColorMode();
-  console.log(currentPage, pageSize);
-
   const isDisabled = currentPage + 1 > pageSize;
 
   return (
