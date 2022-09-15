@@ -41,7 +41,11 @@ function StakeScreenBottom(props: {
           })}
         </Flex>
         <Flex>
-          <NextButton></NextButton>
+          <NextButton
+            pageSize={pageSize}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          ></NextButton>
         </Flex>
       </Flex>
     </Flex>

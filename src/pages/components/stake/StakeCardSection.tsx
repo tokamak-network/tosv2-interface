@@ -12,11 +12,12 @@ import { stake_filter_radio, stake_filter_sort } from "atom/stake/filter";
 function StakeCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { stakeCards } = useStakeList();
+  const [cardList, setCardList] = useState(stakeCards);
+
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
-    usePagination(stakeCards);
+    usePagination(cardList);
   const filterValue = useRecoilValue(stake_filter_radio);
   const sortValue = useRecoilValue(stake_filter_sort);
-  const [cardList, setCardList] = useState(stakeCards);
 
   useEffect(() => {
     if (stakeCards) {
@@ -54,8 +55,6 @@ function StakeCardSection() {
     }
   }, [stakeCards, filterValue, sortValue]);
 
-  console.log(cardList);
-
   return (
     <Flex flexDir={"column"}>
       <Flex
@@ -65,7 +64,7 @@ function StakeCardSection() {
         justifyContent={isSmallerThan750 ? "center" : ""}
         flexWrap={"wrap"}
       >
-        {cardList?.map((cardData: StakeCardProps, index: number) => {
+        {currentPageList?.map((cardData: StakeCardProps, index: number) => {
           if (cardData) {
             return (
               <StakeCard
