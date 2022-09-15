@@ -30,10 +30,7 @@ import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
-import TokenSymbol from "common/token/TokenSymol";
-import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
-import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/components/commafy";
@@ -46,99 +43,17 @@ import CONTRACT_ADDRESS from "services/addresses/contract";
 import { BigNumber } from "ethers";
 import useUser from "hooks/useUser";
 import Tile from "../common/modal/Tile";
-import { stake_updateModal_state } from "atom/stake/input";
+import { stake_relockModal_state } from "atom/stake/input";
 import useStakeInput from "hooks/stake/useStakeInput";
 import useInput from "hooks/useInput";
 import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
 import BasicTooltip from "common/tooltip/index";
 import constant from "constant";
-
-function StakeGraph() {
-  const labelStyles = {
-    mt: "2",
-    ml: "-2.5",
-    fontSize: "sm",
-  };
-  const [sliderValue, setSliderValue] = useState(0);
-  const [showTooltip, setShowTooltip] = useState(false);
-  const inputValues = useRecoilValue(inputBalanceState);
-  const [value, setValue] = useRecoilState(inputState);
-
-  const { colorMode } = useColorMode();
-  return (
-    <Flex w={"100%"} h="70px" pos="relative">
-      <Slider
-        aria-label="slider-ex-1"
-        defaultValue={0}
-        min={0}
-        max={156}
-        value={sliderValue}
-        onChange={(val: any) => setSliderValue(val)}
-        h={"10px"}
-        alignSelf={"end"}
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-      >
-        <SliderMark value={0} {...labelStyles}>
-          7d
-        </SliderMark>
-        <SliderMark value={8} {...labelStyles}>
-          1m
-        </SliderMark>
-        <SliderMark value={24} {...labelStyles}>
-          6m
-        </SliderMark>
-        <SliderMark value={52} {...labelStyles}>
-          1y
-        </SliderMark>
-        <SliderMark value={104} {...labelStyles}>
-          2y
-        </SliderMark>
-        <SliderMark value={156} {...labelStyles}>
-          3y
-        </SliderMark>
-
-        {/* <SliderMark value={25} {...labelStyles}>
-          25%
-        </SliderMark> */}
-        {/* <SliderMark
-          value={sliderValue}
-          textAlign="center"
-          bg="blue.500"
-          color="white"
-          mt="-10"
-          ml="-5"
-          w="12"
-        >
-          {sliderValue} STOS
-        </SliderMark> */}
-        <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
-          <SliderFilledTrack bg={"#2775ff"} />
-        </SliderTrack>
-        <Tooltip
-          color={colorMode === "light" ? "#07070c" : "#f1f1f1"}
-          placement="top"
-          bg={"transparent"}
-          w={"50px"}
-          display="flex"
-          alignItems="center"
-          justifyContent={"center"}
-          textAlign="center"
-          fontSize={"15px"}
-          fontWeight={600}
-          isOpen={showTooltip}
-          label={`${sliderValue} sTOS`}
-        >
-          <SliderThumb />
-        </Tooltip>
-      </Slider>
-    </Flex>
-  );
-}
+import StakeGraph from "../common/modal/StakeGraph";
 
 function BottomContent(props: {
   title: string;
-  content: string | { ltos: string; stos: string };
+  content: string | { ltos: string; stos: string; tos: string };
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
@@ -167,6 +82,15 @@ function BottomContent(props: {
               fontWeight={600}
             >
               {(typeof content !== "string" && content.stos) || "-"} sTOS
+            </Text>
+            <Text color={"#64646f"} mx={"5px"}>
+              /
+            </Text>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {(typeof content !== "string" && content.tos) || "-"} TOS
             </Text>
           </Flex>
         );
@@ -224,12 +148,11 @@ function UpdateModalAfterEndTime() {
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
   const { selectedModalData, selectedModal } = useModal();
-  const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const [addTos, setAddTos] = useState<boolean>(false);
-  const { inputValue, setResetValue } = useInput(
+  const { inputValue, setResetValue, setValue } = useInput(
     "Stake_screen",
-    "update_modal"
+    "relock_modal"
   );
 
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
@@ -237,7 +160,7 @@ function UpdateModalAfterEndTime() {
   const { userTOSBalance, userLTOSBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-  const { newBalance, newEndTime } = useUpdateModalAfterEndTime();
+  const { newBalance, newEndTime } = useUpdateModalAfterEndTime(addTos);
 
   const stakeId = selectedModalData.stakeId;
   const ltosAmount = selectedModalData?.ltosAmount;
@@ -247,8 +170,8 @@ function UpdateModalAfterEndTime() {
       title: "You Give",
       content: `${
         addTos
-          ? inputValue.stake_updateModal_tos_balance
-          : inputValue.stake_updateModal_ltos_balance || "0"
+          ? inputValue.stake_relockModal_tos_balance
+          : inputValue.stake_relockModal_ltos_balance || "0"
       } ${addTos ? "TOS" : "LTOS"}`,
       tooltip: true,
       tooltipMessage: "Amount of LTOS and TOS used for staking.",
@@ -258,8 +181,16 @@ function UpdateModalAfterEndTime() {
     {
       title: "You Will Get",
       content: addTos
-        ? { ltos: newBalance.ltos, stos: newBalance.stos }
-        : { ltos: newBalance.ltos, stos: "0" },
+        ? {
+            ltos: newBalance.ltos,
+            stos: newBalance.stos,
+            tos: inputValue.stake_relockModal_tos_balance,
+          }
+        : {
+            ltos: inputValue.stake_relockModal_ltos_balance,
+            stos: newBalance.stos,
+            tos: newBalance.tos,
+          },
       tooltip: true,
       tooltipMessage:
         "Amount of LTOS, sTOS, and TOS you will get after the update. ",
@@ -280,15 +211,15 @@ function UpdateModalAfterEndTime() {
     if (
       StakingV2Proxy_CONTRACT &&
       stakeId &&
-      inputValue.stake_updateModal_period
+      inputValue.stake_relockModal_period
     ) {
-      if (addTos && inputValue.stake_updateModal_tos_balance) {
+      if (addTos && inputValue.stake_relockModal_tos_balance) {
         return StakingV2Proxy_CONTRACT[
           "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
         ](
           stakeId,
-          convertToWei(inputValue.stake_updateModal_tos_balance),
-          inputValue.stake_updateModal_period
+          convertToWei(inputValue.stake_relockModal_tos_balance),
+          inputValue.stake_relockModal_period
         );
       }
       //after endTime
@@ -298,15 +229,15 @@ function UpdateModalAfterEndTime() {
       );
       console.log(
         stakeId,
-        convertToWei(inputValue.stake_updateModal_ltos_balance),
-        inputValue.stake_updateModal_period
+        convertToWei(inputValue.stake_relockModal_ltos_balance),
+        inputValue.stake_relockModal_period
       );
       return StakingV2Proxy_CONTRACT[
         "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
       ](
         stakeId,
-        convertToWei(inputValue.stake_updateModal_ltos_balance),
-        inputValue.stake_updateModal_period
+        convertToWei(inputValue.stake_relockModal_ltos_balance),
+        inputValue.stake_relockModal_period
       );
     }
   }, [StakingV2Proxy_CONTRACT, stakeId, addTos, inputValue]);
@@ -325,16 +256,24 @@ function UpdateModalAfterEndTime() {
   }, [setResetValue, closeModal]);
 
   useEffect(() => {
-    if (tosAllowance && inputValue.stake_updateModal_tos_balance) {
+    if (tosAllowance && inputValue.stake_relockModal_tos_balance) {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
       }
-      if (tosAllowance >= Number(inputValue.stake_updateModal_tos_balance)) {
+      if (tosAllowance >= Number(inputValue.stake_relockModal_tos_balance)) {
         return setIsAllowance(true);
       }
       return setIsAllowance(false);
     }
-  }, [tosAllowance, inputValue.stake_updateModal_tos_balance]);
+  }, [tosAllowance, inputValue.stake_relockModal_tos_balance]);
+
+  // useEffect(() => {
+  //   if (addTos === false) {
+  //     return setValue({ ...inputValue, stake_relockModal_tos_balance: "" });
+  //   } else {
+  //     return setValue({ ...inputValue, stake_relockModal_ltos_balance: "" });
+  //   }
+  // }, [addTos, setValue, inputValue]);
 
   return (
     <Modal
@@ -396,9 +335,9 @@ function UpdateModalAfterEndTime() {
                       w={"335px"}
                       h={45}
                       placeHolder={"Enter an amount of LTOS"}
-                      atomKey={"stake_updateModal_ltos_balance"}
+                      atomKey={"stake_relockModal_ltos_balance"}
                       pageKey={"Stake_screen"}
-                      recoilKey={"update_modal"}
+                      recoilKey={"relock_modal"}
                       isDisabled={addTos}
                       maxValue={Number(ltosAmount?.replaceAll(",", ""))}
                     ></BalanceInput>
@@ -444,8 +383,8 @@ function UpdateModalAfterEndTime() {
                         h={45}
                         placeHolder={"Enter an amount of TOS"}
                         pageKey={"Stake_screen"}
-                        recoilKey={"update_modal"}
-                        atomKey={"stake_updateModal_tos_balance"}
+                        recoilKey={"relock_modal"}
+                        atomKey={"stake_relockModal_tos_balance"}
                         maxValue={Number(userTOSBalance.replaceAll(",", ""))}
                       ></BalanceInput>
                     </Flex>
@@ -472,8 +411,8 @@ function UpdateModalAfterEndTime() {
                     w={"170px"}
                     h={"39px"}
                     pageKey={"Stake_screen"}
-                    recoilKey={"update_modal"}
-                    atomKey={"stake_updateModal_period"}
+                    recoilKey={"relock_modal"}
+                    atomKey={"stake_relockModal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
                     maxValue={constant.LOCKTOS_maxWeeks}
@@ -481,7 +420,11 @@ function UpdateModalAfterEndTime() {
                 </Flex>
               </Flex>
               <Flex px={"49px"} mb={"30px"}>
-                <StakeGraph></StakeGraph>
+                <StakeGraph
+                  pageKey="Stake_screen"
+                  periodKey="stake_relockModal_period"
+                  subKey="relock_modal"
+                ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
               <Flex

@@ -61,6 +61,26 @@ const stake_updateModal_state = selector({
   },
 });
 
+//relock modal states
+const stake_relockModal_defaultValue = {
+  stake_relockModal_period: maxPeriod,
+  stake_relockModal_ltos_balance: undefined,
+  stake_relockModal_tos_balance: undefined,
+};
+
+const stake_relockModal_inputState = atom({
+  key: "stake_relockModal_input",
+  default: stake_relockModal_defaultValue,
+});
+
+const stake_relockModal_state = selector({
+  key: "stake_relockModal_input_state", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const selectedInputState = get(stake_relockModal_inputState);
+    return selectedInputState;
+  },
+});
+
 export {
   stake_stakeModal_defaultValue,
   stake_stakeModal_input,
@@ -71,4 +91,7 @@ export {
   stake_updateModal_inputState,
   stake_updateModal_state,
   stake_updateModal_defaultValue,
+  stake_relockModal_defaultValue,
+  stake_relockModal_inputState,
+  stake_relockModal_state,
 };

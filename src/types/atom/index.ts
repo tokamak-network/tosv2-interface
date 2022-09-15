@@ -5,6 +5,10 @@ export type Bond_BondModal = {
 };
 export type Bond_InputValueType = Bond_BondModal;
 
-export type Stake_InputKey = "update_modal" | "unstake_modal" | "stake_modal";
+export type Stake_InputKey =
+  | "update_modal"
+  | "unstake_modal"
+  | "stake_modal"
+  | "relock_modal";
 
 export type InputKey = Stake_InputKey | Bond_InputKey;

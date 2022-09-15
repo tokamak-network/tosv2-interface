@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import useStosReward from "./useStosReward";
 
 type Balance = {
+  tos: string;
   ltos: string;
   stos: string;
 };
@@ -18,63 +19,99 @@ type UseUpdateMAfterEndTime = {
 };
 
 const defaultBalanceValue = {
-  ltos: "0",
+  tos: "0",
   stos: "0",
+  ltos: "0",
 };
 
-function useUpdateModalAfterEndTime(): UseUpdateMAfterEndTime {
+function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
   const [newEndTime, setNewEndTime] = useState<string>("-");
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
-  const { inputValue } = useInput("Stake_screen", "update_modal");
+  const { inputValue } = useInput("Stake_screen", "relock_modal");
+  const [inputTosAmount, setInputTosAmount] = useState<number>(0);
   const { stosReward } = useStosReward(
-    inputValue.stake_updateModal_tos_balance,
-    inputValue.stake_updateModal_period
+    inputTosAmount,
+    inputValue.stake_relockModal_period
   );
 
   //new
   useEffect(() => {
-    async function fetchUpdateModalData() {
+    async function fetchRolockModalData() {
       if (StakingV2Proxy_CONTRACT && stakeId && inputValue) {
         //new balance
         //case1
-        //Only put amount and period
-        if (
-          inputValue.stake_updateModal_tos_balance !== "" &&
-          inputValue.stake_updateModal_period !== ""
-        ) {
-          const tosAmount = convertToWei(
-            inputValue.stake_updateModal_tos_balance
+        //LTOS relock
+        if (!addTos) {
+          const ltosAmount = convertToWei(
+            inputValue.stake_relockModal_ltos_balance
           );
-          const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
-          const LTOS_BN = BigNumber.from(tosAmount).mod(LTOS_Index);
-          const remainedLtos = await StakingV2Proxy_CONTRACT.remainedLtos(
-            stakeId
-          );
-          const newLTOS = BigNumber.from(LTOS_BN).add(remainedLtos);
-          const ltos =
-            convertNumber({ amount: newLTOS.toString(), localeString: true }) ||
-            "0";
+          const possibleTOSAmount =
+            await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(ltosAmount);
+          const tos =
+            convertNumber({
+              amount: possibleTOSAmount.toString(),
+              localeString: true,
+            }) || "0";
+          setInputTosAmount(Number(tos.replaceAll(",", "")));
 
           return setNewBalance({
+            tos,
+            ltos: "-",
+            stos: stosReward,
+          });
+        }
+
+        //case2
+        //STOS relock
+        if (addTos) {
+          console.log("go");
+          console.log(inputValue);
+          const tosAmount = convertToWei(
+            inputValue.stake_relockModal_tos_balance
+          );
+          console.log(tosAmount);
+          const possibleLTOSAmount =
+            await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
+          console.log(possibleLTOSAmount);
+
+          const remainedLTOS = await StakingV2Proxy_CONTRACT.remainedLtos(
+            stakeId
+          );
+          console.log(remainedLTOS);
+
+          const totalAmount =
+            BigNumber.from(possibleLTOSAmount).add(remainedLTOS);
+          const ltos =
+            convertNumber({
+              amount: totalAmount.toString(),
+              localeString: true,
+            }) || "0";
+
+          setInputTosAmount(
+            Number(inputValue.stake_relockModal_tos_balance.replaceAll(",", ""))
+          );
+
+          return setNewBalance({
+            tos: "0",
             ltos,
             stos: stosReward,
           });
         }
       }
     }
-    fetchUpdateModalData().catch((e) => {
+    fetchRolockModalData().catch((e) => {
       console.log("**useUpdateModalAfterEndTimeData2 err**");
       console.log(e);
     });
-  }, [stakeId, StakingV2Proxy_CONTRACT, inputValue, stosReward]);
+  }, [stakeId, StakingV2Proxy_CONTRACT, inputValue, stosReward, addTos]);
 
   useEffect(() => {
     async function fetchEndTime() {
-      if (LockTOS_CONTRACT && inputValue?.stake_updateModal_period) {
+      if (LockTOS_CONTRACT && inputValue?.stake_relockModal_period) {
         //endTime
-        const inputPeriod = inputValue.stake_updateModal_period;
+        const inputPeriod = inputValue.stake_relockModal_period;
         const sTosEpochUnit = await LockTOS_CONTRACT.epochUnit();
         const unlockTimeStamp =
           getNowTimeStamp() + inputPeriod * Number(sTosEpochUnit.toString());
@@ -86,7 +123,7 @@ function useUpdateModalAfterEndTime(): UseUpdateMAfterEndTime {
       console.log("**useUpdateMAfterEndTime2 err**");
       console.log(e);
     });
-  }, [LockTOS_CONTRACT, inputValue.stake_updateModal_period]);
+  }, [LockTOS_CONTRACT, inputValue.stake_relockModal_period]);
 
   return {
     newBalance,

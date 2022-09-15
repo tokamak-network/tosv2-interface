@@ -1,4 +1,6 @@
 import {
+  stake_relockModal_inputState,
+  stake_relockModal_state,
   stake_stakeModal_input,
   stake_stakeModal_state,
   stake_unstakeModal_input,
@@ -35,6 +37,14 @@ function useStakeInput(key: InputKey): {
   );
   const resetUnstakeModalValue = useResetRecoilState(stake_unstakeModal_input);
 
+  const relockModal_inputValues = useRecoilValue(stake_relockModal_state);
+  const [relockModalValue, setRelockModalValue] = useRecoilState(
+    stake_relockModal_inputState
+  );
+  const resetRelockModalValue = useResetRecoilState(
+    stake_relockModal_inputState
+  );
+
   switch (key) {
     case "stake_modal":
       return {
@@ -56,6 +66,13 @@ function useStakeInput(key: InputKey): {
         value: unstakeModalValue,
         setValue: setUnstakeModalValue,
         resetValue: resetUnstakeModalValue,
+      };
+    case "relock_modal":
+      return {
+        inputValue: relockModal_inputValues,
+        value: relockModalValue,
+        setValue: setRelockModalValue,
+        resetValue: resetRelockModalValue,
       };
     default:
       return {
