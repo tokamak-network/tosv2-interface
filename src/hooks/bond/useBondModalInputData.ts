@@ -188,10 +188,10 @@ function useBondModalInputData(marketId: number): UseUnstake {
             ethAmountWei
           );
 
-        console.log("gogo");
-        console.log(tosPrice.toString());
-        console.log(ethAmountWei.toString());
-        console.log(tosAmount.toString());
+        // console.log("gogo");
+        // console.log(tosPrice.toString());
+        // console.log(ethAmountWei.toString());
+        // console.log(tosAmount.toString());
 
         const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
           tosAmount

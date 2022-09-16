@@ -6,6 +6,7 @@ import UnstakeModal from "pages/components/stake/UnstakeModal";
 import UpdateModal from "pages/components/stake/UpdateModal";
 import UpdateModalAfterEndTime from "pages/components/stake/UpdateModalAfterEndTime";
 import TopCardContainer from "./components/common/card/TopCardContainer";
+import MultiUnstakeModal from "./components/stake/MultiUnstakeModal";
 
 const Stake = () => {
   const theme = useTheme();
@@ -22,6 +23,7 @@ const Stake = () => {
       <UnstakeModal></UnstakeModal>
       <UpdateModal></UpdateModal>
       <UpdateModalAfterEndTime></UpdateModalAfterEndTime>
+      <MultiUnstakeModal></MultiUnstakeModal>
     </Flex>
   );
 };

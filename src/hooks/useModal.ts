@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 
 function useModal(
   modalType?: string,
-  modalDataObj?: {},
+  modalDataObj?: {} | [],
   setInitialValue?: React.Dispatch<SetStateAction<any>>
 ) {
   const [selectedModal, setSelectedModal] = useRecoilState(modalState);

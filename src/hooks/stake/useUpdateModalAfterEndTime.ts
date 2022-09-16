@@ -66,8 +66,6 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
         //case2
         //STOS relock
         if (addTos) {
-          console.log("go");
-          console.log(inputValue);
           const tosAmount = convertToWei(
             inputValue.stake_relockModal_tos_balance
           );

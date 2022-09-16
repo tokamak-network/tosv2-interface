@@ -149,9 +149,9 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         {isOver && (
           <Flex w={"100%"} justifyContent={"center"} mb={"21px"}>
             <CustomCheckBox
-              value={{ test: "test" }}
               valueKey={""}
               pageKey={"Stake_screen"}
+              params={cardData}
             ></CustomCheckBox>
             <Text
               ml={"9px"}

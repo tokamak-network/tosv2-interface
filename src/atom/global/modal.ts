@@ -7,7 +7,7 @@ const modalState = atom({
 
 const modalData = atom({
   key: "modalData",
-  default: {} as any,
+  default: {} as any | [] as any,
 });
 
 const selectedModalState = selector({

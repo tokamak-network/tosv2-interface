@@ -1,7 +1,12 @@
 import { Box, Checkbox, Input, useColorMode, useTheme } from "@chakra-ui/react";
-import useCheckbox from "hooks/useCheckbox";
+import {
+  checkboxAll,
+  checkboxsState,
+  selectedCheckboxState,
+} from "atom/global/checkbox";
 import usePathName from "hooks/usePathName";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useCallback, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { PageKey, Pages } from "types";
 
 type CheckBoxProp = {
@@ -16,6 +21,10 @@ type CheckBoxProp = {
   isChecked?: boolean;
   state?: boolean;
   setState?: React.Dispatch<SetStateAction<boolean>>;
+  action?: () => void;
+  elseAction?: () => void;
+  checkAll?: boolean;
+  params?: any;
 };
 
 const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
@@ -31,31 +40,56 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
     isChecked,
     state,
     setState,
+    action,
+    elseAction,
+    checkAll,
+    params,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { selectedCheckbox, setThisCheckboxValue } = useCheckbox();
   const { pathName } = usePathName();
-  const [isCheckedAll, setIsChecked] = useState<boolean>(false);
+  const [isCheckdAll, setIsCheckdAll] = useRecoilState(checkboxAll);
+  const [checkboxState, setCheckboxState] = useRecoilState(checkboxsState);
+  const [checkThisBox, setCheckThisBox] = useState<boolean>(state || false);
 
   useEffect(() => {
-    const isCheckedAll = selectedCheckbox?.filter((data) => {
-      if (data.pageKey === pageKey) {
-        return data.values === "selectAll";
-      }
-    });
-
-    if (isCheckedAll) {
-      return setIsChecked(isCheckedAll.length > 0);
+    if (pageKey && isCheckdAll === pageKey) {
+      setCheckThisBox(true);
+    } else {
+      setCheckThisBox(false);
     }
-  }, [selectedCheckbox, pageKey]);
+  }, [isCheckdAll, pageKey, setState]);
 
-  // useEffect(() => {
-  //   // (async () => {
-  //   // })();
-  // }, [isCheckedAll]);
+  useEffect(() => {
+    if (checkThisBox && checkboxState && params) {
+      const isExist = checkboxState?.filter((data) => {
+        if (data?.stakedId) return data.stakedId === params.stakedId;
+      });
 
-  // console.log(selectedCheckbox);
+      if (isExist.length === 0) {
+        const value = [...checkboxState, params];
+        return setCheckboxState(value);
+      }
+    }
+  }, [params, checkThisBox, checkboxState, setCheckboxState]);
+
+  useEffect(() => {
+    if (checkThisBox === false && checkboxState && params) {
+      const isExist = checkboxState?.filter((data) => {
+        if (data?.stakedId) return data.stakedId === params.stakedId;
+      });
+      if (isExist.length === 1) {
+        const newValue = checkboxState?.filter((data) => {
+          if (data?.stakedId) return data.stakedId !== params.stakedId;
+        });
+        setCheckboxState(newValue);
+      }
+    }
+  }, [checkThisBox, checkboxState, params, setCheckboxState]);
+
+  console.log("-----");
+  console.log(isCheckdAll);
+  console.log(checkboxState);
 
   return (
     <Checkbox
@@ -64,19 +98,21 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
         borderRadius: "4px",
         borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
       }}
-      isChecked={state}
+      isChecked={checkThisBox}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = e.target.checked;
         if (setState) {
           setState(isChecked);
+        } else {
+          setCheckThisBox(isChecked);
         }
-        // setIsChecked(isChecked);
-        // setThisCheckboxValue({
-        //   page: pathName as Pages,
-        //   values: isChecked,
-        //   key: `${pathName}_${valueKey}`,
-        //   pageKey,
-        // });
+        if (checkAll && pageKey) {
+          if (isChecked) {
+            setIsCheckdAll(pageKey);
+          } else {
+            setIsCheckdAll(undefined);
+          }
+        }
       }}
     ></Checkbox>
   );
