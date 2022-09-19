@@ -183,6 +183,7 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
         // @ts-ignore
         if (
           typeof window !== "undefined" &&
+          //@ts-ignore
           !(window?.web3 || window?.ethereum)
         ) {
           if (option.name === "MetaMask") {
