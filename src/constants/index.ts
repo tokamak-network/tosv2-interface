@@ -5,14 +5,14 @@ import { ethers } from "ethers";
 
 export const REACT_APP_MODE = process.env.REACT_APP_MODE as string;
 export const NetworkContextName = `${new Date().getTime()}-NETWORK`;
-export const DEFAULT_NETWORK = REACT_APP_MODE === "DEV" ? 4 : 1;
+export const DEFAULT_NETWORK = REACT_APP_MODE === "PRODUCTION" ? 1 : 5;
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const MAINNET_API = process.env.API_PRODUCTION;
 const DEV_API = process.env.API_DEV;
 
 export const BASE_PROVIDER =
   REACT_APP_MODE === "DEV"
-    ? ethers.getDefaultProvider("rinkeby")
+    ? ethers.getDefaultProvider("goerli")
     : ethers.getDefaultProvider("mainnet");
 
 export const MIDDLEWARE_API = REACT_APP_MODE === "DEV" ? MAINNET_API : DEV_API;

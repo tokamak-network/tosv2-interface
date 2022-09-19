@@ -12,6 +12,10 @@ import { RecoilRoot } from "recoil";
 import Header from "pages/components/layout/Header";
 import { WalletModal } from "common/wallet/index";
 import client from "client/client";
+import { useEffect } from "react";
+import useClient from "hooks/useClient";
+import Entry from "./entry";
+
 function MyApp({ Component, pageProps }: AppProps) {
   test();
   const { onOpen, isOpen: isModalOpen, onClose } = useDisclosure();
@@ -19,39 +23,40 @@ function MyApp({ Component, pageProps }: AppProps) {
     onOpen();
   };
 
-  //test
-
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <ApolloProvider client={client}>
         <ColorModeScript initialColorMode={theme.initialColorMode} />
         <ChakraProvider resetCSS theme={theme}>
           <RecoilRoot>
-            <Flex minH={"100vh"} w={"100%"} >
+            <Flex minH={"100vh"} w={"100%"}>
               <NavBar></NavBar>
               {/* PC VIEW = 1136px */}
               {/* TABLET VIEW = 1040px */}
               {/* MOBILE VIEW = 360px */}
-              <Flex flexDir={'column'} w={"100%"} >
-              <Header
-                    walletopen={() => handleWalletModalOpen("wallet")}
-                  ></Header>
-              <Flex justifyContent="center" w={"100%"} alignItems="center" px={["12px", "24px", "0px"]}>
+              <Flex flexDir={"column"} w={"100%"}>
+                <Header
+                  walletopen={() => handleWalletModalOpen("wallet")}
+                ></Header>
                 <Flex
-                  maxW={["100%", "100%", "1136px"]}
-                  flexDir={"column"}
                   justifyContent="center"
                   w={"100%"}
-                  minH={"100vh"}
+                  alignItems="center"
+                  px={["12px", "24px", "0px"]}
                 >
-                 
-                  <Component {...pageProps} />
-                  <Footer></Footer>
-                  <WalletModal isOpen={isModalOpen} onClose={onClose} />
+                  <Flex
+                    maxW={["100%", "100%", "1136px"]}
+                    flexDir={"column"}
+                    justifyContent="center"
+                    w={"100%"}
+                    minH={"100vh"}
+                  >
+                    <Entry Component={Component} {...pageProps} />
+                    <Footer></Footer>
+                    <WalletModal isOpen={isModalOpen} onClose={onClose} />
+                  </Flex>
                 </Flex>
               </Flex>
-              </Flex>
-             
             </Flex>
           </RecoilRoot>
         </ChakraProvider>
