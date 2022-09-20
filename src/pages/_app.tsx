@@ -15,6 +15,7 @@ import client from "client/client";
 import { useEffect } from "react";
 import useClient from "hooks/useClient";
 import Entry from "./entry";
+import AccountDrawer from "./components/layout/AccountDrawer";
 
 function MyApp({ Component, pageProps }: AppProps) {
   test();
@@ -54,6 +55,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <Entry Component={Component} {...pageProps} />
                     <Footer></Footer>
                     <WalletModal isOpen={isModalOpen} onClose={onClose} />
+                    <AccountDrawer
+                      walletopen={() => handleWalletModalOpen("wallet")}
+                    ></AccountDrawer>
                   </Flex>
                 </Flex>
               </Flex>
