@@ -400,6 +400,7 @@ function StakeModal() {
                   pageKey={"Stake_screen"}
                   subKey={"stake_modal"}
                   periodKey={"stake_modal_period"}
+                  isSlideDisabled={fiveDaysLockup}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}

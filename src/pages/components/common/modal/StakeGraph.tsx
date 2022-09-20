@@ -35,8 +35,9 @@ function StakeGraph(props: {
   pageKey: PageKey;
   subKey: InputKey;
   periodKey: PeriodKey;
+  isSlideDisabled: boolean;
 }) {
-  const { pageKey, subKey, periodKey } = props;
+  const { pageKey, subKey, periodKey, isSlideDisabled } = props;
   const labelStyles = {
     mt: "2",
     ml: "-2.5",
@@ -44,7 +45,8 @@ function StakeGraph(props: {
   };
   const { inputValue, value, setValue } = useInput(pageKey, subKey);
   const [sliderValue, setSliderValue] = useState<number>(0);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     setValue({ ...inputValue, [periodKey]: sliderValue });
@@ -55,7 +57,10 @@ function StakeGraph(props: {
       return setSliderValue(Number(inputValue[periodKey]));
   }, [inputValue, periodKey]);
 
-  const { colorMode } = useColorMode();
+  useEffect(() => {
+    if (isSlideDisabled) return setSliderValue(0);
+  }, [isSlideDisabled]);
+
   return (
     <Flex w={"100%"} h="70px" pos="relative">
       <Slider
@@ -68,6 +73,7 @@ function StakeGraph(props: {
         onChange={(val: number) => setSliderValue(val)}
         h={"10px"}
         alignSelf={"end"}
+        isDisabled={isSlideDisabled}
         // onMouseEnter={() => setShowTooltip(true)}
         // onMouseLeave={() => setShowTooltip(false)}
       >

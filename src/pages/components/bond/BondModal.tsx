@@ -446,6 +446,7 @@ function BondModal() {
                   pageKey={"Bond_screen"}
                   subKey={"bond_modal"}
                   periodKey={"bond_modal_period"}
+                  isSlideDisabled={fiveDaysLockup}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}

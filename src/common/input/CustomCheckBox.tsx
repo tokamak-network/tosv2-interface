@@ -25,6 +25,7 @@ type CheckBoxProp = {
   elseAction?: () => void;
   checkAll?: boolean;
   params?: any;
+  belongToSelectAll?: boolean;
 };
 
 const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
@@ -44,6 +45,7 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
     elseAction,
     checkAll,
     params,
+    belongToSelectAll,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -53,12 +55,14 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   const [checkThisBox, setCheckThisBox] = useState<boolean>(state || false);
 
   useEffect(() => {
-    if (pageKey && isCheckdAll === pageKey) {
-      setCheckThisBox(true);
-    } else {
-      setCheckThisBox(false);
+    if (belongToSelectAll) {
+      if (pageKey && isCheckdAll === pageKey) {
+        setCheckThisBox(true);
+      } else {
+        setCheckThisBox(false);
+      }
     }
-  }, [isCheckdAll, pageKey, setState]);
+  }, [isCheckdAll, pageKey, setState, belongToSelectAll]);
 
   useEffect(() => {
     if (checkThisBox && checkboxState && params) {
@@ -94,7 +98,7 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
         borderRadius: "4px",
         borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
       }}
-      isChecked={checkThisBox}
+      isChecked={belongToSelectAll ? checkThisBox : state}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         const isChecked = e.target.checked;
         if (setState) {

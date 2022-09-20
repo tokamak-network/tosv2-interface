@@ -424,6 +424,7 @@ function UpdateModalAfterEndTime() {
                   pageKey="Stake_screen"
                   periodKey="stake_relockModal_period"
                   subKey="relock_modal"
+                  isSlideDisabled={false}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}

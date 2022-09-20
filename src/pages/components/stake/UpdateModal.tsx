@@ -401,6 +401,7 @@ function UpdateModal() {
                   pageKey={"Stake_screen"}
                   subKey={"update_modal"}
                   periodKey={"stake_updateModal_period"}
+                  isSlideDisabled={false}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
