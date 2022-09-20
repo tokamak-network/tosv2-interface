@@ -20,7 +20,7 @@ function useStakeV2() {
         const ltosIndexBN = await StakingV2Proxy_CONTRACT.possibleIndex();
         const ltosIndex = convertNumber({
           amount: ltosIndexBN?.toString(),
-          decimalPoints: 6,
+          decimalPoints: 7,
         }) as string;
 
         const rebase = await StakingV2Proxy_CONTRACT.epoch();

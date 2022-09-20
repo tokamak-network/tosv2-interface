@@ -36,7 +36,7 @@ function StakeTitle() {
 
         <Flex alignItems={"center"}>
           <Text fontSize={14} color={"blue.200"} mr={"6px"}>
-            Balance : {userLTOSBalance} LTOS / {userSTOSBalance}sTOS /{" "}
+            Balance : {userLTOSBalance} LTOS / {userSTOSBalance} sTOS /{" "}
             {userTOSBalance} TOS
           </Text>
           <Image src={ARROW_RIGHT} alt={"ARROW_RIGHT"}></Image>
@@ -53,7 +53,7 @@ function StakeTitle() {
           }
           onClick={openModal}
           iconName={"Plus"}
-          iconLocation={'left'}
+          iconLocation={"left"}
         ></SubmitButton>
       </Flex>
     </Flex>

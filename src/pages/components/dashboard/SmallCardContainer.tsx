@@ -45,14 +45,14 @@ const SmallCardContainer = () => {
           priceChangePercent: 15,
           title: "TOS Price",
           tooltip: true,
-          tooltipMessage:'TOS market price in USD'
+          tooltipMessage: "TOS market price in USD",
         },
         {
-          price: commafy(backingPerTos) as string,
-          priceUnit: "ETH/TOS",
+          price: commafy(backingPerTos, 6) as string,
+          priceUnit: "/TOS",
           title: "Backing per TOS",
           tooltip: true,
-          tooltipMessage:'Amount of treasury asset backed per 1 TOS in ETH'
+          tooltipMessage: "Amount of treasury asset backed per 1 TOS in ETH",
         },
         {
           price: commafy(ltosPrice) as string,
@@ -60,24 +60,22 @@ const SmallCardContainer = () => {
           priceChangePercent: 15,
           title: "LTOS Price",
           tooltip: true,
-          tooltipMessage:'The price of 1 LTOS when they are converted to TOS using LTOS index: LTOS Price = TOS Price x LTOS index'
+          tooltipMessage:
+            "The price of 1 LTOS when they are converted to TOS using LTOS index: LTOS Price = TOS Price x LTOS index",
         },
         {
-          price: commafy(ltosIndex) as string,
+          price: commafy(ltosIndex, 7) as string,
           priceUnit: "TOS",
           priceChangePercent: 15,
           title: "LTOS Index",
           tooltip: true,
-          tooltipMessage:'Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours.'
+          tooltipMessage:
+            "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours.",
         },
       ];
       setCardList(dummyData);
-    
-      
     }
   }, [Treasury_CONTRACT, data]);
-
-
 
   if (width < 490) {
     return (
