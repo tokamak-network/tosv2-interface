@@ -88,11 +88,17 @@ function AccountDrawer(props: HeaderProps) {
                 justifyContent={"space-between"}
                 mt={"6px"}
               >
-                <Flex alignItems={"center"}>
+                <Flex alignItems={"center"} h={"25px"}>
                   <Text fontSize={18}>{userTOSBalance}</Text>
-                  <Text fontSize={12} ml={"5px"}>
+                  <Flex
+                    fontSize={12}
+                    height={"27px"}
+                    ml={"5px"}
+                    alignItems={"flex-end"}
+                    pb={"2px"}
+                  >
                     TOS
-                  </Text>
+                  </Flex>
                 </Flex>
                 <SubmitButton name="Stake" w={"90px"} h={"30px"}></SubmitButton>
               </Flex>
@@ -106,17 +112,29 @@ function AccountDrawer(props: HeaderProps) {
                 mt={"8px"}
               >
                 <Flex alignItems={"center"}>
-                  <Text fontSize={18}>{userLTOSBalance}</Text>
-                  <Text fontSize={12} ml={"5px"}>
+                  <Text fontSize={16}>{userLTOSBalance}</Text>
+                  <Flex
+                    fontSize={12}
+                    height={"24px"}
+                    ml={"5px"}
+                    alignItems={"flex-end"}
+                    pb={"2px"}
+                  >
                     LTOS
-                  </Text>
+                  </Flex>
                 </Flex>
                 <Text color={"#64646f"}>/</Text>
                 <Flex alignItems={"center"}>
-                  <Text fontSize={18}>{userSTOSBalance}</Text>
-                  <Text fontSize={12} ml={"5px"}>
+                  <Text fontSize={16}>{userSTOSBalance}</Text>
+                  <Flex
+                    fontSize={12}
+                    height={"24px"}
+                    ml={"5px"}
+                    alignItems={"flex-end"}
+                    pb={"2px"}
+                  >
                     sTOS
-                  </Text>
+                  </Flex>
                 </Flex>
               </Flex>
             </GridItem>
