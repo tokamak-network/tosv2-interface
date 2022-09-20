@@ -33,7 +33,7 @@ function useUser(): UseUser {
         return setUserData({
           tosAllowance: Number(convertNumber({ amount: allowance.toString() })),
           stakeList,
-          simpleStakingId: stakeList[1].toString(),
+          simpleStakingId: stakeList[1]?.toString(),
         });
       }
     }

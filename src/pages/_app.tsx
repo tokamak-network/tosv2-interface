@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <RecoilRoot>
             <Flex minH={"100vh"} w={"100%"}>
               <NavBar></NavBar>
-              {/* PC VIEW = 1136px */}
+              {/* PC VIEW = 1440px */}
               {/* TABLET VIEW = 1040px */}
               {/* MOBILE VIEW = 360px */}
               <Flex flexDir={"column"} w={"100%"}>

@@ -87,10 +87,6 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
     }
   }, [checkThisBox, checkboxState, params, setCheckboxState]);
 
-  console.log("-----");
-  console.log(isCheckdAll);
-  console.log(checkboxState);
-
   return (
     <Checkbox
       size={"lg"}

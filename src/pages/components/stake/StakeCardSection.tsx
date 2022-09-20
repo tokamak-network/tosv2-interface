@@ -64,16 +64,20 @@ function StakeCardSection() {
         justifyContent={isSmallerThan750 ? "center" : ""}
         flexWrap={"wrap"}
       >
-        {currentPageList?.map((cardData: StakeCardProps, index: number) => {
-          if (cardData) {
-            return (
-              <StakeCard
-                cardData={cardData}
-                key={cardData.principal + index}
-              ></StakeCard>
-            );
-          }
-        })}
+        {currentPageList.length > 0 ? (
+          currentPageList?.map((cardData: StakeCardProps, index: number) => {
+            if (cardData) {
+              return (
+                <StakeCard
+                  cardData={cardData}
+                  key={cardData.principal + index}
+                ></StakeCard>
+              );
+            }
+          })
+        ) : (
+          <Flex>go</Flex>
+        )}
       </Flex>
       <StakeScreenBottom
         pageSize={pageSize}
