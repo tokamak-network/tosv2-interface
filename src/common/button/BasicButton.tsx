@@ -12,20 +12,12 @@ type BasicButtonProp = {
   h?: number | string;
   isDisabled?: boolean;
   style?: any;
-  onClick?: Function;
+  onClick?: () => void;
   tooltip?: string;
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const {
-    name,
-    w,
-    h,
-    isDisabled,
-    style,
-    onClick,
-    tooltip,
-  } = props;
+  const { name, w, h, isDisabled, style, onClick, tooltip } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   return (

@@ -1,5 +1,6 @@
 import { color, Flex, Text, useColorMode } from "@chakra-ui/react";
 import { checkboxAll, selectedCheckboxState } from "atom/global/checkbox";
+import BasicButton from "common/button/BasicButton";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import useModal from "hooks/useModal";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -30,7 +31,7 @@ function StakeCheckbox() {
           Selected : {selectedCards.length}
         </Text>
       </Flex>
-      <Flex
+      {/* <Flex
         w={"160px"}
         h={"45px"}
         borderWidth={1}
@@ -48,7 +49,14 @@ function StakeCheckbox() {
         >
           Unstake Selected
         </Text>
-      </Flex>
+      </Flex> */}
+      <BasicButton
+        name="Unstake Selected"
+        isDisabled={selectedCards.length === 0}
+        w={"160px"}
+        h={"45px"}
+        onClick={() => openModal()}
+      ></BasicButton>
     </Flex>
   );
 }
