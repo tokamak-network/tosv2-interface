@@ -152,6 +152,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
               valueKey={""}
               pageKey={"Stake_screen"}
               params={cardData}
+              belongToSelectAll={true}
             ></CustomCheckBox>
             <Text
               ml={"9px"}

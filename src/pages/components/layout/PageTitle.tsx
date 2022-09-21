@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import useRebaseTime from "hooks/useRebaseTime";
 
 const UpdatedOn = () => {
   const { colorMode } = useColorMode();
@@ -53,7 +54,7 @@ const PageTitle = () => {
               <Text mx={"7px"}>{">"}</Text>
               <Text>Bond</Text>
               <Text mx={"7px"}>{">"}</Text>
-              <Text color={"blue.200"}>Bondlist</Text>
+              <Text color={"blue.200"}>Bond List</Text>
             </Flex>
             <UpdatedOn></UpdatedOn>
           </Flex>
@@ -79,21 +80,19 @@ const PageTitle = () => {
     }
   }, [pathName, isMobile, colorMode]);
 
-  const { stakeV2 } = useStakeV2();
+  const rebaseTime = useRebaseTime();
 
   const AdditionalInfo = () => {
     switch (pathName) {
-      case "Stake":
+      default:
         return (
           <Flex fontSize={12} alignItems="center">
             <Text mr={"5px"} color={"#2775ff"}>
-              {stakeV2?.nextRebase || "-"}
+              {rebaseTime}
             </Text>
             <Text color={"#9a9aaf"}>to next rebase</Text>
           </Flex>
         );
-      default:
-        return null;
     }
   };
 
