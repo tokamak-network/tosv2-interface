@@ -68,6 +68,9 @@ function Header(props: HeaderProps) {
   const txPending = useRecoilValue(selectedTxState);
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
 
+  console.log("--go-");
+  console.log(txPending);
+
   return (
     <Flex
       w={"100%"}

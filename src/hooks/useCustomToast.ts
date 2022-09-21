@@ -6,6 +6,7 @@ import {
   toastConfig,
 } from "constants/toast";
 import { useRecoilState } from "recoil";
+import { Contract } from "@ethersproject/contracts";
 
 type ToastPayload = {
   status: "success" | "error";
@@ -19,19 +20,22 @@ function useCustomToast(props?: ToastPayload) {
   const toast = useToast();
   const [txPending, setTxPending] = useRecoilState(selectedTxState);
 
-  async function setTx<T>(contract: Promise<T>) {
+  async function setTx(contract: Contract) {
     try {
-      const receipt = await contract;
       setTxPending(true);
+      const receipt = contract;
       if (receipt) {
-        setTxPending(false);
-        return toast({
+        toast({
           status: "success",
           title: "Success",
           description: `Tx is successfully pending!`,
           ...successContainerStyle,
           ...toastConfig,
         });
+        const wait = await receipt.wait();
+        if (wait) {
+          return setTxPending(false);
+        }
       }
     } catch (err) {
       setTxPending(false);
