@@ -19,7 +19,7 @@ function TipCard(props: { msg: string[] }) {
       py={"20px"}
     >
       <Flex flexDir={"column"}>
-        {msg.map((text: string, index: number) => (
+        {msg?.map((text: string, index: number) => (
           <Text key={text.length + index} color={"blue.100"} fontSize={"14px"}>
             {text}
           </Text>
