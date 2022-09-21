@@ -1,7 +1,7 @@
 const constant = {
   rebase: {
-    epoch: 600,
-    epochTimeStamp: 1660888927,
+    epochLength: 600,
+    beginEpochEnd: 1662619272,
   },
   LOCKTOS_maxWeeks: 156,
 };

@@ -1,3 +1,4 @@
+import constant from "constant";
 import { useEffect, useState } from "react";
 import {
   convertTimeStamp,
@@ -12,6 +13,7 @@ Notion link : https://www.notion.so/onther/rebase-time-403b95c624bc4b888978ff47e
 
 function useRebaseTime() {
   const [rebaseTime, setRebaseTime] = useState<string>("-");
+  const { epochLength, beginEpochEnd } = constant.rebase;
 
   useEffect(() => {
     // epoch.length = 600
@@ -20,7 +22,8 @@ function useRebaseTime() {
     //time left until next rebase = 600 - (현재시간_서버시간 - (begin_epoch.end-epoch.length))%epoch.length
     setInterval(() => {
       const nowTimeStamp = getNowTimeStamp();
-      const nextRebaseTimeStamp = 600 - ((nowTimeStamp - 1660888927) % 600);
+      const nextRebaseTimeStamp =
+        epochLength - ((nowTimeStamp - beginEpochEnd) % epochLength);
       const nextRebaseTime = convertTimeStamp(nextRebaseTimeStamp, "HH:mm:ss");
       setRebaseTime(nextRebaseTime);
     }, 1000);

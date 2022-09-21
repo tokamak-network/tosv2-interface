@@ -12,7 +12,8 @@ function Entry({ Component, pageProps }: AppProps) {
     }
   }, [isConnectedToChain, networkName]);
 
-  return <Component {...pageProps} />;
+  if (Component && pageProps) return <Component {...pageProps} />;
+  return null;
 }
 
 export default Entry;
