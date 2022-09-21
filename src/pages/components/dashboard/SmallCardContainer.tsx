@@ -27,7 +27,7 @@ const SmallCardContainer = () => {
   const { loading, error, data } = useQuery(GET_DASHBOARD_CARD, {
     variables: {
       period: "-1",
-      limit: 1,
+      limit: 2,
     },
   });
 
@@ -38,11 +38,31 @@ const SmallCardContainer = () => {
     if (data) {
       const { tosPrice, backingPerTos, ltosPrice, ltosIndex } =
         data.getDashboardCard[0];
+
+      const {
+        tosPrice: exTosPrice,
+        backingPerTos: exBackingPerTos,
+        ltosPrice: exLtosPrice,
+        ltosIndex: exLtosIndex,
+      } = data.getDashboardCard[1];
+
+      const tosPriceChangePercent =
+        (Number(commafy(tosPrice - exTosPrice)) / Number(commafy(exTosPrice))) *
+        100;
+      const ltosPriceChangePercent =
+        (Number(commafy(ltosPrice - exLtosPrice)) /
+          Number(commafy(exLtosPrice))) *
+        100;
+      const ltosIndexChangePercent =
+        (Number(commafy(ltosIndex - exLtosIndex)) /
+          Number(commafy(exLtosIndex))) *
+        100;
+
       const dummyData: Dashboard_SmallCardArrType = [
         {
           price: commafy(tosPrice) as string,
           priceUnit: "$",
-          priceChangePercent: 15,
+          priceChangePercent: tosPriceChangePercent,
           title: "TOS Price",
           tooltip: true,
           tooltipMessage: "TOS market price in USD",
@@ -57,7 +77,7 @@ const SmallCardContainer = () => {
         {
           price: commafy(ltosPrice) as string,
           priceUnit: "$",
-          priceChangePercent: 15,
+          priceChangePercent: ltosPriceChangePercent,
           title: "LTOS Price",
           tooltip: true,
           tooltipMessage:
@@ -66,7 +86,7 @@ const SmallCardContainer = () => {
         {
           price: commafy(ltosIndex, 7) as string,
           priceUnit: "TOS",
-          priceChangePercent: 15,
+          priceChangePercent: ltosIndexChangePercent,
           title: "LTOS Index",
           tooltip: true,
           tooltipMessage:

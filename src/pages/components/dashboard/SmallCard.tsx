@@ -1,9 +1,4 @@
-import {
-  Flex,
-  Text,
-  useColorMode,
- 
-} from "@chakra-ui/react";
+import { Flex, Text, useColorMode } from "@chakra-ui/react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useMemo } from "react";
 import { Dashboard_SmallCardType } from "types/dashboard";
@@ -75,17 +70,17 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
       {...style}
     >
       <Flex>
-      <Text
-        color={"gray.100"}
-        fontSize={12}
-        fontWeight={600}
-        h={17}
-        mb={"12px"}
-        mr={"6px"}
-      >
-        {title}
-      </Text>
-      <BasicTooltip label={tooltipMessage} />
+        <Text
+          color={"gray.100"}
+          fontSize={12}
+          fontWeight={600}
+          h={17}
+          mb={"12px"}
+          mr={"6px"}
+        >
+          {title}
+        </Text>
+        <BasicTooltip label={tooltipMessage} />
       </Flex>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex
@@ -95,17 +90,25 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
         >
           {PriceContent}
         </Flex>
-        {priceChangePercent && (
+        {priceChangePercent !== undefined && (
           <Text
             fontSize={18}
-            color={priceChangePercent > 0 ? "red.100" : "blue.200"}
+            color={
+              priceChangePercent > 0
+                ? "red.100"
+                : priceChangePercent === 0
+                ? colorMode === "light"
+                  ? "gray.700"
+                  : "gray.200"
+                : "blue.200"
+            }
           >
             {priceChangePercent > 0 ? "+" : ""}
             {priceChangePercent} {"%"}
           </Text>
         )}
       </Flex>
-      {priceChangePercent && (
+      {priceChangePercent !== undefined && (
         <Flex
           fontSize={11}
           alignSelf={"end"}
