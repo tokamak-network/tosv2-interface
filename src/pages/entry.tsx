@@ -12,7 +12,7 @@ function Entry({ Component, pageProps }: AppProps) {
     }
   }, [isConnectedToChain, networkName]);
 
-  if (Component && pageProps) return <Component {...pageProps} />;
+  if (Component) return <Component {...pageProps} />;
   return null;
 }
 

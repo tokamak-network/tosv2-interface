@@ -5,8 +5,7 @@ import {
   useTheme,
   Link,
   Button,
-  useMediaQuery
-  
+  useMediaQuery,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -28,7 +27,7 @@ function DaoTopContainer() {
     <Flex
       display={isOpen ? "Flex" : "none"}
       w={"100%"}
-      mb={smallerThan1024?'30px' :"60px"}
+      mb={smallerThan1024 ? "30px" : "60px"}
       flexDir={"column"}
       justifyContent={"center"}
       alignItems="center"
@@ -48,7 +47,7 @@ function DaoTopContainer() {
         color={colorMode === "dark" ? "gray.100" : "gray.1000"}
         textAlign="center"
         fontSize={"14px"}
-        mb={smallerThan1024?'30px' :"40px"}
+        mb={smallerThan1024 ? "30px" : "40px"}
         lineHeight={1.71}
         letterSpacing="0.35px"
         fontWeight={"normal"}
@@ -70,7 +69,7 @@ function DaoTopContainer() {
         color={colorMode === "light" ? "gray.800" : "white.200"}
         letterSpacing="0.55px"
         fontWeight="bold"
-        mt={smallerThan1024? '45px':"60px"}
+        mt={smallerThan1024 ? "45px" : "60px"}
       >
         Governance
       </Text>
@@ -96,7 +95,7 @@ function DaoTopContainer() {
           fontSize={"14px"}
         >
           <Text mr="23px">Go to governance</Text>
-          <Image src={ResourcesIcon} />
+          <Image src={ResourcesIcon} alt={"ResourcesIcon"} />
         </Button>
       </Link>
       {/* <SubmitButton
