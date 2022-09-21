@@ -31,7 +31,8 @@ function getTimeLeft(
 function getDuration(
   timeStamp: number,
   format?: string
-): { days: number; hours: number; mins: number } {
+): { days: number; hours: number; mins: number; secs: number } {
+  const sec = 60;
   const min = 60;
   const hour = 3600;
   const day = 86400;
@@ -39,10 +40,13 @@ function getDuration(
   const days = Math.floor(timeStamp / day);
   const hours = Math.floor((timeStamp - day * days) / hour);
   const mins = Math.floor((timeStamp - day * days - hour * hours) / min);
+  const secs = timeStamp - day * days - hour * hours - mins * min;
+
   return {
     days,
     hours,
     mins,
+    secs,
   };
 }
 

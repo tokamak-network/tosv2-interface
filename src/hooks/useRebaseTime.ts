@@ -2,6 +2,7 @@ import constant from "constant";
 import { useEffect, useState } from "react";
 import {
   convertTimeStamp,
+  getDuration,
   getNowTimeStamp,
   getTimeLeft,
   isTimeOver,
@@ -24,8 +25,23 @@ function useRebaseTime() {
       const nowTimeStamp = getNowTimeStamp();
       const nextRebaseTimeStamp =
         epochLength - ((nowTimeStamp - beginEpochEnd) % epochLength);
-      const nextRebaseTime = convertTimeStamp(nextRebaseTimeStamp, "HH:mm:ss");
-      setRebaseTime(nextRebaseTime);
+      const nextRebaseTime = getDuration(nextRebaseTimeStamp, "HH:mm:ss");
+      // console.log(nextRebaseTime);
+      const { hours, mins, secs } = nextRebaseTime;
+      const hour =
+        hours.toString().length === 1
+          ? `0${nextRebaseTime.hours}`
+          : `${nextRebaseTime.hours}`;
+      const min =
+        mins.toString().length === 1
+          ? `0${nextRebaseTime.mins}`
+          : `${nextRebaseTime.mins}`;
+      const sec =
+        secs.toString().length === 1
+          ? `0${nextRebaseTime.secs}`
+          : `${nextRebaseTime.secs}`;
+
+      setRebaseTime(`${hour}.${min}.${sec}`);
     }, 1000);
   }, []);
 

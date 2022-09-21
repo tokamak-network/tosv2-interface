@@ -39,6 +39,7 @@ import commafy from "@/components/commafy";
 import useInput from "hooks/useInput";
 import useUser from "hooks/useUser";
 import useCustomToast from "hooks/useCustomToast";
+import { StakeCardProps } from "types/stake";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -91,6 +92,11 @@ function MultiUnstakeModal() {
   const callUnstake = useCallback(async () => {
     if (StakingV2Proxy_CONTRACT) {
       console.log("--unstake(uint256 _stakeId)--");
+      const stakeIds = selectedModalData.map((cardData: StakeCardProps) => {
+        if (cardData) return cardData.stakedId;
+      });
+      if (stakeIds) {
+      }
       //   const tx = await StakingV2Proxy_CONTRACT.unstake(
       //     selectedModalData.stakedId
       //   );
