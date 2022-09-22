@@ -183,7 +183,7 @@ function GraphContainer() {
       const totalStaked = graphData.map((arrayData: any, index: number) => {
         return {
           x: moment(arrayData.createdAt).unix(),
-          y: Number(arrayData.totalValueStaked),
+          y: Number(arrayData.totalValueStaked) || 0,
         };
       });
 
@@ -199,7 +199,7 @@ function GraphContainer() {
       const runway = graphData.map((arrayData: any, index: number) => {
         return {
           x: moment(arrayData.createdAt).unix(),
-          y: Number(arrayData.runway),
+          y: Number(arrayData.runway) || 0,
         };
       });
       const runwayData = [
@@ -215,19 +215,19 @@ function GraphContainer() {
       const treasuryBalance = graphData.map((arrayData: any, index: number) => {
         return {
           x: moment(arrayData.createdAt).unix(),
-          y: Number(arrayData.treasuryBalance),
+          y: Number(arrayData.treasuryBalance) || 0,
         };
       });
 
       const treasuryData = [
         {
-        id: "#2775ff",
-        color: "hsl(218, 100%, 58%)",
-        data: [...treasuryBalance].reverse(),
-        }
-      ]
+          id: "#2775ff",
+          color: "hsl(218, 100%, 58%)",
+          data: [...treasuryBalance].reverse(),
+        },
+      ];
 
-      setTreasuryBalanceDatas(treasuryData)
+      setTreasuryBalanceDatas(treasuryData);
     }
   }, [filteredValue, data]);
 
@@ -290,11 +290,15 @@ function GraphContainer() {
         <Graph
           data={treasuryBalanceDatas}
           title="Treasury Balance"
-          amount={treasuryBalanceDatas[0]
-            ? `$ ${Number(
-              treasuryBalanceDatas[0].data[treasuryBalanceDatas[0].data.length - 1]
-                  .y
-              ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`:''}
+          amount={
+            treasuryBalanceDatas[0]
+              ? `$ ${Number(
+                  treasuryBalanceDatas[0].data[
+                    treasuryBalanceDatas[0].data.length - 1
+                  ].y
+                ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+              : ""
+          }
           tooltipTitle="“Treasury Balance” represents the 
           total dollar value of non-TOS assets
           owned by the treasury that can be
