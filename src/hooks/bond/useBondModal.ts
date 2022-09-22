@@ -57,6 +57,7 @@ function useBondModal() {
         const marketData = await BondDepositoryProxy_CONTRACT?.viewMarket(
           propData.index
         );
+
         const maxBondWei =
           await BondDepositoryProxy_CONTRACT?.purchasableAssetAmountAtOneTime(
             marketData.tosPrice,
@@ -77,15 +78,17 @@ function useBondModal() {
         const marketPrice = commafy(apiData.getDashboard[0].tosPrice);
         const discount =
           Number(marketPrice) -
-          Number(propData.bondingPrice) /
-            (Number(commafy(apiData.getDashboard[0].tosPrice)) * 100);
+          Number(propData.bondingPrice) / (Number(marketPrice) * 100);
 
         //minbond
         //285,753 x gasPrice / 1e9 / Discount
         // ex:
         // gasPrice = 30 gwei, Discount = 5% = 0.05
         // Min Bond = 285,753 x 30 / 1e9 / 0.05 = 0.1714518 ETH
-        const minbond = (285753 * gasPrice) / 1e9 / discount;
+        const minbond =
+          (285753 * gasPrice) /
+          1e9 /
+          Number(propData.discountRate.replaceAll("%", ""));
 
         setBondModalData({
           bondPrice: `$${commafy(bondPrice)}`,
