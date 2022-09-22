@@ -148,7 +148,9 @@ function UpdateModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
-  const { selectedModalData, selectedModal } = useModal();
+  const { selectedModalData, selectedModal } = useModal<{
+    ltosAmount: string | undefined;
+  }>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue } = useInput(
