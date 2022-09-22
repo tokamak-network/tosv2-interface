@@ -28,12 +28,8 @@ const BasicTooltip: React.FC<tooltipProps> = (props) => {
       fontSize="12px"
       border={colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"}
     >
-      <Icon
-        display={label?.length === 0 ? "none" : ""}
-        h={"16px"}
-        minW={"16px"}
-        as={QuestionOutlineIcon}
-      />
+     <QuestionOutlineIcon   display={label?.length === 0 ? "none" : ""}  h={"16px"}
+        minW={"16px"}/>
     </Tooltip>
   );
 };
