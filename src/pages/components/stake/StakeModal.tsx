@@ -149,7 +149,7 @@ function StakeModal() {
   const { maxWeeks } = useStosReward();
 
   const propData = selectedModalData as BondCardProps;
-  const marketId = propData.index;
+  const marketId = propData?.index;
 
   const { setTx } = useCustomToast();
 

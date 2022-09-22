@@ -10,7 +10,7 @@ type UseUnstake = {
   maxValue: string;
 };
 
-function useUnstakeModalData(stakeId: string | string[]) {
+function useUnstakeModalData(stakeId: string | undefined) {
   const [unstakeData, setUnstakeData] = useState<UseUnstake | undefined>(
     undefined
   );

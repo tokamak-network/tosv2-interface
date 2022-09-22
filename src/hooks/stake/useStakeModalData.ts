@@ -26,7 +26,6 @@ type stakeModalInputData = {
 function useStakeModaldata() {
   const { selectedModalData } = useModal();
   const propData = selectedModalData as BondCardProps;
-  const marketId = propData.index;
   const { inputValue } = useInput("Stake_screen", "stake_modal");
   const inputAmount = inputValue.stake_modal_balance;
   const inputPeriod = inputValue.stake_modal_period;
@@ -140,7 +139,6 @@ function useStakeModaldata() {
   }, [
     BondDepositoryProxy_CONTRACT,
     StakingV2Proxy_CONTRACT,
-    marketId,
     inputAmount,
     inputPeriod,
     getEstimatedReward,

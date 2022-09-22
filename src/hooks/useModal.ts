@@ -3,13 +3,15 @@ import { modalData, modalState } from "atom/global/modal";
 import React, { SetStateAction } from "react";
 import { useRecoilState } from "recoil";
 
-function useModal(
+function useModal<T>(
   modalType?: string,
-  modalDataObj?: {} | [],
+  modalDataObj?: T | undefined,
   setInitialValue?: React.Dispatch<SetStateAction<any>>
 ) {
   const [selectedModal, setSelectedModal] = useRecoilState(modalState);
-  const [selectedModalData, setSelectedModalData] = useRecoilState(modalData);
+  const [selectedModalData, setSelectedModalData] = useRecoilState<
+    T | undefined
+  >(modalData);
   const [value, setValue] = useRecoilState(inputState);
 
   const openModal = () => {
@@ -23,7 +25,7 @@ function useModal(
 
   const closeModal = () => {
     setSelectedModal("");
-    setSelectedModalData({});
+    setSelectedModalData(undefined);
     setValue(defaultValue);
   };
 

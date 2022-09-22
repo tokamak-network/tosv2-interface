@@ -39,6 +39,7 @@ import commafy from "@/components/commafy";
 import useInput from "hooks/useInput";
 import useUser from "hooks/useUser";
 import useCustomToast from "hooks/useCustomToast";
+import { StakeCardProps } from "types/stake";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -64,7 +65,10 @@ function UnstakeModal() {
   const selectedModal = useRecoilValue(selectedModalState);
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal, selectedModalData } = useModal();
+  const { closeModal, selectedModalData } = useModal<{
+    hasInput: boolean;
+    stakedId: string;
+  }>();
   const [hasInput, setHasInput] = useState<boolean>(false);
   const { stakeV2 } = useStakeV2();
   const { userLTOSBalance } = useUserBalance();
@@ -74,7 +78,7 @@ function UnstakeModal() {
   );
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { unstakeData, youWillGet, youWillGetMax } = useUnstake(
-    selectedModalData.stakedId
+    selectedModalData?.stakedId
   );
   const { simpleStakingId } = useUser();
   const { setTx } = useCustomToast();
@@ -116,9 +120,9 @@ function UnstakeModal() {
         return closeThisModal();
       }
       console.log("--unstake(uint256 _stakeId)--");
-      console.log(selectedModalData.stakedId);
+      console.log(selectedModalData?.stakedId);
       const tx = await StakingV2Proxy_CONTRACT.unstake(
-        selectedModalData.stakedId
+        selectedModalData?.stakedId
       );
       setTx(tx);
       return closeThisModal();
