@@ -186,7 +186,7 @@ function BondModal() {
     useState(fiveDaysLater);
 
   const propData = selectedModalData as BondCardProps;
-  const marketId = propData.index;
+  const marketId = propData?.index;
 
   const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
 

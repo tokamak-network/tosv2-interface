@@ -1,9 +1,11 @@
 const constant = {
   rebase: {
-    epochLength: 600,
-    beginEpochEnd: 1662619272,
+    epochLength: 28800,
+    beginEpochEnd: 1663772748,
   },
   LOCKTOS_maxWeeks: 156,
+  rebasePeriod: "",
+  mainnetGasPrice: "6849315",
 };
 
 export default constant;

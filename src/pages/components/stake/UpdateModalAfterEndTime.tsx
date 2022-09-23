@@ -147,7 +147,10 @@ function UpdateModalAfterEndTime() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
-  const { selectedModalData, selectedModal } = useModal();
+  const { selectedModalData, selectedModal } = useModal<{
+    stakeId: string;
+    ltosAmount: string;
+  }>();
   const { stakeV2 } = useStakeV2();
   const [addTos, setAddTos] = useState<boolean>(false);
   const { inputValue, setResetValue, setValue } = useInput(
@@ -162,7 +165,7 @@ function UpdateModalAfterEndTime() {
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const { newBalance, newEndTime } = useUpdateModalAfterEndTime(addTos);
 
-  const stakeId = selectedModalData.stakeId;
+  const stakeId = selectedModalData?.stakeId;
   const ltosAmount = selectedModalData?.ltosAmount;
 
   const contentList = [

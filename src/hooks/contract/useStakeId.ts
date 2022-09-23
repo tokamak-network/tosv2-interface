@@ -9,7 +9,7 @@ function useStakeId(): {
   const [stakeId, setStakeId] = useState<string | undefined>(undefined);
   const [connectId, setConnectId] = useState<string | undefined>(undefined);
 
-  const { selectedModalData } = useModal();
+  const { selectedModalData } = useModal<{ stakeId: string | undefined }>();
   const { StakingV2Proxy_CONTRACT } = useCallContract();
 
   useEffect(() => {

@@ -33,13 +33,13 @@ import { BalanceInput } from "common/input/TextInput";
 import useUserBalance from "hooks/useUserBalance";
 import useInputValue from "hooks/useInputValue";
 import useCallContract from "hooks/useCallContract";
-import { convertToWei } from "@/components/number";
-import useUnstake from "hooks/stake/useUnstakeModalData";
+import { convertNumber, convertToWei } from "@/components/number";
 import commafy from "@/components/commafy";
 import useInput from "hooks/useInput";
 import useUser from "hooks/useUser";
 import useCustomToast from "hooks/useCustomToast";
 import { StakeCardProps } from "types/stake";
+import { BigNumber } from "ethers";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -65,23 +65,23 @@ function MultiUnstakeModal() {
   const selectedModal = useRecoilValue(selectedModalState);
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal, selectedModalData } = useModal();
+  const { closeModal, selectedModalData } = useModal<StakeCardProps[]>();
   const { stakeV2 } = useStakeV2();
   const { userLTOSBalance } = useUserBalance();
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { simpleStakingId } = useUser();
   const { setTx } = useCustomToast();
-
-  console.log(selectedModalData);
+  const [youGiveAmount, setYouGiveAmount] = useState<string>("-");
+  const [youWillGetAmount, setYouWillGetAmount] = useState<string>("-");
 
   const contentList = [
     {
       title: "You Give",
-      content: `${"" || "0"} LTOS`,
+      content: `${youGiveAmount} LTOS`,
     },
     {
       title: "You Will Get",
-      content: `${"" || "0"} TOS`,
+      content: `${youWillGetAmount} TOS`,
     },
   ];
 
@@ -90,20 +90,70 @@ function MultiUnstakeModal() {
   }, [closeModal]);
 
   const callUnstake = useCallback(async () => {
+    const stakeIds = selectedModalData?.map((cardData: StakeCardProps) => {
+      if (cardData) return cardData.stakedId;
+    });
     if (StakingV2Proxy_CONTRACT) {
       console.log("--unstake(uint256 _stakeId)--");
-      const stakeIds = selectedModalData.map((cardData: StakeCardProps) => {
+      console.log(stakeIds);
+      if (stakeIds) {
+        const tx = await StakingV2Proxy_CONTRACT.multiUnstake(stakeIds);
+        setTx(tx);
+        return closeThisModal();
+      }
+    }
+  }, [StakingV2Proxy_CONTRACT, closeThisModal, setTx, selectedModalData]);
+
+  useEffect(() => {
+    async function fetchMultiUnstakeModal() {
+      const stakeIds = selectedModalData?.map((cardData: StakeCardProps) => {
         if (cardData) return cardData.stakedId;
       });
-      if (stakeIds) {
+      if (StakingV2Proxy_CONTRACT && stakeIds) {
+        const result = await Promise.all(
+          stakeIds?.map(async (stakeId) => {
+            if (stakeId) {
+              const ltosAmount = await StakingV2Proxy_CONTRACT.remainedLtos(
+                stakeId
+              );
+              const tosAmount =
+                await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
+                  ltosAmount
+                );
+
+              return { ltosAmount, tosAmount };
+            }
+          })
+        );
+        const sumResult = result.reduce((prev, cur) => {
+          const ltosAmount = BigNumber.from(prev?.ltosAmount || "0").add(
+            cur?.ltosAmount
+          );
+          const tosAmount = BigNumber.from(prev?.tosAmount || "0").add(
+            cur?.tosAmount
+          );
+
+          return { ltosAmount, tosAmount };
+        }, undefined);
+        setYouGiveAmount(
+          convertNumber({
+            amount: sumResult?.ltosAmount,
+            localeString: true,
+          }) || "-"
+        );
+        setYouWillGetAmount(
+          convertNumber({
+            amount: sumResult?.tosAmount,
+            localeString: true,
+          }) || "-"
+        );
       }
-      //   const tx = await StakingV2Proxy_CONTRACT.unstake(
-      //     selectedModalData.stakedId
-      //   );
-      //   setTx(tx);
-      //   return closeThisModal();
     }
-  }, [StakingV2Proxy_CONTRACT, closeThisModal, setTx]);
+    fetchMultiUnstakeModal().catch((e) => {
+      console.log("**fetchMultiUnstakeModal err**");
+      console.log(e);
+    });
+  }, [StakingV2Proxy_CONTRACT, selectedModalData]);
 
   return (
     <Modal
