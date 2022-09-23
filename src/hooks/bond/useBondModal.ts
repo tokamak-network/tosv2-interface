@@ -5,10 +5,11 @@ import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";
 import { useQuery } from "@apollo/client";
 import commafy from "@/components/commafy";
 import useCallContract from "hooks/useCallContract";
-import { convertNumber } from "@/components/number";
+import { convertNumber, convertToWei } from "@/components/number";
 import { useWeb3React } from "@web3-react/core";
-import { ethers, utils } from "ethers";
+import { BigNumber, ethers, utils } from "ethers";
 import usePrice from "hooks/usePrice";
+import constant from "constant";
 
 type BondModalData = {
   bondPrice: string;
@@ -50,6 +51,7 @@ function useBondModal() {
 
   const context = useWeb3React();
   const { priceData } = usePrice();
+  const { mainnetGasPrice } = constant;
 
   useEffect(() => {
     async function fetchAsyncData() {
@@ -88,13 +90,25 @@ function useBondModal() {
         const minbond =
           (285753 * gasPrice) /
           1e9 /
-          Number(propData.discountRate.replaceAll("%", ""));
+          (Number(propData.discountRate.replaceAll("%", "")) / 100);
+
+        const divParam =
+          Number(propData.discountRate.replaceAll("%", "")) / 100;
+
+        const test = BigNumber.from(convertToWei("285753"))
+          .mul(gasPriceWei)
+          .div(convertToWei(divParam.toString()))
+          .mul(mainnetGasPrice);
+
+        console.log(test);
+        console.log(test.toString());
+        console.log(convertNumber({ amount: test.toString() }));
 
         setBondModalData({
           bondPrice: `$${commafy(bondPrice)}`,
           marketPrice: `$${marketPrice}`,
           discount: `${commafy(discount)}%`,
-          minBond: `${commafy(minbond)}`,
+          minBond: `${commafy(minbond, 4)}`,
           maxBond: `${commafy(maxBond)}`,
           ltosIndex: `${commafy(ltosIndex)}`,
         });

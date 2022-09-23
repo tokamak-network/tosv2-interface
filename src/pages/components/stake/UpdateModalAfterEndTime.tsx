@@ -158,8 +158,6 @@ function UpdateModalAfterEndTime() {
     "relock_modal"
   );
 
-  console.log(selectedModalData);
-
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance, userLTOSBalance } = useUserBalance();

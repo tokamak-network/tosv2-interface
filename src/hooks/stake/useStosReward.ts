@@ -27,22 +27,40 @@ function useStosReward(
 
   useEffect(() => {
     async function fetchStosRewardData() {
+      console.log("go--");
+      console.log(inputTosAmount, inputPeriod);
+
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
-        const numValue = inputTosAmount || 0;
-        const weekPeriod = inputPeriod || 1;
+        // const numValue = inputTosAmount || 0;
+        // const weekPeriod = inputPeriod || 1;
 
-        const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
-        const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
-        const avgProfit = numValue / maxTime;
+        // const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
+        // const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
+        // const avgProfit = numValue / maxTime;
 
-        const now = getNowTimeStamp();
-        const date =
-          Math.floor((now + weekPeriod * oneWeek) / oneWeek) * oneWeek;
+        // const now = getNowTimeStamp();
+        // const date =
+        //   Math.floor((now + weekPeriod * oneWeek) / oneWeek) * oneWeek;
 
-        const estimatedReward = avgProfit * (date - now);
-        const deciamlNum = new Decimal(estimatedReward);
-        const resultNum = deciamlNum.toFixed(3, Decimal.ROUND_HALF_UP);
-        const stosReward = Number(resultNum).toFixed(2);
+        // const estimatedReward = avgProfit * (date - now);
+        // const deciamlNum = new Decimal(estimatedReward);
+        // const resultNum = deciamlNum.toFixed(3, Decimal.ROUND_HALF_UP);
+        // const stosReward = Number(resultNum).toFixed(2);
+
+        console.log("--fetchStosRewardData--");
+
+        let interestRate = 0.000087; // 이자율 0.0087% = 0.000087 (APY =9.994%)
+        let rebasePeriod = 60 * 60 * 8; // 8시간
+        let n = Math.floor(inputPeriod / rebasePeriod);
+        let pow = Math.pow(1 + interestRate, n);
+        if (n > 0) {
+          let profit = inputTosAmount * pow;
+          return profit - inputTosAmount;
+        } else {
+          return 0;
+        }
+
+        console.log(stosReward);
 
         return setStosRewards(stosReward);
       }

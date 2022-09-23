@@ -67,7 +67,7 @@ function StakeGraph(props: {
         focusThumbOnChange={false}
         aria-label="slider-ex-1"
         defaultValue={0}
-        min={0}
+        min={1}
         max={156}
         value={sliderValue}
         onChange={(val: number) => setSliderValue(val)}

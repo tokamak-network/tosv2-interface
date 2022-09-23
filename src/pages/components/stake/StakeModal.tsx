@@ -132,11 +132,11 @@ function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
-  const { selectedModalData, selectedModal } = useModal();
+  const { selectedModalData, selectedModal } = useModal<BondCardProps>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
-  const { stakeModalInputData, stosReward } = useStakeModaldata();
+  const { stakeModalInputData } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
@@ -146,12 +146,16 @@ function StakeModal() {
   const [isApproving, setIsApproving] = useState<boolean>(false);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
 
-  const { maxWeeks } = useStosReward();
+  const { stosReward, maxWeeks } = useStosReward(
+    inputValue.stake_modal_balance,
+    inputValue.stake_modal_period
+  );
 
-  const propData = selectedModalData as BondCardProps;
-  const marketId = propData?.index;
+  const marketId = selectedModalData?.index;
 
   const { setTx } = useCustomToast();
+
+  console.log(stosReward);
 
   const contentList = fiveDaysLockup
     ? [

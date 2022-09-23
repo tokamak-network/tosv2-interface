@@ -285,9 +285,6 @@ function BondModal() {
     closeThisModal,
   ]);
 
-  console.log(bondModalData?.maxBond);
-  console.log(userETHBalance);
-
   return (
     <Modal
       isOpen={selectedModal === "bond_bond_modal"}
