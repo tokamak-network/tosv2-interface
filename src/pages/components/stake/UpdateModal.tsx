@@ -304,15 +304,27 @@ function UpdateModal() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
-                <Text
-                  color={colorMode === "light" ? "gray.800" : "white.200"}
-                  fontSize={20}
-                  fontWeight={600}
-                >
-                  Update
-                </Text>
-
+              <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
+                <Flex flexDir={"column"} alignItems={"center"}>
+                  <Text
+                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                    fontSize={20}
+                    fontWeight={600}
+                  >
+                    Update
+                  </Text>
+                  <Text
+                    height={"21px"}
+                    color={"red.100"}
+                    fontSize={15}
+                    mb={"6px"}
+                  >
+                    Locked
+                  </Text>
+                  <Text height={"17px"} fontSize={12} color={"gray.100"}>
+                    Increase LTOS & sTOS
+                  </Text>
+                </Flex>
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}
@@ -324,21 +336,13 @@ function UpdateModal() {
               </Flex>
               {/* Content Area*/}
               <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
-                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile
-                    title={"Next Rebase"}
-                    content={stakeV2?.nextRebase}
-                    tooltip={"Time left until LTOS index is increased."}
-                  />
-                  <Tile
-                    title={"LTOS Index"}
-                    content={stakeV2?.ltosIndex}
-                    symbol={"TOS"}
-                    tooltip={
-                      "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
-                    }
-                  />
-                </Flex>
+                <Text
+                  color={colorMode === "light" ? "gray.800" : "white.200"}
+                  fontSize={12}
+                  mb={"10px"}
+                >
+                  Lock additional TOS
+                </Text>
                 <Flex mb={"9px"}>
                   <BalanceInput
                     w={"100%"}
