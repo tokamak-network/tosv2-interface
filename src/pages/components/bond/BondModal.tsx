@@ -181,6 +181,7 @@ function BondModal() {
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
+  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const fiveDaysLater = getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm");
   const [fiveDaysLockupEndTime, setFiveDaysLockupEndTime] =
     useState(fiveDaysLater);
@@ -238,6 +239,16 @@ function BondModal() {
       }, 1000);
     }
   }, [fiveDaysLockup]);
+
+  useEffect(() => {
+    if (
+      inputValue.bond_modal_balance === "" ||
+      inputValue.bond_modal_balance === undefined
+    ) {
+      return setBtnDisabled(true);
+    }
+    return setBtnDisabled(false);
+  }, [inputValue]);
 
   const callBond = useCallback(async () => {
     try {
@@ -476,6 +487,7 @@ function BondModal() {
                 h={42}
                 name="Bond"
                 onClick={callBond}
+                isDisabled={btnDisabled}
               ></SubmitButton>
             </Flex>
             {/* <Flex
