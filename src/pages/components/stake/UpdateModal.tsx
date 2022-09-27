@@ -19,6 +19,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
+  useMediaQuery
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -172,6 +173,7 @@ function UpdateModal() {
     useUpdateModalData(newBalanceType);
   const { maxWeeks } = useStosReward();
   const ltosAmount = selectedModalData?.ltosAmount;
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const contentList = useMemo(
     () => [
@@ -326,7 +328,7 @@ function UpdateModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW="43.75em"
+        minW={smallerThan1024 ? "350px" : "43.75em"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
@@ -365,7 +367,7 @@ function UpdateModal() {
                 </Flex>
               </Flex>
               {/* Content Area*/}
-              <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
+              <Flex w={"100%"}  px={smallerThan1024 ? "20px" : "120px"} flexDir={"column"} mb={"29px"}>
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={12}
@@ -390,17 +392,20 @@ function UpdateModal() {
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
+                  px={'6px'}
                 >
                   <Text>Your Balance</Text>
                   <Text>{userTOSBalance} TOS</Text>
                 </Flex>
-                <Flex fontSize={12} alignItems="center">
+                <Flex fontSize={12} alignItems={smallerThan1024? '':"center" }flexDir={smallerThan1024? 'column':'row'}>
                   <Text
                     mr={"24px"}
                     color={colorMode === "light" ? "gray.800" : "white.200"}
+                    mb={smallerThan1024? '10px':''}
                   >
                     New Lock-Up Period
                   </Text>
+                  <Flex w={smallerThan1024?'100%':''} justifyContent={smallerThan1024?'space-between':''}>
                   <Flex
                     w={"120px"}
                     h={"39px"}
@@ -413,7 +418,7 @@ function UpdateModal() {
                   >
                     <Text>{leftWeeks} Weeks</Text>
                   </Flex>
-                  <Flex ml={"16px"}>
+                  <Flex mx={"14px"}>
                     <Image src={ArrowImg} alt={"ArrowImg"}></Image>
                   </Flex>
                   <TextInput
@@ -423,14 +428,15 @@ function UpdateModal() {
                     placeHolder={"1 Weeks"}
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
-                    style={{ marginLeft: "auto" }}
+                    // style={{ marginLeft: "auto" }}
                     maxValue={156}
                     isError={inputError}
                     errorMsg={"Invalid Weeks"}
                   ></TextInput>
                 </Flex>
               </Flex>
-              <Flex px={"49px"} mb={"30px"}>
+              </Flex>
+              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"update_modal"}
@@ -443,7 +449,7 @@ function UpdateModal() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={"50px"}
+                px={smallerThan1024? '20px':"50px"}
               >
                 {contentList.map((content, index) => {
                   return (
@@ -460,7 +466,7 @@ function UpdateModal() {
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
                 <SubmitButton
-                  w={460}
+                  w={smallerThan1024? 310:460}
                   h={42}
                   name="Update"
                   isDisabled={btnDisable}
@@ -468,7 +474,7 @@ function UpdateModal() {
                 ></SubmitButton>
               ) : (
                 <SubmitButton
-                  w={460}
+                  w={smallerThan1024? 310:460}
                   h={42}
                   isDisabled={
                     inputValue.stake_updateModal_tos_balance === "" ||
