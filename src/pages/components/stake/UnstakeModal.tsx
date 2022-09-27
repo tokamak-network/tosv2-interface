@@ -17,6 +17,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
+  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
@@ -82,6 +83,7 @@ function UnstakeModal() {
   );
   const { simpleStakingId } = useUser();
   const { setTx } = useCustomToast();
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const contentList = [
     {
@@ -154,7 +156,7 @@ function UnstakeModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW="43.75em"
+        minW={smallerThan1024 ? "350px" : "43.75em"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"} pb={"40px"}>
@@ -183,13 +185,33 @@ function UnstakeModal() {
             {/* Content Area*/}
             <Flex w={"100%"} flexDir={"column"} mb={"30px"}>
               {/* {hasInput && ( */}
-              <Flex w={"100%"} flexDir={"column"} px={"120px"} mb={"30px"}>
-                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile
-                    title={"Next Rebase"}
-                    content={stakeV2?.nextRebase}
-                    tooltip="Time left until LTOS index is increased."
-                  />
+              <Flex
+                w={"100%"}
+                flexDir={"column"}
+                px={smallerThan1024 ? "20px" : "120px"}
+                mb={smallerThan1024? '9px':"30px"}
+              >
+                <Flex
+                  w={"100%"}
+                  justifyContent={smallerThan1024 ? "center" : "space-between"}
+                  mb={smallerThan1024 ? "15px" : "9px"}
+                  flexDir={smallerThan1024 ? "column" : "row"}
+                >
+                  {smallerThan1024 ? (
+                    <Flex mb={"9px"} justifyContent="center" w={"100%"}>
+                      <Tile
+                        title={"Next Rebase"}
+                        content={stakeV2?.nextRebase}
+                        tooltip="Time left until LTOS index is increased."
+                      />
+                    </Flex>
+                  ) : (
+                    <Tile
+                      title={"Next Rebase"}
+                      content={stakeV2?.nextRebase}
+                      tooltip="Time left until LTOS index is increased."
+                    />
+                  )}
                   <Tile
                     title={"LTOS Index"}
                     content={stakeV2?.ltosIndex}
@@ -197,6 +219,7 @@ function UnstakeModal() {
                     tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
                   />
                 </Flex>
+
                 {hasInput && (
                   <Flex flexDir={"column"}>
                     <Flex mb={"9px"}>
@@ -225,7 +248,11 @@ function UnstakeModal() {
               </Flex>
               {/* )} */}
               {/* Content Bottom */}
-              <Flex flexDir={"column"} rowGap={"9px"} px={"50px"}>
+              <Flex
+                flexDir={"column"}
+                rowGap={"9px"}
+                px={smallerThan1024 ? "20px" : "50px"}
+              >
                 {contentList.map((content, index) => {
                   return (
                     <BottomContent
@@ -239,7 +266,7 @@ function UnstakeModal() {
             </Flex>
             <Flex flexDir={"column"} alignItems={"center"} rowGap={"15px"}>
               <SubmitButton
-                w={460}
+                w={smallerThan1024? 310:460}
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}
