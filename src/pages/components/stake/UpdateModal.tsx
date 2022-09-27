@@ -164,14 +164,14 @@ function UpdateModal() {
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [inputError, setInputError] = useState<boolean>(false);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
+  const [newBalanceType, setNewBalanceType] = useState<1 | 2 | 3 | undefined>(
+    undefined
+  );
   const { stakeId } = useStakeId();
   const { currentBalance, newBalance, currentEndTime, newEndTime, leftWeeks } =
-    useUpdateModalData();
+    useUpdateModalData(newBalanceType);
   const { maxWeeks } = useStosReward();
   const ltosAmount = selectedModalData?.ltosAmount;
-
-  // console.log(newBalance);
-  // console.log(newEndTime);
 
   const contentList = useMemo(
     () => [
@@ -274,6 +274,7 @@ function UpdateModal() {
       }
       return setInputError(false);
     }
+    return setInputError(true);
   }, [inputValue, leftWeeks]);
 
   useEffect(() => {
@@ -287,6 +288,33 @@ function UpdateModal() {
     }
     return setBtnDisable(false);
   }, [inputError, inputValue]);
+
+  useEffect(() => {
+    if (
+      inputValue.stake_updateModal_tos_balance &&
+      inputValue.stake_updateModal_period &&
+      leftWeeks
+    ) {
+      //https://github.com/Onther-Tech/tosv2-contracts/blob/3f4c3bdb4f4bf3a39adc23e43585456ed98562d5/test/phase1.test.js#L2579-L2599
+      //case1
+      if (
+        Number(inputValue.stake_updateModal_tos_balance) > 0 &&
+        inputValue.stake_updateModal_period <= leftWeeks
+      ) {
+        return setNewBalanceType(1);
+      }
+      //case2
+      if (
+        Number(inputValue.stake_updateModal_tos_balance) === 0 &&
+        inputValue.stake_updateModal_period > leftWeeks
+      ) {
+        return setNewBalanceType(2);
+      }
+      //case3
+      return setNewBalanceType(3);
+    }
+    return setNewBalanceType(undefined);
+  }, [inputValue, leftWeeks]);
 
   return (
     <Modal
@@ -352,8 +380,8 @@ function UpdateModal() {
                     placeHolder={"Enter an amount of TOS"}
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
-                    atomKey={"stake_updateModal_ltos_balance"}
-                    maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                    atomKey={"stake_updateModal_tos_balance"}
+                    maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -364,7 +392,7 @@ function UpdateModal() {
                   mb={"12px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>{ltosAmount} LTOS</Text>
+                  <Text>{userTOSBalance} TOS</Text>
                 </Flex>
                 <Flex fontSize={12} alignItems="center">
                   <Text
@@ -396,7 +424,7 @@ function UpdateModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     style={{ marginLeft: "auto" }}
-                    maxValue={maxWeeks}
+                    maxValue={156}
                     isError={inputError}
                     errorMsg={"Invalid Weeks"}
                   ></TextInput>

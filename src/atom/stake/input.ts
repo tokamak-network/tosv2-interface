@@ -48,7 +48,11 @@ const stake_updateModal_defaultValue = {
   stake_updateModal_tos_balance: undefined,
 };
 
-const stake_updateModal_inputState = atom({
+const stake_updateModal_inputState = atom<{
+  stake_updateModal_period: number;
+  stake_updateModal_ltos_balance: number | "" | undefined;
+  stake_updateModal_tos_balance: number | "" | undefined;
+}>({
   key: "stake_updateModal_input",
   default: stake_updateModal_defaultValue,
 });

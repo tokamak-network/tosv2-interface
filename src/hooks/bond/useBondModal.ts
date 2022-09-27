@@ -93,8 +93,8 @@ function useBondModal() {
 
         const minbond = BigNumber.from(convertToWei("285753"))
           .mul(gasPriceWei)
-          .div(convertToWei(divParam.toString()))
-          .mul(mainnetGasPrice);
+          .div(convertToWei(divParam.toString()));
+        // .mul(mainnetGasPrice);
 
         const convertedMinBond = convertNumber({
           amount: minbond.toString(),

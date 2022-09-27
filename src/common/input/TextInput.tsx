@@ -14,7 +14,7 @@ import {
 import { inputBalanceState, inputState } from "atom/global/input";
 import useInput from "hooks/useInput";
 import { max } from "moment";
-import React, { SetStateAction } from "react";
+import React, { SetStateAction, useEffect } from "react";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 

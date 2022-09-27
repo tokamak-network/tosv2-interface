@@ -1,3 +1,4 @@
+import commafy from "@/components/commafy";
 import { convertNumber, convertToWei } from "@/components/number";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import { BigNumber } from "ethers";
@@ -24,13 +25,17 @@ type UseUpdateModalData = {
 };
 
 const defaultBalanceValue = {
-  ltos: "0",
-  stos: "0",
+  ltos: "-",
+  stos: "-",
 };
 
-function useUpdateModalData(): UseUpdateModalData {
+function useUpdateModalData(
+  newBalanceType: 1 | 2 | 3 | undefined
+): UseUpdateModalData {
   const [currentBalance, setCurrentBalance] =
     useState<Balance>(defaultBalanceValue);
+  const [newStosBalance, setNewStosBalance] = useState<string>("-");
+  const [newLtosBalance, setNewLtosBalance] = useState<string>("-");
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
   const [currentEndTime, setCurrentEndTime] = useState<string>("-");
   const [newEndTime, setNewEndTime] = useState<string>("-");
@@ -76,11 +81,18 @@ function useUpdateModalData(): UseUpdateModalData {
   //new
   useEffect(() => {
     async function fetchUpdateModalData() {
+      if (newBalanceType === undefined) {
+        setNewBalance({
+          ltos: "-",
+          stos: "-",
+        });
+      }
       if (
         StakingV2Proxy_CONTRACT &&
         stakeId &&
         inputValue &&
-        modalContractData
+        modalContractData &&
+        newBalanceType
       ) {
         //new balance
         //case1
@@ -88,13 +100,11 @@ function useUpdateModalData(): UseUpdateModalData {
         const ltosBN = modalContractData.ltosBN;
         const stosBN = modalContractData.stosBN;
 
-        console.log(inputValue);
+        console.log(newBalanceType);
 
-        if (
-          inputValue.stake_updateModal_ltos_balance !== "" &&
-          inputValue.stake_updateModal_period === ""
-        ) {
+        if (newBalanceType === 1) {
           console.log("--1--");
+
           const tosAmount = convertToWei(
             inputValue.stake_updateModal_tos_balance
           );
@@ -104,25 +114,42 @@ function useUpdateModalData(): UseUpdateModalData {
           const ltos =
             convertNumber({
               amount: newLTOS.toString(),
-              localeString: true,
+              localeString: false,
               round: false,
             }) || "0";
+          const resultLtos =
+            Number(currentBalance.ltos.replaceAll(",", "")) +
+            Number(ltos.replaceAll(",", ""));
+          const resultStos =
+            Number(currentBalance.stos.replaceAll(",", "")) +
+            Number(stosReward.replaceAll(",", ""));
 
           const newEndTime = modalContractData?.currentEndTime;
           setNewEndTime(newEndTime || "-");
-          return setNewBalance({
-            ltos,
-            stos: stosReward,
+          setNewBalance({
+            ltos: commafy(resultLtos),
+            stos: commafy(resultStos),
           });
+          return setNewEndTime(
+            convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
+          );
         }
 
         //case2
         //Only increase period
-        if (
-          inputValue.stake_updateModal_tos_balance === "" &&
-          inputValue.stake_updateModal_period !== ""
-        ) {
+        if (newBalanceType === 2) {
           console.log("--2--");
+
+          const resultLtos = Number(currentBalance.ltos.replaceAll(",", ""));
+          const resultStos =
+            Number(currentBalance.stos.replaceAll(",", "")) +
+            Number(stosReward.replaceAll(",", ""));
+
+          setNewStosBalance(commafy(resultStos));
+          setCurrentBalance({
+            ltos: commafy(resultLtos),
+            stos: commafy(resultStos),
+          });
           return setNewEndTime(
             convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
           );
@@ -130,11 +157,7 @@ function useUpdateModalData(): UseUpdateModalData {
 
         //case3
         //increase amount and period
-        if (
-          inputValue.stake_updateModal_ltos_balance &&
-          inputValue.stake_updateModal_ltos_balance !== "" &&
-          inputValue.stake_updateModal_period !== ""
-        ) {
+        if (newBalanceType === 3) {
           console.log("--3--");
 
           const tosAmount = convertToWei(
@@ -150,9 +173,17 @@ function useUpdateModalData(): UseUpdateModalData {
               localeString: true,
               round: false,
             }) || "0";
+
+          const resultLtos =
+            Number(currentBalance.ltos.replaceAll(",", "")) +
+            Number(ltos.replaceAll(",", ""));
+          const resultStos =
+            Number(currentBalance.stos.replaceAll(",", "")) +
+            Number(stosReward.replaceAll(",", ""));
+
           setNewBalance({
-            ltos,
-            stos: stosReward,
+            ltos: commafy(resultLtos),
+            stos: commafy(resultStos),
           });
           return setNewEndTime(
             convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
@@ -171,6 +202,8 @@ function useUpdateModalData(): UseUpdateModalData {
     stosReward,
     modalContractData,
     unlockTime,
+    currentBalance,
+    newBalanceType,
   ]);
 
   return {

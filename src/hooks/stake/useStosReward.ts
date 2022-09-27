@@ -22,7 +22,7 @@ function useStosReward(
 ): UseStosReward {
   const [stosReward, setStosRewards] = useState<string>("0");
   const [newEndTime, setNewEndTime] = useState<string>("-");
-  const [maxWeeks, setMaxWeeks] = useState<number>(0);
+  const [maxWeeks, setMaxWeeks] = useState<number>(156);
   const [unlockTime, setUnlockTime] = useState<number>(0);
   const { LockTOS_CONTRACT } = useCallContract();
   const modalContractData = useModalContract();
@@ -32,8 +32,12 @@ function useStosReward(
   useEffect(() => {
     async function fetchStosRewardData() {
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
-        const numValue = inputTosAmount || 0;
-        const weekPeriod = inputPeriod || 1;
+        console.log("--fetchStosRewardData--");
+        console.log(inputTosAmount);
+        console.log(inputPeriod);
+
+        // const numValue = inputTosAmount || 0;
+        // const weekPeriod = inputPeriod || 1;
 
         // const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
         // const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
@@ -50,7 +54,7 @@ function useStosReward(
 
         //New script
         const interestRate = 0.00008704505; // 이자율 0.0087% = 0.000087 (APY =9.994%)
-        const periodWeeksTimeStamp = Number(weekPeriod) * 604800;
+        const periodWeeksTimeStamp = Number(inputPeriod) * 604800;
         const n = Math.floor(94348800 / rebasePeriod);
         const pow = Math.pow(1 + interestRate, n);
 
@@ -68,36 +72,36 @@ function useStosReward(
     });
   }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod]);
 
-  useEffect(() => {
-    async function fetchStosRewardData() {
-      if (
-        LockTOS_CONTRACT &&
-        inputPeriod &&
-        modalContractData?.currentEndTimeStamp
-      ) {
-        //calculate max weeks
-        const weekPeriod = inputPeriod;
+  // useEffect(() => {
+  //   async function fetchMaxWeeks() {
+  //     if (
+  //       LockTOS_CONTRACT &&
+  //       inputPeriod &&
+  //       modalContractData?.currentEndTimeStamp
+  //     ) {
+  //       //calculate max weeks
+  //       const weekPeriod = inputPeriod;
 
-        if (weekPeriod === undefined) {
-          return;
-        }
+  //       if (weekPeriod === undefined) {
+  //         return;
+  //       }
 
-        const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
-        const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
-        const now = getNowTimeStamp();
-        const endTime = modalContractData?.currentEndTimeStamp;
-        const timeLeft = endTime - now;
-        const maxPeriod = maxTime - timeLeft;
-        const maxWeeks = Math.floor(maxPeriod / oneWeek);
+  //       const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
+  //       const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
+  //       const now = getNowTimeStamp();
+  //       const endTime = modalContractData?.currentEndTimeStamp;
+  //       const timeLeft = endTime - now;
+  //       const maxPeriod = maxTime - timeLeft;
+  //       const maxWeeks = Math.floor(maxPeriod / oneWeek);
 
-        return setMaxWeeks(maxWeeks);
-      }
-    }
-    fetchStosRewardData().catch((e) => {
-      console.log("**fetchStosRewardData err**");
-      console.log(e);
-    });
-  }, [LockTOS_CONTRACT, inputPeriod, modalContractData]);
+  //       // return setMaxWeeks(maxWeeks);
+  //     }
+  //   }
+  //   fetchMaxWeeks().catch((e) => {
+  //     console.log("**fetchStosRewardData err**");
+  //     console.log(e);
+  //   });
+  // }, [LockTOS_CONTRACT, inputPeriod, modalContractData]);
 
   useEffect(() => {
     //endTime
