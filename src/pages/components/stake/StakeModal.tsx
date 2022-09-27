@@ -157,8 +157,6 @@ function StakeModal() {
 
   const { setTx } = useCustomToast();
 
-  console.log(stosReward);
-
   const contentList = fiveDaysLockup
     ? [
         {

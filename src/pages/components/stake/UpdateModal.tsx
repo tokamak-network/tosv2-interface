@@ -308,15 +308,27 @@ function UpdateModal() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
-                <Text
-                  color={colorMode === "light" ? "gray.800" : "white.200"}
-                  fontSize={20}
-                  fontWeight={600}
-                >
-                  Update
-                </Text>
-
+              <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
+                <Flex flexDir={"column"} alignItems={"center"}>
+                  <Text
+                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                    fontSize={20}
+                    fontWeight={600}
+                  >
+                    Update
+                  </Text>
+                  <Text
+                    height={"21px"}
+                    color={"red.100"}
+                    fontSize={15}
+                    mb={"6px"}
+                  >
+                    Locked
+                  </Text>
+                  <Text height={"17px"} fontSize={12} color={"gray.100"}>
+                    Increase LTOS & sTOS
+                  </Text>
+                </Flex>
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}

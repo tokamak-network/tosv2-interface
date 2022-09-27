@@ -1,4 +1,7 @@
+import commafy from "@/components/commafy";
+import { convertNumber } from "@/components/number";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import constant from "constant";
 import Decimal from "decimal.js";
 import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
@@ -24,15 +27,13 @@ function useStosReward(
   const { LockTOS_CONTRACT } = useCallContract();
   const modalContractData = useModalContract();
   const { epochUnit } = useLockTOS();
+  const { rebasePeriod } = constant;
 
   useEffect(() => {
     async function fetchStosRewardData() {
-      console.log("go--");
-      console.log(inputTosAmount, inputPeriod);
-
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
-        // const numValue = inputTosAmount || 0;
-        // const weekPeriod = inputPeriod || 1;
+        const numValue = inputTosAmount || 0;
+        const weekPeriod = inputPeriod || 1;
 
         // const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
         // const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
@@ -47,29 +48,25 @@ function useStosReward(
         // const resultNum = deciamlNum.toFixed(3, Decimal.ROUND_HALF_UP);
         // const stosReward = Number(resultNum).toFixed(2);
 
-        console.log("--fetchStosRewardData--");
+        //New script
+        const interestRate = 0.00008704505; // 이자율 0.0087% = 0.000087 (APY =9.994%)
+        const periodWeeksTimeStamp = Number(weekPeriod) * 604800;
+        const n = Math.floor(94348800 / rebasePeriod);
+        const pow = Math.pow(1 + interestRate, n);
 
-        let interestRate = 0.000087; // 이자율 0.0087% = 0.000087 (APY =9.994%)
-        let rebasePeriod = 60 * 60 * 8; // 8시간
-        let n = Math.floor(inputPeriod / rebasePeriod);
-        let pow = Math.pow(1 + interestRate, n);
         if (n > 0) {
-          let profit = inputTosAmount * pow;
-          return profit - inputTosAmount;
+          const profit = inputTosAmount * pow;
+          return setStosRewards(commafy(profit.toString()) || "-");
         } else {
-          return 0;
+          return setStosRewards("0");
         }
-
-        console.log(stosReward);
-
-        return setStosRewards(stosReward);
       }
     }
     fetchStosRewardData().catch((e) => {
       console.log("**fetchStosRewardData err**");
       console.log(e);
     });
-  }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod]);
+  }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod]);
 
   useEffect(() => {
     async function fetchStosRewardData() {

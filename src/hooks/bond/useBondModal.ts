@@ -87,28 +87,26 @@ function useBondModal() {
         // ex:
         // gasPrice = 30 gwei, Discount = 5% = 0.05
         // Min Bond = 285,753 x 30 / 1e9 / 0.05 = 0.1714518 ETH
-        const minbond =
-          (285753 * gasPrice) /
-          1e9 /
-          (Number(propData.discountRate.replaceAll("%", "")) / 100);
 
         const divParam =
           Number(propData.discountRate.replaceAll("%", "")) / 100;
 
-        const test = BigNumber.from(convertToWei("285753"))
+        const minbond = BigNumber.from(convertToWei("285753"))
           .mul(gasPriceWei)
           .div(convertToWei(divParam.toString()))
           .mul(mainnetGasPrice);
 
-        console.log(test);
-        console.log(test.toString());
-        console.log(convertNumber({ amount: test.toString() }));
+        const convertedMinBond = convertNumber({
+          amount: minbond.toString(),
+          decimalPoints: 6,
+          decimalPlaces: 6,
+        });
 
         setBondModalData({
           bondPrice: `$${commafy(bondPrice)}`,
           marketPrice: `$${marketPrice}`,
           discount: `${commafy(discount)}%`,
-          minBond: `${commafy(minbond, 4)}`,
+          minBond: `${convertedMinBond}`,
           maxBond: `${commafy(maxBond)}`,
           ltosIndex: `${commafy(ltosIndex)}`,
         });

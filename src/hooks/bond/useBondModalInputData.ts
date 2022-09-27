@@ -5,6 +5,7 @@ import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 import JSBI from "jsbi";
+import constant from "constant";
 
 type UseUnstake = {
   youWillGet: string | undefined;
@@ -33,6 +34,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
     Number(inputTosAmount),
     inputValue?.bond_modal_period
   );
+  const { rebasePeriod } = constant;
 
   useEffect(() => {
     const calculateCompound = async ({
@@ -100,12 +102,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
         const ethAmount = inputValue.bond_modal_balance;
         const lockPeriod = inputValue.bond_modal_period;
         const ethAmountWei = convertToWei(ethAmount);
-        const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
-          ethAmountWei
-        );
-        const ltos = convertNumber({ amount: LTOS_BN, localeString: true });
 
-        //stosReward
+        //new script
         const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
           marketId
         );
@@ -115,46 +113,18 @@ function useBondModalInputData(marketId: number): UseUnstake {
             tosPrice,
             ethAmountWei
           );
+        const interestRate = 0.00008704505; // 이자율 0.0087% = 0.000087 (APY =9.994%)
+        const periodWeeksTimeStamp = Number(lockPeriod) * 604800;
+        const n = Math.floor(94348800 / rebasePeriod);
+        const pow = Math.pow(1 + interestRate, n);
 
-        // console.log("tosPrice, ethAmount");
-        // console.log(tosPrice.toString(), ethAmountWei);
-
-        const rebasePerEpoch = await StakingV2Proxy_CONTRACT.rebasePerEpoch();
-        const stosEpochUnit = await LockTOS_CONTRACT.epochUnit();
-        const epochAfter = await StakingV2Proxy_CONTRACT.epoch();
-        // const lockPeriod_BN = convertToWei(lockPeriod);
-        // console.log("lockPeriod_BN");
-        // console.log(lockPeriod_BN);
-        const n = BigNumber.from(lockPeriod)
-          .mul(stosEpochUnit)
-          .div(epochAfter.length_);
-        const bnAmountCompound = await calculateCompound({
-          tosValuation,
-          rebasePerEpoch,
-          n,
-        });
-        // console.log("tosValuation", "rebasePerEpoch", "n");
-        // console.log(
-        //   tosValuation.toString(),
-        //   rebasePerEpoch.toString(),
-        //   n.toString()
-        // );
-        const amountCompound = ethers.BigNumber.from(
-          bnAmountCompound.toString()
-        );
-        // console.log("amountCompound");
-        // console.log(amountCompound.toString());
-        const gweiAmountCompound = Math.floor(
-          parseFloat(ethers.utils.formatUnits(amountCompound, "wei"))
-        );
-        // console.log("gweiAmountCompoundWei");
-        // console.log(gweiAmountCompound.toString());
-        // console.log(ethers.utils.formatUnits(amountCompound, "wei"));
-        const inputTosAmount = convertNumber({
-          amount: ethers.utils.formatUnits(amountCompound, "wei").toString(),
-        });
-
-        return setInputTosAmount(inputTosAmount);
+        if (n > 0) {
+          const profit = tosValuation * pow;
+          const tosAmount = convertNumber({ amount: profit.toString() });
+          return setInputTosAmount(tosAmount);
+        } else {
+          return setInputTosAmount("0");
+        }
       }
     }
     fetchBondModalInputData().catch((e) => {
@@ -167,10 +137,17 @@ function useBondModalInputData(marketId: number): UseUnstake {
     BondDepositoryProxy_CONTRACT,
     LockTOS_CONTRACT,
     marketId,
+    rebasePeriod,
   ]);
 
   useEffect(() => {
     async function fetchLtosData() {
+      if (
+        inputValue?.bond_modal_balance === undefined ||
+        inputValue?.bond_modal_balance === ""
+      ) {
+        return setYouWillGet("-");
+      }
       if (
         StakingV2Proxy_CONTRACT &&
         BondDepositoryProxy_CONTRACT &&
