@@ -109,7 +109,11 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             color={colorMode === "dark" ? "white.200" : "gray.800"}
             ml={"12px"}
           >
-            {stakedType === "Bond" ? `${tokenType} Bond` : stakedType}
+            {stakedType === "LTOS Staking"
+              ? "Staking"
+              : stakedType === "Bond"
+              ? `${tokenType} Bond`
+              : stakedType}
           </Text>
         </Flex>
         <Flex>
