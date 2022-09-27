@@ -14,7 +14,7 @@ const stake_filter_radio_state = selector({
   },
 });
 
-const stake_filter_sort = atom({
+const stake_filter_sort = atom<"Earliest" | "Latest">({
   key: "stake_filter_sort",
   default: "Earliest",
 });

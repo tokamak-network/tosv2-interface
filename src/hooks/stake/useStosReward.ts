@@ -32,35 +32,28 @@ function useStosReward(
   useEffect(() => {
     async function fetchStosRewardData() {
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
-        console.log("--fetchStosRewardData--");
-        console.log(inputTosAmount);
-        console.log(inputPeriod);
-
-        // const numValue = inputTosAmount || 0;
-        // const weekPeriod = inputPeriod || 1;
-
-        // const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
-        // const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
-        // const avgProfit = numValue / maxTime;
-
-        // const now = getNowTimeStamp();
-        // const date =
-        //   Math.floor((now + weekPeriod * oneWeek) / oneWeek) * oneWeek;
-
-        // const estimatedReward = avgProfit * (date - now);
-        // const deciamlNum = new Decimal(estimatedReward);
-        // const resultNum = deciamlNum.toFixed(3, Decimal.ROUND_HALF_UP);
-        // const stosReward = Number(resultNum).toFixed(2);
+        const weekPeriod = inputPeriod || 1;
 
         //New script
         const interestRate = 0.00008704505; // 이자율 0.0087% = 0.000087 (APY =9.994%)
         const periodWeeksTimeStamp = Number(inputPeriod) * 604800;
-        const n = Math.floor(94348800 / rebasePeriod);
+        const n = Math.floor(periodWeeksTimeStamp / rebasePeriod);
         const pow = Math.pow(1 + interestRate, n);
+        const resultInputAmount = inputTosAmount * pow;
+
+        //Old script
+        const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
+        const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
+        const avgProfit = resultInputAmount / maxTime;
+        const now = getNowTimeStamp();
+        const date =
+          Math.floor((now + weekPeriod * oneWeek) / oneWeek) * oneWeek;
+        const estimatedReward = avgProfit * (date - now);
+        const deciamlNum = new Decimal(estimatedReward);
+        const resultNum = deciamlNum.toFixed(3, Decimal.ROUND_HALF_UP);
 
         if (n > 0) {
-          const profit = inputTosAmount * pow;
-          return setStosRewards(commafy(profit.toString()) || "-");
+          return setStosRewards(commafy(resultNum.toString()) || "-");
         } else {
           return setStosRewards("0");
         }

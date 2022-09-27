@@ -2,10 +2,7 @@ import commafy from "@/components/commafy";
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp, isTimeOver } from "@/components/time";
 import { useWeb3React } from "@web3-react/core";
-import {
-  stake_filter_radio,
-  stake_filter_radio_state,
-} from "atom/stake/filter";
+import { stake_filter_radio, stake_filter_sort } from "atom/stake/filter";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import useCallContract from "hooks/useCallContract";
 import usePrice from "hooks/usePrice";
@@ -18,6 +15,8 @@ function useStakeList() {
     undefined
   );
   const filterValue = useRecoilValue(stake_filter_radio);
+  const selectFilterValue = useRecoilValue(stake_filter_sort);
+
   const { account } = useWeb3React();
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { blockNumber } = useBlockNumber();
@@ -146,7 +145,12 @@ function useStakeList() {
               return stakeData;
             }
           });
-          return setStakeCards(bondFilteredList);
+          if (selectFilterValue === "Earliest") {
+            return setStakeCards(bondFilteredList);
+          }
+          if (selectFilterValue === "Latest") {
+            return setStakeCards(bondFilteredList);
+          }
         }
         if (filterValue === "Stake") {
           const bondFilteredList = stakedList.filter((stakeData) => {
@@ -157,9 +161,38 @@ function useStakeList() {
               return stakeData;
             }
           });
-          return setStakeCards(bondFilteredList);
+          if (selectFilterValue === "Earliest") {
+            const ealiestList = bondFilteredList.sort((a, b) => {
+              if (a && b) {
+                a?.endTime > b?.endTime ? 1 : -1;
+              }
+              return 0;
+            });
+            return setStakeCards(ealiestList);
+          }
+          if (selectFilterValue === "Latest") {
+            return setStakeCards(bondFilteredList);
+          }
         }
-        setStakeCards(stakedList);
+        // if (selectFilterValue === "Earliest") {
+        //   const ealiestList = stakedList.sort((a, b) => {
+        //     if (a && b) {
+        //       a?.endTime > b?.endTime ? 1 : -1;
+        //     }
+        //     return 0;
+        //   });
+        //   return setStakeCards(ealiestList);
+        // }
+        // if (selectFilterValue === "Latest") {
+        //   const ealiestList = stakedList.sort((a, b) => {
+        //     if (a && b) {
+        //       a?.endTime < b?.endTime ? 1 : -1;
+        //     }
+        //     return 0;
+        //   });
+        //   return setStakeCards(ealiestList);
+        // }
+        return setStakeCards(stakedList);
       }
     };
     fetchData().catch((e) => {
@@ -172,6 +205,7 @@ function useStakeList() {
     LockTOS_CONTRACT,
     blockNumber,
     filterValue,
+    selectFilterValue,
   ]);
 
   return { stakeCards };

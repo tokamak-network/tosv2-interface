@@ -17,7 +17,8 @@ function SortSelect() {
       focusBorderColor={colorMode === "light" ? "#c6cbd9" : "#535353"}
       borderColor={colorMode === "dark" ? "#8a8a98" : "#e8edf2"}
       onChange={(e) => {
-        setSortValue(e.target.value);
+        if (e.target.value === "Earliest" || e.target.value === "Latest")
+          setSortValue(e.target.value);
       }}
     >
       <option value={"Earliest"}>Earliest </option>
