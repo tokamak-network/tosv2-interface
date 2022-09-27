@@ -19,7 +19,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
-  useMediaQuery
+  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -66,8 +66,9 @@ function BottomContent(props: {
     switch (title) {
       case "You Will Get":
         return (
-          <Flex>
+          <Flex  w={'146px'} flexWrap='wrap' justifyContent={'flex-end'}>
             <Text
+           
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
               mr="6px"
@@ -82,7 +83,7 @@ function BottomContent(props: {
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
             >
-              {(typeof content !== "string" && content.stos) || "-"} sTOS
+              {(typeof content !== "string" && content.stos)|| "-"} sTOS
             </Text>
             <Text color={"#64646f"} mx={"5px"}>
               /
@@ -125,6 +126,7 @@ function BottomContent(props: {
     <Flex>
       <Flex
         w={"100%"}
+        alignItems='center'
         justifyContent={"space-between"}
         fontSize={14}
         mt={"9px"}
@@ -316,8 +318,28 @@ function UpdateModalAfterEndTime() {
                 </Flex>
               </Flex>
               {/* Content Area*/}
-              <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
-                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
+              <Flex w={"100%"} px={smallerThan1024 ? "20px" :"120px"} flexDir={"column"} mb={"29px"}>
+                <Flex
+                  w={"100%"}
+                  justifyContent={smallerThan1024 ? "center" : "space-between"}
+                  mb={smallerThan1024 ? "15px" : "9px"}
+                  flexDir={smallerThan1024 ? "column" : "row"}
+                >
+                  {smallerThan1024 ? (
+                    <Flex mb={"9px"} justifyContent="center" w={"100%"}>
+                      <Tile
+                        title={"Next Rebase"}
+                        content={stakeV2?.nextRebase}
+                        tooltip="Time left until LTOS index is increased."
+                      />
+                    </Flex>
+                  ) : (
+                    <Tile
+                      title={"Next Rebase"}
+                      content={stakeV2?.nextRebase}
+                      tooltip="Time left until LTOS index is increased."
+                    />
+                  )}
                   <Tile
                     title={"Next Rebase"}
                     content={stakeV2?.nextRebase}
@@ -330,7 +352,42 @@ function UpdateModalAfterEndTime() {
                     tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
                   />
                 </Flex>
-                <Flex
+                {smallerThan1024?<Flex flexDir={'column'}>
+                  
+                  <Flex w={'100%'} justifyContent={'flex-end'} mb='9px'>
+                    <CustomCheckBox
+                      state={addTos}
+                      setState={setAddTos}
+                    ></CustomCheckBox>
+                    <Text
+                      ml={"14px"}
+                      w={"51px"}
+                      fontSize={12}
+                      mr="6px"
+                      color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
+                    >
+                      Add TOS
+                    </Text>
+                    <BasicTooltip
+                      label={
+                        "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
+                      }
+                    />
+                  </Flex>
+                  <Flex mb='9px'>
+                    <BalanceInput
+                      w={"100%"}
+                      h={45}
+                      placeHolder={"Enter an amount of LTOS"}
+                      atomKey={"stake_relockModal_ltos_balance"}
+                      pageKey={"Stake_screen"}
+                      recoilKey={"relock_modal"}
+                      isDisabled={addTos}
+                      maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                    ></BalanceInput>
+                  </Flex>
+                 
+                </Flex>:<Flex
                   mb={"9px"}
                   justifyContent={"space-between"}
                   alignItems={"center"}
@@ -367,14 +424,15 @@ function UpdateModalAfterEndTime() {
                       }
                     />
                   </Flex>
-                </Flex>
+                </Flex>}
+                
                 <Flex
                   fontSize={12}
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
-                  w={"335px"}
+                  w={smallerThan1024? '100%':"335px"}
                   px="6px"
                 >
                   <Text>Your Balance</Text>
@@ -424,7 +482,7 @@ function UpdateModalAfterEndTime() {
                   ></TextInput>
                 </Flex>
               </Flex>
-              <Flex px={"49px"} mb={"30px"}>
+              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey="Stake_screen"
                   periodKey="stake_relockModal_period"
@@ -437,7 +495,7 @@ function UpdateModalAfterEndTime() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={"50px"}
+                px={smallerThan1024? '20px':"50px"}
               >
                 {contentList?.map((content, index) => {
                   return (
@@ -455,14 +513,14 @@ function UpdateModalAfterEndTime() {
               {addTos ? (
                 isAllowance ? (
                   <SubmitButton
-                    w={460}
+                    w={smallerThan1024? 310:460}
                     h={42}
                     name="Update"
                     onClick={callUpdate}
                   ></SubmitButton>
                 ) : (
                   <SubmitButton
-                    w={460}
+                    w={smallerThan1024? 310:460}
                     h={42}
                     name="Approve"
                     onClick={callApprove}
@@ -470,7 +528,7 @@ function UpdateModalAfterEndTime() {
                 )
               ) : (
                 <SubmitButton
-                  w={460}
+                  w={smallerThan1024? 310:460}
                   h={42}
                   name="Update"
                   onClick={callUpdate}
@@ -483,12 +541,13 @@ function UpdateModalAfterEndTime() {
               textAlign="center"
               w={"100%"}
               mb={"24px"}
+              px={smallerThan1024? '20px':"50px"}
             >
               <Text
                 w={"100%"}
                 color={colorMode === "dark" ? "gray.200" : "gray.700"}
               >
-                If this is First time bonding, Please approve Tonstarter to use
+                If this is First time bonding, Please approve TONStarter to use
                 your DAI for bonding.
               </Text>
             </Flex>

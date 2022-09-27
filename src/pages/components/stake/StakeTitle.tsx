@@ -9,7 +9,7 @@ import useUserBalance from "hooks/useUserBalance";
 function StakeTitle() {
   const [radioValue, setRadioValue] = useState<"All" | "Bond" | "Stake">("All");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
-  const { openModal } = useModal("stake_updateAfterEndTime_modal");
+  const { openModal } = useModal("stake_multiUnstake_modal");
   const { colorMode } = useColorMode();
   const { userLTOSBalance, userSTOSBalance, userTOSBalance } = useUserBalance();
   return (

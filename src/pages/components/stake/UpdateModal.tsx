@@ -8,17 +8,6 @@ import {
   ModalContent,
   useTheme,
   useColorMode,
-  Link,
-  Box,
-  Input,
-  Grid,
-  GridItem,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  Tooltip,
   useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
@@ -53,6 +42,7 @@ import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
 import ArrowImg from "assets/icons/arrow-right2.svg";
+import BasicTooltip from "common/tooltip/index";
 
 function BottomContent(props: {
   title: string;
@@ -131,11 +121,9 @@ function BottomContent(props: {
           >
             {title}
           </Text>
-          {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
-          ) : (
+          {tooltip ?
+          <BasicTooltip label="" />
+          : (
             <></>
           )}
         </Flex>
