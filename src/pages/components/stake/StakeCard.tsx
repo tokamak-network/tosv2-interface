@@ -22,12 +22,32 @@ function ContentComponent(props: {
       <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
         {title}
       </Text>
-      <Text
-        color={colorMode === "dark" ? "white.200" : "gray.800"}
-        fontWeight={600}
-      >
-        {content}
-      </Text>
+      {content.includes("/") ? (
+        <Flex>
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            fontWeight={600}
+          >
+            {content.split("/")[0]}
+          </Text>
+          <Text color={"#64646f"} mx={"3px"} fontWeight={600}>
+            /
+          </Text>
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            fontWeight={600}
+          >
+            {content.split("/")[1]}
+          </Text>
+        </Flex>
+      ) : (
+        <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontWeight={600}
+        >
+          {content}
+        </Text>
+      )}
     </Flex>
   );
 }
@@ -61,7 +81,8 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   }
 
   const { isOver, stakedType, tokenType } = cardData;
-  const isDisabled = isOver;
+  const isDisabled =
+    stakedType === "LTOS Staking" ? cardData.staked.ltos === "0.00" : isOver;
 
   return (
     <Flex
@@ -123,9 +144,10 @@ function StakeCard(props: { cardData: StakeCardProps }) {
       <ContentComponent
         title="Staked"
         content={
-          stakedType === "LTOS Staking"
-            ? `${cardData.staked.ltos}`
-            : `${cardData.staked.ltos} / ${cardData.staked.stos}`
+          // stakedType === "LTOS Staking"
+          //   ? `${cardData.staked.ltos}`
+          //   :
+          `${cardData.staked.ltos} / ${cardData.staked.stos}`
         }
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
