@@ -19,6 +19,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
+  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { selectedModalData, selectedModalState } from "atom//global/modal";
@@ -125,19 +126,20 @@ function Tile(props: {
 }) {
   const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
   return (
     <Box
       display={"flex"}
       flexDir={"column"}
-      w={"152px"}
+      w={smallerThan1024 ? "155px" : "152px"}
       alignItems={"center"}
       mb={"15px"}
     >
-      <Flex alignItems={"center"}>
+      <Flex alignItems={"center"} mb={"6px"}>
         <Text
           color={colorMode === "dark" ? "gray.100" : "gray.1000"}
           h={"17px"}
-          mb={"3px"}
           fontWeight={600}
           fontSize={12}
           textAlign="center"
@@ -148,18 +150,21 @@ function Tile(props: {
         <BasicTooltip label={tooltip} />
       </Flex>
 
-      <Flex fontWeight={"bold"} h={"33px"}>
+      <Flex
+        fontWeight={600}
+        justifyContent="center"
+        h={smallerThan1024 ? "28px" : "25px"}
+      >
         <Text
           color={colorMode === "dark" ? "white.100" : "gray.800"}
-          fontSize={24}
+          fontSize={18}
           mr={2}
         >
           {content || "-"}
         </Text>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontSize={14}
-          pt={"5px"}
+          fontSize={12}
           lineHeight={"33px"}
         >
           {symbol ? symbol : ""}
@@ -187,6 +192,7 @@ function BondModal() {
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData?.index;
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
 
@@ -295,7 +301,7 @@ function BondModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW="43.75em"
+        minW={smallerThan1024 ? "350px" : "43.75em"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
@@ -313,6 +319,7 @@ function BondModal() {
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={20}
                   fontWeight={600}
+                  ml="9px"
                 >
                   ETH BOND
                 </Text>
@@ -327,11 +334,20 @@ function BondModal() {
                 </Flex>
               </Flex>
               {/* Content Area*/}
-              <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
-                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
+              <Flex
+                w={"100%"}
+                flexDir={"column"}
+                px={smallerThan1024 ? "20px" : "120px"}
+                mb={"29px"}
+              >
+                <Flex mb={"9px"} w={"100%"} justifyContent="center">
                   <Grid
-                    templateColumns="repeat(3, 1fr)"
-                    templateRows="repeat(2, 1fr)"
+                    templateColumns={
+                      smallerThan1024 ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
+                    }
+                    templateRows={
+                      smallerThan1024 ? "repeat(3, 1fr)" : "repeat(2, 1fr)"
+                    }
                   >
                     <GridItem>
                       <Tile
@@ -407,41 +423,79 @@ function BondModal() {
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
+                  px="6px"
                 >
                   <Text>Your Balance</Text>
                   <Text>{userETHBalance} ETH</Text>
                 </Flex>
-                <Flex fontSize={12} alignItems="center">
-                  <Text
-                    mr={"24px"}
-                    color={colorMode === "light" ? "gray.800" : "white.200"}
-                  >
-                    Lock-Up Period
-                  </Text>
-                  <CustomCheckBox
-                    pageKey="Bond_screen"
-                    value={""}
-                    valueKey={"Bond_Modal"}
-                    state={fiveDaysLockup}
-                    setState={setFiveDaysLockup}
-                  ></CustomCheckBox>
-                  <Text ml={"9px"} mr="6px">
-                    5 days Lock-Up
-                  </Text>
-                  <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
-                  <TextInput
-                    w={"170px"}
-                    h={"39px"}
-                    pageKey={"Bond_screen"}
-                    recoilKey={"bond_modal"}
-                    atomKey={"bond_modal_period"}
-                    placeHolder={"1 Weeks"}
-                    style={{ marginLeft: "auto" }}
-                    isDisabled={fiveDaysLockup}
-                  ></TextInput>
-                </Flex>
+                {smallerThan1024 ? (
+                  <Flex flexDir={"column"} justifyContent="center" w="100%">
+                    <Flex justifyContent={'space-between'} fontSize={12} pr='6px' mb='10px' mt='22px'>
+                      {" "}
+                      <Text
+                        mr={"24px"}
+                        color={colorMode === "light" ? "gray.800" : "white.200"}
+                      >
+                        Lock-Up Period
+                      </Text>
+                      <Flex>
+                      <CustomCheckBox
+                        pageKey="Bond_screen"
+                        value={""}
+                        valueKey={"Bond_Modal"}
+                        state={fiveDaysLockup}
+                        setState={setFiveDaysLockup}
+                      ></CustomCheckBox>
+                      <Text ml={"9px"} mr="6px">
+                        5 days Lock-Up
+                      </Text>
+                      <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+                      </Flex>
+                    </Flex>
+                    <TextInput
+                      w={"100%"}
+                      h={"39px"}
+                      pageKey={"Bond_screen"}
+                      recoilKey={"bond_modal"}
+                      atomKey={"bond_modal_period"}
+                      placeHolder={"1 Weeks"}
+                      style={{ marginLeft: "auto" }}
+                      isDisabled={fiveDaysLockup}
+                    ></TextInput>
+                  </Flex>
+                ) : (
+                  <Flex fontSize={12} alignItems="center" mt='10px'>
+                    <Text
+                      mr={"24px"}
+                      color={colorMode === "light" ? "gray.800" : "white.200"}
+                    >
+                      Lock-Up Period
+                    </Text>
+                    <CustomCheckBox
+                      pageKey="Bond_screen"
+                      value={""}
+                      valueKey={"Bond_Modal"}
+                      state={fiveDaysLockup}
+                      setState={setFiveDaysLockup}
+                    ></CustomCheckBox>
+                    <Text ml={"9px"} mr="6px">
+                      5 days Lock-Up
+                    </Text>
+                    <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+                    <TextInput
+                      w={"170px"}
+                      h={"39px"}
+                      pageKey={"Bond_screen"}
+                      recoilKey={"bond_modal"}
+                      atomKey={"bond_modal_period"}
+                      placeHolder={"1 Weeks"}
+                      style={{ marginLeft: "auto" }}
+                      isDisabled={fiveDaysLockup}
+                    ></TextInput>
+                  </Flex>
+                )}
               </Flex>
-              <Flex px={"49px"} mb={"30px"}>
+              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Bond_screen"}
                   subKey={"bond_modal"}
@@ -454,7 +508,7 @@ function BondModal() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={"50px"}
+                px={smallerThan1024? '20px':"50px"}
               >
                 {contentList.map((content, index) => {
                   return (
@@ -470,9 +524,9 @@ function BondModal() {
                 })}
               </Flex>
             </Flex>
-            <Flex justifyContent={"center"} mb={"21px"}>
+            <Flex justifyContent={"center"} mb={"40px"}>
               <SubmitButton
-                w={460}
+                w={smallerThan1024? 310: 460}
                 h={42}
                 name="Bond"
                 onClick={callBond}

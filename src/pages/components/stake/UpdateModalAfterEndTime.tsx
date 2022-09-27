@@ -19,6 +19,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
+  useMediaQuery
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -157,6 +158,7 @@ function UpdateModalAfterEndTime() {
     "Stake_screen",
     "relock_modal"
   );
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
@@ -288,7 +290,7 @@ function UpdateModalAfterEndTime() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW="43.75em"
+        minW={smallerThan1024 ? "350px" : "43.75em"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>

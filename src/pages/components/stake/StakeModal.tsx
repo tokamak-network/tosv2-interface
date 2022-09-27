@@ -9,6 +9,7 @@ import {
   useTheme,
   useColorMode,
   Tooltip,
+  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -145,6 +146,7 @@ function StakeModal() {
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const { stosReward, maxWeeks } = useStosReward(
     inputValue.stake_modal_balance,
@@ -310,7 +312,7 @@ function StakeModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW="43.75em"
+        minW={smallerThan1024 ? "350px" : "43.75em"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
@@ -336,13 +338,34 @@ function StakeModal() {
                 </Flex>
               </Flex>
               {/* Content Area*/}
-              <Flex w={"100%"} px={"120px"} flexDir={"column"} mb={"29px"}>
-                <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile
-                    title={"Next Rebase"}
-                    content={stakeV2?.nextRebase}
-                    tooltip="Time left until LTOS index is increased."
-                  />
+              <Flex
+                w={"100%"}
+                px={smallerThan1024 ? "20px" : "120px"}
+                flexDir={"column"}
+                mb={"29px"}
+              >
+                <Flex
+                  w={"100%"}
+                  justifyContent={smallerThan1024 ? "center" : "space-between"}
+                  mb={smallerThan1024 ? "15px" : "9px"}
+                  flexDir={smallerThan1024 ? "column" : "row"}
+                >
+                  {smallerThan1024 ? (
+                    <Flex mb={"9px"} justifyContent="center" w={"100%"}>
+                      <Tile
+                        title={"Next Rebase"}
+                        content={stakeV2?.nextRebase}
+                        tooltip="Time left until LTOS index is increased."
+                      />
+                    </Flex>
+                  ) : (
+                    <Tile
+                      title={"Next Rebase"}
+                      content={stakeV2?.nextRebase}
+                      tooltip="Time left until LTOS index is increased."
+                    />
+                  )}
+
                   <Tile
                     title={"LTOS Index"}
                     content={stakeV2?.ltosIndex}
@@ -350,7 +373,7 @@ function StakeModal() {
                     tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
                   />
                 </Flex>
-                <Flex mb={"9px"}>
+                <Flex mb={"9px"} w={"100%"}>
                   <BalanceInput
                     w={"100%"}
                     h={45}
@@ -367,39 +390,79 @@ function StakeModal() {
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
+                  px="6px"
                 >
                   <Text>Your Balance</Text>
                   <Text>{userTOSBalance} TOS</Text>
                 </Flex>
-                <Flex fontSize={12} alignItems="center">
-                  <Text
-                    mr={"24px"}
-                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                {smallerThan1024 ? (
+                  <Flex
+                    flexDir={"column"}
+                    justifyContent="center"
+                    w="100%"
                   >
-                    Lock-Up Period
-                  </Text>
-                  <CustomCheckBox
-                    pageKey="Bond_screen"
-                    value={""}
-                    valueKey={"Bond_Modal"}
-                    state={fiveDaysLockup}
-                    setState={setFiveDaysLockup}
-                  ></CustomCheckBox>
-                  <Text ml={"9px"}>No Lock-Up</Text>
-                  <TextInput
-                    w={"170px"}
-                    h={"39px"}
-                    pageKey={"Stake_screen"}
-                    recoilKey={"stake_modal"}
-                    atomKey={"stake_modal_period"}
-                    placeHolder={"1 Weeks"}
-                    style={{ marginLeft: "auto" }}
-                    isDisabled={fiveDaysLockup}
-                    maxValue={maxWeeks}
-                  ></TextInput>
-                </Flex>
+                     <Flex justifyContent={'space-between'} fontSize={12} pr='6px' mb='10px' mt='22px'>
+                     <Text
+                      mr={"24px"}
+                      color={colorMode === "light" ? "gray.800" : "white.200"}
+                    >
+                      Lock-Up Period
+                    </Text>
+                    <Flex>
+                    <CustomCheckBox
+                      pageKey="Bond_screen"
+                      value={""}
+                      valueKey={"Bond_Modal"}
+                      state={fiveDaysLockup}
+                      setState={setFiveDaysLockup}
+                    ></CustomCheckBox>
+                    <Text ml={"9px"}>No Lock-Up</Text>
+                    </Flex>
+                    
+                     </Flex>
+                     <TextInput
+                     w={"100%"}
+                      h={"39px"}
+                      pageKey={"Stake_screen"}
+                      recoilKey={"stake_modal"}
+                      atomKey={"stake_modal_period"}
+                      placeHolder={"1 Weeks"}
+                      style={{ marginLeft: "auto" }}
+                      isDisabled={fiveDaysLockup}
+                      maxValue={maxWeeks}
+                    ></TextInput>
+                  </Flex>
+                ) : (
+                  <Flex fontSize={12} alignItems="center">
+                    <Text
+                      mr={"24px"}
+                      color={colorMode === "light" ? "gray.800" : "white.200"}
+                    >
+                      Lock-Up Period
+                    </Text>
+                    <CustomCheckBox
+                      pageKey="Bond_screen"
+                      value={""}
+                      valueKey={"Bond_Modal"}
+                      state={fiveDaysLockup}
+                      setState={setFiveDaysLockup}
+                    ></CustomCheckBox>
+                    <Text ml={"9px"}>No Lock-Up</Text>
+                    <TextInput
+                      w={"170px"}
+                      h={"39px"}
+                      pageKey={"Stake_screen"}
+                      recoilKey={"stake_modal"}
+                      atomKey={"stake_modal_period"}
+                      placeHolder={"1 Weeks"}
+                      style={{ marginLeft: "auto" }}
+                      isDisabled={fiveDaysLockup}
+                      maxValue={maxWeeks}
+                    ></TextInput>
+                  </Flex>
+                )}
               </Flex>
-              <Flex px={"49px"} mb={"30px"}>
+              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"stake_modal"}
@@ -412,7 +475,7 @@ function StakeModal() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={"50px"}
+                px={smallerThan1024? '20px':"50px"}
               >
                 {contentList.map((content, index) => {
                   return (
@@ -431,7 +494,7 @@ function StakeModal() {
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
                 <SubmitButton
-                  w={460}
+                w={smallerThan1024? 310: 460}
                   h={42}
                   name="Stake"
                   onClick={callStake}
@@ -439,7 +502,7 @@ function StakeModal() {
                 ></SubmitButton>
               ) : (
                 <SubmitButton
-                  w={460}
+                w={smallerThan1024? 310: 460}
                   h={42}
                   name="Approve"
                   onClick={callApprove}
