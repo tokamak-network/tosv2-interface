@@ -191,7 +191,13 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         )}
         <Flex justifyContent={"space-between"} w={"100%"}>
           <BasicButton
-            name={stakedType === "LTOS Staking" ? "Stake" : "Update"}
+            name={
+              stakedType === "LTOS Staking"
+                ? "Stake"
+                : isOver
+                ? "Relock"
+                : "Update"
+            }
             h={"33px"}
             onClick={
               stakedType === "LTOS Staking"

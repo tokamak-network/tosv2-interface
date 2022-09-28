@@ -102,6 +102,11 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
     fetchRolockModalData().catch((e) => {
       console.log("**useUpdateModalAfterEndTimeData2 err**");
       console.log(e);
+      return setNewBalance({
+        tos: "-",
+        ltos: "-",
+        stos: "-",
+      });
     });
   }, [stakeId, StakingV2Proxy_CONTRACT, inputValue, stosReward, addTos]);
 

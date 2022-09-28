@@ -1,4 +1,6 @@
 import commafy from "@/components/commafy";
+import { useQuery } from "@apollo/client";
+import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import useCallContract from "hooks/useCallContract";
 import usePrice from "hooks/usePrice";
@@ -29,12 +31,18 @@ function useStakeTopCards() {
 
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { priceData } = usePrice();
-  const { stakeV2 } = useStakeV2();
+  const { loading, error, data } = useQuery(GET_DASHBOARD_CARD, {
+    variables: {
+      period: "-1",
+      limit: 1,
+    },
+  });
 
   useEffect(() => {
     const fetchData = async () => {
-      if (StakingV2Proxy_CONTRACT && priceData) {
+      if (StakingV2Proxy_CONTRACT && priceData && data) {
         const { tosPrice } = priceData;
+        const { ltosIndex } = data.getDashboardCard[0];
 
         //Calculate TVS
         const totalLTOS = await StakingV2Proxy_CONTRACT.totalLtos();
@@ -66,7 +74,7 @@ function useStakeTopCards() {
           },
           {
             title: "LTOS Index",
-            price: stakeV2?.ltosIndex || "-",
+            price: commafy(ltosIndex, 7),
             priceUnit: "TOS",
             tooltip: "",
           },
@@ -77,7 +85,7 @@ function useStakeTopCards() {
       console.log("**useStakeTopCards err**");
       console.log(e);
     });
-  }, [StakingV2Proxy_CONTRACT, priceData, stakeV2?.ltosIndex]);
+  }, [StakingV2Proxy_CONTRACT, priceData, data]);
 
   return { stakeTopCards };
 }

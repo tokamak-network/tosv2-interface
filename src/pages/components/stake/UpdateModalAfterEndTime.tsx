@@ -54,21 +54,25 @@ import StakeGraph from "../common/modal/StakeGraph";
 
 function BottomContent(props: {
   title: string;
-  content: string | { ltos: string; stos: string; tos: string };
+  content: string | { ltos: string; stos: string; tos?: string };
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
 }) {
   const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
   const { colorMode } = useColorMode();
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const ContentComponent = useMemo(() => {
     switch (title) {
       case "You Will Get":
         return (
-          <Flex  w={'146px'} flexWrap='wrap' justifyContent={'flex-end'}>
+          <Flex
+            w={smallerThan1024 ? "146px" : "100%"}
+            flexWrap="wrap"
+            justifyContent={"flex-end"}
+          >
             <Text
-           
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
               mr="6px"
@@ -83,17 +87,22 @@ function BottomContent(props: {
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
             >
-              {(typeof content !== "string" && content.stos)|| "-"} sTOS
+              {typeof content !== "string" && content.stos} sTOS
             </Text>
-            <Text color={"#64646f"} mx={"5px"}>
-              /
-            </Text>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-            >
-              {(typeof content !== "string" && content.tos) || "-"} TOS
-            </Text>
+            {typeof content !== "string" && content.tos && (
+              <>
+                {" "}
+                <Text color={"#64646f"} mx={"5px"}>
+                  /
+                </Text>
+                <Text
+                  color={colorMode === "dark" ? "white.200" : "gray.800"}
+                  fontWeight={600}
+                >
+                  {content.tos || "-"} TOS
+                </Text>
+              </>
+            )}
           </Flex>
         );
 
@@ -126,7 +135,7 @@ function BottomContent(props: {
     <Flex>
       <Flex
         w={"100%"}
-        alignItems='center'
+        alignItems="center"
         justifyContent={"space-between"}
         fontSize={14}
         mt={"9px"}
@@ -135,6 +144,7 @@ function BottomContent(props: {
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
             mr={"6px"}
+            minW={title === "You Will Get" ? "83px" : ""}
           >
             {title}
           </Text>
@@ -177,8 +187,8 @@ function UpdateModalAfterEndTime() {
       title: "You Give",
       content: `${
         addTos
-          ? inputValue.stake_relockModal_tos_balance
-          : inputValue.stake_relockModal_ltos_balance || "0"
+          ? inputValue.stake_relockModal_tos_balance || "-"
+          : inputValue.stake_relockModal_ltos_balance || "-"
       } ${addTos ? "TOS" : "LTOS"}`,
       tooltip: true,
       tooltipMessage: "Amount of LTOS and TOS used for staking.",
@@ -191,7 +201,7 @@ function UpdateModalAfterEndTime() {
         ? {
             ltos: newBalance.ltos,
             stos: newBalance.stos,
-            tos: inputValue.stake_relockModal_tos_balance,
+            tos: undefined,
           }
         : {
             ltos: inputValue.stake_relockModal_ltos_balance,
@@ -274,14 +284,6 @@ function UpdateModalAfterEndTime() {
     }
   }, [tosAllowance, inputValue.stake_relockModal_tos_balance]);
 
-  // useEffect(() => {
-  //   if (addTos === false) {
-  //     return setValue({ ...inputValue, stake_relockModal_tos_balance: "" });
-  //   } else {
-  //     return setValue({ ...inputValue, stake_relockModal_ltos_balance: "" });
-  //   }
-  // }, [addTos, setValue, inputValue]);
-
   return (
     <Modal
       isOpen={selectedModal === "stake_updateAfterEndTime_modal"}
@@ -300,14 +302,27 @@ function UpdateModalAfterEndTime() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
-                <Text
-                  color={colorMode === "light" ? "gray.800" : "white.200"}
-                  fontSize={20}
-                  fontWeight={600}
-                >
-                  Update
-                </Text>
+              <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
+                <Flex flexDir={"column"} alignItems={"center"}>
+                  <Text
+                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                    fontSize={20}
+                    fontWeight={600}
+                  >
+                    Relock
+                  </Text>
+                  <Text
+                    height={"21px"}
+                    color={"blue.200"}
+                    fontSize={15}
+                    mb={"6px"}
+                  >
+                    Unlocked
+                  </Text>
+                  <Text height={"17px"} fontSize={12} color={"gray.100"}>
+                    Relock LTOS and lock more TOS for LTOS & sTOS
+                  </Text>
+                </Flex>
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}
@@ -318,121 +333,104 @@ function UpdateModalAfterEndTime() {
                 </Flex>
               </Flex>
               {/* Content Area*/}
-              <Flex w={"100%"} px={smallerThan1024 ? "20px" :"120px"} flexDir={"column"} mb={"29px"}>
-                <Flex
-                  w={"100%"}
-                  justifyContent={smallerThan1024 ? "center" : "space-between"}
-                  mb={smallerThan1024 ? "15px" : "9px"}
-                  flexDir={smallerThan1024 ? "column" : "row"}
-                >
-                  {smallerThan1024 ? (
-                    <Flex mb={"9px"} justifyContent="center" w={"100%"}>
-                      <Tile
-                        title={"Next Rebase"}
-                        content={stakeV2?.nextRebase}
-                        tooltip="Time left until LTOS index is increased."
+              <Flex
+                w={"100%"}
+                px={smallerThan1024 ? "20px" : "120px"}
+                flexDir={"column"}
+                mb={"29px"}
+              >
+                {smallerThan1024 ? (
+                  <Flex flexDir={"column"}>
+                    <Flex w={"100%"} justifyContent={"flex-end"} mb="9px">
+                      <CustomCheckBox
+                        state={addTos}
+                        setState={setAddTos}
+                      ></CustomCheckBox>
+                      <Text
+                        ml={"14px"}
+                        w={"51px"}
+                        fontSize={12}
+                        mr="6px"
+                        color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
+                      >
+                        Add TOS
+                      </Text>
+                      <BasicTooltip
+                        label={
+                          "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
+                        }
                       />
                     </Flex>
-                  ) : (
-                    <Tile
-                      title={"Next Rebase"}
-                      content={stakeV2?.nextRebase}
-                      tooltip="Time left until LTOS index is increased."
-                    />
-                  )}
-                  <Tile
-                    title={"Next Rebase"}
-                    content={stakeV2?.nextRebase}
-                    tooltip="Time left until LTOS index is increased."
-                  />
-                  <Tile
-                    title={"LTOS Index"}
-                    content={stakeV2?.ltosIndex}
-                    symbol={"TOS"}
-                    tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
-                  />
-                </Flex>
-                {smallerThan1024?<Flex flexDir={'column'}>
-                  
-                  <Flex w={'100%'} justifyContent={'flex-end'} mb='9px'>
-                    <CustomCheckBox
-                      state={addTos}
-                      setState={setAddTos}
-                    ></CustomCheckBox>
-                    <Text
-                      ml={"14px"}
-                      w={"51px"}
-                      fontSize={12}
-                      mr="6px"
-                      color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                    >
-                      Add TOS
-                    </Text>
-                    <BasicTooltip
-                      label={
-                        "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
-                      }
-                    />
+                    <Flex mb="9px">
+                      <BalanceInput
+                        w={"100%"}
+                        h={45}
+                        placeHolder={"Enter an amount of LTOS"}
+                        atomKey={"stake_relockModal_ltos_balance"}
+                        pageKey={"Stake_screen"}
+                        recoilKey={"relock_modal"}
+                        isDisabled={addTos}
+                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                      ></BalanceInput>
+                    </Flex>
                   </Flex>
-                  <Flex mb='9px'>
-                    <BalanceInput
-                      w={"100%"}
-                      h={45}
-                      placeHolder={"Enter an amount of LTOS"}
-                      atomKey={"stake_relockModal_ltos_balance"}
-                      pageKey={"Stake_screen"}
-                      recoilKey={"relock_modal"}
-                      isDisabled={addTos}
-                      maxValue={Number(ltosAmount?.replaceAll(",", ""))}
-                    ></BalanceInput>
+                ) : (
+                  <Flex
+                    mb={"9px"}
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    flexDir={"column"}
+                    rowGap={"9px"}
+                  >
+                    <Flex w={"100%"} justifyContent={"space-between"}>
+                      <Text
+                        fontSize={12}
+                        color={colorMode === "light" ? "gray.800" : "white.200"}
+                      >
+                        Relock LTOS
+                      </Text>
+                      <Flex alignItems={"center"}>
+                        <CustomCheckBox
+                          state={addTos}
+                          setState={setAddTos}
+                        ></CustomCheckBox>
+                        <Text
+                          ml={"14px"}
+                          fontSize={12}
+                          mr="6px"
+                          color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
+                        >
+                          Lock additional TOS
+                        </Text>
+                        <BasicTooltip
+                          label={
+                            "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
+                          }
+                        />
+                      </Flex>
+                    </Flex>
+                    <Flex>
+                      <BalanceInput
+                        w={"460px"}
+                        h={45}
+                        placeHolder={"Enter an amount of LTOS"}
+                        atomKey={"stake_relockModal_ltos_balance"}
+                        pageKey={"Stake_screen"}
+                        recoilKey={"relock_modal"}
+                        isDisabled={addTos}
+                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                      ></BalanceInput>
+                    </Flex>
                   </Flex>
-                 
-                </Flex>:<Flex
-                  mb={"9px"}
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                >
-                  <Flex>
-                    <BalanceInput
-                      w={"335px"}
-                      h={45}
-                      placeHolder={"Enter an amount of LTOS"}
-                      atomKey={"stake_relockModal_ltos_balance"}
-                      pageKey={"Stake_screen"}
-                      recoilKey={"relock_modal"}
-                      isDisabled={addTos}
-                      maxValue={Number(ltosAmount?.replaceAll(",", ""))}
-                    ></BalanceInput>
-                  </Flex>
-                  <Flex>
-                    <CustomCheckBox
-                      state={addTos}
-                      setState={setAddTos}
-                    ></CustomCheckBox>
-                    <Text
-                      ml={"14px"}
-                      w={"51px"}
-                      fontSize={12}
-                      mr="6px"
-                      color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                    >
-                      Add TOS
-                    </Text>
-                    <BasicTooltip
-                      label={
-                        "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
-                      }
-                    />
-                  </Flex>
-                </Flex>}
-                
+                )}
+
                 <Flex
                   fontSize={12}
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
-                  w={smallerThan1024? '100%':"335px"}
+                  w={"100%"}
                   px="6px"
                 >
                   <Text>Your Balance</Text>
@@ -482,7 +480,7 @@ function UpdateModalAfterEndTime() {
                   ></TextInput>
                 </Flex>
               </Flex>
-              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
+              <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey="Stake_screen"
                   periodKey="stake_relockModal_period"
@@ -495,7 +493,7 @@ function UpdateModalAfterEndTime() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={smallerThan1024? '20px':"50px"}
+                px={smallerThan1024 ? "20px" : "50px"}
               >
                 {contentList?.map((content, index) => {
                   return (
@@ -513,14 +511,14 @@ function UpdateModalAfterEndTime() {
               {addTos ? (
                 isAllowance ? (
                   <SubmitButton
-                    w={smallerThan1024? 310:460}
+                    w={smallerThan1024 ? 310 : 460}
                     h={42}
                     name="Update"
                     onClick={callUpdate}
                   ></SubmitButton>
                 ) : (
                   <SubmitButton
-                    w={smallerThan1024? 310:460}
+                    w={smallerThan1024 ? 310 : 460}
                     h={42}
                     name="Approve"
                     onClick={callApprove}
@@ -528,7 +526,7 @@ function UpdateModalAfterEndTime() {
                 )
               ) : (
                 <SubmitButton
-                  w={smallerThan1024? 310:460}
+                  w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Update"
                   onClick={callUpdate}
@@ -541,7 +539,7 @@ function UpdateModalAfterEndTime() {
               textAlign="center"
               w={"100%"}
               mb={"24px"}
-              px={smallerThan1024? '20px':"50px"}
+              px={smallerThan1024 ? "20px" : "50px"}
             >
               <Text
                 w={"100%"}
