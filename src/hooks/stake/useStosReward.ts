@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 
 type UseStosReward = {
   stosReward: string;
+  originalTosAmount: string;
   newEndTime: string;
   maxWeeks: number;
   unlockTime: number;
@@ -21,6 +22,7 @@ function useStosReward(
   inputPeriod?: number
 ): UseStosReward {
   const [stosReward, setStosRewards] = useState<string>("0");
+  const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
   const [newEndTime, setNewEndTime] = useState<string>("-");
   const [maxWeeks, setMaxWeeks] = useState<number>(156);
   const [unlockTime, setUnlockTime] = useState<number>(0);
@@ -40,6 +42,7 @@ function useStosReward(
         const n = Math.floor(periodWeeksTimeStamp / rebasePeriod);
         const pow = Math.pow(1 + interestRate, n);
         const resultInputAmount = inputTosAmount * pow;
+        setOriginalTosAmount(commafy(resultInputAmount));
 
         //Old script
         const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
@@ -113,7 +116,7 @@ function useStosReward(
     });
   }, [LockTOS_CONTRACT, inputPeriod, epochUnit]);
 
-  return { stosReward, newEndTime, maxWeeks, unlockTime };
+  return { stosReward, newEndTime, maxWeeks, unlockTime, originalTosAmount };
 }
 
 export default useStosReward;

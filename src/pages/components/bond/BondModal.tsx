@@ -195,7 +195,8 @@ function BondModal() {
   const marketId = propData?.index;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const { youWillGet, endTime, stosReward } = useBondModalInputData(marketId);
+  const { youWillGet, endTime, stosReward, originalTosAmount } =
+    useBondModalInputData(marketId);
 
   const { setTx } = useCustomToast();
 
@@ -216,8 +217,7 @@ function BondModal() {
       tooltip: true,
       tooltipMessage:
         "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-      secondTooltip:
-        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      secondTooltip: `Currently worth ${originalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
     },
     {
       title: "End Time",
@@ -441,7 +441,13 @@ function BondModal() {
                 </Flex>
                 {smallerThan1024 ? (
                   <Flex flexDir={"column"} justifyContent="center" w="100%">
-                    <Flex justifyContent={'space-between'} fontSize={12} pr='6px' mb='10px' mt='22px'>
+                    <Flex
+                      justifyContent={"space-between"}
+                      fontSize={12}
+                      pr="6px"
+                      mb="10px"
+                      mt="22px"
+                    >
                       {" "}
                       <Text
                         mr={"24px"}
@@ -450,17 +456,17 @@ function BondModal() {
                         Lock-Up Period
                       </Text>
                       <Flex>
-                      <CustomCheckBox
-                        pageKey="Bond_screen"
-                        value={""}
-                        valueKey={"Bond_Modal"}
-                        state={fiveDaysLockup}
-                        setState={setFiveDaysLockup}
-                      ></CustomCheckBox>
-                      <Text ml={"9px"} mr="6px">
-                        5 days Lock-Up
-                      </Text>
-                      <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+                        <CustomCheckBox
+                          pageKey="Bond_screen"
+                          value={""}
+                          valueKey={"Bond_Modal"}
+                          state={fiveDaysLockup}
+                          setState={setFiveDaysLockup}
+                        ></CustomCheckBox>
+                        <Text ml={"9px"} mr="6px">
+                          5 days Lock-Up
+                        </Text>
+                        <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
                       </Flex>
                     </Flex>
                     <TextInput
@@ -475,7 +481,7 @@ function BondModal() {
                     ></TextInput>
                   </Flex>
                 ) : (
-                  <Flex fontSize={12} alignItems="center" mt='10px'>
+                  <Flex fontSize={12} alignItems="center" mt="10px">
                     <Text
                       mr={"24px"}
                       color={colorMode === "light" ? "gray.800" : "white.200"}
@@ -506,7 +512,7 @@ function BondModal() {
                   </Flex>
                 )}
               </Flex>
-              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
+              <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Bond_screen"}
                   subKey={"bond_modal"}
@@ -519,7 +525,7 @@ function BondModal() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={smallerThan1024? '20px':"50px"}
+                px={smallerThan1024 ? "20px" : "50px"}
               >
                 {contentList.map((content, index) => {
                   return (
@@ -537,7 +543,7 @@ function BondModal() {
             </Flex>
             <Flex justifyContent={"center"} mb={"40px"}>
               <SubmitButton
-                w={smallerThan1024? 310: 460}
+                w={smallerThan1024 ? 310 : 460}
                 h={42}
                 name="Bond"
                 onClick={callBond}

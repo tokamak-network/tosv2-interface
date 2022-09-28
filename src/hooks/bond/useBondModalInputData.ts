@@ -11,6 +11,7 @@ type UseUnstake = {
   youWillGet: string | undefined;
   stosReward: string | undefined;
   endTime: string | undefined;
+  originalTosAmount: string;
 };
 
 function useBondModalInputData(marketId: number): UseUnstake {
@@ -26,11 +27,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
     LockTOS_CONTRACT,
   } = useCallContract();
   const { inputValue } = useInput("Bond_screen", "bond_modal");
-  const { newEndTime } = useStosReward(
-    inputValue?.bond_modal_balance,
-    inputValue?.bond_modal_period
-  );
-  const { stosReward } = useStosReward(
+  const { stosReward, newEndTime, originalTosAmount } = useStosReward(
     Number(inputTosAmount),
     inputValue?.bond_modal_period
   );
@@ -199,7 +196,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
     });
   }, [newEndTime]);
 
-  return { youWillGet, endTime, stosReward };
+  return { youWillGet, endTime, stosReward, originalTosAmount };
 }
 
 export default useBondModalInputData;

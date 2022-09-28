@@ -69,16 +69,11 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
           const tosAmount = convertToWei(
             inputValue.stake_relockModal_tos_balance
           );
-          console.log(tosAmount);
           const possibleLTOSAmount =
             await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
-          console.log(possibleLTOSAmount);
-
           const remainedLTOS = await StakingV2Proxy_CONTRACT.remainedLtos(
             stakeId
           );
-          console.log(remainedLTOS);
-
           const totalAmount =
             BigNumber.from(possibleLTOSAmount).add(remainedLTOS);
           const ltos =
