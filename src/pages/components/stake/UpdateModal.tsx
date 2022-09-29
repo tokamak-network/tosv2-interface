@@ -19,7 +19,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
-  useMediaQuery
+  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -175,53 +175,43 @@ function UpdateModal() {
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const contentList = useMemo(
-    () => [
-      {
-        title: "You Give",
-        content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
-        tooltip: false,
-        tooltipMessage: "",
-      },
-      {
-        title: "Current Balance",
-        content: currentBalance,
-        tooltip: true,
-        tooltipMessage: "Amount of LTOS and sTOS before the update.",
-        secondTooltip:
-          "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
-      },
-      {
-        title: "New Balance",
-        content: { ltos: newBalance.ltos, stos: newBalance.stos },
-        tooltip: true,
-        tooltipMessage: "Amount of LTOS and sTOS after the update.",
-        secondTooltip:
-          "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
-      },
-      {
-        title: "Current End Time",
-        content: currentEndTime,
-        tooltip: true,
-        tooltipMessage:
-          "Lock-Up period end time before the update.before the update.",
-      },
-      {
-        title: "New End Time",
-        content: newEndTime,
-        tooltip: true,
-        tooltipMessage:
-          "Lock-Up period end time after the update.before the update.",
-      },
-    ],
-    [
-      inputValue.stake_updateModal_tos_balance,
-      currentBalance,
-      newBalance,
-      currentEndTime,
-      newEndTime,
-    ]
-  );
+  const contentList = [
+    {
+      title: "You Give",
+      content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
+      tooltip: false,
+      tooltipMessage: "",
+    },
+    {
+      title: "Current Balance",
+      content: currentBalance,
+      tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS before the update.",
+      secondTooltip: `Currently worth ${inputValue.stake_updateModal_tos_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+    },
+    {
+      title: "New Balance",
+      content: { ltos: newBalance.ltos, stos: newBalance.stos },
+      tooltip: true,
+      tooltipMessage: "Amount of LTOS and sTOS after the update.",
+      secondTooltip:
+        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+    },
+    {
+      title: "Current End Time",
+      content: currentEndTime,
+      tooltip: true,
+      tooltipMessage:
+        "Lock-Up period end time before the update.before the update.",
+    },
+    {
+      title: "New End Time",
+      content: newEndTime,
+      tooltip: true,
+      tooltipMessage:
+        "Lock-Up period end time after the update.before the update.",
+    },
+  ];
 
   const callUpdate = useCallback(() => {
     //Mainnet_maxPeriod = 3years
@@ -367,7 +357,12 @@ function UpdateModal() {
                 </Flex>
               </Flex>
               {/* Content Area*/}
-              <Flex w={"100%"}  px={smallerThan1024 ? "20px" : "120px"} flexDir={"column"} mb={"29px"}>
+              <Flex
+                w={"100%"}
+                px={smallerThan1024 ? "20px" : "120px"}
+                flexDir={"column"}
+                mb={"29px"}
+              >
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={12}
@@ -392,56 +387,64 @@ function UpdateModal() {
                   h={"17px"}
                   justifyContent={"space-between"}
                   mb={"12px"}
-                  px={'6px'}
+                  px={"6px"}
                 >
                   <Text>Your Balance</Text>
                   <Text>{userTOSBalance} TOS</Text>
                 </Flex>
-                <Flex fontSize={12} alignItems={smallerThan1024? '':"center" }flexDir={smallerThan1024? 'column':'row'}>
+                <Flex
+                  fontSize={12}
+                  alignItems={smallerThan1024 ? "" : "center"}
+                  flexDir={smallerThan1024 ? "column" : "row"}
+                >
                   <Text
                     mr={"24px"}
                     color={colorMode === "light" ? "gray.800" : "white.200"}
-                    mb={smallerThan1024? '10px':''}
+                    mb={smallerThan1024 ? "10px" : ""}
                   >
                     New Lock-Up Period
                   </Text>
-                  <Flex w={smallerThan1024?'100%':''} justifyContent={smallerThan1024?'space-between':''}>
                   <Flex
-                    w={"120px"}
-                    h={"39px"}
-                    border={"1px solid #313442"}
-                    borderRadius={8}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    fontSize={14}
-                    color={"#64646f"}
+                    w={smallerThan1024 ? "100%" : ""}
+                    justifyContent={smallerThan1024 ? "space-between" : ""}
                   >
-                    <Text>{leftWeeks} Weeks</Text>
+                    <Flex
+                      w={"120px"}
+                      h={"39px"}
+                      border={"1px solid #313442"}
+                      borderRadius={8}
+                      alignItems={"center"}
+                      justifyContent={"center"}
+                      fontSize={14}
+                      color={"#64646f"}
+                    >
+                      <Text>{leftWeeks} Weeks</Text>
+                    </Flex>
+                    <Flex mx={"14px"}>
+                      <Image src={ArrowImg} alt={"ArrowImg"}></Image>
+                    </Flex>
+                    <TextInput
+                      w={"150px"}
+                      h={"39px"}
+                      atomKey={"stake_updateModal_period"}
+                      placeHolder={"1 Weeks"}
+                      pageKey={"Stake_screen"}
+                      recoilKey={"update_modal"}
+                      // style={{ marginLeft: "auto" }}
+                      maxValue={156}
+                      isError={inputError}
+                      errorMsg={"Invalid Weeks"}
+                    ></TextInput>
                   </Flex>
-                  <Flex mx={"14px"}>
-                    <Image src={ArrowImg} alt={"ArrowImg"}></Image>
-                  </Flex>
-                  <TextInput
-                    w={"150px"}
-                    h={"39px"}
-                    atomKey={"stake_updateModal_period"}
-                    placeHolder={"1 Weeks"}
-                    pageKey={"Stake_screen"}
-                    recoilKey={"update_modal"}
-                    // style={{ marginLeft: "auto" }}
-                    maxValue={156}
-                    isError={inputError}
-                    errorMsg={"Invalid Weeks"}
-                  ></TextInput>
                 </Flex>
               </Flex>
-              </Flex>
-              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
+              <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"update_modal"}
                   periodKey={"stake_updateModal_period"}
                   isSlideDisabled={false}
+                  minValue={leftWeeks}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
@@ -449,7 +452,7 @@ function UpdateModal() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={smallerThan1024? '20px':"50px"}
+                px={smallerThan1024 ? "20px" : "50px"}
               >
                 {contentList.map((content, index) => {
                   return (
@@ -466,7 +469,7 @@ function UpdateModal() {
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
                 <SubmitButton
-                  w={smallerThan1024? 310:460}
+                  w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Update"
                   isDisabled={btnDisable}
@@ -474,7 +477,7 @@ function UpdateModal() {
                 ></SubmitButton>
               ) : (
                 <SubmitButton
-                  w={smallerThan1024? 310:460}
+                  w={smallerThan1024 ? 310 : 460}
                   h={42}
                   isDisabled={
                     inputValue.stake_updateModal_tos_balance === "" ||

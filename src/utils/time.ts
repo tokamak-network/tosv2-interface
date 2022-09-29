@@ -50,6 +50,10 @@ function getDuration(
   };
 }
 
+function getTimeZone() {
+  // const timeZone = moment.tz.guess();
+}
+
 export {
   convertTimeStamp,
   getNowTimeStamp,

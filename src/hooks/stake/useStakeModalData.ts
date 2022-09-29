@@ -33,7 +33,7 @@ function useStakeModaldata() {
   const [stakeModalInputData, setStakeModalInputData] = useState<
     stakeModalInputData | undefined
   >(undefined);
-  const { stosReward } = useStosReward(inputAmount, inputPeriod);
+  const { stosReward, newEndTime } = useStosReward(inputAmount, inputPeriod);
 
   const {
     BondDepositoryProxy_CONTRACT,
@@ -83,9 +83,9 @@ function useStakeModaldata() {
       if (
         BondDepositoryProxy_CONTRACT &&
         StakingV2Proxy_CONTRACT &&
-        LockTOS_CONTRACT &&
         account &&
-        simpleStakingId
+        simpleStakingId &&
+        newEndTime
       ) {
         const tosAmount = convertToWei(inputAmount);
         const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
@@ -116,19 +116,13 @@ function useStakeModaldata() {
         const newBalance =
           convertNumber({ amount: newBalanceBN.toString() }) || "0";
 
-        //endTime
-        const sTosEpochUnit = await LockTOS_CONTRACT.epochUnit();
-        const unlockTimeStamp =
-          getNowTimeStamp() + inputPeriod * Number(sTosEpochUnit.toString());
-        const endTime = convertTimeStamp(unlockTimeStamp, "YYYY. MM.DD. HH:mm");
-
         setStakeModalInputData({
           youWillGet: {
             ltos: ltos,
           },
           currentBalance,
           newBalance,
-          endTime,
+          endTime: newEndTime,
         });
       }
     };
@@ -143,8 +137,8 @@ function useStakeModaldata() {
     inputPeriod,
     getEstimatedReward,
     account,
-    LockTOS_CONTRACT,
     simpleStakingId,
+    newEndTime,
   ]);
 
   return {

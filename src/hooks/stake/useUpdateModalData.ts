@@ -45,9 +45,13 @@ function useUpdateModalData(
   const { stakeId } = useStakeId();
   const modalContractData = useModalContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
-  const { stosReward, unlockTime } = useStosReward(
+  const { stosReward } = useStosReward(
     inputValue.stake_updateModal_tos_balance,
-    inputValue.stake_updateModal_period
+    inputValue.stake_updateModal_period - leftWeeks
+  );
+  const { unlockTime } = useStosReward(
+    inputValue.stake_updateModal_tos_balance,
+    inputValue.stake_updateModal_period + leftWeeks
   );
   const { epochUnit } = useLockTOS();
 
@@ -123,6 +127,9 @@ function useUpdateModalData(
           const resultStos =
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
+
+          console.log(currentBalance.stos);
+          console.log(stosReward);
 
           const newEndTime = modalContractData?.currentEndTime;
           setNewEndTime(newEndTime || "-");

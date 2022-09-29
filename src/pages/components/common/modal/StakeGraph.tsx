@@ -36,8 +36,9 @@ function StakeGraph(props: {
   subKey: InputKey;
   periodKey: PeriodKey;
   isSlideDisabled: boolean;
+  minValue?: number;
 }) {
-  const { pageKey, subKey, periodKey, isSlideDisabled } = props;
+  const { pageKey, subKey, periodKey, isSlideDisabled, minValue } = props;
   const labelStyles = {
     mt: "2",
     ml: "-2.5",
@@ -70,7 +71,12 @@ function StakeGraph(props: {
         min={1}
         max={156}
         value={sliderValue}
-        onChange={(val: number) => setSliderValue(val)}
+        onChange={(val: number) => {
+          if (minValue && minValue > val) {
+            return setSliderValue(minValue);
+          }
+          return setSliderValue(val);
+        }}
         h={"10px"}
         alignSelf={"end"}
         isDisabled={isSlideDisabled}
@@ -110,8 +116,15 @@ function StakeGraph(props: {
         >
           {sliderValue} STOS
         </SliderMark> */}
+
         <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
           <SliderFilledTrack bg={"#2775ff"} />
+          {minValue && (
+            <SliderFilledTrack
+              maxW={`${(minValue / 156) * 100}%`}
+              bg={"#2bb415"}
+            />
+          )}
         </SliderTrack>
         <Tooltip
           color={colorMode === "light" ? "#07070c" : "#f1f1f1"}
