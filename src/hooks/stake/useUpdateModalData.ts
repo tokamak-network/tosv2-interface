@@ -51,7 +51,7 @@ function useUpdateModalData(
   );
   const { unlockTime } = useStosReward(
     inputValue.stake_updateModal_tos_balance,
-    inputValue.stake_updateModal_period + leftWeeks
+    inputValue.stake_updateModal_period
   );
   const { epochUnit } = useLockTOS();
 
