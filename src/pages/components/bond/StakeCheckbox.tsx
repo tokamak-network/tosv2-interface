@@ -11,6 +11,8 @@ function StakeCheckbox() {
   const selectedCards = useRecoilValue(selectedCheckboxState);
   const { openModal } = useModal("stake_multiUnstake_modal", selectedCards);
 
+  console.log(selectedCards);
+
   return (
     <Flex
       alignItems={"center"}
@@ -31,25 +33,6 @@ function StakeCheckbox() {
           Selected : {selectedCards.length}
         </Text>
       </Flex>
-      {/* <Flex
-        w={"160px"}
-        h={"45px"}
-        borderWidth={1}
-        borderColor={colorMode === "dark" ? "#535353" : "gray.1000"}
-        borderRadius={8}
-        color={"#5a5a5a"}
-        alignItems="center"
-        justifyContent={"center"}
-        fontSize={14}
-        onClick={() => openModal()}
-      >
-        <Text
-          fontSize={14}
-          color={colorMode === "dark" ? "#5a5a5a" : "gray.800"}
-        >
-          Unstake Selected
-        </Text>
-      </Flex> */}
       <BasicButton
         name="Unstake Selected"
         isDisabled={selectedCards.length === 0}

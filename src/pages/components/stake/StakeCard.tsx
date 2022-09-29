@@ -172,7 +172,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         flexDir={"column"}
         mt={"auto"}
       >
-        {isOver && (
+        {isDisabled && (
           <Flex w={"100%"} justifyContent={"center"} mb={"21px"}>
             <CustomCheckBox
               valueKey={""}
@@ -196,7 +196,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
                 ? "Stake"
                 : isOver
                 ? "Relock"
-                : "Update"
+                : "Manage"
             }
             h={"33px"}
             onClick={
@@ -208,7 +208,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             }
             style={smallerThan1040 ? { width: "100%" } : {}}
             tooltip={
-              "You can increase sTOS by using “Update” function. This costs less gas than using the “Stake” function."
+              "You can increase sTOS by using “Manage” function. This costs less gas than using the “Stake” function."
             }
           ></BasicButton>
           <BasicButton

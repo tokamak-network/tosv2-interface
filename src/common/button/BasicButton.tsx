@@ -44,7 +44,7 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
     >
       <Box mx={"6px"}>{name}</Box>
 
-      {name === "Update" ? <BasicTooltip label={tooltip} /> : <></>}
+      {name === "Manage" ? <BasicTooltip label={tooltip} /> : <></>}
     </Button>
   );
 };

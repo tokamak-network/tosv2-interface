@@ -128,8 +128,10 @@ const NavItem = (props: { isExpended: boolean }) => {
   return (
     <>
       {navItemList.map((item, index) => {
-        const capitalLinkName =item.link !== 'dao'?
-          item.link.charAt(0).toUpperCase() + item.link.slice(1) :'DAO';
+        const capitalLinkName =
+          item.link !== "dao"
+            ? item.link.charAt(0).toUpperCase() + item.link.slice(1)
+            : "DAO";
         return (
           <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
             <Flex pos={"relative"}>
@@ -272,9 +274,9 @@ function MobileSideBar() {
         alignItems="center"
         bg={colorMode === "light" ? "#ffffff" : "#1f2128"}
       >
-        <Box mb={50}>
+        <Flex mb={50} w={"100%"} pl={"35px"}>
           <Logo isExpended={isExpended}></Logo>
-        </Box>
+        </Flex>
         <NavItem isExpended={isExpended}></NavItem>
         <Box w={"100%"} mt={18} px={25}>
           <Line></Line>

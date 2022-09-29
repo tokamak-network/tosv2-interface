@@ -6,7 +6,7 @@ import {
 } from "atom/global/checkbox";
 import usePathName from "hooks/usePathName";
 import React, { SetStateAction, useCallback, useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
 import { PageKey, Pages } from "types";
 
 type CheckBoxProp = {
@@ -52,6 +52,8 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
   const { pathName } = usePathName();
   const [isCheckdAll, setIsCheckdAll] = useRecoilState(checkboxAll);
   const [checkboxState, setCheckboxState] = useRecoilState(checkboxsState);
+  const resetCheckBoxValue = useResetRecoilState(checkboxsState);
+
   const [checkThisBox, setCheckThisBox] = useState<boolean>(state || false);
 
   useEffect(() => {
@@ -110,7 +112,8 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
           if (isChecked) {
             setIsCheckdAll(pageKey);
           } else {
-            setIsCheckdAll(undefined);
+            resetCheckBoxValue();
+            // setIsCheckdAll(undefined);
           }
         }
       }}
