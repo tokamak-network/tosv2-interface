@@ -1,6 +1,12 @@
 import { selector, useRecoilValue } from "recoil";
 import { filterState } from "atom//dashboard";
-import { Flex, Text, Tooltip, useColorMode ,useMediaQuery} from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Tooltip,
+  useColorMode,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import question from "assets/icons/question.svg";
 import Image from "next/image";
@@ -23,6 +29,8 @@ function Graph(props: {
 }) {
   const { data, title, amount, tooltipTitle } = props;
   const { colorMode } = useColorMode();
+  console.log('data',data);
+  
   const theme = {
     axis: {
       ticks: {
@@ -42,7 +50,7 @@ function Graph(props: {
       w={"100%"}
       minWidth={"336px"}
       // maxWidth={smallerThan1024? "556px":'476px'}
-      maxWidth={'556px'}
+      maxWidth={"556px"}
       h={"350px"}
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       borderRadius={14}
@@ -62,8 +70,8 @@ function Graph(props: {
         >
           {title}{" "}
         </Text>
-       <BasicTooltip label={tooltipTitle}/>
-        {/* <Image src={question} /> */}
+        <BasicTooltip label={tooltipTitle} />
+      
       </Flex>
       <Text
         color={colorMode === "dark" ? "white.100" : "gray.800"}
@@ -75,12 +83,18 @@ function Graph(props: {
 
       <ResponsiveLine
         data={data}
+     
         theme={theme}
-        // width={516}
+      
         margin={{ top: 14, right: 20, bottom: 65, left: 50 }}
-        // colors={{datum: 'data.color'}}
+      
         colors={["#405df9", "#e23738", "#50d1b2"]}
-        xScale={{ type: "point" }}
+        xScale={{
+          type: "time",
+          format: "%Y-%m-%d %H:%M:%S",
+       
+          useUTC: false,
+        }}
         yScale={{
           type: "linear",
           min: 0,
@@ -98,27 +112,31 @@ function Graph(props: {
           tickPadding: 20,
           tickRotation: 0,
           legendOffset: 36,
+          tickValues: 4,
           legendPosition: "middle",
           format: function (value) {
-         
-            return moment.unix(value).format("MMM DD");
+            return moment(value).format("MMM DD");
           },
         }}
         enableSlices="x"
         axisLeft={{
           tickSize: 0,
-          tickPadding: 10,
+          tickPadding: 5,
           tickRotation: 0,
-          tickValues: 3,
+          tickValues:4,
           legendOffset: -40,
           legendPosition: "middle",
           format: function (value) {
-            if (Number(value)> 1000000) {
-              return `$${Number(value) / 1000000}M`;
+            if (title === "Runway") {
+
+              return value === 0 ? `${value} Days`:`${Number(value)}`;
+            } else {
+              if (Number(value) > 1000000) {
+                return `$${Number(value) / 1000000}M`;
+              } else {
+                return `$${Number(value)}`;
+              }
             }
-           else {
-            return `$${Number(value)}`
-           }
           },
         }}
         pointSize={10}
@@ -201,9 +219,7 @@ function Graph(props: {
               <div
                 style={{ color: colorMode === "dark" ? "#d0d0da" : "#9a9aaf" }}
               >
-                {moment
-                  .unix(Number(slice.points[0].data.x))
-                  .format("MMM DD, YYYY")}
+                {moment(slice.points[0].data.x).format("MMM DD, YYYY")}
               </div>
             </div>
           );

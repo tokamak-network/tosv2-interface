@@ -19,146 +19,6 @@ function GraphContainer() {
   const [totalStakedDatas, setTotalStakedDatas] = useState<any[]>([]);
   const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
   const [treasuryBalanceDatas, setTreasuryBalanceDatas] = useState<any[]>([]);
-  const data3 = [
-    {
-      id: "#1",
-      color: "hsl(218, 100%, 58%)",
-      data: [
-        {
-          x: 1656641961,
-          y: 500,
-        },
-        {
-          x: 1656814761,
-          y: 800,
-        },
-        {
-          x: 1656987561,
-          y: 750,
-        },
-        {
-          x: 1657160361,
-          y: 1000,
-        },
-        {
-          x: 1657333161,
-          y: 1400,
-        },
-        {
-          x: 1657505961,
-          y: 800,
-        },
-        {
-          x: 1657678761,
-          y: 1500,
-        },
-        {
-          x: 1657851561,
-          y: 4200,
-        },
-        {
-          x: 1658024361,
-          y: 2100,
-        },
-        {
-          x: 1658197161,
-          y: 2300,
-        },
-      ],
-    },
-    {
-      id: "#2",
-      color: "hsl(218, 100%, 58%)",
-      data: [
-        {
-          x: 1656641961,
-          y: 1500,
-        },
-        {
-          x: 1656814761,
-          y: 1000,
-        },
-        {
-          x: 1656987561,
-          y: 2750,
-        },
-        {
-          x: 1657160361,
-          y: 2400,
-        },
-        {
-          x: 1657333161,
-          y: 2400,
-        },
-        {
-          x: 1657505961,
-          y: 1800,
-        },
-        {
-          x: 1657678761,
-          y: 3500,
-        },
-        {
-          x: 1657851561,
-          y: 1300,
-        },
-        {
-          x: 1658024361,
-          y: 3300,
-        },
-        {
-          x: 1658197161,
-          y: 2400,
-        },
-      ],
-    },
-    {
-      id: "#3",
-      color: "hsl(218, 100%, 58%)",
-      data: [
-        {
-          x: 1656641961,
-          y: 500,
-        },
-        {
-          x: 1656814761,
-          y: 1000,
-        },
-        {
-          x: 1656987561,
-          y: 1750,
-        },
-        {
-          x: 1657160361,
-          y: 2000,
-        },
-        {
-          x: 1657333161,
-          y: 2400,
-        },
-        {
-          x: 1657505961,
-          y: 2800,
-        },
-        {
-          x: 1657678761,
-          y: 2500,
-        },
-        {
-          x: 1657851561,
-          y: 4000,
-        },
-        {
-          x: 1658024361,
-          y: 4100,
-        },
-        {
-          x: 1658197161,
-          y: 5000,
-        },
-      ],
-    },
-  ];
 
   useEffect(() => {
     if (data) {
@@ -166,8 +26,10 @@ function GraphContainer() {
 
       const marketCap = graphData.map((arrayData: any, index: number) => {
         return {
-          x: moment(arrayData.createdAt).unix(),
-          y: Number(arrayData.marketCap),
+          x: moment(arrayData.createdAt).format("YYYY-MM-DD HH:mm:ss"),
+          y: arrayData.marketCap === "-Infinity"
+          ? 0
+          : Number(arrayData.marketCap),
         };
       });
 
@@ -182,8 +44,12 @@ function GraphContainer() {
       setMarketCapDatas(marketCapData);
       const totalStaked = graphData.map((arrayData: any, index: number) => {
         return {
-          x: moment(arrayData.createdAt).unix(),
-          y: Number(arrayData.totalValueStaked) || 0,
+          x: moment(new Date(arrayData.createdAt)).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          y: arrayData.totalValueStaked === "-Infinity"
+          ? 0
+          : Number(arrayData.totalValueStaked) || 0,
         };
       });
 
@@ -197,9 +63,15 @@ function GraphContainer() {
       setTotalStakedDatas(totalStakedData);
 
       const runway = graphData.map((arrayData: any, index: number) => {
+
         return {
-          x: moment(arrayData.createdAt).unix(),
-          y: Number(arrayData.runway) || 0,
+          x: moment(new Date(arrayData.createdAt)).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          y:
+            arrayData.runway === "-Infinity"
+              ? 0
+              : Number(arrayData.runway) || 0,
         };
       });
       const runwayData = [
@@ -214,8 +86,12 @@ function GraphContainer() {
 
       const treasuryBalance = graphData.map((arrayData: any, index: number) => {
         return {
-          x: moment(arrayData.createdAt).unix(),
-          y: Number(arrayData.treasuryBalance) || 0,
+          x: moment(new Date(arrayData.createdAt)).format(
+            "YYYY-MM-DD HH:mm:ss"
+          ),
+          y:arrayData.treasuryBalance === "-Infinity"
+          ? 0
+          :  Number(arrayData.treasuryBalance) || 0,
         };
       });
 
@@ -234,7 +110,7 @@ function GraphContainer() {
   const getGraphData = () => {
     switch (filteredValue) {
       case "1 Week":
-        return data.getDashboard.slice(0, 6);
+        return data.getDashboard.slice(0, 7);
       case "1 Month":
         return data.getDashboard.slice(0, 29);
       case "3 Months":
@@ -258,60 +134,76 @@ function GraphContainer() {
         flexWrap={"wrap"}
         justifyContent="center"
       >
-        <Graph
-          data={marketCapDatas}
-          title="Market Cap"
-          amount={
-            marketCapDatas[0]
-              ? `$ ${Number(
-                  marketCapDatas[0].data[marketCapDatas[0].data.length - 1].y
-                ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
-              : ""
-          }
-          tooltipTitle="“Market Cap” represents the total
+        {!loading && (
+          <Graph
+            data={marketCapDatas}
+            title="Market Cap"
+            amount={
+              marketCapDatas[0]
+                ? `$ ${Number(
+                    marketCapDatas[0].data[marketCapDatas[0].data.length - 1].y
+                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                : ""
+            }
+            tooltipTitle="“Market Cap” represents the total
           dollar value of TOS in circulation."
-        ></Graph>
-        <Graph
-          data={totalStakedDatas}
-          title="Total Value Staked"
-          amount={
-            totalStakedDatas[0]
-              ? `$ ${Number(
-                  totalStakedDatas[0].data[totalStakedDatas[0].data.length - 1]
-                    .y
-                ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
-              : ""
-          }
-          tooltipTitle="“Total Value Staked” represents 
-          the total dollar value of all the LTOS. 
-          LTOS represents TOS that are staked
-          and their staking interest."
-        ></Graph>
-        <Graph
-          data={treasuryBalanceDatas}
-          title="Treasury Balance"
-          amount={
-            treasuryBalanceDatas[0]
-              ? `$ ${Number(
-                  treasuryBalanceDatas[0].data[
-                    treasuryBalanceDatas[0].data.length - 1
-                  ].y
-                ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
-              : ""
-          }
-          tooltipTitle="“Treasury Balance” represents the 
+          ></Graph>
+        )}
+
+        {!loading && (
+          <Graph
+            data={totalStakedDatas}
+            title="Total Value Staked"
+            amount={
+              totalStakedDatas[0]
+                ? `$ ${Number(
+                    totalStakedDatas[0].data[
+                      totalStakedDatas[0].data.length - 1
+                    ].y
+                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                : ""
+            }
+            tooltipTitle="“Total Value Staked” represents 
+      the total dollar value of all the LTOS. 
+      LTOS represents TOS that are staked
+      and their staking interest."
+          ></Graph>
+        )}
+        {!loading && (
+          <Graph
+            data={treasuryBalanceDatas}
+            title="Treasury Balance"
+            amount={
+              treasuryBalanceDatas[0]
+                ? `$ ${Number(
+                    treasuryBalanceDatas[0].data[
+                      treasuryBalanceDatas[0].data.length - 1
+                    ].y
+                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                : ""
+            }
+            tooltipTitle="“Treasury Balance” represents the 
           total dollar value of non-TOS assets
           owned by the treasury that can be
           used for backing each TOS."
-        ></Graph>
-        <Graph
-          data={runwayDatas}
-          title="Runway"
-          amount={`${runwayDatas[0] ? runwayDatas[0].data.length : ""} Days`}
-          tooltipTitle="“Runway” represents the number of days
+          ></Graph>
+        )}
+        {!loading && (
+          <Graph
+            data={runwayDatas}
+            title="Runway"
+            amount={`${
+              runwayDatas[0]
+                ? ` ${Number(
+                    runwayDatas[0].data[runwayDatas[0].data.length - 1].y
+                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                : ""
+            } Days`}
+            tooltipTitle="“Runway” represents the number of days
           that staking interest can be sustained 
           by the protocol."
-        ></Graph>
+          ></Graph>
+        )}
       </Flex>
     </Flex>
   );
