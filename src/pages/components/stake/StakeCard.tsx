@@ -60,7 +60,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
       ? { hasInput: true, stakedId: cardData.stakedId }
       : { hasInput: false, stakedId: cardData?.stakedId }
   );
-  const { openModal } = useModal("stake_stake_modal");
+  const { openModal } = useModal("stake_stake_modal", cardData);
   const { openModal: openUpdateModal } = useModal("stake_update_modal", {
     stakeId: cardData?.stakedId,
     ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),

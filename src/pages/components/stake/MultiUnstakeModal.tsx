@@ -92,16 +92,18 @@ function MultiUnstakeModal() {
   }, [closeModal]);
 
   const callUnstake = useCallback(async () => {
-    const stakeIds = selectedModalData?.map((cardData: StakeCardProps) => {
-      if (cardData) return cardData.stakedId;
-    });
-    if (StakingV2Proxy_CONTRACT) {
-      console.log("--unstake(uint256 _stakeId)--");
-      console.log(stakeIds);
-      if (stakeIds) {
-        const tx = await StakingV2Proxy_CONTRACT.multiUnstake(stakeIds);
-        setTx(tx);
-        return closeThisModal();
+    if (selectedModalData) {
+      const stakeIds = selectedModalData?.map((cardData: StakeCardProps) => {
+        if (cardData) return cardData.stakedId;
+      });
+      if (StakingV2Proxy_CONTRACT) {
+        console.log("--unstake(uint256 _stakeId)--");
+        console.log(stakeIds);
+        if (stakeIds) {
+          const tx = await StakingV2Proxy_CONTRACT.multiUnstake(stakeIds);
+          setTx(tx);
+          return closeThisModal();
+        }
       }
     }
   }, [StakingV2Proxy_CONTRACT, closeThisModal, setTx, selectedModalData]);
@@ -194,17 +196,19 @@ function MultiUnstakeModal() {
               </Flex>
             </Flex>
             {/* Content Area*/}
-            <Flex
-              w={"100%"}
-              flexDir={"column"}
-              mb={"30px"}
-             
-            >
+            <Flex w={"100%"} flexDir={"column"} mb={"30px"}>
               {/* {hasInput && ( */}
-              <Flex w={"100%"} flexDir={"column"}  px={smallerThan1024 ? "20px" : "120px"}>
-                <Flex w={"100%"}  justifyContent={smallerThan1024 ? "center" : "space-between"}
+              <Flex
+                w={"100%"}
+                flexDir={"column"}
+                px={smallerThan1024 ? "20px" : "120px"}
+              >
+                <Flex
+                  w={"100%"}
+                  justifyContent={smallerThan1024 ? "center" : "space-between"}
                   mb={smallerThan1024 ? "15px" : "9px"}
-                  flexDir={smallerThan1024 ? "column" : "row"}>
+                  flexDir={smallerThan1024 ? "column" : "row"}
+                >
                   {smallerThan1024 ? (
                     <Flex mb={"9px"} justifyContent="center" w={"100%"}>
                       <Tile
@@ -230,7 +234,11 @@ function MultiUnstakeModal() {
               </Flex>
               {/* )} */}
               {/* Content Bottom */}
-              <Flex flexDir={"column"} rowGap={"9px"}   px={smallerThan1024? '20px':"50px"}>
+              <Flex
+                flexDir={"column"}
+                rowGap={"9px"}
+                px={smallerThan1024 ? "20px" : "50px"}
+              >
                 {contentList.map((content, index) => {
                   return (
                     <BottomContent
@@ -244,7 +252,7 @@ function MultiUnstakeModal() {
             </Flex>
             <Flex flexDir={"column"} alignItems={"center"} rowGap={"15px"}>
               <SubmitButton
-                w={smallerThan1024? 310:460}
+                w={smallerThan1024 ? 310 : 460}
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}

@@ -43,6 +43,7 @@ import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
 import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
+import { StakeCardProps } from "types/stake";
 
 function BottomContent(props: {
   title: string;
@@ -132,8 +133,8 @@ function BottomContent(props: {
 function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal } = useModal();
-  const { selectedModalData, selectedModal } = useModal<BondCardProps>();
+  const { selectedModalData, selectedModal, closeModal } =
+    useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
@@ -142,6 +143,7 @@ function StakeModal() {
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
   const { stakeList, tosAllowance } = useUser();
+
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
@@ -152,8 +154,6 @@ function StakeModal() {
     inputValue.stake_modal_balance,
     inputValue.stake_modal_period
   );
-
-  const marketId = selectedModalData?.index;
 
   const { setTx } = useCustomToast();
 
@@ -300,6 +300,13 @@ function StakeModal() {
     return setBtnDisabled(false);
   }, [inputValue, fiveDaysLockup]);
 
+  useEffect(() => {
+    if (selectedModalData?.stakedType === "LTOS Staking") {
+      return setFiveDaysLockup(true);
+    }
+    return setFiveDaysLockup(false);
+  }, [selectedModalData]);
+
   return (
     <Modal
       isOpen={selectedModal === "stake_stake_modal"}
@@ -394,32 +401,33 @@ function StakeModal() {
                   <Text>{userTOSBalance} TOS</Text>
                 </Flex>
                 {smallerThan1024 ? (
-                  <Flex
-                    flexDir={"column"}
-                    justifyContent="center"
-                    w="100%"
-                  >
-                     <Flex justifyContent={'space-between'} fontSize={12} pr='6px' mb='10px' mt='22px'>
-                     <Text
-                      mr={"24px"}
-                      color={colorMode === "light" ? "gray.800" : "white.200"}
+                  <Flex flexDir={"column"} justifyContent="center" w="100%">
+                    <Flex
+                      justifyContent={"space-between"}
+                      fontSize={12}
+                      pr="6px"
+                      mb="10px"
+                      mt="22px"
                     >
-                      Lock-Up Period
-                    </Text>
-                    <Flex>
-                    <CustomCheckBox
-                      pageKey="Bond_screen"
-                      value={""}
-                      valueKey={"Bond_Modal"}
-                      state={fiveDaysLockup}
-                      setState={setFiveDaysLockup}
-                    ></CustomCheckBox>
-                    <Text ml={"9px"}>No Lock-Up</Text>
+                      <Text
+                        mr={"24px"}
+                        color={colorMode === "light" ? "gray.800" : "white.200"}
+                      >
+                        Lock-Up Period
+                      </Text>
+                      <Flex>
+                        <CustomCheckBox
+                          pageKey="Bond_screen"
+                          value={""}
+                          valueKey={"Bond_Modal"}
+                          state={fiveDaysLockup}
+                          setState={setFiveDaysLockup}
+                        ></CustomCheckBox>
+                        <Text ml={"9px"}>No Lock-Up</Text>
+                      </Flex>
                     </Flex>
-                    
-                     </Flex>
-                     <TextInput
-                     w={"100%"}
+                    <TextInput
+                      w={"100%"}
                       h={"39px"}
                       pageKey={"Stake_screen"}
                       recoilKey={"stake_modal"}
@@ -460,7 +468,7 @@ function StakeModal() {
                   </Flex>
                 )}
               </Flex>
-              <Flex px={smallerThan1024?'30px':"43px"} mb={"30px"}>
+              <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"stake_modal"}
@@ -473,7 +481,7 @@ function StakeModal() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={smallerThan1024? '20px':"50px"}
+                px={smallerThan1024 ? "20px" : "50px"}
               >
                 {contentList.map((content, index) => {
                   return (
@@ -492,7 +500,7 @@ function StakeModal() {
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
                 <SubmitButton
-                w={smallerThan1024? 310: 460}
+                  w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Stake"
                   onClick={callStake}
@@ -500,7 +508,7 @@ function StakeModal() {
                 ></SubmitButton>
               ) : (
                 <SubmitButton
-                w={smallerThan1024? 310: 460}
+                  w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Approve"
                   onClick={callApprove}

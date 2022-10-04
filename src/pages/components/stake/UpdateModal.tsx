@@ -333,7 +333,7 @@ function UpdateModal() {
                     fontSize={20}
                     fontWeight={600}
                   >
-                    Update
+                    Manage
                   </Text>
                   <Text
                     height={"21px"}
