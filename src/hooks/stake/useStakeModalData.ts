@@ -70,13 +70,13 @@ function useStakeModaldata() {
 
   useEffect(() => {
     const fetchListdata = async () => {
-      if (inputAmount === "") {
+      if (inputAmount === "" || inputAmount === undefined) {
         return setStakeModalInputData({
           youWillGet: {
-            ltos: "0",
+            ltos: "-",
           },
-          currentBalance: "0",
-          newBalance: "0",
+          currentBalance: "-",
+          newBalance: "-",
           endTime: "-",
         });
       }

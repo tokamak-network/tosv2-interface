@@ -18,12 +18,13 @@ function usePagination(listArr: any[] | undefined) {
   useEffect(() => {
     if (listArr) {
       const currentPageData =
-        currentPage === listArr.length
+        pageCardSize >= listArr.length
           ? listArr.slice((currentPage - 1) * 12)
           : listArr.slice((currentPage - 1) * 12 + 1, 12 * currentPage + 1);
+
       setCurrentPageList(currentPageData);
     }
-  }, [pageSize, currentPage, listArr]);
+  }, [pageSize, currentPage, listArr, pageCardSize]);
 
   return { pageSize, currentPage, currentPageList, setCurrentPage };
 }

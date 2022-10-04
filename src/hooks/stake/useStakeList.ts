@@ -139,6 +139,34 @@ function useStakeList() {
           })
         );
 
+        if (filterValue === "All") {
+          if (selectFilterValue === "Earliest") {
+            const ealiestList = stakedList.sort((a, b) => {
+              if (a && b) {
+                return a?.endTime > b?.endTime ? 1 : -1;
+              }
+              return 0;
+            });
+            return setStakeCards(ealiestList);
+          }
+          if (selectFilterValue === "Latest") {
+            const sortedList = stakedList
+              .sort((a, b) => {
+                if (a && b) {
+                  return a?.endTime > b?.endTime ? -1 : 1;
+                }
+                return 0;
+              })
+              .sort((a, b) => {
+                if (a?.stakedType === "LTOS Staking") {
+                  return -1;
+                }
+                return 1;
+              });
+            return setStakeCards(sortedList);
+          }
+        }
+
         if (filterValue === "Bond") {
           const bondFilteredList = stakedList.filter((stakeData) => {
             if (stakeData?.stakedType === "Bond") {
@@ -146,10 +174,22 @@ function useStakeList() {
             }
           });
           if (selectFilterValue === "Earliest") {
-            return setStakeCards(bondFilteredList);
+            const ealiestList = bondFilteredList.sort((a, b) => {
+              if (a && b) {
+                return a?.endTime > b?.endTime ? 1 : -1;
+              }
+              return 0;
+            });
+            return setStakeCards(ealiestList);
           }
           if (selectFilterValue === "Latest") {
-            return setStakeCards(bondFilteredList);
+            const sortedList = bondFilteredList.sort((a, b) => {
+              if (a && b) {
+                return a?.endTime > b?.endTime ? -1 : 1;
+              }
+              return 0;
+            });
+            return setStakeCards(sortedList);
           }
         }
         if (filterValue === "Stake") {
@@ -161,38 +201,41 @@ function useStakeList() {
               return stakeData;
             }
           });
+
           if (selectFilterValue === "Earliest") {
             const ealiestList = bondFilteredList.sort((a, b) => {
+              if (a?.stakedType === "LTOS Staking") {
+                return 0;
+              }
               if (a && b) {
-                a?.endTime > b?.endTime ? 1 : -1;
+                return a?.endTime > b?.endTime ? 1 : -1;
               }
               return 0;
             });
+
             return setStakeCards(ealiestList);
           }
           if (selectFilterValue === "Latest") {
-            return setStakeCards(bondFilteredList);
+            const latestList = bondFilteredList
+              .sort((a, b) => {
+                if (a?.stakedType === "LTOS Staking") {
+                  return 0;
+                }
+                if (a && b) {
+                  return a?.endTime > b?.endTime ? -1 : 1;
+                }
+                return 0;
+              })
+              .sort((a, b) => {
+                if (a?.stakedType === "LTOS Staking") {
+                  return -1;
+                }
+                return 1;
+              });
+
+            return setStakeCards(latestList);
           }
         }
-        // if (selectFilterValue === "Earliest") {
-        //   const ealiestList = stakedList.sort((a, b) => {
-        //     if (a && b) {
-        //       a?.endTime > b?.endTime ? 1 : -1;
-        //     }
-        //     return 0;
-        //   });
-        //   return setStakeCards(ealiestList);
-        // }
-        // if (selectFilterValue === "Latest") {
-        //   const ealiestList = stakedList.sort((a, b) => {
-        //     if (a && b) {
-        //       a?.endTime < b?.endTime ? 1 : -1;
-        //     }
-        //     return 0;
-        //   });
-        //   return setStakeCards(ealiestList);
-        // }
-        return setStakeCards(stakedList);
       }
     };
     fetchData().catch((e) => {

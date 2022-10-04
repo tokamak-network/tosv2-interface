@@ -44,6 +44,8 @@ import StakeGraph from "../common/modal/StakeGraph";
 import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
 import { StakeCardProps } from "types/stake";
+import useStakeModal from "hooks/stake/useStakeModal";
+import useRebaseTime from "hooks/useRebaseTime";
 
 function BottomContent(props: {
   title: string;
@@ -136,7 +138,6 @@ function StakeModal() {
   const { selectedModalData, selectedModal, closeModal } =
     useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
-  const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
   const { stakeModalInputData } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
@@ -154,6 +155,8 @@ function StakeModal() {
     inputValue.stake_modal_balance,
     inputValue.stake_modal_period
   );
+  const { ltosIndex } = useStakeModal();
+  const rebaseTime = useRebaseTime(":");
 
   const { setTx } = useCustomToast();
 
@@ -359,21 +362,21 @@ function StakeModal() {
                     <Flex mb={"9px"} justifyContent="center" w={"100%"}>
                       <Tile
                         title={"Next Rebase"}
-                        content={stakeV2?.nextRebase}
+                        content={rebaseTime}
                         tooltip="Time left until LTOS index is increased."
                       />
                     </Flex>
                   ) : (
                     <Tile
                       title={"Next Rebase"}
-                      content={stakeV2?.nextRebase}
+                      content={rebaseTime}
                       tooltip="Time left until LTOS index is increased."
                     />
                   )}
 
                   <Tile
                     title={"LTOS Index"}
-                    content={stakeV2?.ltosIndex}
+                    content={ltosIndex}
                     symbol={"TOS"}
                     tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
                   />

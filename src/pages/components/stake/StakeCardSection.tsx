@@ -12,48 +12,14 @@ import { stake_filter_radio, stake_filter_sort } from "atom/stake/filter";
 function StakeCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { stakeCards } = useStakeList();
-  const [cardList, setCardList] = useState(stakeCards);
+
+  console.log("**stake card**");
+  console.log(stakeCards);
 
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
-    usePagination(cardList);
+    usePagination(stakeCards);
   const filterValue = useRecoilValue(stake_filter_radio);
   const sortValue = useRecoilValue(stake_filter_sort);
-
-  useEffect(() => {
-    if (stakeCards) {
-      if (filterValue === "All") {
-        if (sortValue === "Latest") {
-          return setCardList(stakeCards.reverse());
-        }
-        return setCardList(stakeCards);
-      }
-      if (filterValue === "Bond") {
-        const bondFilteredList = stakeCards.filter((stakeData) => {
-          if (stakeData?.stakedType === "Bond") {
-            return stakeData;
-          }
-        });
-        if (sortValue === "Latest") {
-          return setCardList(bondFilteredList.reverse());
-        }
-        return setCardList(bondFilteredList);
-      }
-      if (filterValue === "Stake") {
-        const stakeFilteredList = stakeCards.filter((stakeData) => {
-          if (
-            stakeData?.stakedType === "LTOS Staking" ||
-            stakeData?.stakedType === "Staking"
-          ) {
-            return stakeData;
-          }
-        });
-        if (sortValue === "Latest") {
-          return setCardList(stakeFilteredList.reverse());
-        }
-        return setCardList(stakeFilteredList);
-      }
-    }
-  }, [stakeCards, filterValue, sortValue]);
 
   return (
     <Flex flexDir={"column"}>

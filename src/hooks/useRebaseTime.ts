@@ -12,7 +12,7 @@ import {
 Notion link : https://www.notion.so/onther/rebase-time-403b95c624bc4b888978ff47e1f32df9
 */
 
-function useRebaseTime() {
+function useRebaseTime(format?: ":") {
   const [rebaseTime, setRebaseTime] = useState<string>("-");
   const { epochLength, beginEpochEnd } = constant.rebase;
 
@@ -41,7 +41,10 @@ function useRebaseTime() {
           ? `0${nextRebaseTime.secs}`
           : `${nextRebaseTime.secs}`;
 
-      setRebaseTime(`${hour}.${min}.${sec}`);
+      if (format) {
+        return setRebaseTime(`${hour}${format}${min}${format}${sec}`);
+      }
+      return setRebaseTime(`${hour}.${min}.${sec}`);
     }, 1000);
   }, []);
 
