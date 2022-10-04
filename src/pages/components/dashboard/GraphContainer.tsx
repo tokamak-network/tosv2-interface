@@ -19,7 +19,7 @@ function GraphContainer() {
   const [totalStakedDatas, setTotalStakedDatas] = useState<any[]>([]);
   const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
   const [treasuryBalanceDatas, setTreasuryBalanceDatas] = useState<any[]>([]);
-
+  const [selectedDates, setSelectedDates] = useState<number>(7);
   useEffect(() => {
     if (data) {
       const graphData = getGraphData();
@@ -27,11 +27,26 @@ function GraphContainer() {
       const marketCap = graphData.map((arrayData: any, index: number) => {
         return {
           x: moment(arrayData.createdAt).format("YYYY-MM-DD HH:mm:ss"),
-          y: arrayData.marketCap === "-Infinity"
-          ? 0
-          : Number(arrayData.marketCap),
+          y:
+            arrayData.marketCap === "-Infinity"
+              ? 0
+              : Number(arrayData.marketCap),
         };
       });
+
+      if (marketCap.length < selectedDates) {
+        const difference = selectedDates - marketCap.length;
+
+        for (let i = 1; i <= difference; i++) {
+          const date =
+            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+          const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
+          marketCap.push({
+            x: formattedDate,
+            y: 0,
+          });
+        }
+      }
 
       const marketCapData = [
         {
@@ -42,17 +57,32 @@ function GraphContainer() {
       ];
 
       setMarketCapDatas(marketCapData);
+
       const totalStaked = graphData.map((arrayData: any, index: number) => {
         return {
           x: moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
           ),
-          y: arrayData.totalValueStaked === "-Infinity"
-          ? 0
-          : Number(arrayData.totalValueStaked) || 0,
+          y:
+            arrayData.totalValueStaked === "-Infinity"
+              ? 0
+              : Number(arrayData.totalValueStaked) || 0,
         };
       });
 
+      if (totalStaked.length < selectedDates) {
+        const difference = selectedDates - totalStaked.length;
+
+        for (let i = 1; i <= difference; i++) {
+          const date =
+            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+          const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
+          totalStaked.push({
+            x: formattedDate,
+            y: 0,
+          });
+        }
+      }
       const totalStakedData = [
         {
           id: "#2775ff",
@@ -63,7 +93,6 @@ function GraphContainer() {
       setTotalStakedDatas(totalStakedData);
 
       const runway = graphData.map((arrayData: any, index: number) => {
-
         return {
           x: moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
@@ -74,6 +103,21 @@ function GraphContainer() {
               : Number(arrayData.runway) || 0,
         };
       });
+
+      if (runway.length < selectedDates) {
+        const difference = selectedDates - runway.length;
+
+        for (let i = 1; i <= difference; i++) {
+          const date =
+            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+          const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
+          runway.push({
+            x: formattedDate,
+            y: 0,
+          });
+        }
+      }
+
       const runwayData = [
         {
           id: "#2775ff",
@@ -89,11 +133,27 @@ function GraphContainer() {
           x: moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
           ),
-          y:arrayData.treasuryBalance === "-Infinity"
-          ? 0
-          :  Number(arrayData.treasuryBalance) || 0,
+          y:
+            arrayData.treasuryBalance === "-Infinity"
+              ? 0
+              : Number(arrayData.treasuryBalance) || 0,
         };
       });
+
+      if (treasuryBalance.length < selectedDates) {
+        const difference = selectedDates - treasuryBalance.length;
+
+        for (let i = 1; i <= difference; i++) {
+          const date =
+            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+          const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
+          treasuryBalance.push({
+            x: formattedDate,
+            y: 0,
+          });
+        }
+      }
+
 
       const treasuryData = [
         {
@@ -112,13 +172,13 @@ function GraphContainer() {
       case "1 Week":
         return data.getDashboard.slice(0, 7);
       case "1 Month":
-        return data.getDashboard.slice(0, 29);
+        return data.getDashboard.slice(0, 30);
       case "3 Months":
-        return data.getDashboard.slice(0, 89);
+        return data.getDashboard.slice(0, 90);
       case "6 Months":
-        return data.getDashboard.slice(0, 181);
+        return data.getDashboard.slice(0, 183);
       case "1 Year":
-        return data.getDashboard.slice(0, 364);
+        return data.getDashboard.slice(0, 366);
       default:
         return data;
     }
@@ -126,7 +186,10 @@ function GraphContainer() {
 
   return (
     <Flex flexDir={"column"}>
-      <GraphFilter setFilter={setFilteredValue}></GraphFilter>
+      <GraphFilter
+        setFilter={setFilteredValue}
+        setSelectedDates={setSelectedDates}
+      ></GraphFilter>
       <Flex
         w={"100%"}
         columnGap={"1.5%"}
@@ -149,7 +212,7 @@ function GraphContainer() {
           dollar value of TOS in circulation."
           ></Graph>
         )}
-
+        
         {!loading && (
           <Graph
             data={totalStakedDatas}

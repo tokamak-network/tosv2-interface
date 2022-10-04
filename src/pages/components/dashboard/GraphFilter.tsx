@@ -7,33 +7,39 @@ import { SetStateAction } from "react";
 
 type FilterProps = {
   setFilter: React.Dispatch<SetStateAction<string>>;
+  setSelectedDates:  React.Dispatch<SetStateAction<number>>;
 };
 
 const filterList = [
   {
     name: "1 Week",
     w: 70,
+    d:7
   },
   {
     name: "1 Month",
     w: 74,
+    d:30
   },
   {
     name: "3 Months",
     w: 84,
+    d:90
   },
   {
     name: "6 Months",
     w: 84,
+    d:182
   },
   {
     name: "1 Year",
     w: 64,
+    d:365
   },
 ];
 
 function GraphFilter(props: FilterProps) {
-  const { setFilter } = props;
+  const { setFilter,setSelectedDates } = props;
   const [selectedFilter, setSelectedFilter] = useRecoilState(filterState);
 
   return (
@@ -45,12 +51,13 @@ function GraphFilter(props: FilterProps) {
           overflow={"auto"}
         >
           {filterList.map(
-            (list: { name: string; w: number }, index: number) => {
+            (list: { name: string; w: number; d:number }, index: number) => {
               return (
                 <Box
                   key={list.name}
                   onClick={() =>{ 
                     setFilter(list.name)
+                    setSelectedDates(list.d)
                     setSelectedFilter(list.name)}}
                 >
                   <SwitchButton

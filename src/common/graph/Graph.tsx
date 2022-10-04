@@ -29,7 +29,6 @@ function Graph(props: {
 }) {
   const { data, title, amount, tooltipTitle } = props;
   const { colorMode } = useColorMode();
-  console.log('data',data);
   
   const theme = {
     axis: {
