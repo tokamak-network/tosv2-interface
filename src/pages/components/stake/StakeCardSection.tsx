@@ -13,9 +13,6 @@ function StakeCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { stakeCards } = useStakeList();
 
-  console.log("**stake card**");
-  console.log(stakeCards);
-
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
     usePagination(stakeCards);
   const filterValue = useRecoilValue(stake_filter_radio);

@@ -41,10 +41,11 @@ function useStosReward(
 
         //New script
         const interestRate = 0.00008704505; // 이자율 0.0087% = 0.000087 (APY =9.994%)
-        const periodWeeksTimeStamp = Number(inputPeriod) * 604800;
+        const periodWeeksTimeStamp = Math.floor(Number(inputPeriod) * 604800);
         const n = Math.floor(periodWeeksTimeStamp / rebasePeriod);
-        const pow = Math.pow(1 + interestRate, n);
+        const pow = (1 + interestRate) ** n;
         const resultInputAmount = inputTosAmount * pow;
+
         setOriginalTosAmount(commafy(resultInputAmount));
 
         //Old script
