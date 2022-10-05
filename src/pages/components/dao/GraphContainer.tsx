@@ -7,43 +7,43 @@ function GraphContainer() {
       color: "hsl(218, 100%, 58%)",
       data: [
         {
-          x: 1656641961,
+          x: "2022-09-29 12:00:02",
           y: 500,
         },
         {
-          x: 1656814761,
+          x: "2022-09-29 13:00:02",
           y: 1000,
         },
         {
-          x: 1656987561,
+          x: "2022-09-29 14:00:02",
           y: 1750,
         },
         {
-          x: 1657160361,
+          x: "2022-09-29 15:00:02",
           y: 2000,
         },
         {
-          x: 1657333161,
+          x: "2022-09-30 13:00:02",
           y: 2400,
         },
         {
-          x: 1657505961,
+          x: "2022-09-30 15:00:02",
           y: 2800,
         },
         {
-          x: 1657678761,
+          x: "2022-09-30 16:00:02",
           y: 2500,
         },
         {
-          x: 1657851561,
+          x: "2022-09-30 17:00:02",
           y: 4000,
         },
         {
-          x: 1658024361,
+          x: "2022-10-01 13:00:02",
           y: 4100,
         },
         {
-          x: 1658197161,
+          x: "2022-10-01 15:00:02",
           y: 5000,
         },
       ],
@@ -57,13 +57,13 @@ function GraphContainer() {
       <Graph
         data={data}
         title="Total sTOS"
-        amount="2,000,000.00 sTOS"
+        amount="2,000,000 sTOS"
         tooltipTitle="Total number of sTOS owned by users."
       />
       <Graph
         data={data}
         title="Total LTOS"
-        amount="2,000,000.00 LTOS"
+        amount="2,000,000 LTOS"
         tooltipTitle="Total number of LTOS owned by users."
       />
     </Flex>

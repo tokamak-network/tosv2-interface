@@ -91,7 +91,7 @@ function Graph(props: {
         xScale={{
           type: "time",
           format: "%Y-%m-%d %H:%M:%S",
-       
+          precision: 'millisecond',
           useUTC: false,
         }}
         yScale={{
@@ -128,12 +128,18 @@ function Graph(props: {
           format: function (value) {
             if (title === "Runway") {
 
-              return value === 0 ? `${value} Days`:`${Number(value)}`;
+              return value === 0 ? `${value} Days`:`${Number(value).toLocaleString(undefined, {
+                minimumFractionDigits: 0,maximumFractionDigits: 0
+              })}`;
             } else {
               if (Number(value) > 1000000) {
-                return `$${Number(value) / 1000000}M`;
+                return `$${(Number(value) / 1000000).toLocaleString(undefined, {
+                  minimumFractionDigits: 0,maximumFractionDigits: 0
+                })}M`;
               } else {
-                return `$${Number(value)}`;
+                return `$${(Number(value)).toLocaleString(undefined, {
+                  minimumFractionDigits: 0,maximumFractionDigits: 0
+                })}`;
               }
             }
           },
@@ -189,11 +195,18 @@ function Graph(props: {
                       style={{
                         color: colorMode === "dark" ? "#d0d0da" : "#07070c",
                       }}
-                    >
-                      $
+                    > {
+                      title ==='Runway'?  ` ${Number(point.data.y).toLocaleString(undefined, {
+                        minimumFractionDigits: 0,maximumFractionDigits: 0
+                      })} Days`:`$
+                      ${Number(point.data.y).toLocaleString(undefined, {
+                        minimumFractionDigits: 0,maximumFractionDigits: 0
+                      })}`
+                    }
+                      {/* $
                       {Number(point.data.y).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
-                      })}
+                      })} */}
                     </div>
                   </div>
                 );

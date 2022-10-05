@@ -205,7 +205,7 @@ function GraphContainer() {
               marketCapDatas[0]
                 ? `$ ${Number(
                     marketCapDatas[0].data[marketCapDatas[0].data.length - 1].y
-                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                  ).toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits:0 })}`
                 : ""
             }
             tooltipTitle="“Market Cap” represents the total
@@ -223,7 +223,7 @@ function GraphContainer() {
                     totalStakedDatas[0].data[
                       totalStakedDatas[0].data.length - 1
                     ].y
-                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                  ).toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits:0  })}`
                 : ""
             }
             tooltipTitle="“Total Value Staked” represents 
@@ -242,7 +242,7 @@ function GraphContainer() {
                     treasuryBalanceDatas[0].data[
                       treasuryBalanceDatas[0].data.length - 1
                     ].y
-                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                  ).toLocaleString(undefined, { maximumFractionDigits: 0, minimumFractionDigits:0 })}`
                 : ""
             }
             tooltipTitle="“Treasury Balance” represents the 
@@ -259,7 +259,7 @@ function GraphContainer() {
               runwayDatas[0]
                 ? ` ${Number(
                     runwayDatas[0].data[runwayDatas[0].data.length - 1].y
-                  ).toLocaleString(undefined, { maximumFractionDigits: 2 })}`
+                  ).toLocaleString(undefined, { maximumFractionDigits: 0 , minimumFractionDigits:0 })}`
                 : ""
             } Days`}
             tooltipTitle="“Runway” represents the number of days
