@@ -190,6 +190,7 @@ function BondModal() {
   const fiveDaysLater = getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm");
   const [fiveDaysLockupEndTime, setFiveDaysLockupEndTime] =
     useState(fiveDaysLater);
+  const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData?.index;
@@ -232,6 +233,12 @@ function BondModal() {
     setFiveDaysLockup(false);
     closeModal();
   }, [closeModal, setResetValue]);
+
+  // useEffect(() => {
+  //   bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
+  //     ? setMaxValue(Number(userETHBalance.replaceAll(",", "")))
+  //     : setMaxValue(Number(bondModalData?.maxBond.replaceAll(",", "")));
+  // }, [bondModalData, userETHBalance]);
 
   useEffect(() => {
     if (fiveDaysLockup) {
@@ -422,7 +429,8 @@ function BondModal() {
                     recoilKey={"bond_modal"}
                     atomKey={"bond_modal_balance"}
                     maxValue={
-                      bondModalData && bondModalData?.maxBond > userETHBalance
+                      bondModalData &&
+                      Number(bondModalData?.maxBond) > Number(userETHBalance)
                         ? Number(userETHBalance.replaceAll(",", ""))
                         : Number(bondModalData?.maxBond.replaceAll(",", ""))
                     }

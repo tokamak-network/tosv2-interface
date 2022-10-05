@@ -29,7 +29,13 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
@@ -154,7 +160,7 @@ function UpdateModal() {
   }>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
-  const { inputValue, setResetValue } = useInput(
+  const { inputValue, setResetValue, setValue } = useInput(
     "Stake_screen",
     "update_modal"
   );
@@ -443,6 +449,7 @@ function UpdateModal() {
                   pageKey={"Stake_screen"}
                   subKey={"update_modal"}
                   periodKey={"stake_updateModal_period"}
+                  balanceKey={"stake_updateModal_tos_balance"}
                   isSlideDisabled={false}
                   minValue={leftWeeks}
                 ></StakeGraph>

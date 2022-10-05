@@ -31,14 +31,18 @@ type PeriodKey =
   | "stake_updateModal_period"
   | "stake_relockModal_period";
 
+type BalanceKey = "stake_updateModal_tos_balance";
+
 function StakeGraph(props: {
   pageKey: PageKey;
   subKey: InputKey;
   periodKey: PeriodKey;
+  balanceKey?: BalanceKey;
   isSlideDisabled: boolean;
   minValue?: number;
 }) {
-  const { pageKey, subKey, periodKey, isSlideDisabled, minValue } = props;
+  const { pageKey, subKey, periodKey, balanceKey, isSlideDisabled, minValue } =
+    props;
   const labelStyles = {
     mt: "2",
     ml: "-2.5",
@@ -48,10 +52,32 @@ function StakeGraph(props: {
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { colorMode } = useColorMode();
+  const [isChanged, setIsChanged] = useState(false);
 
   useEffect(() => {
-    setValue({ ...inputValue, [periodKey]: sliderValue });
+    if (sliderValue !== 0) {
+      setIsChanged(true);
+    }
   }, [sliderValue]);
+
+  useEffect(() => {
+    if (balanceKey && isChanged) {
+      console.log("go");
+      if (
+        inputValue[balanceKey] === "" ||
+        inputValue[balanceKey] === undefined
+      ) {
+        console.log("go2");
+
+        return setValue({
+          ...inputValue,
+          [balanceKey]: 0,
+          [periodKey]: sliderValue,
+        });
+      }
+    }
+    return setValue({ ...inputValue, [periodKey]: sliderValue });
+  }, [sliderValue, periodKey, balanceKey]);
 
   useEffect(() => {
     if (inputValue[periodKey])

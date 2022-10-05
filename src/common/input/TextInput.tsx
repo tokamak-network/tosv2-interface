@@ -14,7 +14,7 @@ import {
 import { inputBalanceState, inputState } from "atom/global/input";
 import useInput from "hooks/useInput";
 import { max } from "moment";
-import React, { SetStateAction, useEffect } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 
@@ -186,6 +186,7 @@ function BalanceInput(props: NumberInputProp) {
         }}
         errorBorderColor={"#e23738"}
         outline="none"
+        defaultValue={maxValue}
         value={value[atomKey]}
       >
         <NumberInputField

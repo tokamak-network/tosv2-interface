@@ -55,6 +55,10 @@ function useUpdateModalData(
   );
   const { epochUnit } = useLockTOS();
 
+  useEffect(() => {
+    setNewEndTime(convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm"));
+  }, [unlockTime]);
+
   //current
   useEffect(() => {
     async function fetchUpdateModalData() {
@@ -104,8 +108,6 @@ function useUpdateModalData(
         const ltosBN = modalContractData.ltosBN;
         const stosBN = modalContractData.stosBN;
 
-        console.log(newBalanceType);
-
         if (newBalanceType === 1) {
           console.log("--1--");
 
@@ -128,18 +130,10 @@ function useUpdateModalData(
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
 
-          console.log(currentBalance.stos);
-          console.log(stosReward);
-
-          const newEndTime = modalContractData?.currentEndTime;
-          setNewEndTime(newEndTime || "-");
-          setNewBalance({
+          return setNewBalance({
             ltos: commafy(resultLtos),
             stos: commafy(resultStos),
           });
-          return setNewEndTime(
-            convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
-          );
         }
 
         //case2
@@ -153,13 +147,10 @@ function useUpdateModalData(
             Number(stosReward.replaceAll(",", ""));
 
           setNewStosBalance(commafy(resultStos));
-          setCurrentBalance({
+          return setCurrentBalance({
             ltos: commafy(resultLtos),
             stos: commafy(resultStos),
           });
-          return setNewEndTime(
-            convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
-          );
         }
 
         //case3
@@ -188,13 +179,10 @@ function useUpdateModalData(
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
 
-          setNewBalance({
+          return setNewBalance({
             ltos: commafy(resultLtos),
             stos: commafy(resultStos),
           });
-          return setNewEndTime(
-            convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm")
-          );
         }
       }
     }
