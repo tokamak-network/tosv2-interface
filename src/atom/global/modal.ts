@@ -27,17 +27,9 @@ const selectedModalData = selector({
   },
 });
 
-const modalLoadingState = atom<{
-  modal: boolean;
-  bottomContents: boolean;
-  stosReward: boolean;
-}>({
+const modalLoadingState = atom<boolean>({
   key: "modalLoadingState",
-  default: {
-    modal: false,
-    bottomContents: false,
-    stosReward: false,
-  },
+  default: false,
 });
 
 const modalLoadingValue = selector({
@@ -48,6 +40,32 @@ const modalLoadingValue = selector({
   },
 });
 
+const modalBottomLoadingState = atom<boolean>({
+  key: "modalBottomLoadingState",
+  default: false,
+});
+
+const modalBottomLoadingValue = selector({
+  key: "modalBottomLoadingValue", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const modalBottomLoadingValue = get(modalBottomLoadingState);
+    return modalBottomLoadingValue;
+  },
+});
+
+const stosLoadingState = atom<boolean>({
+  key: "stosLoadingState",
+  default: false,
+});
+
+const stosLoadingValue = selector({
+  key: "stosLoadingValue", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const stosLoadingValue = get(stosLoadingState);
+    return stosLoadingValue;
+  },
+});
+
 export {
   modalState,
   modalData,
@@ -55,4 +73,8 @@ export {
   selectedModalData,
   modalLoadingState,
   modalLoadingValue,
+  modalBottomLoadingState,
+  modalBottomLoadingValue,
+  stosLoadingState,
+  stosLoadingValue,
 };

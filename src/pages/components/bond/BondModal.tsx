@@ -23,10 +23,12 @@ import {
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import {
+  modalBottomLoadingState,
   modalLoadingState,
   modalLoadingValue,
   selectedModalData,
   selectedModalState,
+  stosLoadingState,
 } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
@@ -207,7 +209,12 @@ function BondModal() {
 
   const { setTx } = useCustomToast();
   const { ltosIndex } = useLtosIndex();
+
   const [isLoading, setLoading] = useRecoilState(modalLoadingState);
+  const [bottomLoading, setBottomLoading] = useRecoilState(
+    modalBottomLoadingState
+  );
+  const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const maxValue =
     bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
@@ -225,10 +232,8 @@ function BondModal() {
       title: "You Will Get",
       content:
         {
-          ltos:
-            // isLoading.bottomContents ? "......" :
-            youWillGet || "0",
-          stos: isLoading.stosReward
+          ltos: bottomLoading ? "......" : youWillGet || "0",
+          stos: stosLoading
             ? "......"
             : fiveDaysLockup
             ? "0"
@@ -323,7 +328,8 @@ function BondModal() {
   }, [inputValue]);
 
   useEffect(() => {
-    setLoading({ ...isLoading, bottomContents: true, stosReward: true });
+    setBottomLoading(true);
+    setStosLoading(true);
   }, [inputValue]);
 
   // useEffect(() => {

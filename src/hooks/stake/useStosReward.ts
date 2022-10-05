@@ -1,7 +1,7 @@
 import commafy from "@/components/commafy";
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
-import { modalLoadingState } from "atom/global/modal";
+import { stosLoadingState } from "atom/global/modal";
 import constant from "constant";
 import Decimal from "decimal.js";
 import useLockTOS from "hooks/contract/useLockTOS";
@@ -32,7 +32,7 @@ function useStosReward(
   const modalContractData = useModalContract();
   const { epochUnit } = useLockTOS();
   const { rebasePeriod } = constant;
-  const [isLoading, setLoading] = useRecoilState(modalLoadingState);
+  const [isLoading, setLoading] = useRecoilState(stosLoadingState);
 
   useEffect(() => {
     async function fetchStosRewardData() {
@@ -81,7 +81,7 @@ function useStosReward(
         console.log(e);
       })
       .finally(() => {
-        setLoading({ ...isLoading, stosReward: false });
+        setLoading(false);
       });
   }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod]);
 

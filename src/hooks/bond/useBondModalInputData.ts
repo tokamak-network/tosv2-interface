@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import JSBI from "jsbi";
 import constant from "constant";
 import { useRecoilState } from "recoil";
-import { modalLoadingState } from "atom/global/modal";
+import { modalBottomLoadingState } from "atom/global/modal";
 import { getTimeZone } from "@/components/time";
 
 type UseUnstake = {
@@ -38,7 +38,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
   );
   const { rebasePeriod } = constant;
 
-  const [isLoading, setLoading] = useRecoilState(modalLoadingState);
+  const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
 
   useEffect(() => {
     const calculateCompound = async ({
@@ -180,7 +180,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
         console.log(e);
       })
       .finally(() => {
-        setLoading({ ...isLoading, bottomContents: false });
+        setLoading(false);
       });
   }, [
     StakingV2Proxy_CONTRACT,
