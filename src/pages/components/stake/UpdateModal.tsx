@@ -59,13 +59,16 @@ import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
 import ArrowImg from "assets/icons/arrow-right2.svg";
+import BasicTooltip from "common/tooltip/index";
 
 function BottomContent(props: {
   title: string;
   content: string | { ltos: string; stos: string };
   tooltip?: boolean;
+  tooltipMessage?: string;
+  secondTooltip?: string;
 }) {
-  const { title, content, tooltip } = props;
+  const { title, content, tooltip ,tooltipMessage,secondTooltip} = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -76,9 +79,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr='6px'
             >
               {typeof content !== "string" && content.ltos} LTOS
             </Text>
+            <BasicTooltip label={secondTooltip} />
             <Text color={"#64646f"} mx={"5px"}>
               /
             </Text>
@@ -96,9 +101,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr='6px'
             >
               {typeof content !== "string" && content.ltos} LTOS
             </Text>
+            <BasicTooltip label={secondTooltip} />
             <Text color={"#64646f"} mx={"5px"}>
               /
             </Text>
@@ -137,13 +144,7 @@ function BottomContent(props: {
           >
             {title}
           </Text>
-          {tooltip ? (
-            <Tooltip label="" placement="bottom">
-              <Image src={question} alt={""} height={"16px"} width={"16px"} />
-            </Tooltip>
-          ) : (
-            <></>
-          )}
+          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
         </Flex>
         {ContentComponent}
       </Flex>
@@ -193,7 +194,7 @@ function UpdateModal() {
       content: currentBalance,
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS before the update.",
-      secondTooltip: `Currently worth ${inputValue.stake_updateModal_tos_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+      secondTooltip: `Currently worth ${inputValue.stake_updateModal_tos_balance || 0} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
     },
     {
       title: "New Balance",
@@ -468,6 +469,8 @@ function UpdateModal() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}

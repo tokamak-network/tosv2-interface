@@ -502,6 +502,8 @@ function UpdateModalAfterEndTime() {
                       content={content.content}
                       key={content.title + index}
                       tooltip={content.tooltip}
+                      tooltipMessage={content.tooltipMessage}
+                      secondTooltip={content.secondTooltip}
                     ></BottomContent>
                   );
                 })}
