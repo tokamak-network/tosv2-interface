@@ -1,8 +1,9 @@
 import { atom, selector } from "recoil";
+import { ModalType } from "types/modal";
 
-const modalState = atom({
+const modalState = atom<ModalType | undefined>({
   key: "modalType",
-  default: "",
+  default: undefined,
 });
 
 const modalData = atom({
@@ -26,4 +27,32 @@ const selectedModalData = selector({
   },
 });
 
-export { modalState, modalData, selectedModalState, selectedModalData };
+const modalLoadingState = atom<{
+  modal: boolean;
+  bottomContents: boolean;
+  stosReward: boolean;
+}>({
+  key: "modalLoadingState",
+  default: {
+    modal: false,
+    bottomContents: false,
+    stosReward: false,
+  },
+});
+
+const modalLoadingValue = selector({
+  key: "modalLoadingValue", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const modalLoadingValue = get(modalLoadingState);
+    return modalLoadingValue;
+  },
+});
+
+export {
+  modalState,
+  modalData,
+  selectedModalState,
+  selectedModalData,
+  modalLoadingState,
+  modalLoadingValue,
+};

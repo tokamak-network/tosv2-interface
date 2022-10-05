@@ -6,6 +6,9 @@ import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 import JSBI from "jsbi";
 import constant from "constant";
+import { useRecoilState } from "recoil";
+import { modalLoadingState } from "atom/global/modal";
+import { getTimeZone } from "@/components/time";
 
 type UseUnstake = {
   youWillGet: string | undefined;
@@ -27,12 +30,15 @@ function useBondModalInputData(marketId: number): UseUnstake {
     BondDepositoryProxy_CONTRACT,
     LockTOS_CONTRACT,
   } = useCallContract();
+
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const { stosReward, newEndTime } = useStosReward(
     Number(inputTosAmount),
     inputValue?.bond_modal_period
   );
   const { rebasePeriod } = constant;
+
+  const [isLoading, setLoading] = useRecoilState(modalLoadingState);
 
   useEffect(() => {
     const calculateCompound = async ({
@@ -44,9 +50,6 @@ function useBondModalInputData(marketId: number): UseUnstake {
       rebasePerEpoch: BigNumber;
       n: BigNumber;
     }) => {
-      // console.log('calculateCompound tosValuation',tosValuation, 'rebasePerEpoch',rebasePerEpoch, "n", n) ;
-      // console.log('n.toString()', n.toString());
-
       const bigIntEther = JSBI.BigInt("1000000000000000000");
       const bigIntN = JSBI.BigInt(n.toString());
       let bnAmountCompound = JSBI.BigInt("0");
@@ -91,6 +94,12 @@ function useBondModalInputData(marketId: number): UseUnstake {
 
     async function fetchBondModalInputData() {
       if (
+        inputValue?.bond_modal_balance === "" ||
+        inputValue?.bond_modal_balance === undefined
+      ) {
+        return setInputTosAmount(undefined);
+      }
+      if (
         StakingV2Proxy_CONTRACT &&
         BondDepositoryProxy_CONTRACT &&
         LockTOS_CONTRACT &&
@@ -113,10 +122,6 @@ function useBondModalInputData(marketId: number): UseUnstake {
           );
 
         const tosAmount = convertNumber({ amount: tosValuation.toString() });
-        setOriginalTosAmount(
-          convertNumber({ amount: tosValuation.toString() }) || "-"
-        );
-
         return setInputTosAmount(tosAmount);
       }
     }
@@ -158,23 +163,25 @@ function useBondModalInputData(marketId: number): UseUnstake {
             ethAmountWei
           );
 
-        // console.log("gogo");
-        // console.log(tosPrice.toString());
-        // console.log(ethAmountWei.toString());
-        // console.log(tosAmount.toString());
-
         const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
           tosAmount
         );
         const ltos = convertNumber({ amount: LTOS_BN, localeString: true });
 
+        setOriginalTosAmount(
+          convertNumber({ amount: tosAmount.toString() }) || "-"
+        );
         return setYouWillGet(ltos);
       }
     }
-    fetchLtosData().catch((e) => {
-      console.log("**useBondModalInputData3 err**");
-      console.log(e);
-    });
+    fetchLtosData()
+      .catch((e) => {
+        console.log("**useBondModalInputData3 err**");
+        console.log(e);
+      })
+      .finally(() => {
+        setLoading({ ...isLoading, bottomContents: false });
+      });
   }, [
     StakingV2Proxy_CONTRACT,
     BondDepositoryProxy_CONTRACT,
@@ -184,7 +191,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
 
   useEffect(() => {
     async function fetchBondModalInputData() {
-      return setEndTime(newEndTime);
+      return setEndTime(`${newEndTime} (${getTimeZone()})`);
     }
     fetchBondModalInputData().catch((e) => {
       console.log("**useBondModalInputData2 err**");

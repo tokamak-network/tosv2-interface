@@ -1,6 +1,7 @@
 import commafy from "@/components/commafy";
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import { modalLoadingState } from "atom/global/modal";
 import constant from "constant";
 import Decimal from "decimal.js";
 import useLockTOS from "hooks/contract/useLockTOS";
@@ -8,6 +9,7 @@ import useModalContract from "hooks/contract/useModalContract";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 type UseStosReward = {
   stosReward: string;
@@ -30,6 +32,7 @@ function useStosReward(
   const modalContractData = useModalContract();
   const { epochUnit } = useLockTOS();
   const { rebasePeriod } = constant;
+  const [isLoading, setLoading] = useRecoilState(modalLoadingState);
 
   useEffect(() => {
     async function fetchStosRewardData() {
@@ -72,42 +75,15 @@ function useStosReward(
         }
       }
     }
-    fetchStosRewardData().catch((e) => {
-      console.log("**fetchStosRewardData err**");
-      console.log(e);
-    });
+    fetchStosRewardData()
+      .catch((e) => {
+        console.log("**fetchStosRewardData err**");
+        console.log(e);
+      })
+      .finally(() => {
+        setLoading({ ...isLoading, stosReward: false });
+      });
   }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod]);
-
-  // useEffect(() => {
-  //   async function fetchMaxWeeks() {
-  //     if (
-  //       LockTOS_CONTRACT &&
-  //       inputPeriod &&
-  //       modalContractData?.currentEndTimeStamp
-  //     ) {
-  //       //calculate max weeks
-  //       const weekPeriod = inputPeriod;
-
-  //       if (weekPeriod === undefined) {
-  //         return;
-  //       }
-
-  //       const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
-  //       const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
-  //       const now = getNowTimeStamp();
-  //       const endTime = modalContractData?.currentEndTimeStamp;
-  //       const timeLeft = endTime - now;
-  //       const maxPeriod = maxTime - timeLeft;
-  //       const maxWeeks = Math.floor(maxPeriod / oneWeek);
-
-  //       // return setMaxWeeks(maxWeeks);
-  //     }
-  //   }
-  //   fetchMaxWeeks().catch((e) => {
-  //     console.log("**fetchStosRewardData err**");
-  //     console.log(e);
-  //   });
-  // }, [LockTOS_CONTRACT, inputPeriod, modalContractData]);
 
   useEffect(() => {
     //endTime

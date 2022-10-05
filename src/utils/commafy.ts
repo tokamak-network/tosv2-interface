@@ -15,6 +15,9 @@ function commafy(num: number | string, decilamPoint?: number) {
   if (str[1] && str[1].length >= 5) {
     str[1] = str[1].slice(0, decilamPoint || 2);
   }
+  if (str[1] === undefined && decilamPoint) {
+    str[1] = `${"0".repeat(decilamPoint)}`;
+  }
   return str.join(".").replaceAll(" ", "");
 }
 

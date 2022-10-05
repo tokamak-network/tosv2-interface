@@ -1,4 +1,5 @@
 import moment from "moment";
+import Moment from "moment-timezone";
 
 function convertTimeStamp(timeStamp: number, format?: string): string {
   const date = moment.unix(timeStamp).format(format || "YYYY.MM.D");
@@ -51,7 +52,10 @@ function getDuration(
 }
 
 function getTimeZone() {
-  // const timeZone = moment.tz.guess();
+  // const timeZone = Moment.tz(Moment.tz.guess()).zoneAbbr();
+  const timeZone = Moment.tz(Moment.tz.guess()).format("Z");
+  const trimedTimeZone = timeZone.split(":")[0].replaceAll("0", "");
+  return `UTC ${trimedTimeZone}`;
 }
 
 export {
@@ -60,4 +64,5 @@ export {
   isTimeOver,
   getTimeLeft,
   getDuration,
+  getTimeZone,
 };

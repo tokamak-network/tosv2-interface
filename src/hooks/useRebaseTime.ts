@@ -5,6 +5,7 @@ import {
   getDuration,
   getNowTimeStamp,
   getTimeLeft,
+  getTimeZone,
   isTimeOver,
 } from "utils/time";
 
@@ -40,6 +41,8 @@ function useRebaseTime(format?: ":") {
         secs.toString().length === 1
           ? `0${nextRebaseTime.secs}`
           : `${nextRebaseTime.secs}`;
+
+      getTimeZone();
 
       if (format) {
         return setRebaseTime(`${hour}${format}${min}${format}${sec}`);

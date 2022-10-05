@@ -6,14 +6,27 @@ import HOME_LIGHT_ICON from "assets/icons/homeLight.svg";
 import CALENDAR_ICON_DARK from "assets/icons/calendar.svg";
 import CALENDAR_ICON_LIGHT from "assets/icons/calendarLight.svg";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import useStakeV2 from "hooks/contract/useStakeV2";
-import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import {
+  convertTimeStamp,
+  getNowTimeStamp,
+  getTimeZone,
+} from "@/components/time";
 import useRebaseTime from "hooks/useRebaseTime";
+import { useBlockNumber } from "hooks/useBlockNumber";
 
 const UpdatedOn = () => {
   const { colorMode } = useColorMode();
+  const [updatedTime, setUpdatedTime] = useState("-");
+  const { blockNumber } = useBlockNumber();
+
+  useEffect(() => {
+    const nowTime = convertTimeStamp(getNowTimeStamp(), "YYYY.MM.DD HH:mm");
+    setUpdatedTime(nowTime);
+  }, [blockNumber]);
+
   return (
     <Flex>
       <Image
@@ -21,8 +34,7 @@ const UpdatedOn = () => {
         alt={"CALENDAR_ICON"}
       ></Image>
       <Text color={colorMode === "light" ? "#7e7e8f" : "#8b8b93"} ml={"7px"}>
-        Updated on {convertTimeStamp(getNowTimeStamp(), "YYYY.MM.DD HH:mm")}{" "}
-        (UTC+9)
+        Updated on {updatedTime} ({getTimeZone()})
       </Text>
     </Flex>
   );

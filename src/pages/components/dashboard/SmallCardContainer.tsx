@@ -16,6 +16,7 @@ import useCardData from "hooks/dashboard/useCardData";
 import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";
 import { useQuery } from "@apollo/client";
 import commafy from "@/components/commafy";
+import { convertNumber } from "@/components/number";
 
 const SmallCardContainer = () => {
   const [cardList, setCardList] = useState<
@@ -57,6 +58,11 @@ const SmallCardContainer = () => {
         (Number(commafy(ltosIndex - exLtosIndex)) /
           Number(commafy(exLtosIndex))) *
         100;
+      const backingPerTosNum = convertNumber({
+        amount: backingPerTos,
+        decimalPlaces: 6,
+        decimalPoints: 6,
+      });
 
       const dummyData: Dashboard_SmallCardArrType = [
         {
@@ -68,7 +74,7 @@ const SmallCardContainer = () => {
           tooltipMessage: "TOS market price in USD",
         },
         {
-          price: commafy(backingPerTos, 6) as string,
+          price: backingPerTosNum as string,
           priceUnit: "ETH",
           title: "Backing per TOS",
           tooltip: true,

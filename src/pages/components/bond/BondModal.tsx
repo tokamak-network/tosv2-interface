@@ -22,7 +22,12 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import { selectedModalData, selectedModalState } from "atom//global/modal";
+import {
+  modalLoadingState,
+  modalLoadingValue,
+  selectedModalData,
+  selectedModalState,
+} from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
@@ -49,6 +54,7 @@ import BasicTooltip from "common/tooltip";
 import { getNowTimeStamp, getTimeLeft, convertTimeStamp } from "utils/time";
 import useCustomToast from "hooks/useCustomToast";
 import useLtosIndex from "hooks/gql/useLtosIndex";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 function BottomContent(props: {
   title: string;
@@ -201,6 +207,12 @@ function BondModal() {
 
   const { setTx } = useCustomToast();
   const { ltosIndex } = useLtosIndex();
+  const [isLoading, setLoading] = useRecoilState(modalLoadingState);
+
+  const maxValue =
+    bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
+      ? Number(userETHBalance.replaceAll(",", ""))
+      : Number(bondModalData?.maxBond.replaceAll(",", ""));
 
   const contentList = [
     {
@@ -213,8 +225,14 @@ function BondModal() {
       title: "You Will Get",
       content:
         {
-          ltos: youWillGet || "0",
-          stos: fiveDaysLockup ? "0" : stosReward || "0",
+          ltos:
+            // isLoading.bottomContents ? "......" :
+            youWillGet || "0",
+          stos: isLoading.stosReward
+            ? "......"
+            : fiveDaysLockup
+            ? "0"
+            : stosReward || "0",
         } || "-",
       tooltip: true,
       tooltipMessage:
@@ -228,11 +246,6 @@ function BondModal() {
       tooltipMessage: "LTOS can be unstaked after this time. ",
     },
   ];
-
-  const maxValue =
-    bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
-      ? Number(userETHBalance.replaceAll(",", ""))
-      : Number(bondModalData?.maxBond.replaceAll(",", ""));
 
   const closeThisModal = useCallback(() => {
     setResetValue();
@@ -308,6 +321,14 @@ function BondModal() {
     }
     return setBtnDisabled(false);
   }, [inputValue]);
+
+  useEffect(() => {
+    setLoading({ ...isLoading, bottomContents: true, stosReward: true });
+  }, [inputValue]);
+
+  // useEffect(() => {
+  //   if (maxValue) setValue({ ...inputValue, bond_modal_balance: 0.02 });
+  // }, []);
 
   return (
     <Modal
