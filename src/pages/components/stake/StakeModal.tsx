@@ -46,6 +46,7 @@ import useCustomToast from "hooks/useCustomToast";
 import { StakeCardProps } from "types/stake";
 import useStakeModal from "hooks/stake/useStakeModal";
 import useRebaseTime from "hooks/useRebaseTime";
+import useLtosIndex from "hooks/gql/useLtosIndex";
 
 function BottomContent(props: {
   title: string;
@@ -155,7 +156,7 @@ function StakeModal() {
     inputValue.stake_modal_balance,
     inputValue.stake_modal_period
   );
-  const { ltosIndex } = useStakeModal();
+  const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
 
   const { setTx } = useCustomToast();

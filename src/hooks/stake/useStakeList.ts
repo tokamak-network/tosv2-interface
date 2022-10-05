@@ -69,7 +69,7 @@ function useStakeList() {
                   stos: `${0} sTOS`,
                 },
                 principal,
-                isOver,
+                isOver: false,
                 stakedType: "LTOS Staking",
                 endTime,
                 tokenType: "TOS",

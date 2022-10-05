@@ -62,13 +62,10 @@ function StakeGraph(props: {
 
   useEffect(() => {
     if (balanceKey && isChanged) {
-      console.log("go");
       if (
         inputValue[balanceKey] === "" ||
         inputValue[balanceKey] === undefined
       ) {
-        console.log("go2");
-
         return setValue({
           ...inputValue,
           [balanceKey]: 0,

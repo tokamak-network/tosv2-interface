@@ -13,9 +13,9 @@ const DAO = () => {
       bg={colorMode === "light" ? "#fafbfc" : "black.100"}
     >
       <PageLayout></PageLayout>
-      <DaoTopContainer/>
-      <StatisticContainer/>
-    <GraphContainer/>
+      <DaoTopContainer />
+      <StatisticContainer />
+      {/* <GraphContainer/> */}
     </Flex>
   );
 };

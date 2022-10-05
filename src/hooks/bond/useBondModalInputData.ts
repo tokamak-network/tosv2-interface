@@ -20,6 +20,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
   const [inputTosAmount, setInputTosAmount] = useState<string | undefined>(
     undefined
   );
+  const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
 
   const {
     StakingV2Proxy_CONTRACT,
@@ -27,7 +28,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
     LockTOS_CONTRACT,
   } = useCallContract();
   const { inputValue } = useInput("Bond_screen", "bond_modal");
-  const { stosReward, newEndTime, originalTosAmount } = useStosReward(
+  const { stosReward, newEndTime } = useStosReward(
     Number(inputTosAmount),
     inputValue?.bond_modal_period
   );
@@ -110,18 +111,13 @@ function useBondModalInputData(marketId: number): UseUnstake {
             tosPrice,
             ethAmountWei
           );
-        const interestRate = 0.00008704505; // 이자율 0.0087% = 0.000087 (APY =9.994%)
-        const periodWeeksTimeStamp = Number(lockPeriod) * 604800;
-        const n = Math.floor(94348800 / rebasePeriod);
-        const pow = Math.pow(1 + interestRate, n);
 
-        if (n > 0) {
-          const profit = tosValuation * pow;
-          const tosAmount = convertNumber({ amount: profit.toString() });
-          return setInputTosAmount(tosAmount);
-        } else {
-          return setInputTosAmount("0");
-        }
+        const tosAmount = convertNumber({ amount: tosValuation.toString() });
+        setOriginalTosAmount(
+          convertNumber({ amount: tosValuation.toString() }) || "-"
+        );
+
+        return setInputTosAmount(tosAmount);
       }
     }
     fetchBondModalInputData().catch((e) => {

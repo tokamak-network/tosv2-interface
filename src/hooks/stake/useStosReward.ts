@@ -33,8 +33,14 @@ function useStosReward(
 
   useEffect(() => {
     async function fetchStosRewardData() {
+      if (typeof inputTosAmount === "number" && isNaN(inputTosAmount)) {
+        return setStosRewards("-");
+      }
       if (inputTosAmount === undefined) {
         return setStosRewards("-");
+      }
+      if (inputTosAmount === 0) {
+        return setStosRewards("0");
       }
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
         const weekPeriod = inputPeriod || 1;

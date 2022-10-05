@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";
 import { useEffect, useState } from "react";
 
-function useStakeModal() {
+function useLtosIndex() {
   const [ltosIndex, setLtosIndex] = useState<string>("-");
   const { loading, error, data } = useQuery(GET_DASHBOARD_CARD, {
     variables: {
@@ -22,4 +22,4 @@ function useStakeModal() {
   return { ltosIndex };
 }
 
-export default useStakeModal;
+export default useLtosIndex;

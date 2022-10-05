@@ -48,6 +48,7 @@ import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import BasicTooltip from "common/tooltip";
 import { getNowTimeStamp, getTimeLeft, convertTimeStamp } from "utils/time";
 import useCustomToast from "hooks/useCustomToast";
+import useLtosIndex from "hooks/gql/useLtosIndex";
 
 function BottomContent(props: {
   title: string;
@@ -190,7 +191,6 @@ function BondModal() {
   const fiveDaysLater = getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm");
   const [fiveDaysLockupEndTime, setFiveDaysLockupEndTime] =
     useState(fiveDaysLater);
-  const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData?.index;
@@ -200,6 +200,7 @@ function BondModal() {
     useBondModalInputData(marketId);
 
   const { setTx } = useCustomToast();
+  const { ltosIndex } = useLtosIndex();
 
   const contentList = [
     {
@@ -228,40 +229,16 @@ function BondModal() {
     },
   ];
 
+  const maxValue =
+    bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
+      ? Number(userETHBalance.replaceAll(",", ""))
+      : Number(bondModalData?.maxBond.replaceAll(",", ""));
+
   const closeThisModal = useCallback(() => {
     setResetValue();
     setFiveDaysLockup(false);
     closeModal();
   }, [closeModal, setResetValue]);
-
-  // useEffect(() => {
-  //   bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
-  //     ? setMaxValue(Number(userETHBalance.replaceAll(",", "")))
-  //     : setMaxValue(Number(bondModalData?.maxBond.replaceAll(",", "")));
-  // }, [bondModalData, userETHBalance]);
-
-  useEffect(() => {
-    if (fiveDaysLockup) {
-      setInterval(() => {
-        const fiveDaysLater = getTimeLeft(
-          getNowTimeStamp(),
-          5,
-          "YYYY. MM.DD. HH:mm"
-        );
-        setFiveDaysLockupEndTime(fiveDaysLater);
-      }, 1000);
-    }
-  }, [fiveDaysLockup]);
-
-  useEffect(() => {
-    if (
-      inputValue.bond_modal_balance === "" ||
-      inputValue.bond_modal_balance === undefined
-    ) {
-      return setBtnDisabled(true);
-    }
-    return setBtnDisabled(false);
-  }, [inputValue]);
 
   const callBond = useCallback(async () => {
     try {
@@ -308,6 +285,29 @@ function BondModal() {
     setTx,
     closeThisModal,
   ]);
+
+  useEffect(() => {
+    if (fiveDaysLockup) {
+      setInterval(() => {
+        const fiveDaysLater = getTimeLeft(
+          getNowTimeStamp(),
+          5,
+          "YYYY. MM.DD. HH:mm"
+        );
+        setFiveDaysLockupEndTime(fiveDaysLater);
+      }, 1000);
+    }
+  }, [fiveDaysLockup]);
+
+  useEffect(() => {
+    if (
+      inputValue.bond_modal_balance === "" ||
+      inputValue.bond_modal_balance === undefined
+    ) {
+      return setBtnDisabled(true);
+    }
+    return setBtnDisabled(false);
+  }, [inputValue]);
 
   return (
     <Modal
@@ -411,7 +411,7 @@ function BondModal() {
                     <GridItem>
                       <Tile
                         title={"LTOS Index"}
-                        content={bondModalData?.ltosIndex}
+                        content={ltosIndex}
                         symbol={"TOS"}
                         tooltip={
                           "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
@@ -428,12 +428,7 @@ function BondModal() {
                     pageKey={"Bond_screen"}
                     recoilKey={"bond_modal"}
                     atomKey={"bond_modal_balance"}
-                    maxValue={
-                      bondModalData &&
-                      Number(bondModalData?.maxBond) > Number(userETHBalance)
-                        ? Number(userETHBalance.replaceAll(",", ""))
-                        : Number(bondModalData?.maxBond.replaceAll(",", ""))
-                    }
+                    maxValue={maxValue}
                   ></BalanceInput>
                 </Flex>
                 <Flex

@@ -68,7 +68,7 @@ function BottomContent(props: {
   tooltipMessage?: string;
   secondTooltip?: string;
 }) {
-  const { title, content, tooltip ,tooltipMessage,secondTooltip} = props;
+  const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -79,7 +79,7 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr='6px'
+              mr="6px"
             >
               {typeof content !== "string" && content.ltos} LTOS
             </Text>
@@ -101,7 +101,7 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr='6px'
+              mr="6px"
             >
               {typeof content !== "string" && content.ltos} LTOS
             </Text>
@@ -194,7 +194,9 @@ function UpdateModal() {
       content: currentBalance,
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS before the update.",
-      secondTooltip: `Currently worth ${inputValue.stake_updateModal_tos_balance || 0} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+      secondTooltip: `Currently worth ${
+        inputValue.stake_updateModal_tos_balance || 0
+      } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
     },
     {
       title: "New Balance",

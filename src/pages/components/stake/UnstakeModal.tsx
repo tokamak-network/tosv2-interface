@@ -189,7 +189,7 @@ function UnstakeModal() {
                 w={"100%"}
                 flexDir={"column"}
                 px={smallerThan1024 ? "20px" : "120px"}
-                mb={smallerThan1024? '9px':"30px"}
+                mb={smallerThan1024 ? "9px" : "30px"}
               >
                 <Flex
                   w={"100%"}
@@ -266,7 +266,7 @@ function UnstakeModal() {
             </Flex>
             <Flex flexDir={"column"} alignItems={"center"} rowGap={"15px"}>
               <SubmitButton
-                w={smallerThan1024? 310:460}
+                w={smallerThan1024 ? 310 : 460}
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}
