@@ -198,7 +198,8 @@ function UpdateModal() {
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();
-  const { inputOver, inputPeriodOver, btnDisabled } = useUpdateModalConditon();
+  const { inputOver, inputPeriodOver, btnDisabled } =
+    useUpdateModalConditon(leftWeeks);
   const { errMsg } = constant;
 
   const contentList = [
@@ -212,12 +213,12 @@ function UpdateModal() {
       title: "Current Balance",
       content: currentBalance,
       tooltip: true,
-      tooltipMessage: "Amount of LTOS and sTOS before the update.",
+      tooltipMessage: "Amount of LTOS and sTOS before the0 update.",
       secondTooltip: `Currently worth ${
         inputValue.stake_updateModal_tos_balance || 0
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+        "sTOS’s lock-up period is calculated relative to Thursday 0:00 (UTC+0).",
     },
     {
       title: "New Balance",
@@ -461,7 +462,8 @@ function UpdateModal() {
                       maxValue={156}
                       isError={inputPeriodOver}
                       isDisabled={false}
-                      errorMsg={errMsg.periodExceed}
+                      errorMsg={"New lock-up period must be equal or greater"}
+                      minValue={leftWeeks}
                     ></TextInput>
                   </Flex>
                 </Flex>

@@ -34,6 +34,7 @@ type InputProp = {
   recoilKey: InputKey;
   maxValue?: string | number;
   rightUnit?: string;
+  minValue: number;
 };
 
 type NumberInputProp = {
@@ -50,6 +51,7 @@ type NumberInputProp = {
   recoilKey: InputKey;
   maxValue?: string | number;
   rightUnit?: string;
+  minValue?: number;
 };
 
 const TextInput: React.FC<InputProp> = (props) => {
@@ -66,6 +68,7 @@ const TextInput: React.FC<InputProp> = (props) => {
     maxValue,
     errorMsg,
     rightUnit,
+    minValue,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();

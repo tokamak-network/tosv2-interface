@@ -47,7 +47,9 @@ function useUpdateModalData(
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward } = useStosReward(
     inputValue.stake_updateModal_tos_balance,
-    inputValue.stake_updateModal_period - leftWeeks
+    inputValue.stake_updateModal_period - leftWeeks < 1
+      ? 1
+      : inputValue.stake_updateModal_period - leftWeeks
   );
   const { unlockTime } = useStosReward(
     inputValue.stake_updateModal_tos_balance,

@@ -4,7 +4,7 @@ import useUserBalance from "hooks/useUserBalance";
 import { useEffect, useState } from "react";
 import { BondModalInput } from "types/bond";
 
-function useUpdateModalConditon() {
+function useUpdateModalConditon(leftWeeks: number) {
   const [inputOver, setInputOver] = useState<boolean>(true);
   const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(true);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
@@ -28,11 +28,15 @@ function useUpdateModalConditon() {
   }, [inputTosAmount, userTOSBalance]);
 
   useEffect(() => {
-    if (Number(inputPeriod) > LOCKTOS_maxWeeks || Number(inputPeriod) < 1) {
+    if (
+      LOCKTOS_maxWeeks < Number(inputPeriod) ||
+      Number(inputPeriod) < leftWeeks ||
+      Number(inputPeriod) < 1
+    ) {
       return setInputPeriodOver(true);
     }
     return setInputPeriodOver(false);
-  }, [inputPeriod, LOCKTOS_maxWeeks]);
+  }, [inputPeriod, leftWeeks, LOCKTOS_maxWeeks]);
 
   useEffect(() => {
     setBtnDisabled(inputOver || inputPeriodOver);
