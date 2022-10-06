@@ -60,8 +60,16 @@ function BottomContent(props: {
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
+  thirdTooltip?: string;
 }) {
-  const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
+  const {
+    title,
+    content,
+    tooltip,
+    tooltipMessage,
+    secondTooltip,
+    thirdTooltip,
+  } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -97,9 +105,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr={"6px"}
             >
               {(typeof content !== "string" && content.stos) || "-"} sTOS
             </Text>
+            <BasicTooltip label={thirdTooltip} />
           </Flex>
         );
       default:
@@ -189,6 +199,8 @@ function StakeModal() {
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
           secondTooltip:
             "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
+          thirdTooltip:
+            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
         },
         {
           title: "Current Balance",
@@ -222,6 +234,8 @@ function StakeModal() {
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
           secondTooltip:
             "2,000 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase. ",
+          thirdTooltip:
+            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
         },
         {
           title: "End Time",
@@ -522,6 +536,7 @@ function StakeModal() {
                       tooltip={content.tooltip}
                       tooltipMessage={content.tooltipMessage}
                       secondTooltip={content.secondTooltip}
+                      thirdTooltip={content.thirdTooltip}
                     ></BottomContent>
                   );
                 })}

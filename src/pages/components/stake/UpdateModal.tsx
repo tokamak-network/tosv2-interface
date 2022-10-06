@@ -70,8 +70,9 @@ function BottomContent(props: {
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
+  thirdTooltip?:string
 }) {
-  const { title, content, tooltip, tooltipMessage, secondTooltip } = props;
+  const { title, content, tooltip, tooltipMessage, secondTooltip,thirdTooltip } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -93,9 +94,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr={'6px'}
             >
               {typeof content !== "string" && content.stos} sTOS
             </Text>
+            <BasicTooltip label={thirdTooltip} />
           </Flex>
         );
       case "New Balance":
@@ -115,9 +118,11 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
+              mr={'6px'}
             >
               {typeof content !== "string" && content.stos} sTOS
             </Text>
+            <BasicTooltip label={thirdTooltip} />
           </Flex>
         );
       default:
@@ -204,6 +209,8 @@ function UpdateModal() {
       secondTooltip: `Currently worth ${
         inputValue.stake_updateModal_tos_balance || 0
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+      thirdTooltip:
+            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "New Balance",
@@ -212,6 +219,8 @@ function UpdateModal() {
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
       secondTooltip:
         "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+        thirdTooltip:
+            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "Current End Time",
@@ -475,6 +484,7 @@ function UpdateModal() {
                       tooltip={content.tooltip}
                       tooltipMessage={content.tooltipMessage}
                       secondTooltip={content.secondTooltip}
+                      thirdTooltip={content.thirdTooltip}
                     ></BottomContent>
                   );
                 })}
