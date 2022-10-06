@@ -68,7 +68,14 @@ function BottomContent(props: {
   secondTooltip?: string;
   thirdTooltip?: string;
 }) {
-  const { title, content, tooltip, tooltipMessage, secondTooltip,thirdTooltip } = props;
+  const {
+    title,
+    content,
+    tooltip,
+    tooltipMessage,
+    secondTooltip,
+    thirdTooltip,
+  } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -90,7 +97,7 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr={'6px'}
+              mr={"6px"}
             >
               {(typeof content !== "string" && content.stos) || "-"} sTOS
             </Text>
@@ -221,7 +228,9 @@ function BondModal() {
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
   const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
-  const { inputOver, inputPeriodOver } = useBondModalCondition(maxValue);
+  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
+    useBondModalCondition(maxValue);
+  const { errMsg } = constant;
 
   const contentList = [
     {
@@ -250,7 +259,8 @@ function BondModal() {
       tooltipMessage:
         "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
       secondTooltip: `Currently worth ${originalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-      thirdTooltip: 'sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).'
+      thirdTooltip:
+        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "End Time",
@@ -466,7 +476,9 @@ function BondModal() {
                     maxValue={maxValue}
                     isError={bondModalData && inputOver}
                     errorMsg={
-                      "input has exceeded maximum bondable amount per 1 transaction"
+                      zeroInputBalance
+                        ? errMsg.zeroInput
+                        : "input has exceeded maximum bondable amount per 1 transaction"
                     }
                   ></BalanceInput>
                 </Flex>
@@ -553,9 +565,7 @@ function BondModal() {
                       rightUnit={"Weeks"}
                       maxValue={LOCKTOS_maxWeeks}
                       isError={inputPeriodOver}
-                      errorMsg={
-                        "Lock-up period must be an integer between 1 and 156"
-                      }
+                      errorMsg={errMsg.periodExceed}
                     ></TextInput>
                   </Flex>
                 )}
@@ -596,7 +606,7 @@ function BondModal() {
                 h={42}
                 name="Bond"
                 onClick={callBond}
-                isDisabled={inputOver}
+                isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
             </Flex>
             {/* <Flex

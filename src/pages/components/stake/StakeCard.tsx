@@ -114,7 +114,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             ml={"12px"}
           >
             {stakedType === "LTOS Staking"
-              ? "Staking"
+              ? "Staked"
               : stakedType === "Bond"
               ? `${tokenType} Bond`
               : "Locked"}
