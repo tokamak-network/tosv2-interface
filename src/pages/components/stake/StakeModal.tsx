@@ -416,7 +416,7 @@ function StakeModal() {
                   px="6px"
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userTOSBalance} TOS</Text>
+                  <Text>{userTOSBalance || "-"} TOS</Text>
                 </Flex>
                 {smallerThan1024 ? (
                   <Flex flexDir={"column"} justifyContent="center" w="100%">

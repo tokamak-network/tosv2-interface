@@ -446,7 +446,7 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"relock_modal"}
                         atomKey={"stake_relockModal_tos_balance"}
-                        maxValue={Number(userTOSBalance.replaceAll(",", ""))}
+                        maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
                       ></BalanceInput>
                     </Flex>
                     <Flex
@@ -457,7 +457,7 @@ function UpdateModalAfterEndTime() {
                       mb={"12px"}
                     >
                       <Text>Your Balance</Text>
-                      <Text>{userTOSBalance} TOS</Text>
+                      <Text>{userTOSBalance || "-"} TOS</Text>
                     </Flex>
                   </Flex>
                 )}

@@ -89,7 +89,7 @@ function AccountDrawer(props: HeaderProps) {
                 mt={"6px"}
               >
                 <Flex alignItems={"center"} h={"25px"}>
-                  <Text fontSize={18}>{userTOSBalance}</Text>
+                  <Text fontSize={18}>{userTOSBalance || "-"}</Text>
                   <Flex
                     fontSize={12}
                     height={"27px"}

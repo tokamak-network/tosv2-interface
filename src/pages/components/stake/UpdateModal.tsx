@@ -399,7 +399,7 @@ function UpdateModal() {
                   px={"6px"}
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userTOSBalance} TOS</Text>
+                  <Text>{userTOSBalance || "-"} TOS</Text>
                 </Flex>
                 <Flex
                   fontSize={12}
