@@ -37,13 +37,13 @@ function StakeTitle() {
           My Staked
         </Text>
 
-        <Flex alignItems={"center"}>
+        {/* <Flex alignItems={"center"}>
           <Text fontSize={14} color={"blue.200"} mr={"6px"}>
             Balance : {userLTOSBalance || "-"} LTOS / {userSTOSBalance || "-"}{" "}
             sTOS / {userTOSBalance || "-"} TOS
           </Text>
           <Image src={ARROW_RIGHT} alt={"ARROW_RIGHT"}></Image>
-        </Flex>
+        </Flex> */}
       </Flex>
       <Flex fontSize={14}>
         <SubmitButton

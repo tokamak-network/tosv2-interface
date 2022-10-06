@@ -109,7 +109,7 @@ function useUpdateModalData(
         const stosBN = modalContractData.stosBN;
 
         if (newBalanceType === 1) {
-          console.log("--1--");
+          // console.log("--1--");
 
           const tosAmount = convertToWei(
             inputValue.stake_updateModal_tos_balance
@@ -139,7 +139,7 @@ function useUpdateModalData(
         //case2
         //Only increase period
         if (newBalanceType === 2) {
-          console.log("--2--");
+          // console.log("--2--");
 
           const resultLtos = Number(currentBalance.ltos.replaceAll(",", ""));
           const resultStos =
@@ -156,7 +156,7 @@ function useUpdateModalData(
         //case3
         //increase amount and period
         if (newBalanceType === 3) {
-          console.log("--3--");
+          // console.log("--3--");
 
           const tosAmount = convertToWei(
             inputValue.stake_updateModal_tos_balance

@@ -61,6 +61,8 @@ import StakeGraph from "../common/modal/StakeGraph";
 import ArrowImg from "assets/icons/arrow-right2.svg";
 import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
+import useUpdateModalConditon from "hooks/stake/useUpdateModalCondition";
+import constant from "constant";
 
 function BottomContent(props: {
   title: string;
@@ -171,7 +173,6 @@ function UpdateModal() {
   const { userTOSBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-  const [inputError, setInputError] = useState<boolean>(false);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
 
@@ -185,6 +186,8 @@ function UpdateModal() {
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();
+  const { inputOver, inputPeriodOver, btnDisabled } = useUpdateModalConditon();
+  const { errMsg } = constant;
 
   const contentList = [
     {
@@ -288,29 +291,6 @@ function UpdateModal() {
   }, [tosAllowance, inputValue.stake_updateModal_tos_balance]);
 
   useEffect(() => {
-    if (inputValue.stake_updateModal_period && leftWeeks) {
-      const inputPeriod = inputValue.stake_updateModal_period;
-      if (inputPeriod < leftWeeks) {
-        return setInputError(true);
-      }
-      return setInputError(false);
-    }
-    return setInputError(true);
-  }, [inputValue, leftWeeks]);
-
-  useEffect(() => {
-    if (inputError) {
-      return setBtnDisable(true);
-    }
-    if (inputValue.stake_updateModal_tos_balance) {
-      if (inputValue.stake_updateModal_tos_balance === "") {
-        return setBtnDisable(true);
-      }
-    }
-    return setBtnDisable(false);
-  }, [inputError, inputValue]);
-
-  useEffect(() => {
     if (
       inputValue.stake_updateModal_tos_balance &&
       inputValue.stake_updateModal_period &&
@@ -408,6 +388,8 @@ function UpdateModal() {
                     recoilKey={"update_modal"}
                     atomKey={"stake_updateModal_tos_balance"}
                     maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
+                    isError={inputOver}
+                    errorMsg={errMsg.balanceExceed}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -461,8 +443,8 @@ function UpdateModal() {
                       recoilKey={"update_modal"}
                       // style={{ marginLeft: "auto" }}
                       maxValue={156}
-                      isError={inputError}
-                      errorMsg={"Invalid Weeks"}
+                      isError={inputPeriodOver}
+                      errorMsg={errMsg.periodExceed}
                     ></TextInput>
                   </Flex>
                 </Flex>
@@ -504,7 +486,7 @@ function UpdateModal() {
                   w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Update"
-                  isDisabled={btnDisable}
+                  isDisabled={btnDisabled}
                   onClick={callUpdate}
                 ></SubmitButton>
               ) : (

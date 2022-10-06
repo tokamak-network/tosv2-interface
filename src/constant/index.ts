@@ -6,6 +6,10 @@ const constant = {
   LOCKTOS_maxWeeks: 156,
   rebasePeriod: 60 * 60 * 8, //8Hours
   mainnetGasPrice: "6849315",
+  errMsg: {
+    balanceExceed: "input has exceeded your balance",
+    periodExceed: "Lock-up period must be an integer between 1 and 156",
+  },
 };
 
 export default constant;
