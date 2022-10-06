@@ -32,6 +32,7 @@ function useStakeList() {
         //connectedId(marketId) returns 0 -> it means BOND without lockup periods
         //connectedId(marketId) returns lockTOS ID -> it means BOND with lockup periods
         const stakingList = await StakingV2Proxy_CONTRACT.stakingOf(account);
+
         const stakedList: StakeCardProps[] = await Promise.all(
           stakingList.map(async (contractData: any, index: number) => {
             const stakedId = stakingList[index].toString();
@@ -60,9 +61,9 @@ function useStakeList() {
               //   ltos   uint256 :  23323681572147205912
               //   endTime   uint256 :  1661156881
               //   marketId   uint256 :  3
-              if (stakedInfo.deposit.toString() === "0") {
-                return undefined;
-              }
+              // if (stakedInfo.deposit.toString() === "0") {
+              //   return undefined;
+              // }
               return {
                 staked: {
                   ltos,
