@@ -90,7 +90,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
         >
           {PriceContent}
         </Flex>
-        {priceChangePercent !== undefined && (
+        {/* {priceChangePercent !== undefined && (
           <Text
             fontSize={18}
             color={
@@ -106,9 +106,9 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
             {priceChangePercent > 0 ? "+" : ""}
             {priceChangePercent} {"%"}
           </Text>
-        )}
+        )} */}
       </Flex>
-      {priceChangePercent !== undefined && (
+      {/* {priceChangePercent !== undefined && (
         <Flex
           fontSize={11}
           alignSelf={"end"}
@@ -116,7 +116,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
         >
           than yesterday
         </Flex>
-      )}
+      )} */}
     </Flex>
   );
 };
