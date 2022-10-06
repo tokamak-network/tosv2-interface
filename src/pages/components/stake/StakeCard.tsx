@@ -80,9 +80,18 @@ function StakeCard(props: { cardData: StakeCardProps }) {
     return null;
   }
 
+  console.log("--cardData--");
+  console.log(cardData);
+
   const { isOver, stakedType, tokenType } = cardData;
   const isDisabled =
     stakedType === "LTOS Staking" ? cardData.staked.ltos === "0.00" : isOver;
+  const unstakeDisabled =
+    stakedType === "LTOS Staking"
+      ? Number(cardData.staked.ltos.replaceAll("LTOS", "")) === 0
+      : !isDisabled;
+
+  console.log(unstakeDisabled);
 
   return (
     <Flex
@@ -212,7 +221,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             }
           ></BasicButton>
           <BasicButton
-            isDisabled={!isDisabled}
+            isDisabled={unstakeDisabled}
             name={"Unstake"}
             h={"33px"}
             onClick={openUnstakeModal}

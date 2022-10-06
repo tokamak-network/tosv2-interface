@@ -29,7 +29,6 @@ import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useCallback, useEffect, useState } from "react";
 import Tile from "../common/modal/Tile";
-import useStakeV2 from "hooks/contract/useStakeV2";
 import { BalanceInput } from "common/input/TextInput";
 import useUserBalance from "hooks/useUserBalance";
 import useInputValue from "hooks/useInputValue";
@@ -41,6 +40,8 @@ import useInput from "hooks/useInput";
 import useUser from "hooks/useUser";
 import useCustomToast from "hooks/useCustomToast";
 import { StakeCardProps } from "types/stake";
+import useLtosIndex from "hooks/gql/useLtosIndex";
+import useRebaseTime from "hooks/useRebaseTime";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -71,7 +72,6 @@ function UnstakeModal() {
     stakedId: string;
   }>();
   const [hasInput, setHasInput] = useState<boolean>(false);
-  const { stakeV2 } = useStakeV2();
   const { userLTOSBalance } = useUserBalance();
   const { inputValue, setResetValue } = useInput(
     "Stake_screen",
@@ -84,6 +84,9 @@ function UnstakeModal() {
   const { simpleStakingId } = useUser();
   const { setTx } = useCustomToast();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
+  const { ltosIndex } = useLtosIndex();
+  const rebaseTime = useRebaseTime(":");
 
   const contentList = [
     {
@@ -201,20 +204,20 @@ function UnstakeModal() {
                     <Flex mb={"9px"} justifyContent="center" w={"100%"}>
                       <Tile
                         title={"Next Rebase"}
-                        content={stakeV2?.nextRebase}
+                        content={rebaseTime}
                         tooltip="Time left until LTOS index is increased."
                       />
                     </Flex>
                   ) : (
                     <Tile
                       title={"Next Rebase"}
-                      content={stakeV2?.nextRebase}
+                      content={rebaseTime}
                       tooltip="Time left until LTOS index is increased."
                     />
                   )}
                   <Tile
                     title={"LTOS Index"}
-                    content={stakeV2?.ltosIndex}
+                    content={ltosIndex}
                     symbol={"TOS"}
                     tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
                   />

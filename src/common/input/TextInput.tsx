@@ -30,8 +30,8 @@ type InputProp = {
   errorMsg?: string;
   atomKey: string;
   style?: any;
-  pageKey?: PageKey;
-  recoilKey?: InputKey;
+  pageKey: PageKey;
+  recoilKey: InputKey;
   maxValue?: string | number;
   rightUnit?: string;
 };
@@ -46,8 +46,8 @@ type NumberInputProp = {
   errorMsg?: string;
   atomKey: string;
   style?: any;
-  pageKey?: PageKey;
-  recoilKey?: InputKey;
+  pageKey: PageKey;
+  recoilKey: InputKey;
   maxValue?: string | number;
   rightUnit?: string;
 };
@@ -70,14 +70,8 @@ const TextInput: React.FC<InputProp> = (props) => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
-  const { inputValue, value, setValue } = useInput(pageKey!, recoilKey!);
+  const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (rightUnit) {
-      return setValue({
-        ...inputValue,
-        [atomKey]: event.target.value.replaceAll(rightUnit, ""),
-      });
-    }
     return setValue({
       ...inputValue,
       [atomKey]: event.target.value,
@@ -171,8 +165,11 @@ function BalanceInput(props: NumberInputProp) {
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
-  const { inputValue, value, setValue } = useInput(pageKey!, recoilKey!);
+  const { inputValue, value, setValue } = useInput(pageKey!, recoilKey);
   const selectedModal = useRecoilValue(selectedModalState);
+
+  console.log("balanceInput");
+  console.log(inputValue);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...inputValue, [atomKey]: event.target.value });

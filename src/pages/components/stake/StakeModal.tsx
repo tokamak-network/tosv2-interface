@@ -313,7 +313,9 @@ function StakeModal() {
 
   useEffect(() => {
     if (userTOSBalance) {
-      setMaxValue(Number(userTOSBalance.replaceAll(",", "")));
+      setTimeout(() => {
+        setMaxValue(Number(userTOSBalance.replaceAll(",", "")));
+      }, 1500);
     }
   }, [userTOSBalance]);
 
