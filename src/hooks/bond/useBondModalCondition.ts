@@ -26,7 +26,7 @@ function useBondModalCondition(maxValue: number | undefined) {
   }, [inputBalance, maxValue]);
 
   useEffect(() => {
-    if (Number(inputPeriod) > LOCKTOS_maxWeeks) {
+    if (Number(inputPeriod) > LOCKTOS_maxWeeks || Number(inputPeriod) < 1) {
       return setInputPeriodOver(true);
     }
     return setInputPeriodOver(false);

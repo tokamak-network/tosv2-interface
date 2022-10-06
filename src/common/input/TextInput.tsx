@@ -78,6 +78,9 @@ const TextInput: React.FC<InputProp> = (props) => {
     });
   };
 
+  console.log("textinput");
+  console.log(isError);
+
   return (
     <Flex flexDir={"column"} {...style}>
       <InputGroup>
@@ -139,7 +142,15 @@ const TextInput: React.FC<InputProp> = (props) => {
         </InputRightElement>
       </InputGroup>
       {isError && (
-        <Flex fontSize={12} color={"#e23738"} justifyContent={"flex-end"}>
+        <Flex
+          fontSize={12}
+          color={"#e23738"}
+          justifyContent={"flex-end"}
+          pos={"absolute"}
+          mt={"40px"}
+          textAlign={"right"}
+          right={"120px"}
+        >
           <Text>{errorMsg}</Text>
         </Flex>
       )}

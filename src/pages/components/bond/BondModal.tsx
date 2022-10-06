@@ -462,7 +462,9 @@ function BondModal() {
                     atomKey={"bond_modal_balance"}
                     maxValue={maxValue}
                     isError={inputOver}
-                    errorMsg={"exceed input"}
+                    errorMsg={
+                      "input has exceeded maximum bondable amount per 1 transaction"
+                    }
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -548,7 +550,9 @@ function BondModal() {
                       rightUnit={"Weeks"}
                       maxValue={LOCKTOS_maxWeeks}
                       isError={inputPeriodOver}
-                      errorMsg={"invalid weeks"}
+                      errorMsg={
+                        "Lock-up period must be an integer between 1 and 156"
+                      }
                     ></TextInput>
                   </Flex>
                 )}

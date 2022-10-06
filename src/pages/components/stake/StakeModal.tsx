@@ -171,7 +171,7 @@ function StakeModal() {
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const { setTx } = useCustomToast();
-  const { inputOver } = useStakeModalCondition();
+  const { inputOver, inputPeriodOver } = useStakeModalCondition();
 
   const contentList = fiveDaysLockup
     ? [
@@ -327,6 +327,8 @@ function StakeModal() {
     setBottomLoading(true);
   }, [inputValue.stake_modal_balance, setBottomLoading]);
 
+  console.log(inputPeriodOver);
+
   return (
     <Modal
       isOpen={selectedModal === "stake_stake_modal"}
@@ -407,6 +409,8 @@ function StakeModal() {
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
                     maxValue={maxValue}
+                    isError={inputOver}
+                    errorMsg={"input has exceeded your balance"}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -456,6 +460,10 @@ function StakeModal() {
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
                       maxValue={maxWeeks}
+                      isError={true}
+                      errorMsg={
+                        "Lock-up period must be an integer between 1 and 156"
+                      }
                     ></TextInput>
                   </Flex>
                 ) : (
