@@ -12,7 +12,13 @@ function Tile(props: {
   const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
   return (
-    <Box display={"flex"} flexDir={"column"} mb={"15px"} alignItems={"center"}>
+    <Box
+      display={"flex"}
+      flexDir={"column"}
+      mb={"15px"}
+      alignItems={"center"}
+      w={title === "Next Rebase" ? "106px" : ""}
+    >
       <Flex alignItems={"center"}>
         <Text
           color={colorMode === "dark" ? "gray.100" : "gray.1000"}

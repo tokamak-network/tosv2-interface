@@ -14,6 +14,8 @@ import {
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
+  modalBottomLoadingState,
+  modalBottomLoadingValue,
   selectedModalData,
   selectedModalState,
   stosLoadingState,
@@ -50,6 +52,7 @@ import useCustomToast from "hooks/useCustomToast";
 import { StakeCardProps } from "types/stake";
 import useRebaseTime from "hooks/useRebaseTime";
 import useLtosIndex from "hooks/gql/useLtosIndex";
+import useStakeModalCondition from "hooks/stake/useStakeModalCondition";
 
 function BottomContent(props: {
   title: string;
@@ -143,8 +146,7 @@ function StakeModal() {
     useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
-  const { ltos, stosReward, currentBalance, newBalance, endTime } =
-    useStakeModaldata();
+  const { ltos, currentBalance, newBalance } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
@@ -153,32 +155,35 @@ function StakeModal() {
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const { maxWeeks } = useStosReward(
+  const { stosReward, newEndTime, maxWeeks } = useStosReward(
     inputValue.stake_modal_balance,
     inputValue.stake_modal_period
   );
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
-  const stosLoadingValue = useRecoilValue(stosLoadingState);
+  const [bottomLoading, setBottomLoading] = useRecoilState(
+    modalBottomLoadingState
+  );
+  const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const { setTx } = useCustomToast();
+  const { inputOver } = useStakeModalCondition();
 
   const contentList = fiveDaysLockup
     ? [
         {
           title: "You Give",
-          content: `${inputValue.stake_modal_balance || "0"} TOS`,
+          content: `${inputValue.stake_modal_balance || "-"} TOS`,
           tooltip: false,
           tooltipMessage: "",
         },
         {
           title: "You Will Get",
-          content: stosLoadingValue ? "..." : `${ltos || "0"} LTOS`,
+          content: bottomLoadingValue ? "..." : `${ltos || "-"} LTOS`,
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
@@ -202,17 +207,16 @@ function StakeModal() {
     : [
         {
           title: "You Give",
-          content: `${inputValue.stake_modal_balance || "0"} TOS`,
+          content: `${inputValue.stake_modal_balance || "-"} TOS`,
           tooltip: false,
           tooltipMessage: "",
         },
         {
           title: "You Will Get",
-          content:
-            {
-              ltos: ltos,
-              stos: stosLoadingValue ? "..." : stosReward,
-            } || "0",
+          content: {
+            ltos: bottomLoading ? "..." : ltos,
+            stos: stosLoading ? "..." : stosReward,
+          },
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
@@ -221,7 +225,7 @@ function StakeModal() {
         },
         {
           title: "End Time",
-          content: `${endTime || "-"}`,
+          content: `${newEndTime || "-"}`,
           tooltip: true,
           tooltipMessage: "LTOS can be unstaked after this time. ",
         },
@@ -301,17 +305,6 @@ function StakeModal() {
   }, [tosAllowance, inputValue.stake_modal_balance, isAllowance]);
 
   useEffect(() => {
-    if (
-      inputValue.stake_modal_balance === undefined ||
-      inputValue.stake_modal_balance === "" ||
-      inputValue.stake_modal_period === undefined
-    ) {
-      return setBtnDisabled(true);
-    }
-    return setBtnDisabled(false);
-  }, [inputValue, fiveDaysLockup]);
-
-  useEffect(() => {
     if (selectedModalData?.stakedType === "LTOS Staking") {
       return setFiveDaysLockup(true);
     }
@@ -323,6 +316,11 @@ function StakeModal() {
       setMaxValue(Number(userTOSBalance.replaceAll(",", "")));
     }
   }, [userTOSBalance]);
+
+  useEffect(() => {
+    setBottomLoading(true);
+    setStosLoading(true);
+  }, [inputValue]);
 
   return (
     <Modal
@@ -521,7 +519,7 @@ function StakeModal() {
                   h={42}
                   name="Stake"
                   onClick={callStake}
-                  isDisabled={btnDisabled}
+                  isDisabled={inputOver}
                 ></SubmitButton>
               ) : (
                 <SubmitButton
@@ -529,7 +527,7 @@ function StakeModal() {
                   h={42}
                   name="Approve"
                   onClick={callApprove}
-                  isDisabled={btnDisabled}
+                  isDisabled={inputOver}
                   isLoading={isApproving}
                 ></SubmitButton>
               )}

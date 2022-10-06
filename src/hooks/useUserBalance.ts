@@ -15,12 +15,24 @@ const useUserBalance = () => {
   } = useCallContract();
   const { blockNumber } = useBlockNumber();
 
-  const [userTonBalance, setUserTonBalance] = useState<string>("-");
-  const [userWTonBalance, setUserWTonBalance] = useState<string>("-");
-  const [userTOSBalance, setUserTOSBalance] = useState<string>("-");
-  const [userETHBalance, setUserETHBalance] = useState<string>("-");
-  const [userLTOSBalance, setUserLTOSBalance] = useState<string>("-");
-  const [userSTOSBalance, setUserSTOSBalance] = useState<string>("-");
+  const [userTonBalance, setUserTonBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userWTonBalance, setUserWTonBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userTOSBalance, setUserTOSBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userETHBalance, setUserETHBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userLTOSBalance, setUserLTOSBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userSTOSBalance, setUserSTOSBalance] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     async function fetchBalance() {

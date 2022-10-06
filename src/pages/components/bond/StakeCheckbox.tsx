@@ -11,8 +11,6 @@ function StakeCheckbox() {
   const selectedCards = useRecoilValue(selectedCheckboxState);
   const { openModal } = useModal("stake_multiUnstake_modal", selectedCards);
 
-  console.log(selectedCards);
-
   return (
     <Flex
       alignItems={"center"}

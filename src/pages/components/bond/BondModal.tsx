@@ -58,6 +58,7 @@ import useCustomToast from "hooks/useCustomToast";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import { useRecoilState, useRecoilValue } from "recoil";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
+import constant from "constant";
 
 function BottomContent(props: {
   title: string;
@@ -209,6 +210,7 @@ function BondModal() {
 
   const { setTx } = useCustomToast();
   const { ltosIndex } = useLtosIndex();
+  const { LOCKTOS_maxWeeks } = constant;
 
   const [isLoading, setLoading] = useRecoilState(modalLoadingState);
   const [bottomLoading, setBottomLoading] = useRecoilState(
@@ -216,7 +218,7 @@ function BondModal() {
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
   const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
-  const { inputOver } = useBondModalCondition(maxValue);
+  const { inputOver, inputPeriodOver } = useBondModalCondition(maxValue);
 
   const contentList = [
     {
@@ -322,9 +324,12 @@ function BondModal() {
   }, [fiveDaysLockup]);
 
   useEffect(() => {
-    setBottomLoading(true);
     setStosLoading(true);
   }, [inputValue, setBottomLoading, setStosLoading]);
+
+  useEffect(() => {
+    setBottomLoading(true);
+  }, [inputValue.bond_modal_balance, setBottomLoading]);
 
   useEffect(() => {
     if (bondModalData && userETHBalance) {
@@ -540,6 +545,10 @@ function BondModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
+                      rightUnit={"Weeks"}
+                      maxValue={LOCKTOS_maxWeeks}
+                      isError={inputPeriodOver}
+                      errorMsg={"invalid weeks"}
                     ></TextInput>
                   </Flex>
                 )}

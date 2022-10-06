@@ -36,13 +36,15 @@ function useStosReward(
 
   useEffect(() => {
     async function fetchStosRewardData() {
+      if (inputTosAmount?.toString() === "") {
+        return setStosRewards("-");
+      }
       if (inputTosAmount === undefined) {
         return setStosRewards("-");
       }
       if (typeof inputTosAmount === "number" && isNaN(inputTosAmount)) {
         return setStosRewards("-");
       }
-
       if (inputTosAmount === 0) {
         return setStosRewards("0");
       }

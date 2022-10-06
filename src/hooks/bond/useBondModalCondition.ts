@@ -1,47 +1,38 @@
+import constant from "constant";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 import { BondModalInput } from "types/bond";
 
 function useBondModalCondition(maxValue: number | undefined) {
   const [inputOver, setInputOver] = useState<boolean>(true);
+  const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(true);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
 
-  const { inputValue, setValue, setResetValue } = useInput(
-    "Bond_screen",
-    "bond_modal"
-  );
+  const { inputValue } = useInput("Bond_screen", "bond_modal");
+  const inputBalance = inputValue.bond_modal_balance;
+  const inputPeriod = inputValue.bond_modal_period;
+  const { LOCKTOS_maxWeeks } = constant;
 
   useEffect(() => {
-    if (
-      inputValue.bond_modal_balance === undefined ||
-      inputValue.bond_modal_balance === ""
-    ) {
+    if (inputBalance === undefined || inputBalance === "") {
       return setInputOver(false);
     }
-    if (maxValue && inputValue.bond_modal_balance) {
-      if (Number(inputValue.bond_modal_balance) > maxValue) {
+    if (maxValue && inputBalance) {
+      if (Number(inputBalance) > maxValue) {
         return setInputOver(true);
       }
       return setInputOver(false);
     }
-  }, [inputValue, maxValue]);
+  }, [inputBalance, maxValue]);
 
-  //   useEffect(() => {
-  //     if (inputValue.bond_modal_balance === "") {
-  //       return setBtnDisabled(true);
-  //     }
-  //     if (
-  //       inputValue.bond_modal_balance === "" ||
-  //       inputValue.bond_modal_balance === undefined ||
-  //       inputValue.bond_modal_balance === "0" ||
-  //       inputValue.bond_modal_balance === 0
-  //     ) {
-  //       return setBtnDisabled(true);
-  //     }
-  //     return setBtnDisabled(false);
-  //   }, [inputValue]);
+  useEffect(() => {
+    if (Number(inputPeriod) > LOCKTOS_maxWeeks) {
+      return setInputPeriodOver(true);
+    }
+    return setInputPeriodOver(false);
+  }, [inputPeriod, LOCKTOS_maxWeeks]);
 
-  return { inputOver, btnDisabled };
+  return { inputOver, LOCKTOS_maxWeeks, inputPeriodOver };
 }
 
 export default useBondModalCondition;

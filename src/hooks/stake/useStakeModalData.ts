@@ -14,6 +14,8 @@ import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import useUser from "hooks/useUser";
 import useStosReward from "./useStosReward";
 import { StakeModalBottomContents } from "types/stake";
+import { useRecoilState } from "recoil";
+import { modalBottomLoadingState } from "atom/global/modal";
 
 function useStakeModaldata(): StakeModalBottomContents {
   const { selectedModalData } = useModal<BondCardProps>();
@@ -29,12 +31,13 @@ function useStakeModaldata(): StakeModalBottomContents {
   const [newBalance, setNewBalance] = useState<string | undefined>(undefined);
   const [endTime, setEndTime] = useState<string | undefined>(undefined);
 
-  const { stosReward, newEndTime } = useStosReward(inputAmount, inputPeriod);
-
   const { BondDepositoryProxy_CONTRACT, StakingV2Proxy_CONTRACT } =
     useCallContract();
   const { account } = useWeb3React();
   const { simpleStakingId } = useUser();
+  const [bottomLoading, setBottomLoading] = useRecoilState(
+    modalBottomLoadingState
+  );
 
   useEffect(() => {
     const fetchListdata = async () => {
@@ -84,10 +87,14 @@ function useStakeModaldata(): StakeModalBottomContents {
         setNewBalance(newBalance);
       }
     };
-    fetchListdata().catch((e) => {
-      console.log("**useStakeModalData err**");
-      console.log(e);
-    });
+    fetchListdata()
+      .catch((e) => {
+        console.log("**useStakeModalData err**");
+        console.log(e);
+      })
+      .finally(() => {
+        return setBottomLoading(false);
+      });
   }, [
     BondDepositoryProxy_CONTRACT,
     StakingV2Proxy_CONTRACT,
@@ -95,14 +102,13 @@ function useStakeModaldata(): StakeModalBottomContents {
     inputPeriod,
     account,
     simpleStakingId,
+    setBottomLoading,
   ]);
 
   return {
     ltos,
     currentBalance,
     newBalance,
-    endTime: newEndTime,
-    stosReward,
   };
 }
 
