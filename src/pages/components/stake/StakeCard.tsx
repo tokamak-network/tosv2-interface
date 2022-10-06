@@ -80,9 +80,6 @@ function StakeCard(props: { cardData: StakeCardProps }) {
     return null;
   }
 
-  console.log("--cardData--");
-  console.log(cardData);
-
   const { isOver, stakedType, tokenType } = cardData;
   const isDisabled =
     stakedType === "LTOS Staking" ? cardData.staked.ltos === "0.00" : isOver;
@@ -90,8 +87,6 @@ function StakeCard(props: { cardData: StakeCardProps }) {
     stakedType === "LTOS Staking"
       ? Number(cardData.staked.ltos.replaceAll("LTOS", "")) === 0
       : !isDisabled;
-
-  console.log(unstakeDisabled);
 
   return (
     <Flex

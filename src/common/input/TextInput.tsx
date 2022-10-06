@@ -168,9 +168,6 @@ function BalanceInput(props: NumberInputProp) {
   const { inputValue, value, setValue } = useInput(pageKey!, recoilKey);
   const selectedModal = useRecoilValue(selectedModalState);
 
-  console.log("balanceInput");
-  console.log(inputValue);
-
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...inputValue, [atomKey]: event.target.value });
   };

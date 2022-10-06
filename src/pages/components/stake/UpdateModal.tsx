@@ -60,6 +60,7 @@ import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
 import ArrowImg from "assets/icons/arrow-right2.svg";
 import BasicTooltip from "common/tooltip/index";
+import useCustomToast from "hooks/useCustomToast";
 
 function BottomContent(props: {
   title: string;
@@ -172,6 +173,8 @@ function UpdateModal() {
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [inputError, setInputError] = useState<boolean>(false);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
+  const [isApproving, setIsApproving] = useState<boolean>(false);
+
   const [newBalanceType, setNewBalanceType] = useState<1 | 2 | 3 | undefined>(
     undefined
   );
@@ -181,6 +184,7 @@ function UpdateModal() {
   const { maxWeeks } = useStosReward();
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const { setTx } = useCustomToast();
 
   const contentList = [
     {
@@ -222,38 +226,54 @@ function UpdateModal() {
     },
   ];
 
-  const callUpdate = useCallback(() => {
+  const callApprove = useCallback(async () => {
+    try {
+      if (TOS_CONTRACT) {
+        const totalSupply = await TOS_CONTRACT.totalSupply();
+        const tx = await TOS_CONTRACT.approve(StakingV2Proxy, totalSupply);
+
+        setTx(tx);
+
+        if (tx) {
+          await tx.wait();
+          setIsApproving(false);
+        }
+      }
+    } catch (e) {
+      setIsApproving(false);
+    }
+  }, [TOS_CONTRACT, StakingV2Proxy, setTx]);
+
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    closeModal();
+  }, [setResetValue, closeModal]);
+
+  const callUpdate = useCallback(async () => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
-    if (StakingV2Proxy_CONTRACT && stakeId) {
+    if (StakingV2Proxy_CONTRACT && stakeId && leftWeeks) {
       //before endTime
       //increaseBeforeEndOrNonEnd(uint256 _stakeId, uint256 _amount uint256, uint256 _unlockWeeks)
-      return StakingV2Proxy_CONTRACT[
+      const tx = await StakingV2Proxy_CONTRACT[
         "increaseBeforeEndOrNonEnd(uint256,uint256,uint256)"
       ](
         stakeId,
         convertToWei(inputValue.stake_updateModal_tos_balance),
-        inputValue.stake_updateModal_period
+        inputValue.stake_updateModal_period - leftWeeks
       );
+      setTx(tx);
+      return closeThisModal();
     }
   }, [
     inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period,
     StakingV2Proxy_CONTRACT,
     stakeId,
+    leftWeeks,
+    closeThisModal,
+    setTx,
   ]);
-
-  const callApprove = useCallback(async () => {
-    if (TOS_CONTRACT) {
-      const totalSupply = await TOS_CONTRACT.totalSupply();
-      return TOS_CONTRACT.approve(StakingV2Proxy, totalSupply);
-    }
-  }, [TOS_CONTRACT, StakingV2Proxy]);
-
-  const closeThisModal = useCallback(() => {
-    setResetValue();
-    closeModal();
-  }, [setResetValue, closeModal]);
 
   useEffect(() => {
     if (tosAllowance) {
@@ -496,6 +516,7 @@ function UpdateModal() {
                     Number(inputValue.stake_updateModal_tos_balance) > 0
                   }
                   name="Approve"
+                  isLoading={isApproving}
                   onClick={callApprove}
                 ></SubmitButton>
               )}
