@@ -320,8 +320,7 @@ const NavBar = () => {
         w={"100%"}
         mb={50}
         alignItems={"center"}
-        justifyContent={"center"}
-        pl={isExpended ? "35px" : ""}
+        pl={isExpended ? "35px" : "0px"}
       >
         <Logo isExpended={isExpended}></Logo>
         <Text
