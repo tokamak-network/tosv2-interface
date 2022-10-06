@@ -60,8 +60,8 @@ const SmallCardContainer = () => {
         100;
       const backingPerTosNum = convertNumber({
         amount: backingPerTos,
-        decimalPlaces: 6,
-        decimalPoints: 6,
+        decimalPlaces: 7,
+        decimalPoints: 7,
       });
 
       const dummyData: Dashboard_SmallCardArrType = [
