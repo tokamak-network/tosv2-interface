@@ -53,6 +53,7 @@ import { StakeCardProps } from "types/stake";
 import useRebaseTime from "hooks/useRebaseTime";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import useStakeModalCondition from "hooks/stake/useStakeModalCondition";
+import constant from "constant";
 
 function BottomContent(props: {
   title: string;
@@ -181,7 +182,9 @@ function StakeModal() {
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const { setTx } = useCustomToast();
-  const { inputOver, inputPeriodOver } = useStakeModalCondition();
+  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
+    useStakeModalCondition();
+  const { errMsg } = constant;
 
   const contentList = fiveDaysLockup
     ? [
@@ -421,8 +424,10 @@ function StakeModal() {
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
                     maxValue={maxValue}
-                    isError={inputOver}
-                    errorMsg={"Input has exceeded your balance"}
+                    isError={zeroInputBalance || inputOver}
+                    errorMsg={
+                      zeroInputBalance ? errMsg.zeroInput : errMsg.balanceExceed
+                    }
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -549,7 +554,9 @@ function StakeModal() {
                   h={42}
                   name="Stake"
                   onClick={callStake}
-                  isDisabled={inputOver}
+                  isDisabled={
+                    fiveDaysLockup ? zeroInputBalance || inputOver : btnDisabled
+                  }
                 ></SubmitButton>
               ) : (
                 <SubmitButton

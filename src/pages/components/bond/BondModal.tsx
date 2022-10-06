@@ -384,7 +384,7 @@ function BondModal() {
                   fontWeight={600}
                   ml="9px"
                 >
-                  ETH BOND
+                  ETH Bond
                 </Text>
 
                 <Flex
@@ -474,7 +474,7 @@ function BondModal() {
                     recoilKey={"bond_modal"}
                     atomKey={"bond_modal_balance"}
                     maxValue={maxValue}
-                    isError={bondModalData && inputOver}
+                    isError={bondModalData && (zeroInputBalance || inputOver)}
                     errorMsg={
                       zeroInputBalance
                         ? errMsg.zeroInput
