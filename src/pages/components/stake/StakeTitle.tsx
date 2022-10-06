@@ -5,6 +5,7 @@ import { useState } from "react";
 import SubmitButton from "common/button/SubmitButton";
 import useModal from "hooks/useModal";
 import useUserBalance from "hooks/useUserBalance";
+import { useWeb3React } from "@web3-react/core";
 
 function StakeTitle() {
   const [radioValue, setRadioValue] = useState<"All" | "Bond" | "Stake">("All");
@@ -12,6 +13,8 @@ function StakeTitle() {
   const { openModal } = useModal("stake_stake_modal");
   const { colorMode } = useColorMode();
   const { userLTOSBalance, userSTOSBalance, userTOSBalance } = useUserBalance();
+  const { account } = useWeb3React();
+
   return (
     <Flex
       // h={"31px"}
@@ -54,6 +57,7 @@ function StakeTitle() {
           onClick={openModal}
           iconName={"Plus"}
           iconLocation={"left"}
+          isDisabled={!account}
         ></SubmitButton>
       </Flex>
     </Flex>

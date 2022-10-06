@@ -1,7 +1,9 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
+import SubmitButton from "common/button/SubmitButton";
 import TabButton from "common/button/TabButton";
 import useStakeList from "hooks/stake/useStakeList";
+import useWallet from "hooks/useWallet";
 import SortSelect from "pages/components/bond/SortSelect";
 import StakeCheckbox from "pages/components/bond/StakeCheckbox";
 import { useState } from "react";
@@ -23,6 +25,7 @@ function MsgComponent(props: { msg: string }) {
 function StakeCardContainer() {
   const { stakeCards } = useStakeList();
   const { account } = useWeb3React();
+  const { tryActivation } = useWallet();
 
   return (
     <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
@@ -35,7 +38,15 @@ function StakeCardContainer() {
         <StakeTitle></StakeTitle>
       </Flex>
       {!account ? (
-        <MsgComponent msg={"Need to connect to the wallet"}></MsgComponent>
+        <Flex flexDir={"column"} alignItems={"center"}>
+          <SubmitButton
+            name="Connect Wallet"
+            w={"240px"}
+            h={"42px"}
+            style={{ fontSize: 16 }}
+            onClick={tryActivation}
+          ></SubmitButton>
+        </Flex>
       ) : stakeCards && stakeCards?.length > 1 ? (
         <>
           <Flex
@@ -57,8 +68,10 @@ function StakeCardContainer() {
           </Flex>
           <StakeCardSection></StakeCardSection>
         </>
-      ) : (
+      ) : stakeCards ? (
         <MsgComponent msg={"No Staking History"}></MsgComponent>
+      ) : (
+        <></>
       )}
     </Flex>
   );
