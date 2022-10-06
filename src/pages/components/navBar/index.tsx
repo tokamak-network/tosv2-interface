@@ -315,10 +315,18 @@ const NavBar = () => {
       <Box onClick={() => setIsExpended(!isExpended)}>
         <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
-      <Flex w={"100%"} mb={50} alignItems={"center"} pl={"35px"}>
+      <Flex
+        flexDir={isExpended ? "row" : "column"}
+        w={"100%"}
+        mb={50}
+        alignItems={"center"}
+        justifyContent={"center"}
+        pl={isExpended ? "35px" : ""}
+      >
         <Logo isExpended={isExpended}></Logo>
         <Text
-          ml={"15px"}
+          mt={isExpended ? "0px" : "9px"}
+          ml={isExpended ? "15px" : "0px"}
           w={"41px"}
           h={"17px"}
           bg={"#f29b37"}
