@@ -92,11 +92,11 @@ function useMyHistory() {
               info: [
                 {
                   title: "Staked",
-                  content: `${convertedLtos} LTOS / ${
-                    hasPeriodWeeks
-                      ? convertNumber({ amount: tosBalance.toString() })
-                      : "-"
-                  } sTOS`,
+                  content: hasPeriodWeeks
+                    ? `${convertedLtos} LTOS / ${convertNumber({
+                        amount: tosBalance.toString(),
+                      })}sTOS`
+                    : `${convertedLtos} LTOS`,
                 },
                 {
                   title: "Bond Price",
