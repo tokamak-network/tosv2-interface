@@ -78,9 +78,6 @@ const TextInput: React.FC<InputProp> = (props) => {
     });
   };
 
-  console.log("textinput");
-  console.log(isError);
-
   return (
     <Flex flexDir={"column"} {...style}>
       <InputGroup>
@@ -118,8 +115,8 @@ const TextInput: React.FC<InputProp> = (props) => {
                 }
           }
           outline="none"
-          errorBorderColor={"#e23738"}
-          value={`${value[atomKey]}`}
+          errorBorderColor={isDisabled === false ? "#e23738" : "none"}
+          value={`${isDisabled ? "-" : value[atomKey]}`}
           onChange={onChange}
         ></Input>
 
@@ -141,7 +138,7 @@ const TextInput: React.FC<InputProp> = (props) => {
           </Button>
         </InputRightElement>
       </InputGroup>
-      {isError && (
+      {isError && isDisabled === false && (
         <Flex
           fontSize={12}
           color={"#e23738"}

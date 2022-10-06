@@ -266,7 +266,6 @@ function BondModal() {
     try {
       if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
         const inputAmount = inputValue.bond_modal_balance;
-        console.log(fiveDaysLockup);
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           console.log("---ETHDepositWithSTOS()---");
@@ -461,7 +460,7 @@ function BondModal() {
                     recoilKey={"bond_modal"}
                     atomKey={"bond_modal_balance"}
                     maxValue={maxValue}
-                    isError={inputOver}
+                    isError={bondModalData && inputOver}
                     errorMsg={
                       "input has exceeded maximum bondable amount per 1 transaction"
                     }
@@ -508,7 +507,7 @@ function BondModal() {
                         <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
                       </Flex>
                     </Flex>
-                    <BalanceInput
+                    <TextInput
                       w={"100%"}
                       h={"39px"}
                       pageKey={"Bond_screen"}
@@ -517,7 +516,7 @@ function BondModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
-                    ></BalanceInput>
+                    ></TextInput>
                   </Flex>
                 ) : (
                   <Flex fontSize={12} alignItems="center" mt="10px">

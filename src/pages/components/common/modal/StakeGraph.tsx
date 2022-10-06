@@ -83,6 +83,7 @@ function StakeGraph(props: {
 
   useEffect(() => {
     if (isSlideDisabled) return setSliderValue(0);
+    return setSliderValue(156);
   }, [isSlideDisabled]);
 
   return (

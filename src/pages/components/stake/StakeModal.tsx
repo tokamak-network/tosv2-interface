@@ -327,8 +327,6 @@ function StakeModal() {
     setBottomLoading(true);
   }, [inputValue.stake_modal_balance, setBottomLoading]);
 
-  console.log(inputPeriodOver);
-
   return (
     <Modal
       isOpen={selectedModal === "stake_stake_modal"}
@@ -410,7 +408,7 @@ function StakeModal() {
                     atomKey={"stake_modal_balance"}
                     maxValue={maxValue}
                     isError={inputOver}
-                    errorMsg={"input has exceeded your balance"}
+                    errorMsg={"Input has exceeded your balance"}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -492,6 +490,10 @@ function StakeModal() {
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
                       maxValue={maxWeeks}
+                      isError={inputPeriodOver}
+                      errorMsg={
+                        "Lock-up period must be an integer between 1 and 156"
+                      }
                     ></TextInput>
                   </Flex>
                 )}

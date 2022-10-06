@@ -33,9 +33,6 @@ function useStakeModalCondition() {
     return setInputPeriodOver(false);
   }, [inputPeriod, LOCKTOS_maxWeeks]);
 
-  console.log("inputPeriodOver");
-  console.log(inputPeriodOver);
-
   return { inputOver, inputPeriodOver, btnDisabled };
 }
 
