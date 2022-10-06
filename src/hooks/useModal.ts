@@ -2,9 +2,10 @@ import { defaultValue, inputState } from "atom/global/input";
 import { modalData, modalState } from "atom/global/modal";
 import React, { SetStateAction } from "react";
 import { useRecoilState } from "recoil";
+import { StakeModalType } from "types/modal";
 
 function useModal<T>(
-  modalType?: string,
+  modalType?: StakeModalType,
   modalDataObj?: T | undefined,
   setInitialValue?: React.Dispatch<SetStateAction<any>>
 ) {
@@ -24,7 +25,7 @@ function useModal<T>(
   };
 
   const closeModal = () => {
-    setSelectedModal("");
+    setSelectedModal(undefined);
     setSelectedModalData(undefined);
     setValue(defaultValue);
   };
