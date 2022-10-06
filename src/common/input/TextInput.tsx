@@ -161,6 +161,12 @@ function BalanceInput(props: NumberInputProp) {
     setValue({ ...inputValue, [atomKey]: event.target.value });
   };
 
+  useEffect(() => {
+    if (maxValue) {
+      return setValue({ ...inputValue, [atomKey]: maxValue.toString() });
+    }
+  }, [maxValue]);
+
   return (
     <InputGroup>
       <NumberInput

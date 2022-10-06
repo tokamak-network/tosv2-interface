@@ -215,11 +215,7 @@ function BondModal() {
     modalBottomLoadingState
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
-
-  const maxValue =
-    bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
-      ? Number(userETHBalance.replaceAll(",", ""))
-      : Number(bondModalData?.maxBond.replaceAll(",", ""));
+  const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
 
   const contentList = [
     {
@@ -232,7 +228,12 @@ function BondModal() {
       title: "You Will Get",
       content:
         {
-          ltos: bottomLoading ? "......" : youWillGet || "0",
+          ltos:
+            inputValue.bond_modal_balance === undefined
+              ? "-"
+              : bottomLoading
+              ? "......"
+              : youWillGet || "0",
           stos: stosLoading
             ? "......"
             : fiveDaysLockup
@@ -332,9 +333,15 @@ function BondModal() {
     setStosLoading(true);
   }, [inputValue]);
 
-  // useEffect(() => {
-  //   if (maxValue) setValue({ ...inputValue, bond_modal_balance: 0.02 });
-  // }, []);
+  useEffect(() => {
+    if (bondModalData && userETHBalance) {
+      const mValue =
+        bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
+          ? Number(userETHBalance.replaceAll(",", ""))
+          : Number(bondModalData?.maxBond.replaceAll(",", ""));
+      setMaxValue(mValue);
+    }
+  }, [bondModalData, userETHBalance]);
 
   return (
     <Modal
