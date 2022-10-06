@@ -13,79 +13,44 @@ import useInput from "hooks/useInput";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import useUser from "hooks/useUser";
 import useStosReward from "./useStosReward";
+import { StakeModalBottomContents } from "types/stake";
 
-type stakeModalInputData = {
-  youWillGet: {
-    ltos: string;
-  };
-  currentBalance: string;
-  newBalance: string;
-  endTime: string;
-};
-
-function useStakeModaldata() {
+function useStakeModaldata(): StakeModalBottomContents {
   const { selectedModalData } = useModal<BondCardProps>();
   const propData = selectedModalData;
   const { inputValue } = useInput("Stake_screen", "stake_modal");
   const inputAmount = inputValue.stake_modal_balance;
   const inputPeriod = inputValue.stake_modal_period;
 
-  const [stakeModalInputData, setStakeModalInputData] = useState<
-    stakeModalInputData | undefined
-  >(undefined);
+  const [ltos, setLtos] = useState<string | undefined>(undefined);
+  const [currentBalance, setCurrentBlaance] = useState<string | undefined>(
+    undefined
+  );
+  const [newBalance, setNewBalance] = useState<string | undefined>(undefined);
+  const [endTime, setEndTime] = useState<string | undefined>(undefined);
+
   const { stosReward, newEndTime } = useStosReward(inputAmount, inputPeriod);
 
-  const {
-    BondDepositoryProxy_CONTRACT,
-    StakingV2Proxy_CONTRACT,
-    LockTOS_CONTRACT,
-  } = useCallContract();
+  const { BondDepositoryProxy_CONTRACT, StakingV2Proxy_CONTRACT } =
+    useCallContract();
   const { account } = useWeb3React();
   const { simpleStakingId } = useUser();
 
-  // set Estimated reward;
-  const getEstimatedReward = useCallback(
-    async (date: number) => {
-      if (
-        inputAmount &&
-        inputAmount !== "" &&
-        inputAmount !== "0" &&
-        inputPeriod > 0 &&
-        LockTOS_CONTRACT
-      ) {
-        const maxTime = await LockTOS_CONTRACT.maxTime();
-        const maxPeriod = parseInt(maxTime);
-        const numValue = Number(inputAmount.replaceAll(",", ""));
-        const avgProfit = numValue / maxPeriod;
-        const estimatedReward = avgProfit * (date - moment().unix());
-        const deciamlNum = new Decimal(estimatedReward);
-        const resultNum = deciamlNum.toFixed(3, Decimal.ROUND_HALF_UP);
-        const result = Number(resultNum).toFixed(2);
-        return String(Number(result));
-      }
-      return "-";
-    },
-    [LockTOS_CONTRACT, inputPeriod, inputAmount]
-  );
+  console.log("stosReward");
+  console.log(stosReward);
 
   useEffect(() => {
     const fetchListdata = async () => {
       if (inputAmount === "" || inputAmount === undefined) {
-        return setStakeModalInputData({
-          youWillGet: {
-            ltos: "-",
-          },
-          currentBalance: "-",
-          newBalance: "-",
-          endTime: "-",
-        });
+        setLtos("-");
+        setNewBalance("-");
       }
       if (
         BondDepositoryProxy_CONTRACT &&
         StakingV2Proxy_CONTRACT &&
         account &&
         simpleStakingId &&
-        newEndTime
+        inputAmount
       ) {
         const tosAmount = convertToWei(inputAmount);
         const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
@@ -99,6 +64,8 @@ function useStakeModaldata() {
             amount: youWillGetLTOS.toString(),
             localeString: true,
           }) || "0";
+        setLtos(ltos);
+
         //currentBalance
         const currentBalanceWei = await StakingV2Proxy_CONTRACT.remainedLtos(
           simpleStakingId.toString()
@@ -109,21 +76,15 @@ function useStakeModaldata() {
             localeString: true,
           }) || "0";
 
+        setCurrentBlaance(currentBalance);
+
         //new balance
         const newBalanceBN = BigNumber.from(currentBalanceWei).add(
           convertToWei(LTOS_BN.toString())
         );
         const newBalance =
           convertNumber({ amount: newBalanceBN.toString() }) || "0";
-
-        setStakeModalInputData({
-          youWillGet: {
-            ltos: ltos,
-          },
-          currentBalance,
-          newBalance,
-          endTime: newEndTime,
-        });
+        setNewBalance(newBalance);
       }
     };
     fetchListdata().catch((e) => {
@@ -135,14 +96,15 @@ function useStakeModaldata() {
     StakingV2Proxy_CONTRACT,
     inputAmount,
     inputPeriod,
-    getEstimatedReward,
     account,
     simpleStakingId,
-    newEndTime,
   ]);
 
   return {
-    stakeModalInputData,
+    ltos,
+    currentBalance,
+    newBalance,
+    endTime: newEndTime,
     stosReward,
   };
 }

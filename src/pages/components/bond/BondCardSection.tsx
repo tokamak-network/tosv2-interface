@@ -26,8 +26,6 @@ function BondCardSection() {
     if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {
       const bonds = data.getBondList;
       const { ethPrice, tosPrice } = priceData;
-      console.log("--bonds");
-      console.log(bonds);
       const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
         const {
           capacity,

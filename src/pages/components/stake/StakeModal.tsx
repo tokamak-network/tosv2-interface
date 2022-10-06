@@ -13,7 +13,11 @@ import {
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedModalData, selectedModalState } from "atom//global/modal";
+import {
+  selectedModalData,
+  selectedModalState,
+  stosLoadingState,
+} from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
@@ -44,7 +48,6 @@ import StakeGraph from "../common/modal/StakeGraph";
 import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
 import { StakeCardProps } from "types/stake";
-import useStakeModal from "hooks/stake/useStakeModal";
 import useRebaseTime from "hooks/useRebaseTime";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 
@@ -140,7 +143,8 @@ function StakeModal() {
     useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
-  const { stakeModalInputData } = useStakeModaldata();
+  const { ltos, stosReward, currentBalance, newBalance, endTime } =
+    useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
@@ -150,14 +154,17 @@ function StakeModal() {
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
+  const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
+
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const { stosReward, maxWeeks } = useStosReward(
+  const { maxWeeks } = useStosReward(
     inputValue.stake_modal_balance,
     inputValue.stake_modal_period
   );
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
+  const stosLoadingValue = useRecoilValue(stosLoadingState);
 
   const { setTx } = useCustomToast();
 
@@ -171,7 +178,7 @@ function StakeModal() {
         },
         {
           title: "You Will Get",
-          content: `${stakeModalInputData?.youWillGet.ltos || "0"} LTOS`,
+          content: stosLoadingValue ? "..." : `${ltos || "0"} LTOS`,
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
@@ -180,13 +187,13 @@ function StakeModal() {
         },
         {
           title: "Current Balance",
-          content: `${stakeModalInputData?.currentBalance || "0"} LTOS`,
+          content: `${currentBalance || "-"} LTOS`,
           tooltip: true,
           tooltipMessage: "Current LTOS balance without Lock-Up period",
         },
         {
           title: "New Balance",
-          content: `${stakeModalInputData?.newBalance || "0"} LTOS`,
+          content: `${newBalance || "-"} LTOS`,
           tooltip: true,
           tooltipMessage:
             "New LTOS balance without Lock-Up period after staking. ",
@@ -203,8 +210,8 @@ function StakeModal() {
           title: "You Will Get",
           content:
             {
-              ltos: stakeModalInputData?.youWillGet.ltos,
-              stos: stosReward,
+              ltos: ltos,
+              stos: stosLoadingValue ? "..." : stosReward,
             } || "0",
           tooltip: true,
           tooltipMessage:
@@ -214,7 +221,7 @@ function StakeModal() {
         },
         {
           title: "End Time",
-          content: `${stakeModalInputData?.endTime || "-"}`,
+          content: `${endTime || "-"}`,
           tooltip: true,
           tooltipMessage: "LTOS can be unstaked after this time. ",
         },
@@ -291,7 +298,7 @@ function StakeModal() {
       }
       return setIsAllowance(false);
     }
-  }, [tosAllowance, inputValue.stake_modal_balance, isApproving]);
+  }, [tosAllowance, inputValue.stake_modal_balance, isAllowance]);
 
   useEffect(() => {
     if (
@@ -310,6 +317,12 @@ function StakeModal() {
     }
     return setFiveDaysLockup(false);
   }, [selectedModalData]);
+
+  useEffect(() => {
+    if (userTOSBalance) {
+      setMaxValue(Number(userTOSBalance.replaceAll(",", "")));
+    }
+  }, [userTOSBalance]);
 
   return (
     <Modal
@@ -390,7 +403,7 @@ function StakeModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
-                    maxValue={Number(userTOSBalance.replaceAll(",", ""))}
+                    maxValue={maxValue}
                   ></BalanceInput>
                 </Flex>
                 <Flex

@@ -21,3 +21,11 @@ export type StakeCardProps =
       stakedId: string;
     }
   | undefined;
+
+export type StakeModalBottomContents = {
+  ltos: string | undefined;
+  stosReward: string;
+  currentBalance: string | undefined;
+  newBalance: string | undefined;
+  endTime: string | undefined;
+};

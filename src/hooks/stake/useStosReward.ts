@@ -35,13 +35,15 @@ function useStosReward(
   const [isLoading, setLoading] = useRecoilState(stosLoadingState);
 
   useEffect(() => {
+    typeof inputTosAmount;
     async function fetchStosRewardData() {
-      if (typeof inputTosAmount === "number" && isNaN(inputTosAmount)) {
-        return setStosRewards("-");
-      }
       if (inputTosAmount === undefined) {
         return setStosRewards("-");
       }
+      if (typeof inputTosAmount === "number" && isNaN(inputTosAmount)) {
+        return setStosRewards("-");
+      }
+
       if (inputTosAmount === 0) {
         return setStosRewards("0");
       }

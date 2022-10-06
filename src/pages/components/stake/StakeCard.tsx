@@ -113,7 +113,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
               ? "Staking"
               : stakedType === "Bond"
               ? `${tokenType} Bond`
-              : stakedType}
+              : "Locked"}
           </Text>
         </Flex>
         <Flex>
