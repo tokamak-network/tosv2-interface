@@ -183,7 +183,7 @@ function StakeModal() {
         },
         {
           title: "You Will Get",
-          content: bottomLoadingValue ? "..." : `${ltos || "-"} LTOS`,
+          content: bottomLoading ? "..." : `${ltos || "-"} LTOS`,
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
@@ -318,9 +318,12 @@ function StakeModal() {
   }, [userTOSBalance]);
 
   useEffect(() => {
-    setBottomLoading(true);
     setStosLoading(true);
   }, [inputValue]);
+
+  useEffect(() => {
+    setBottomLoading(true);
+  }, [inputValue.stake_modal_balance, setBottomLoading]);
 
   return (
     <Modal
