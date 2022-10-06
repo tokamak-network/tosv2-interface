@@ -216,7 +216,7 @@ function BondModal() {
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
   const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
-  const { inputOver, btnDisabled } = useBondModalCondition(maxValue);
+  const { inputOver } = useBondModalCondition(maxValue);
 
   const contentList = [
     {
@@ -264,6 +264,7 @@ function BondModal() {
     try {
       if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
         const inputAmount = inputValue.bond_modal_balance;
+        console.log(fiveDaysLockup);
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           console.log("---ETHDepositWithSTOS()---");
@@ -281,6 +282,7 @@ function BondModal() {
           setTx(tx);
           return closeThisModal();
         }
+
         console.log("---ETHDeposit()---");
         console.log(marketId, convertToWei(inputAmount), {
           value: convertToWei(inputAmount),
@@ -499,7 +501,7 @@ function BondModal() {
                         <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
                       </Flex>
                     </Flex>
-                    <TextInput
+                    <BalanceInput
                       w={"100%"}
                       h={"39px"}
                       pageKey={"Bond_screen"}
@@ -508,7 +510,7 @@ function BondModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
-                    ></TextInput>
+                    ></BalanceInput>
                   </Flex>
                 ) : (
                   <Flex fontSize={12} alignItems="center" mt="10px">
@@ -577,7 +579,7 @@ function BondModal() {
                 h={42}
                 name="Bond"
                 onClick={callBond}
-                isDisabled={btnDisabled}
+                isDisabled={inputOver}
               ></SubmitButton>
             </Flex>
             {/* <Flex

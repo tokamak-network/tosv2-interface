@@ -12,9 +12,11 @@ import {
   useTheme,
 } from "@chakra-ui/react";
 import { inputBalanceState, inputState } from "atom/global/input";
+import { selectedModalState } from "atom/global/modal";
 import useInput from "hooks/useInput";
 import { max } from "moment";
 import React, { SetStateAction, useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 
@@ -31,6 +33,7 @@ type InputProp = {
   pageKey?: PageKey;
   recoilKey?: InputKey;
   maxValue?: string | number;
+  rightUnit?: string;
 };
 
 type NumberInputProp = {
@@ -46,6 +49,7 @@ type NumberInputProp = {
   pageKey?: PageKey;
   recoilKey?: InputKey;
   maxValue?: number;
+  rightUnit?: string;
 };
 
 const TextInput: React.FC<InputProp> = (props) => {
@@ -151,11 +155,13 @@ function BalanceInput(props: NumberInputProp) {
     pageKey,
     recoilKey,
     maxValue,
+    errorMsg,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
   const { inputValue, value, setValue } = useInput(pageKey!, recoilKey!);
+  const selectedModal = useRecoilValue(selectedModalState);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue({ ...inputValue, [atomKey]: event.target.value });
@@ -165,61 +171,71 @@ function BalanceInput(props: NumberInputProp) {
     if (maxValue) {
       return setValue({ ...inputValue, [atomKey]: maxValue.toString() });
     }
-  }, [maxValue]);
+  }, [maxValue, selectedModal, atomKey]);
 
   return (
-    <InputGroup>
-      <NumberInput
-        isInvalid={isError}
-        isDisabled={isDisabled}
-        w={w || 270}
-        h={h || 45}
-        ml={"auto"}
-        borderRadius={8}
-        borderWidth={1}
-        borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
-        fontSize={14}
-        color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
-        _placeholder={{ color: "#64646f" }}
-        _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
-        focusBorderColor="none"
-        placeholder={placeHolder}
-        _focus={{
-          outline: "none",
-          color: colorMode === "light" ? "gray.800" : "#f1f1f1",
-          boxShadow: "",
-          borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
-        }}
-        errorBorderColor={"#e23738"}
-        outline="none"
-        defaultValue={maxValue}
-        value={value[atomKey]}
-      >
-        <NumberInputField
-          h={"100%"}
-          placeholder={placeHolder}
-          onChange={onChange}
-          border={{}}
-        ></NumberInputField>
-      </NumberInput>
-      <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
-        <Button
-          w={"30px"}
-          h={"20px"}
-          color={"#64646f"}
-          _hover={{ color: "#2775ff" }}
-          bg={"none"}
-          fontSize={14}
-          fontWeight={"normal"}
+    <Flex flexDir={"column"} w={w || 270}>
+      <InputGroup>
+        <NumberInput
+          isInvalid={isError}
           isDisabled={isDisabled}
-          onClick={() =>
-            maxValue && setValue({ ...inputValue, [atomKey]: String(maxValue) })
-          }
+          w={w || 270}
+          h={h || 45}
+          ml={"auto"}
+          borderRadius={8}
+          borderWidth={1}
+          borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
+          fontSize={14}
+          color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
+          _placeholder={{ color: "#64646f" }}
+          _hover={{
+            borderColor: colorMode === "light" ? "#c6cbd9" : "#535353",
+          }}
+          focusBorderColor="none"
+          placeholder={placeHolder}
+          _focus={{
+            outline: "none",
+            color: colorMode === "light" ? "gray.800" : "#f1f1f1",
+            boxShadow: "",
+            borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
+          }}
+          errorBorderColor={"#e23738"}
+          outline="none"
+          defaultValue={maxValue}
+          value={value[atomKey]}
         >
-          Max
-        </Button>
-      </InputRightElement>
-    </InputGroup>
+          <NumberInputField
+            h={"100%"}
+            placeholder={placeHolder}
+            onChange={onChange}
+            border={{}}
+          ></NumberInputField>
+        </NumberInput>
+        <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
+          <Button
+            w={"30px"}
+            h={"20px"}
+            color={"#64646f"}
+            _hover={{ color: "#2775ff" }}
+            bg={"none"}
+            fontSize={14}
+            fontWeight={"normal"}
+            isDisabled={isDisabled}
+            onClick={() =>
+              maxValue &&
+              setValue({ ...inputValue, [atomKey]: String(maxValue) })
+            }
+          >
+            Max
+          </Button>
+        </InputRightElement>
+      </InputGroup>
+      {isError && (
+        <Flex fontSize={12} color={"#e23738"} justifyContent={"flex-end"}>
+          <Text>{errorMsg}</Text>
+        </Flex>
+      )}
+    </Flex>
   );
 }
 

@@ -12,6 +12,12 @@ function useBondModalCondition(maxValue: number | undefined) {
   );
 
   useEffect(() => {
+    if (
+      inputValue.bond_modal_balance === undefined ||
+      inputValue.bond_modal_balance === ""
+    ) {
+      return setInputOver(false);
+    }
     if (maxValue && inputValue.bond_modal_balance) {
       if (Number(inputValue.bond_modal_balance) > maxValue) {
         return setInputOver(true);
@@ -20,27 +26,20 @@ function useBondModalCondition(maxValue: number | undefined) {
     }
   }, [inputValue, maxValue]);
 
-  useEffect(() => {
-    if (
-      inputValue.bond_modal_balance === "" ||
-      inputValue.bond_modal_balance === undefined ||
-      inputValue.bond_modal_balance === "0" ||
-      inputValue.bond_modal_balance === 0
-    ) {
-      return setBtnDisabled(true);
-    }
-    return setBtnDisabled(false);
-  }, [inputValue]);
-
-  useEffect(() => {
-    setBtnDisabled(inputOver);
-  }, [inputOver]);
-
-  console.log("inputValue");
-  console.log(inputValue);
-  console.log(maxValue);
-
-  console.log(inputOver);
+  //   useEffect(() => {
+  //     if (inputValue.bond_modal_balance === "") {
+  //       return setBtnDisabled(true);
+  //     }
+  //     if (
+  //       inputValue.bond_modal_balance === "" ||
+  //       inputValue.bond_modal_balance === undefined ||
+  //       inputValue.bond_modal_balance === "0" ||
+  //       inputValue.bond_modal_balance === 0
+  //     ) {
+  //       return setBtnDisabled(true);
+  //     }
+  //     return setBtnDisabled(false);
+  //   }, [inputValue]);
 
   return { inputOver, btnDisabled };
 }
