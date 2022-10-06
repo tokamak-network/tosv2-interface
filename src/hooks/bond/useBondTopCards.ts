@@ -13,13 +13,13 @@ function useBondTopCards() {
       title: "Treasury Balance",
       price: "-",
       priceUnit: "$",
-      tooltip:'Total value of non TOS assets held by the Treasury'
+      tooltip: "Total value of non TOS assets held by the Treasury",
     },
     {
       title: "TOS Price",
       price: "-",
       priceUnit: "$",
-      tooltip:'TOS market price'
+      tooltip: "TOS market price",
     },
   ]);
 
@@ -28,6 +28,7 @@ function useBondTopCards() {
       period: "-1",
       limit: 1,
     },
+    pollInterval: 10000,
   });
 
   useEffect(() => {
@@ -43,13 +44,13 @@ function useBondTopCards() {
             title: "Treasury Balance",
             price: commafy(treasuryBalance),
             priceUnit: "$",
-            tooltip:'Total value of non TOS assets held by the Treasury'
+            tooltip: "Total value of non TOS assets held by the Treasury",
           },
           {
             title: "TOS Price",
             price: commafy(tosPrice),
             priceUnit: "$",
-            tooltip:'TOS market price'
+            tooltip: "TOS market price",
           },
         ]);
       }

@@ -195,10 +195,10 @@ const NavItem = (props: { isExpended: boolean }) => {
                   <Flex pos={"relative"}>
                     <Box
                       pos={"absolute"}
-                      left={-7}
+                      left={-6}
                       // bg={"red"}
                       top={-3}
-                      style={{ transform: `rotate(270deg)` }}
+                      style={{ transform: `rotate(180deg)` }}
                     >
                       <Image
                         src={

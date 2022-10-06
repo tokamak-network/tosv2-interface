@@ -30,6 +30,7 @@ const SmallCardContainer = () => {
       period: "-1",
       limit: 2,
     },
+    pollInterval: 10000,
   });
 
   // const { data, loading, error } = useCardData();

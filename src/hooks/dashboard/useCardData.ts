@@ -24,6 +24,7 @@ function useCardData(): UseCardData {
       period: "-1",
       limit: 1,
     },
+    pollInterval: 10000,
   });
 
   if (loading || error || data === undefined) {

@@ -44,6 +44,7 @@ function useBondModal() {
       period: "-1",
       limit: 1,
     },
+    pollInterval: 10000,
   });
 
   const { BondDepositoryProxy_CONTRACT, StakingV2Proxy_CONTRACT } =

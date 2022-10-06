@@ -19,6 +19,7 @@ function BondCardSection() {
     variables: {
       period: "-1",
     },
+    pollInterval: 10000,
   });
   const { priceData } = usePrice();
 

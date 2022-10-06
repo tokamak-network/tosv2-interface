@@ -47,3 +47,8 @@ export type GetMyHistory = {
   createdTime: Date;
   updated: Date;
 };
+
+export type BondModalInput = {
+  bond_modal_period: number;
+  bond_modal_balance: number | undefined;
+};

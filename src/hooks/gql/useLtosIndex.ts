@@ -10,6 +10,7 @@ function useLtosIndex() {
       period: "-1",
       limit: 1,
     },
+    pollInterval: 10000,
   });
 
   useEffect(() => {

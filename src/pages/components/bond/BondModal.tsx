@@ -57,6 +57,7 @@ import { getNowTimeStamp, getTimeLeft, convertTimeStamp } from "utils/time";
 import useCustomToast from "hooks/useCustomToast";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import { useRecoilState, useRecoilValue } from "recoil";
+import useBondModalCondition from "hooks/bond/useBondModalCondition";
 
 function BottomContent(props: {
   title: string;
@@ -195,7 +196,6 @@ function BondModal() {
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const fiveDaysLater = getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm");
   const [fiveDaysLockupEndTime, setFiveDaysLockupEndTime] =
     useState(fiveDaysLater);
@@ -216,6 +216,7 @@ function BondModal() {
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
   const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
+  const { inputOver, btnDisabled } = useBondModalCondition(maxValue);
 
   const contentList = [
     {
@@ -234,10 +235,10 @@ function BondModal() {
               : bottomLoading
               ? "......"
               : youWillGet || "0",
-          stos: stosLoading
-            ? "......"
-            : fiveDaysLockup
+          stos: fiveDaysLockup
             ? "0"
+            : stosLoading
+            ? "......"
             : stosReward || "0",
         } || "-",
       tooltip: true,
@@ -319,19 +320,9 @@ function BondModal() {
   }, [fiveDaysLockup]);
 
   useEffect(() => {
-    if (
-      inputValue.bond_modal_balance === "" ||
-      inputValue.bond_modal_balance === undefined
-    ) {
-      return setBtnDisabled(true);
-    }
-    return setBtnDisabled(false);
-  }, [inputValue]);
-
-  useEffect(() => {
     setBottomLoading(true);
     setStosLoading(true);
-  }, [inputValue]);
+  }, [inputValue, setBottomLoading, setStosLoading]);
 
   useEffect(() => {
     if (bondModalData && userETHBalance) {
@@ -463,6 +454,8 @@ function BondModal() {
                     recoilKey={"bond_modal"}
                     atomKey={"bond_modal_balance"}
                     maxValue={maxValue}
+                    isError={inputOver}
+                    errorMsg={"exceed input"}
                   ></BalanceInput>
                 </Flex>
                 <Flex

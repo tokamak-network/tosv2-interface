@@ -28,6 +28,7 @@ function useMyHistory() {
       account,
       period: "-1",
     },
+    pollInterval: 10000,
   });
   const { data: TokenData } = useQuery(GET_TOKEN_PRICE, {
     variables: {

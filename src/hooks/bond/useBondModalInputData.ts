@@ -103,11 +103,9 @@ function useBondModalInputData(marketId: number): UseUnstake {
         StakingV2Proxy_CONTRACT &&
         BondDepositoryProxy_CONTRACT &&
         LockTOS_CONTRACT &&
-        inputValue?.bond_modal_balance &&
-        inputValue?.bond_modal_period
+        inputValue?.bond_modal_balance
       ) {
         const ethAmount = inputValue.bond_modal_balance;
-        const lockPeriod = inputValue.bond_modal_period;
         const ethAmountWei = convertToWei(ethAmount);
 
         //new script
