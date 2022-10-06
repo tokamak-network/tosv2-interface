@@ -115,7 +115,7 @@ const TextInput: React.FC<InputProp> = (props) => {
                 }
           }
           outline="none"
-          errorBorderColor={"#e23738"}
+          errorBorderColor={isDisabled ? "none" : "#e23738"}
           // errorBorderColor={isDisabled === false ? "#e23738" : "#e23738"}
           value={`${isDisabled ? "-" : value[atomKey]}`}
           onChange={onChange}
@@ -139,7 +139,7 @@ const TextInput: React.FC<InputProp> = (props) => {
           </Button>
         </InputRightElement>
       </InputGroup>
-      {isError && (
+      {isError && isDisabled === false && (
         <Flex
           fontSize={12}
           color={"#e23738"}

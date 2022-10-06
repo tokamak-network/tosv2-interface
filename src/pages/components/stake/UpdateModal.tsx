@@ -70,9 +70,16 @@ function BottomContent(props: {
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
-  thirdTooltip?:string
+  thirdTooltip?: string;
 }) {
-  const { title, content, tooltip, tooltipMessage, secondTooltip,thirdTooltip } = props;
+  const {
+    title,
+    content,
+    tooltip,
+    tooltipMessage,
+    secondTooltip,
+    thirdTooltip,
+  } = props;
   const { colorMode } = useColorMode();
 
   const ContentComponent = useMemo(() => {
@@ -94,7 +101,7 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr={'6px'}
+              mr={"6px"}
             >
               {typeof content !== "string" && content.stos} sTOS
             </Text>
@@ -118,7 +125,7 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr={'6px'}
+              mr={"6px"}
             >
               {typeof content !== "string" && content.stos} sTOS
             </Text>
@@ -210,7 +217,7 @@ function UpdateModal() {
         inputValue.stake_updateModal_tos_balance || 0
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
-            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "New Balance",
@@ -219,8 +226,8 @@ function UpdateModal() {
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
       secondTooltip:
         "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
-        thirdTooltip:
-            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+      thirdTooltip:
+        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "Current End Time",
@@ -453,6 +460,7 @@ function UpdateModal() {
                       // style={{ marginLeft: "auto" }}
                       maxValue={156}
                       isError={inputPeriodOver}
+                      isDisabled={false}
                       errorMsg={errMsg.periodExceed}
                     ></TextInput>
                   </Flex>
