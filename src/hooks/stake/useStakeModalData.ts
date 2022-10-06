@@ -36,9 +36,6 @@ function useStakeModaldata(): StakeModalBottomContents {
   const { account } = useWeb3React();
   const { simpleStakingId } = useUser();
 
-  console.log("stosReward");
-  console.log(stosReward);
-
   useEffect(() => {
     const fetchListdata = async () => {
       if (inputAmount === "" || inputAmount === undefined) {

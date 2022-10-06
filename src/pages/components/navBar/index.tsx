@@ -315,9 +315,23 @@ const NavBar = () => {
       <Box onClick={() => setIsExpended(!isExpended)}>
         <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
-      <Box mb={50}>
+      <Flex w={"100%"} mb={50} alignItems={"center"} pl={"35px"}>
         <Logo isExpended={isExpended}></Logo>
-      </Box>
+        <Text
+          ml={"15px"}
+          w={"41px"}
+          h={"17px"}
+          bg={"#f29b37"}
+          fontSize={10}
+          color={"#1f2128"}
+          fontWeight={"bold"}
+          textAlign={"center"}
+          lineHeight={"17px"}
+          borderRadius={3}
+        >
+          Goerli
+        </Text>
+      </Flex>
       <NavItem isExpended={isExpended}></NavItem>
       <Box w={"100%"} mt={18} px={25}>
         <Line></Line>

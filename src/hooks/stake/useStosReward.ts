@@ -35,7 +35,6 @@ function useStosReward(
   const [isLoading, setLoading] = useRecoilState(stosLoadingState);
 
   useEffect(() => {
-    typeof inputTosAmount;
     async function fetchStosRewardData() {
       if (inputTosAmount === undefined) {
         return setStosRewards("-");
