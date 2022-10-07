@@ -25,10 +25,12 @@ const Home: NextPage = () => {
         <title>TOSv2</title>
         <meta title="TOSv2"></meta>
         <meta property="og:type" content="website" />
+
         <meta
           property="og:url"
           content="https://goerli.tosv2.tokamak.network"
         />
+        <meta property="title" content="TOSv2" />
         <meta property="og:title" content="TOSv2" />
         <meta property="description" content="The decentralized platform " />
         <meta property="og:description" content="The decentralized platform " />
