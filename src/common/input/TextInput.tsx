@@ -34,7 +34,7 @@ type InputProp = {
   recoilKey: InputKey;
   maxValue?: string | number;
   rightUnit?: string;
-  minValue: number;
+  minValue?: number;
 };
 
 type NumberInputProp = {
