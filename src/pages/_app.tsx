@@ -18,6 +18,7 @@ import Entry from "./entry";
 import AccountDrawer from "./components/layout/AccountDrawer";
 import HeadMeta from "./Header";
 import NetworkModal from "./components/global/NetworkModal";
+import TermsOfUse from "./components/global/TermsOfUse";
 
 function MyApp({ Component, pageProps }: AppProps) {
   test();
@@ -62,6 +63,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                       walletopen={() => handleWalletModalOpen("wallet")}
                     ></AccountDrawer>
                     <NetworkModal />
+                    <TermsOfUse />
                   </Flex>
                 </Flex>
               </Flex>

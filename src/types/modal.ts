@@ -1,4 +1,4 @@
-export type GlobalType = "network_swtich";
+export type GlobalType = "network_swtich" | "termsOfUse";
 
 export type BondModalType = "bond_bond_modal";
 
