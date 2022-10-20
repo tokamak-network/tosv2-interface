@@ -1,3 +1,5 @@
+export type GlobalType = "network_swtich";
+
 export type BondModalType = "bond_bond_modal";
 
 export type StakeModalType =
@@ -7,4 +9,4 @@ export type StakeModalType =
   | "stake_multiUnstake_modal"
   | "stake_updateAfterEndTime_modal";
 
-export type ModalType = BondModalType | StakeModalType;
+export type ModalType = GlobalType | BondModalType | StakeModalType;

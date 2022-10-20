@@ -17,6 +17,7 @@ import useClient from "hooks/useClient";
 import Entry from "./entry";
 import AccountDrawer from "./components/layout/AccountDrawer";
 import HeadMeta from "./Header";
+import NetworkModal from "./components/global/NetworkModal";
 
 function MyApp({ Component, pageProps }: AppProps) {
   test();
@@ -60,6 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <AccountDrawer
                       walletopen={() => handleWalletModalOpen("wallet")}
                     ></AccountDrawer>
+                    <NetworkModal />
                   </Flex>
                 </Flex>
               </Flex>

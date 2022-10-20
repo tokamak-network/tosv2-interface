@@ -26,6 +26,7 @@ import { selectedTxState } from "atom/global/tx";
 import { accountBar } from "atom/global/sidebar";
 import WalletIconLayOut from "./components/WalletIconLayout";
 import useClient from "hooks/useClient";
+import useModal from "hooks/useModal";
 
 function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
@@ -71,6 +72,7 @@ function Header(props: HeaderProps) {
   const txPending = useRecoilValue(selectedTxState);
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
   const { isConnectedToChain } = useClient();
+  const { openModal } = useModal("network_swtich");
 
   return (
     <Flex
@@ -95,6 +97,8 @@ function Header(props: HeaderProps) {
             justifyContent={"center"}
             alignItems={"center"}
             pos={"relative"}
+            cursor={"pointer"}
+            onClick={() => openModal()}
           >
             <Image src={ETH_SYMBOL} alt={"eth_24"}></Image>
             {isConnectedToChain === false && (
