@@ -274,8 +274,29 @@ function MobileSideBar() {
         alignItems="center"
         bg={colorMode === "light" ? "#ffffff" : "#1f2128"}
       >
-        <Flex mb={50} w={"100%"} pl={"35px"}>
+        <Flex
+          flexDir={isExpended ? "row" : "column"}
+          w={"100%"}
+          mb={50}
+          alignItems={"center"}
+          pl={isExpended ? "35px" : "0px"}
+        >
           <Logo isExpended={isExpended}></Logo>
+          <Text
+            mt={isExpended ? "0px" : "9px"}
+            ml={isExpended ? "15px" : "0px"}
+            w={"41px"}
+            h={"17px"}
+            bg={"#f29b37"}
+            fontSize={10}
+            color={"#1f2128"}
+            fontWeight={"bold"}
+            textAlign={"center"}
+            lineHeight={"17px"}
+            borderRadius={3}
+          >
+            Goerli
+          </Text>
         </Flex>
         <NavItem isExpended={isExpended}></NavItem>
         <Box w={"100%"} mt={18} px={25}>
