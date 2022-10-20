@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+    <path style="fill:none" d="M0 0h36v36H0z"/>
+    <g data-name="medium">
+        <path data-name="Base" style="fill:none" d="M0 0h24v24H0z" transform="translate(6 6)"/>
+        <g data-name="그룹 5284" transform="translate(8 12)">
+            <circle data-name="타원 1" cx="5.677" cy="5.677" r="5.677" style="fill:#f1f1f1"/>
+            <ellipse data-name="타원 2" cx="2.775" cy="5.313" rx="2.775" ry="5.313" transform="translate(11.929 .364)" style="fill:#f1f1f1"/>
+            <ellipse data-name="타원 3" cx="1.015" cy="4.772" rx="1.015" ry="4.772" transform="translate(17.97 .905)" style="fill:#f1f1f1"/>
+        </g>
+    </g>
+</svg>

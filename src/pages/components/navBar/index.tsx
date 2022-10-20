@@ -38,6 +38,12 @@ import ARROW_LEFT_LIGHT_ICON from "assets/icons/arrow-leftLight.svg";
 import ARROW_RIGHT_LIGHT_ICON from "assets/icons/arrow-rightLight.svg";
 import TOOLTIP_ARROW_LEFT_ICON from "assets/icons/Tooltips_left_arrow.svg";
 import TOOLTIP_ARROW_LEFT_LIGHT_ICON from "assets/icons/Tooltips_left_arrow_light.svg";
+
+import MEDIUM_W_ICON from "assets/icons/medium-w.svg";
+import TWITTER_W_ICON from "assets/icons/twitter-w.svg";
+import GITHUB_W_ICON from "assets/icons/github-w.svg";
+import TELEGRAM_W_ICON from "assets/icons/telegram-w.svg";
+
 import Line from "common/line/Line";
 import Link from "next/link";
 import { useState } from "react";
@@ -49,15 +55,23 @@ import { sidebarSelectedState, sidebarState } from "atom//header";
 const iconList = [
   {
     icon: MEDIUM_ICON,
+    hoverIcon: MEDIUM_W_ICON,
+    href: "https://medium.com/onther-tech",
   },
   {
     icon: TWITTER_ICON,
+    hoverIcon: TWITTER_W_ICON,
+    href: "https://twitter.com/tokamak_network?lang=en",
   },
   {
     icon: GITHUB_ICON,
+    hoverIcon: GITHUB_W_ICON,
+    href: "https://github.com/Onther-Tech",
   },
   {
     icon: TELEGRAM_ICON,
+    hoverIcon: TELEGRAM_W_ICON,
+    href: "http://bit.ly/3gH1bCr",
   },
 ];
 
@@ -89,6 +103,8 @@ const navItemList = [
 ];
 
 const LinkContainer = (props: { isExpended: boolean }) => {
+  const [isHover, setIsHover] = useState<number | undefined>(undefined);
+
   return (
     <Flex
       mt={"auto"}
@@ -108,8 +124,14 @@ const LinkContainer = (props: { isExpended: boolean }) => {
             key={`link-container-${index}`}
             mb={"10px"}
             cursor={"pointer"}
+            onClick={() => window.open(item.href)}
+            onMouseEnter={() => setIsHover(index)}
+            onMouseLeave={() => setIsHover(undefined)}
           >
-            <Image src={item.icon} alt={"icon"}></Image>
+            <Image
+              src={isHover === index ? item.hoverIcon : item.icon}
+              alt={"icon"}
+            ></Image>
           </Flex>
         );
       })}

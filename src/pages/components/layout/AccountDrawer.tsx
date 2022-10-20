@@ -21,6 +21,8 @@ import Image from "next/image";
 import useUserBalance from "hooks/useUserBalance";
 import BasicButton from "common/button/BasicButton";
 import SubmitButton from "common/button/SubmitButton";
+import { useRouter } from "next/router";
+import useModal from "hooks/useModal";
 
 type HeaderProps = {
   walletopen: () => void;
@@ -37,6 +39,15 @@ function TitleText(props: { title: string }) {
 function AccountDrawer(props: HeaderProps) {
   const [isOpen, setIsOpen] = useRecoilState(accountBar);
   const { userTOSBalance, userLTOSBalance, userSTOSBalance } = useUserBalance();
+
+  const router = useRouter();
+  const { openModal } = useModal("stake_stake_modal");
+
+  const sendToStake = () => {
+    router.push("/stake");
+    openModal();
+    setIsOpen(false);
+  };
 
   return (
     <Drawer
@@ -100,7 +111,12 @@ function AccountDrawer(props: HeaderProps) {
                     TOS
                   </Flex>
                 </Flex>
-                <SubmitButton name="Stake" w={"90px"} h={"30px"}></SubmitButton>
+                <SubmitButton
+                  name="Stake"
+                  w={"90px"}
+                  h={"30px"}
+                  onClick={sendToStake}
+                ></SubmitButton>
               </Flex>
             </GridItem>
             <GridItem>

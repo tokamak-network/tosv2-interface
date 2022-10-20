@@ -514,6 +514,8 @@ function UpdateModal() {
                   w={smallerThan1024 ? 310 : 460}
                   h={42}
                   isDisabled={
+                    Number(userTOSBalance?.replaceAll(",", "")) <= 0 ||
+                    inputValue.stake_updateModal_tos_balance === undefined ||
                     inputValue.stake_updateModal_tos_balance === "" ||
                     Number(inputValue.stake_updateModal_tos_balance) > 0
                   }
