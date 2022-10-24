@@ -6,7 +6,7 @@ import GradientSpinner from "../GradientSpinner";
 
 function BottomContent(props: {
   title: string;
-  content: string | { ltos: string; stos: string };
+  content: string | { ltos: string | undefined; stos: string | undefined };
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
@@ -22,11 +22,25 @@ function BottomContent(props: {
   } = props;
   const { colorMode } = useColorMode();
   //   const { isModalLoading } = useModal();
-  const isModalLoading = true;
+  const isModalLoading = false;
 
   const ContentComponent = useMemo(() => {
     switch (title) {
       case "You Will Get":
+        if (typeof content === "string") {
+          return (
+            <Flex>
+              <Text
+                color={colorMode === "dark" ? "white.200" : "gray.800"}
+                fontWeight={600}
+                mr={"6px"}
+              >
+                {content}
+              </Text>
+              <BasicTooltip label={secondTooltip} />
+            </Flex>
+          );
+        }
         return (
           <Flex>
             <Text
@@ -52,12 +66,19 @@ function BottomContent(props: {
         );
       default:
         return (
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-          >
-            {content as string}
-          </Text>
+          <Flex>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontWeight={600}
+            >
+              {content as string}
+            </Text>
+            {secondTooltip && (
+              <Flex ml={"6px"}>
+                <BasicTooltip label={secondTooltip} />
+              </Flex>
+            )}
+          </Flex>
         );
     }
   }, [title, content, colorMode, secondTooltip, thirdTooltip]);

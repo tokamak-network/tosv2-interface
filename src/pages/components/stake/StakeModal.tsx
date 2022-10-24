@@ -54,101 +54,7 @@ import useRebaseTime from "hooks/useRebaseTime";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import useStakeModalCondition from "hooks/stake/useStakeModalCondition";
 import constant from "constant";
-
-function BottomContent(props: {
-  title: string;
-  content: string | { ltos: string | undefined; stos: string };
-  tooltip?: boolean;
-  tooltipMessage?: string;
-  secondTooltip?: string;
-  thirdTooltip?: string;
-}) {
-  const {
-    title,
-    content,
-    tooltip,
-    tooltipMessage,
-    secondTooltip,
-    thirdTooltip,
-  } = props;
-  const { colorMode } = useColorMode();
-
-  const ContentComponent = useMemo(() => {
-    switch (title) {
-      case "You Will Get":
-        if (typeof content === "string") {
-          return (
-            <Flex>
-              <Text
-                color={colorMode === "dark" ? "white.200" : "gray.800"}
-                fontWeight={600}
-                mr="6px"
-              >
-                {content as string}
-              </Text>
-              <BasicTooltip label={secondTooltip} />
-            </Flex>
-          );
-        }
-        return (
-          <Flex>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr={"6px"}
-            >
-              {(typeof content !== "string" && content.ltos) || "-"} LTOS
-            </Text>
-            <BasicTooltip label={secondTooltip} />
-            <Text color={"#64646f"} mx={"5px"}>
-              /
-            </Text>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr={"6px"}
-            >
-              {(typeof content !== "string" && content.stos) || "-"} sTOS
-            </Text>
-            <BasicTooltip label={thirdTooltip} />
-          </Flex>
-        );
-      default:
-        return (
-          <Flex>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-            >
-              {content as string}
-            </Text>
-          </Flex>
-        );
-    }
-  }, [title, content, colorMode, secondTooltip]);
-
-  return (
-    <Flex>
-      <Flex
-        w={"100%"}
-        justifyContent={"space-between"}
-        fontSize={14}
-        mt={"9px"}
-      >
-        <Flex>
-          <Text
-            color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-            mr={"6px"}
-          >
-            {title}
-          </Text>
-          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
-        </Flex>
-        {ContentComponent}
-      </Flex>
-    </Flex>
-  );
-}
+import BottomContent from "../common/modal/BottonContent";
 
 function StakeModal() {
   const theme = useTheme();
@@ -186,6 +92,10 @@ function StakeModal() {
     useStakeModalCondition();
   const { errMsg } = constant;
 
+  console.log("--ltos--");
+
+  console.log(ltos);
+
   const contentList = fiveDaysLockup
     ? [
         {
@@ -196,7 +106,7 @@ function StakeModal() {
         },
         {
           title: "You Will Get",
-          content: bottomLoading ? "..." : `${ltos || "-"} LTOS`,
+          content: bottomLoading ? "..." : `${ltos} LTOS`,
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
@@ -209,6 +119,7 @@ function StakeModal() {
           content: `${currentBalance || "-"} LTOS`,
           tooltip: true,
           tooltipMessage: "Current LTOS balance without Lock-Up period",
+          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         },
         {
           title: "New Balance",
@@ -216,6 +127,7 @@ function StakeModal() {
           tooltip: true,
           tooltipMessage:
             "New LTOS balance without Lock-Up period after staking. ",
+          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         },
       ]
     : [
