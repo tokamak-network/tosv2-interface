@@ -2,15 +2,28 @@ import { TokenTypes } from "types";
 
 export type StakeTopCardProps = {
   title: string;
-  price: string;
-  priceUnit: "$";
+  price: string | number;
+  priceUnit: string;
+  tooltip: string;
 };
 
-export type StakeCardProps = {
-  amount: string;
-  discountRate: string;
-  lockupPeriod: string;
-  lockupPeriodDate: string;
-  tokenType: TokenTypes;
-  isDisabled: boolean;
+export type StakeCardProps =
+  | {
+      staked: {
+        ltos: string;
+        stos: string;
+      };
+      principal: string;
+      endTime: string;
+      isOver: boolean;
+      stakedType: "Staking" | "LTOS Staking" | "Bond";
+      tokenType: TokenTypes;
+      stakedId: string;
+    }
+  | undefined;
+
+export type StakeModalBottomContents = {
+  ltos: string | undefined;
+  currentBalance: string | undefined;
+  newBalance: string | undefined;
 };

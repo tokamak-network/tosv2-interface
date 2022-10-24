@@ -1,10 +1,10 @@
 import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
+import useBondTopCards from "hooks/bond/useBondTopCards";
 import { TopCardList } from "types";
+import { StakeTopCardProps } from "types/stake";
 import TopCard from "./TopCard";
 
-function MobileTopCard(props: {
-  cardList: { title: string; price: string; priceUnit: string }[];
-}) {
+function MobileTopCard(props: { cardList: StakeTopCardProps[] }) {
   const { cardList } = props;
 
   return (
@@ -19,7 +19,7 @@ function MobileTopCard(props: {
       w={"100%"}
     >
       {cardList.map((cardData, index) => {
-        const { title, price, priceUnit } = cardData;
+        const { title, price, priceUnit, tooltip } = cardData;
 
         return (
           <Flex
@@ -46,24 +46,25 @@ function MobileTopCard(props: {
   );
 }
 
-function TopCardContainer(props: { cardList: TopCardList }) {
+function TopCardContainer() {
   const [smallerThan510] = useMediaQuery("(max-width: 510px)");
-  const { cardList } = props;
+  const { bondTopsCards } = useBondTopCards();
 
   return (
     <Flex flexDir={"column"}>
       {smallerThan510 ? (
-        <MobileTopCard cardList={cardList}></MobileTopCard>
+        <MobileTopCard cardList={bondTopsCards}></MobileTopCard>
       ) : (
         <Flex justifyContent={"space-between"} columnGap={"24px"}>
-          {cardList?.map((cardData, index) => {
-            const { title, price, priceUnit } = cardData;
+          {bondTopsCards?.map((cardData, index) => {
+            const { title, price, priceUnit,tooltip } = cardData;
             return (
               <TopCard
                 title={title}
                 price={price}
                 priceUnit={priceUnit}
                 key={title}
+                tooltip={tooltip}
               ></TopCard>
             );
           })}

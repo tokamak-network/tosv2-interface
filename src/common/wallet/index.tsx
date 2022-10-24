@@ -35,7 +35,7 @@ import { useEagerConnect, useInactiveListener } from "hooks/useWeb3";
 // import {useAppSelector} from 'hooks/useRedux';
 import { useLocalStorage } from "hooks/useStorage";
 // import {trezor} from '../../'
- // import store from 'store';
+// import store from 'store';
 // import {fetchUserInfo} from 'store/app/user.reducer';
 
 type WalletProps = {
@@ -52,7 +52,7 @@ const WALLET_VIEWS = {
 
 export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
   const { colorMode } = useColorMode();
-  const { account, connector, activate, error, active, deactivate } =
+  const { account, connector, activate, active, error, deactivate } =
     useWeb3React();
   const { onCopy } = useClipboard(account as string);
 
@@ -181,8 +181,12 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
       if (option.connector === injected) {
         // don't show injected if there's no injected provider
         // @ts-ignore
-        if (typeof window !== "undefined" &&!(window?.web3 || window?.ethereum)) {
-          if (option.name === "MetaMask") { 
+        if (
+          typeof window !== "undefined" &&
+          //@ts-ignore
+          !(window?.web3 || window?.ethereum)
+        ) {
+          if (option.name === "MetaMask") {
             return (
               <WalletOption
                 id={`connect-${key}`}
@@ -207,7 +211,7 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
           return null;
         }
       }
-      
+
       return (
         <WalletOption
           id={`connect-${key}`}
@@ -237,11 +241,20 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
     >
       <ModalOverlay />
       {walletView === WALLET_VIEWS.ACCOUNT && account ? (
-        <ModalContent  bg={colorMode === "light" ? "white.100" : "#1f2128"}>
-          <ModalHeader  color={colorMode === "light" ? "gray.800" : "white.200"}>Account</ModalHeader>
-          <ModalCloseButton background={'transparent'}/>
+        <ModalContent bg={colorMode === "light" ? "white.100" : "#1f2128"}>
+          <ModalHeader color={colorMode === "light" ? "gray.800" : "white.200"}>
+            Account
+          </ModalHeader>
+          <ModalCloseButton background={"transparent"} />
           <ModalBody>
-            <Box px={1} py={5} rounded={5} borderWidth={1}  mb={'20px'}   borderColor={colorMode=='dark'? '#8a8a98':'#7e7e8f'}>
+            <Box
+              px={1}
+              py={5}
+              rounded={5}
+              borderWidth={1}
+              mb={"20px"}
+              borderColor={colorMode == "dark" ? "#8a8a98" : "#7e7e8f"}
+            >
               <Box px={3}>
                 <Flex justify="space-between">
                   {formatConnectorName()}
@@ -286,9 +299,9 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
                       size="xs"
                       outline="none"
                       variant="outline"
-                      bg='transparent'
-                      borderColor={colorMode=='dark'? '#8a8a98':'#7e7e8f'}
-                      color={colorMode=='dark'? '#ffffff':'#07070c'}
+                      bg="transparent"
+                      borderColor={colorMode == "dark" ? "#8a8a98" : "#7e7e8f"}
+                      color={colorMode == "dark" ? "#ffffff" : "#07070c"}
                     >
                       Change
                     </Button>
@@ -296,7 +309,11 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
                 </Flex>
                 <Flex direction="column">
                   {account && (
-                    <Text fontSize="2xl" fontWeight={600}   color={colorMode=='dark'? '#ffffff':'#07070c'}>
+                    <Text
+                      fontSize="2xl"
+                      fontWeight={600}
+                      color={colorMode == "dark" ? "#ffffff" : "#07070c"}
+                    >
                       {trimAddress({
                         address: account,
                         firstChar: 7,
@@ -340,7 +357,7 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
               ? "Wrong Network"
               : "Error connecting"}
           </ModalHeader>
-          <ModalCloseButton background={'transparent'}/>
+          <ModalCloseButton background={"transparent"} />
           <ModalBody pb={6}>
             {error instanceof UnsupportedChainIdError ? (
               <Text>
@@ -358,8 +375,10 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
         </ModalContent>
       ) : (
         <ModalContent bg={colorMode === "light" ? "white.100" : "#1f2128"}>
-          <ModalHeader  color={colorMode === "light" ? "gray.800" : "white.200"}>Connect Wallet</ModalHeader>
-          <ModalCloseButton  background={'transparent'}/>
+          <ModalHeader color={colorMode === "light" ? "gray.800" : "white.200"}>
+            Connect Wallet
+          </ModalHeader>
+          <ModalCloseButton background={"transparent"} />
           <ModalBody pb={6}>
             {walletView === WALLET_VIEWS.PENDING ? (
               <WalletPending
@@ -372,7 +391,11 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
               <>{getOptions()}</>
             )}
             {walletView !== WALLET_VIEWS.PENDING && (
-              <Text pt={3} fontSize="sm" color={colorMode==='dark'? '#8b8b93' :'#07070c'}>
+              <Text
+                pt={3}
+                fontSize="sm"
+                color={colorMode === "dark" ? "#8b8b93" : "#07070c"}
+              >
                 New to Ethereum?{" "}
                 <Link isExternal href="https://ethereum.org/wallets/">
                   Learn more about wallets

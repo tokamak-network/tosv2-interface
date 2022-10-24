@@ -1,17 +1,80 @@
 import { atom, selector } from "recoil";
+import { ModalType } from "types/modal";
 
-const modalState = atom({
+const modalState = atom<ModalType | undefined>({
   key: "modalType",
-  default: "",
+  default: undefined,
+});
+
+const modalData = atom({
+  key: "modalData",
+  default: {} as any | [] as any,
 });
 
 const selectedModalState = selector({
   key: "selectedModal", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
     const selectedModalState = get(modalState);
-
     return selectedModalState;
   },
 });
 
-export { modalState, selectedModalState };
+const selectedModalData = selector({
+  key: "selectedModalData", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const selectedModalData = get(modalData);
+    return selectedModalState;
+  },
+});
+
+const modalLoadingState = atom<boolean>({
+  key: "modalLoadingState",
+  default: false,
+});
+
+const modalLoadingValue = selector({
+  key: "modalLoadingValue", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const modalLoadingValue = get(modalLoadingState);
+    return modalLoadingValue;
+  },
+});
+
+const modalBottomLoadingState = atom<boolean>({
+  key: "modalBottomLoadingState",
+  default: false,
+});
+
+const modalBottomLoadingValue = selector({
+  key: "modalBottomLoadingValue", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const modalBottomLoadingValue = get(modalBottomLoadingState);
+    return modalBottomLoadingValue;
+  },
+});
+
+const stosLoadingState = atom<boolean>({
+  key: "stosLoadingState",
+  default: false,
+});
+
+const stosLoadingValue = selector({
+  key: "stosLoadingValue", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const stosLoadingValue = get(stosLoadingState);
+    return stosLoadingValue;
+  },
+});
+
+export {
+  modalState,
+  modalData,
+  selectedModalState,
+  selectedModalData,
+  modalLoadingState,
+  modalLoadingValue,
+  modalBottomLoadingState,
+  modalBottomLoadingValue,
+  stosLoadingState,
+  stosLoadingValue,
+};

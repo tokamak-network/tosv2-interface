@@ -9,7 +9,7 @@ const usePathName = () => {
 
   useEffect(() => {
     const pName = pathname.replaceAll("/", "");
-    const captalPName = pName.charAt(0).toUpperCase() + pName.slice(1);
+    const captalPName = pName !== 'dao'? pName.charAt(0).toUpperCase() + pName.slice(1) :'DAO';
     return setPathName(captalPName as Pages);
   }, [pathname]);
 

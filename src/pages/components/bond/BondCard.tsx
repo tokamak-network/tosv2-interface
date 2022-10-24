@@ -1,7 +1,14 @@
-import { Flex, Text, useMediaQuery,useColorMode } from "@chakra-ui/react";
+import {
+  convertTimeStamp,
+  getDuration,
+  getNowTimeStamp,
+} from "@/components/time";
+import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
+import { useWeb3React } from "@web3-react/core";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
+import useWallet from "hooks/useWallet";
 import { useState } from "react";
 import { BondCardProps } from "types/bond";
 
@@ -14,21 +21,35 @@ function ContentComponent(props: {
   const { colorMode } = useColorMode();
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
-      <Text color={colorMode === 'dark'? "gray.100": 'gray.1000'}>{title}</Text>
-      <Text color={colorMode === 'dark'?"white.200": 'gray.800'}>{content}</Text>
+      <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
+        {title}
+      </Text>
+      <Text color={colorMode === "dark" ? "white.200" : "gray.800"}>
+        {content}
+      </Text>
     </Flex>
   );
 }
 
-function BondCard(props: BondCardProps) {
+function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
-  const { bondCapacity, bondingPrice, discountRate, tokenType } = props;
-  const { openModal } = useModal("update_modal");
+  const { data } = props;
+  const { openModal } = useModal("bond_bond_modal", data);
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
-const [isOpen, setIsOpen] = useState(true)
-  //vierport ref 1134px
+  const { account } = useWeb3React();
+  const { tryActivation } = useWallet();
 
+  const timeDiff = data?.endTime - getNowTimeStamp();
+  const countDown = getDuration(timeDiff);
+
+  const [isOpen, setIsOpen] = useState(timeDiff >= 0);
+  const bondIsDisabled = timeDiff < 0;
+  const timeLeft = bondIsDisabled
+    ? "0 days 0 hours 0 min"
+    : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
+
+  //vierport ref 1134px
   return (
     <Flex
       flexDir={"column"}
@@ -36,28 +57,28 @@ const [isOpen, setIsOpen] = useState(true)
       h={"290px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
-      borderColor={colorMode==='light'? 'gray.900':'gray.300'}
+      borderColor={colorMode === "light" ? "gray.900" : "gray.300"}
       borderRadius={10}
       pt={"18px"}
-      bg={colorMode==='light'? 'white.100' :'#1f2128'}
+      bg={colorMode === "light" ? "white.100" : "#1f2128"}
       px={"20px"}
       pb={"21px"}
     >
-       <Flex mb={"18px"} justifyContent={"space-between"}  alignItems="center" >
-      <Flex >
-        <TokenSymbol tokenType={tokenType}></TokenSymbol>
-        <Text
-          fontSize={20}
-          fontWeight={600}
-          textAlign={"center"}
-          lineHeight={"46px"}
-          color={colorMode === 'light'? 'gray.800' :"white.200"}
-          ml={"12px"}
-        >
-          {tokenType}
-        </Text>
-      </Flex>
-      <Flex
+      <Flex mb={"18px"} justifyContent={"space-between"} alignItems="center">
+        <Flex>
+          <TokenSymbol tokenType={data?.tokenType}></TokenSymbol>
+          <Text
+            fontSize={20}
+            fontWeight={600}
+            textAlign={"center"}
+            lineHeight={"46px"}
+            color={colorMode === "light" ? "gray.800" : "white.200"}
+            ml={"12px"}
+          >
+            {data?.tokenType}
+          </Text>
+        </Flex>
+        <Flex
           fontSize={12}
           color={isOpen ? "#5eea8d" : "red.100"}
           textAlign={"center"}
@@ -67,37 +88,35 @@ const [isOpen, setIsOpen] = useState(true)
           <Text>{isOpen ? "Open" : "Closed"}</Text>
         </Flex>
       </Flex>
-      <ContentComponent
-        title="Bond Price"
-        content={bondingPrice}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-       <ContentComponent
-        title="Discount"
-        content={discountRate}
-        style={{ marginBottom: "16px" }}
-      ></ContentComponent>
-      <ContentComponent
-        title="Capacity"
-        content={bondCapacity}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-       <ContentComponent
-        title="Total Sold"
-        content={'XXXXX'}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-      <ContentComponent
-        title="Time Left"
-        content={'XXXX'}
-        style={{ marginBottom: "9px" }}
-      ></ContentComponent>
-      <BasicButton
-        name="Bond"
-        h={"33px"}
-        style={{ alignSelf: "center" }}
-        onClick={openModal}
-      ></BasicButton>
+      <Flex flexDir={"column"} rowGap={"9px"}>
+        <ContentComponent
+          title="Bond Price"
+          content={`$ ${data?.bondingPrice}`}
+        ></ContentComponent>
+        <ContentComponent
+          title="Discount"
+          content={data?.discountRate}
+        ></ContentComponent>
+        <ContentComponent
+          title="Capacity"
+          content={`${data?.bondCapacity} TOS`}
+        ></ContentComponent>
+        <ContentComponent
+          title="Total Sold"
+          content={data?.totalSold}
+        ></ContentComponent>
+        <ContentComponent
+          title="Time Left"
+          content={timeLeft}
+        ></ContentComponent>
+        <BasicButton
+          name={account ? "Bond" : "Connect Wallet"}
+          h={"33px"}
+          style={{ alignSelf: "center", marginTop: "9px" }}
+          isDisabled={bondIsDisabled}
+          onClick={account ? openModal : tryActivation}
+        ></BasicButton>
+      </Flex>
     </Flex>
   );
 }

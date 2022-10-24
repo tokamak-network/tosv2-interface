@@ -1,39 +1,36 @@
-import { Flex, useTheme,useColorMode } from "@chakra-ui/react";
-import TopCardContainer from "pages/components/bond/TopCardContrainer";
+import { Flex, useTheme, useColorMode } from "@chakra-ui/react";
 import PageLayout from "pages/components/layout/PageLayout";
 import StakeCardContainer from "pages/components/stake/StakeCardContainer";
 import StakeModal from "pages/components/stake/StakeModal";
 import UnstakeModal from "pages/components/stake/UnstakeModal";
-import { StakeTopCardProps } from "types/stake";
+import UpdateModal from "pages/components/stake/UpdateModal";
+import UpdateModalAfterEndTime from "pages/components/stake/UpdateModalAfterEndTime";
+import TopCardContainer from "./components/common/card/TopCardContainer";
+import TipCard from "./components/common/tip/TipCard";
+import MultiUnstakeModal from "./components/stake/MultiUnstakeModal";
 
 const Stake = () => {
   const theme = useTheme();
-  const { colorMode } = useColorMode();  
-  const cardList: StakeTopCardProps[] = [
-    {
-      title: "TOS Price",
-      price: "5,000,000,000",
-      priceUnit: "$",
-    },
-    {
-      title: "Backing per TOS",
-      price: "1.00",
-      priceUnit: "$",
-    },
-    {
-      title: "LTOS Index",
-      price: "1.00",
-      priceUnit: "$",
-    },
-  ];
-
+  const { colorMode } = useColorMode();
   return (
-    <Flex {...theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode)} bg={colorMode === 'light'? "#fafbfc" : "black.100"}>
+    <Flex
+      {...theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode)}
+      bg={colorMode === "light" ? "#fafbfc" : "black.100"}
+    >
       <PageLayout></PageLayout>
-      <TopCardContainer cardList={cardList}></TopCardContainer>
+      <TipCard
+        msg={[
+          "Tip: LTOS can be unstaked for TOS. # of TOS you get is based on the LTOS index, where # of TOS = # of LTOS x LTOS index.",
+          "Every 8 hours LTOS index is increased and LTOS can be unstaked for more TOS.",
+        ]}
+      ></TipCard>
+      <TopCardContainer pageKey={"Stake_screen"}></TopCardContainer>
       <StakeCardContainer></StakeCardContainer>
       <StakeModal></StakeModal>
       <UnstakeModal></UnstakeModal>
+      <UpdateModal></UpdateModal>
+      <UpdateModalAfterEndTime></UpdateModalAfterEndTime>
+      <MultiUnstakeModal></MultiUnstakeModal>
     </Flex>
   );
 };

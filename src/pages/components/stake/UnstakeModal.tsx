@@ -17,6 +17,7 @@ import {
   SliderThumb,
   SliderMark,
   Tooltip,
+  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
@@ -26,124 +27,21 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useState } from "react";
-import question from "assets/icons/question.svg";
-import { TextInput, BalanceInput } from "common/input/TextInput";
-
-function StakeGraph() {
-  const labelStyles = {
-    mt: "2",
-    ml: "-2.5",
-    fontSize: "sm",
-  };
-  const [sliderValue, setSliderValue] = useState(36);
-  const { colorMode } = useColorMode();
-  const [showTooltip, setShowTooltip] = useState(false);
-  return (
-    <Flex w={"100%"} h={"70px"} pos="relative">
-      {/* diagonal line */}
-
-      <Slider
-        aria-label="slider-ex-1"
-        defaultValue={0}
-        min={0}
-        max={156}
-        onChange={(val: any) => setSliderValue(val)}
-        h={"10px"}
-        alignSelf={"end"}
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-      >
-        <SliderMark value={0} {...labelStyles}>
-          7d
-        </SliderMark>
-        <SliderMark value={8} {...labelStyles}>
-          1m
-        </SliderMark>
-        <SliderMark value={24} {...labelStyles}>
-          6m
-        </SliderMark>
-        <SliderMark value={52} {...labelStyles}>
-          1y
-        </SliderMark>
-        <SliderMark value={104} {...labelStyles}>
-          2y
-        </SliderMark>
-        <SliderMark value={156} {...labelStyles}>
-          3y
-        </SliderMark>
-        <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
-          <SliderFilledTrack bg={"#2775ff"} />
-        </SliderTrack>
-        <Tooltip
-          color={colorMode === "light" ? "#07070c" : "#f1f1f1"}
-          placement="top"
-          bg={"transparent"}
-          w={"50px"}
-          display="flex"
-          alignItems="center"
-          justifyContent={"center"}
-          textAlign="center"
-          fontSize={"15px"}
-          fontWeight={600}
-          isOpen={showTooltip}
-          label={`${sliderValue} sTOS`}
-        >
-          <SliderThumb />
-        </Tooltip>
-      </Slider>
-    </Flex>
-  );
-}
-
-function Tile(props: { title: string; content: string; symbol?: string }) {
-  const { title, content, symbol } = props;
-  const { colorMode } = useColorMode();
-  return (
-    <Box
-      display={"flex"}
-      flexDir={"column"}
-      w={"152px"}
-      alignItems={"center"}
-      mb={"15px"}
-    >
-      <Flex alignItems={"center"}>
-        <Text
-          color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-          h={"17px"}
-          mb={"3px"}
-          fontWeight={600}
-          fontSize={12}
-          textAlign="center"
-          mr={"6px"}
-        >
-          {title}
-        </Text>
-        <Tooltip label="" placement="bottom">
-          <Image src={question} alt={""} height={"16px"} width={"16px"} />
-        </Tooltip>
-      </Flex>
-
-      <Flex fontWeight={"bold"} h={"33px"}>
-        <Text
-          color={colorMode === "dark" ? "white.100" : "gray.800"}
-          fontSize={24}
-          mr={2}
-        >
-          {content}
-        </Text>
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontSize={14}
-          pt={"5px"}
-          lineHeight={"33px"}
-        >
-          {symbol ? symbol : ""}
-        </Text>
-      </Flex>
-    </Box>
-  );
-}
+import { useCallback, useEffect, useState } from "react";
+import Tile from "../common/modal/Tile";
+import { BalanceInput } from "common/input/TextInput";
+import useUserBalance from "hooks/useUserBalance";
+import useInputValue from "hooks/useInputValue";
+import useCallContract from "hooks/useCallContract";
+import { convertToWei } from "@/components/number";
+import useUnstake from "hooks/stake/useUnstakeModalData";
+import commafy from "@/components/commafy";
+import useInput from "hooks/useInput";
+import useUser from "hooks/useUser";
+import useCustomToast from "hooks/useCustomToast";
+import { StakeCardProps } from "types/stake";
+import useLtosIndex from "hooks/gql/useLtosIndex";
+import useRebaseTime from "hooks/useRebaseTime";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -169,30 +67,99 @@ function UnstakeModal() {
   const selectedModal = useRecoilValue(selectedModalState);
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal } = useModal();
+  const { closeModal, selectedModalData } = useModal<{
+    hasInput: boolean;
+    stakedId: string;
+  }>();
+  const [hasInput, setHasInput] = useState<boolean>(false);
+  const { userLTOSBalance } = useUserBalance();
+  const { inputValue, setResetValue } = useInput(
+    "Stake_screen",
+    "unstake_modal"
+  );
+  const { StakingV2Proxy_CONTRACT } = useCallContract();
+  const { unstakeData, youWillGet, youWillGetMax } = useUnstake(
+    selectedModalData?.stakedId
+  );
+  const { simpleStakingId } = useUser();
+  const { setTx } = useCustomToast();
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
+  const { ltosIndex } = useLtosIndex();
+  const rebaseTime = useRebaseTime(":");
 
   const contentList = [
     {
-      title: "Unstakable Rewards",
-      content: "100 TOS",
+      title: "You Give",
+      content: hasInput
+        ? `${commafy(inputValue.stake_unstakeModal_balance) || "0"} LTOS`
+        : `${unstakeData?.maxValue || "0"} LTOS`,
     },
     {
-      title: "TOS APY",
-      content: "30%",
+      title: "You Will Get",
+      content: hasInput
+        ? `${youWillGet || "0"} TOS`
+        : `${youWillGetMax || "0"} TOS`,
     },
   ];
+
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    closeModal();
+  }, [setResetValue, closeModal]);
+
+  const callUnstake = useCallback(async () => {
+    if (StakingV2Proxy_CONTRACT) {
+      if (hasInput && simpleStakingId) {
+        const ltosAmount = convertToWei(inputValue.stake_unstakeModal_balance);
+        //claimForSimpleType(uint256 _stakeId, uint256 _claimAmount)
+        console.log(
+          "--claimForSimpleType(uint256 _stakeId, uint256 _claimAmount)--"
+        );
+        console.log(simpleStakingId, ltosAmount);
+        const tx = await StakingV2Proxy_CONTRACT.claimForSimpleType(
+          simpleStakingId,
+          ltosAmount
+        );
+        setTx(tx);
+        return closeThisModal();
+      }
+      console.log("--unstake(uint256 _stakeId)--");
+      console.log(selectedModalData?.stakedId);
+      const tx = await StakingV2Proxy_CONTRACT.unstake(
+        selectedModalData?.stakedId
+      );
+      setTx(tx);
+      return closeThisModal();
+    }
+  }, [
+    hasInput,
+    StakingV2Proxy_CONTRACT,
+    inputValue.stake_unstakeModal_balance,
+    selectedModalData,
+    simpleStakingId,
+    closeThisModal,
+    setTx,
+  ]);
+
+  useEffect(() => {
+    if (selectedModalData && selectedModalData.hasInput) {
+      return setHasInput(true);
+    }
+    return setHasInput(false);
+  }, [selectedModalData]);
 
   return (
     <Modal
       isOpen={selectedModal === "stake_unstake_modal"}
       isCentered
-      onClose={closeModal}
+      onClose={closeThisModal}
     >
       <ModalOverlay />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW="43.75em"
+        minW={smallerThan1024 ? "350px" : "43.75em"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"} pb={"40px"}>
@@ -212,41 +179,83 @@ function UnstakeModal() {
                   pos={"absolute"}
                   right={"1.56em"}
                   cursor={"pointer"}
-                  onClick={() => closeModal()}
+                  onClick={() => closeThisModal()}
                 >
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
                 </Flex>
               </Flex>
             </Flex>
             {/* Content Area*/}
-            <Flex w={"100%"}  px={"120px"}  flexDir={"column"} mb={"30px"}>
-              {/* Content Bottom */}
-            
-              <Flex w={"100%"} justifyContent={"space-between"} mb={"9px"}>
-                  <Tile title={"Next Rebase"} content={"05:50:20"} />
-
-                  <Tile title={"LTOS Index"} content={"100"} symbol={"TOS"} />
-                </Flex>
-                <Flex mb={"9px"}>
-                  <BalanceInput
-                    w={"100%"}
-                    h={45}
-                    atomKey={"stake_stake_modal_balance"}
-                  ></BalanceInput>
-                </Flex>
+            <Flex w={"100%"} flexDir={"column"} mb={"30px"}>
+              {/* {hasInput && ( */}
+              <Flex
+                w={"100%"}
+                flexDir={"column"}
+                px={smallerThan1024 ? "20px" : "120px"}
+                mb={smallerThan1024 ? "9px" : "30px"}
+              >
                 <Flex
-                  fontSize={12}
-                  color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                  h={"17px"}
-                  justifyContent={"space-between"}
-                  mb={"12px"}
+                  w={"100%"}
+                  justifyContent={smallerThan1024 ? "center" : "space-between"}
+                  mb={smallerThan1024 ? "15px" : "9px"}
+                  flexDir={smallerThan1024 ? "column" : "row"}
                 >
-                  <Text>Your Balance</Text>
-                  <Text>1,000 WTON</Text>
+                  {smallerThan1024 ? (
+                    <Flex mb={"9px"} justifyContent="center" w={"100%"}>
+                      <Tile
+                        title={"Next Rebase"}
+                        content={rebaseTime}
+                        tooltip="Time left until LTOS index is increased."
+                      />
+                    </Flex>
+                  ) : (
+                    <Tile
+                      title={"Next Rebase"}
+                      content={rebaseTime}
+                      tooltip="Time left until LTOS index is increased."
+                    />
+                  )}
+                  <Tile
+                    title={"LTOS Index"}
+                    content={ltosIndex}
+                    symbol={"TOS"}
+                    tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
+                  />
                 </Flex>
-                 
-            </Flex>
-            <Flex flexDir={"column"} rowGap={"9px"} px={"50px"} mb={'30px'}>
+
+                {hasInput && (
+                  <Flex flexDir={"column"}>
+                    <Flex mb={"9px"}>
+                      <BalanceInput
+                        w={"100%"}
+                        h={45}
+                        pageKey={"Stake_screen"}
+                        recoilKey={"unstake_modal"}
+                        placeHolder={"Enter an amount of LTOS"}
+                        atomKey={"stake_unstakeModal_balance"}
+                        maxValue={Number(unstakeData?.maxValue) || 0}
+                      ></BalanceInput>
+                    </Flex>
+                    <Flex
+                      fontSize={12}
+                      color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
+                      h={"17px"}
+                      justifyContent={"space-between"}
+                      px={"6px"}
+                    >
+                      <Text>Your Balance</Text>
+                      <Text>{unstakeData?.maxValue || "0"} LTOS</Text>
+                    </Flex>
+                  </Flex>
+                )}
+              </Flex>
+              {/* )} */}
+              {/* Content Bottom */}
+              <Flex
+                flexDir={"column"}
+                rowGap={"9px"}
+                px={smallerThan1024 ? "20px" : "50px"}
+              >
                 {contentList.map((content, index) => {
                   return (
                     <BottomContent
@@ -257,13 +266,20 @@ function UnstakeModal() {
                   );
                 })}
               </Flex>
+            </Flex>
             <Flex flexDir={"column"} alignItems={"center"} rowGap={"15px"}>
-              <SubmitButton w={460} h={42} name="Unstake"></SubmitButton>
-              {/* <SubmitButton
-                w={460}
+              <SubmitButton
+                w={smallerThan1024 ? 310 : 460}
                 h={42}
-                name="Stake to get sTOS"
-              ></SubmitButton> */}
+                name="Unstake"
+                onClick={callUnstake}
+                isDisabled={
+                  unstakeData?.maxValue
+                    ? inputValue.stake_unstakeModal_balance >
+                      Number(unstakeData.maxValue)
+                    : false
+                }
+              ></SubmitButton>
             </Flex>
           </Flex>
         </ModalBody>

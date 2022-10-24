@@ -1,133 +1,22 @@
 import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
+import { stake_filter_radio } from "atom/stake/filter";
 import TabButton from "common/button/TabButton";
+import useStakeList from "hooks/stake/useStakeList";
 import usePagination from "hooks/usePagination";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { StakeCardProps } from "types/stake";
+import MsgComponent from "./MsgComponent";
 import StakeCard from "./StakeCard";
 import StakeScreenBottom from "./StakeScreenBottom";
 
 function StakeCardSection() {
-  const [cardList, setCardList] = useState<StakeCardProps[]>([]);
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
-  const { rowNum, currentPageList, setCurrentPage } = usePagination(cardList);
+  const { stakeCards } = useStakeList();
 
-  useEffect(() => {
-    const dummyData: StakeCardProps[] = [
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-      {
-        amount: "20",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: true,
-      },
-      {
-        amount: "50",
-        discountRate: "0.5%",
-        lockupPeriod: "5 Days",
-        tokenType: "ETH",
-        lockupPeriodDate: "2022. 01. 01 12:58 ~ 12. 24 12:59",
-        isDisabled: false,
-      },
-    ];
-    setCardList(dummyData);
-  }, []);
+  const { pageSize, currentPage, currentPageList, setCurrentPage } =
+    usePagination(stakeCards);
+  const radioValue = useRecoilValue(stake_filter_radio);
 
   return (
     <Flex flexDir={"column"}>
@@ -138,20 +27,28 @@ function StakeCardSection() {
         justifyContent={isSmallerThan750 ? "center" : ""}
         flexWrap={"wrap"}
       >
-        {currentPageList?.map((cardData, index) => (
-          <StakeCard
-            amount={cardData.amount}
-            discountRate={cardData.discountRate}
-            lockupPeriod={cardData.lockupPeriod}
-            lockupPeriodDate={cardData.lockupPeriodDate}
-            tokenType={cardData.tokenType}
-            isDisabled={cardData.isDisabled}
-            key={cardData.amount + index}
-          ></StakeCard>
-        ))}
+        {currentPageList.length > 0 ? (
+          currentPageList?.map((cardData: StakeCardProps, index: number) => {
+            if (cardData) {
+              return (
+                <StakeCard
+                  cardData={cardData}
+                  key={cardData.principal + index}
+                ></StakeCard>
+              );
+            }
+          })
+        ) : (
+          <MsgComponent
+            msg={
+              radioValue === "Bond" ? "No Bond History" : "No Staking History"
+            }
+          ></MsgComponent>
+        )}
       </Flex>
       <StakeScreenBottom
-        rowNum={rowNum}
+        pageSize={pageSize}
+        currentPage={currentPage}
         setCurrentPage={setCurrentPage}
       ></StakeScreenBottom>
     </Flex>

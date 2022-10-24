@@ -1,42 +1,63 @@
+import { useQuery } from "@apollo/client";
 import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
+import { GET_BOND_LIST } from "graphql/bond/getBond";
 import { useEffect, useState } from "react";
-import { BondCardProps } from "types/bond";
+import { BondRawdata, BondCardProps } from "types/bond";
 import BondCard from "./BondCard";
+import commafy from "utils/commafy";
+import usePrice from "hooks/usePrice";
+import useCallContract from "hooks/useCallContract";
+import { convertNumber } from "@/components/number";
 
 function BondCardSection() {
-  const [cardList, setCardList] = useState<BondCardProps[]>();
+  const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
+    undefined
+  );
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
+  const { loading, error, data } = useQuery(GET_BOND_LIST, {
+    variables: {
+      period: "-1",
+    },
+    pollInterval: 10000,
+  });
+  const { priceData } = usePrice();
 
   useEffect(() => {
-    const dummyData: BondCardProps[] = [
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "ETH",
-      },
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "WTON",
-      },
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "ETH",
-      },
-      {
-        bondCapacity: "10 ETH / 100 TOS",
-        bondingPrice: "$ 100",
-        discountRate: "0.5%",
-        tokenType: "ETH",
-      },
-    ];
-    setCardList(dummyData);
-  }, []);
+    if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {
+      const bonds = data.getBondList;
+      const { ethPrice, tosPrice } = priceData;
+      const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
+        const {
+          capacity,
+          index,
+          tokenLogo,
+          totalSold,
+          endTime,
+          bondPrice: _tosPrice,
+        } = bond;
+        const bondPrice = (1 / _tosPrice) * 1e18 * ethPrice;
+        const convertedbondPrice = Number(
+          convertNumber({ amount: bondPrice.toString() })
+        );
+        const discount = ((tosPrice - convertedbondPrice) / tosPrice) * 100;
+
+        return {
+          bondCapacity: commafy(capacity),
+          bondingPrice: convertNumber({
+            amount: bondPrice.toString(),
+            localeString: true,
+          }),
+          discountRate: `${commafy(discount)}%`,
+          tokenType: "ETH",
+          totalSold: `${commafy(totalSold)} TOS`,
+          endTime,
+          index,
+        };
+      });
+      setCardList(dum);
+    }
+  }, [data, priceData]);
 
   return (
     <Flex
@@ -46,12 +67,9 @@ function BondCardSection() {
       justifyContent={isSmallerThan750 ? "center" : ""}
       flexWrap={"wrap"}
     >
-      {cardList?.map((cardData, index) => (
+      {cardList?.map((cardData: BondCardProps, index) => (
         <BondCard
-          bondCapacity={cardData.bondCapacity}
-          bondingPrice={cardData.bondingPrice}
-          discountRate={cardData.discountRate}
-          tokenType={cardData.tokenType}
+          data={cardData}
           key={cardData.bondCapacity + index}
         ></BondCard>
       ))}

@@ -2,12 +2,43 @@ import { Box, color, Flex, Text, useColorMode } from "@chakra-ui/react";
 import usePathName from "hooks/usePathName";
 import { useRouter } from "next/router";
 import HOME_ICON from "assets/icons/home.svg";
-import HOME_LIGHT_ICON from 'assets/icons/homeLight.svg';
+import HOME_LIGHT_ICON from "assets/icons/homeLight.svg";
 import CALENDAR_ICON_DARK from "assets/icons/calendar.svg";
-import CALENDAR_ICON_LIGHT from 'assets/icons/calendarLight.svg'
+import CALENDAR_ICON_LIGHT from "assets/icons/calendarLight.svg";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
+import useStakeV2 from "hooks/contract/useStakeV2";
+import {
+  convertTimeStamp,
+  getNowTimeStamp,
+  getTimeZone,
+} from "@/components/time";
+import useRebaseTime from "hooks/useRebaseTime";
+import { useBlockNumber } from "hooks/useBlockNumber";
+
+const UpdatedOn = () => {
+  const { colorMode } = useColorMode();
+  const [updatedTime, setUpdatedTime] = useState("-");
+  const { blockNumber } = useBlockNumber();
+
+  useEffect(() => {
+    const nowTime = convertTimeStamp(getNowTimeStamp(), "YYYY.MM.DD HH:mm");
+    setUpdatedTime(nowTime);
+  }, [blockNumber]);
+
+  return (
+    <Flex>
+      <Image
+        src={colorMode === "dark" ? CALENDAR_ICON_DARK : CALENDAR_ICON_LIGHT}
+        alt={"CALENDAR_ICON"}
+      ></Image>
+      <Text color={colorMode === "light" ? "#7e7e8f" : "#8b8b93"} ml={"7px"}>
+        Updated on {updatedTime} ({getTimeZone()})
+      </Text>
+    </Flex>
+  );
+};
 
 const PageTitle = () => {
   const { pathName } = usePathName();
@@ -27,17 +58,17 @@ const PageTitle = () => {
             h={isMobile ? "66px" : ""}
           >
             <Flex>
-              <Image src={colorMode === 'light'? HOME_LIGHT_ICON : HOME_ICON} alt={"HOME_ICON"}></Image>
+              <Image
+                src={colorMode === "light" ? HOME_LIGHT_ICON : HOME_ICON}
+                alt={"HOME_ICON"}
+              ></Image>
               <Text ml={"3px"}>Home</Text>
               <Text mx={"7px"}>{">"}</Text>
               <Text>Bond</Text>
               <Text mx={"7px"}>{">"}</Text>
-              <Text color={"blue.200"}>Bondlist</Text>
+              <Text color={"blue.200"}>Bond List</Text>
             </Flex>
-            <Flex>
-            <Image src={colorMode === 'dark'?  CALENDAR_ICON_DARK: CALENDAR_ICON_LIGHT} alt={"CALENDAR_ICON"}></Image>
-              <Text color={colorMode ==='light'? '#7e7e8f': '#8b8b93'} ml={"7px"}>Updated on 2022.06.01 20:00 (UTC+9)</Text>
-            </Flex>
+            <UpdatedOn></UpdatedOn>
           </Flex>
         );
       default:
@@ -55,28 +86,25 @@ const PageTitle = () => {
               <Text mx={"7px"}>{">"}</Text>
               <Text color={"blue.200"}>{pathName}</Text>
             </Flex>
-            <Flex>
-              <Image src={colorMode === 'dark'?  CALENDAR_ICON_DARK: CALENDAR_ICON_LIGHT} alt={"CALENDAR_ICON"}></Image>
-              <Text color={colorMode ==='light'? '#7e7e8f': '#8b8b93'} ml={"7px"}>Updated on 2022.06.01 20:00 (UTC+9)</Text>
-            </Flex>
+            <UpdatedOn></UpdatedOn>
           </Flex>
         );
     }
-  }, [pathName, isMobile]);
+  }, [pathName, isMobile, colorMode]);
+
+  const rebaseTime = useRebaseTime();
 
   const AdditionalInfo = () => {
     switch (pathName) {
-      case "Stake":
+      default:
         return (
           <Flex fontSize={12} alignItems="center">
             <Text mr={"5px"} color={"#2775ff"}>
-              05:50:20
+              {rebaseTime}
             </Text>
             <Text color={"#9a9aaf"}>to next rebase</Text>
           </Flex>
         );
-      default:
-        return null;
     }
   };
 

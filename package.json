@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@chakra-ui/icons": "^2.0.4",
     "@chakra-ui/react": "^2.2.1",
     "@emotion/react": "^11.9.3",
@@ -18,7 +19,10 @@
     "@nivo/line": "^0.72.0",
     "decimal.js": "^10.3.1",
     "framer-motion": "^6.3.16",
+    "graphql": "^16.5.0",
+    "jsbi": "^4.3.0",
     "moment": "^2.29.4",
+    "moment-timezone": "^0.5.37",
     "next": "12.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",

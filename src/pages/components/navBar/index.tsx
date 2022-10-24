@@ -12,15 +12,22 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import Logo from "./Logo";
+
 import DASHBOARD_ICON from "assets/icons/dashboard.svg";
 import BOND_ICON from "assets/icons/bond.svg";
 import STAKE_ICON from "assets/icons/stake.svg";
+import DAO_ICON from "assets/icons/DAO.svg";
+
 import DASHBOARD_GRAY_ICON from "assets/icons/dashboard-gray.svg";
 import BOND_GRAY_ICON from "assets/icons/bond-gray.svg";
 import STAKE_GRAY_ICON from "assets/icons/stake-gray.svg";
+import DAO_GRAY_ICON from "assets/icons/DAO-gray.svg";
+
 import BOND_LIGHT_HOVER from "assets/icons/bond-LightHover.svg";
 import STAKE_LIGHT_HOVER from "assets/icons/stake-LightHover.svg";
 import DASHBOARD_LIGHT_HOVER from "assets/icons/dashboard-LightHover.svg";
+import DAO_LIGHT_HOVER from "assets/icons/DAO-LightHover.svg";
+
 import MEDIUM_ICON from "assets/icons/medium.svg";
 import TWITTER_ICON from "assets/icons/twitter.svg";
 import GITHUB_ICON from "assets/icons/github.svg";
@@ -30,7 +37,13 @@ import ARROW_RIGHT_ICON from "assets/icons/arrow-right.svg";
 import ARROW_LEFT_LIGHT_ICON from "assets/icons/arrow-leftLight.svg";
 import ARROW_RIGHT_LIGHT_ICON from "assets/icons/arrow-rightLight.svg";
 import TOOLTIP_ARROW_LEFT_ICON from "assets/icons/Tooltips_left_arrow.svg";
-import TOOLTIP_ARROW_LEFT_LIGHT_ICON from 'assets/icons/Tooltips_left_arrow_light.svg';
+import TOOLTIP_ARROW_LEFT_LIGHT_ICON from "assets/icons/Tooltips_left_arrow_light.svg";
+
+import MEDIUM_W_ICON from "assets/icons/medium-w.svg";
+import TWITTER_W_ICON from "assets/icons/twitter-w.svg";
+import GITHUB_W_ICON from "assets/icons/github-w.svg";
+import TELEGRAM_W_ICON from "assets/icons/telegram-w.svg";
+
 import Line from "common/line/Line";
 import Link from "next/link";
 import { useState } from "react";
@@ -42,15 +55,23 @@ import { sidebarSelectedState, sidebarState } from "atom//header";
 const iconList = [
   {
     icon: MEDIUM_ICON,
+    hoverIcon: MEDIUM_W_ICON,
+    href: "https://medium.com/onther-tech",
   },
   {
     icon: TWITTER_ICON,
+    hoverIcon: TWITTER_W_ICON,
+    href: "https://twitter.com/tokamak_network?lang=en",
   },
   {
     icon: GITHUB_ICON,
+    hoverIcon: GITHUB_W_ICON,
+    href: "https://github.com/Onther-Tech",
   },
   {
     icon: TELEGRAM_ICON,
+    hoverIcon: TELEGRAM_W_ICON,
+    href: "http://bit.ly/3gH1bCr",
   },
 ];
 
@@ -73,9 +94,17 @@ const navItemList = [
     lightHoverIcon: STAKE_LIGHT_HOVER,
     link: "stake",
   },
+  {
+    icon: DAO_GRAY_ICON,
+    hoverIcon: DAO_ICON,
+    lightHoverIcon: DAO_LIGHT_HOVER,
+    link: "dao",
+  },
 ];
 
 const LinkContainer = (props: { isExpended: boolean }) => {
+  const [isHover, setIsHover] = useState<number | undefined>(undefined);
+
   return (
     <Flex
       mt={"auto"}
@@ -95,8 +124,14 @@ const LinkContainer = (props: { isExpended: boolean }) => {
             key={`link-container-${index}`}
             mb={"10px"}
             cursor={"pointer"}
+            onClick={() => window.open(item.href)}
+            onMouseEnter={() => setIsHover(index)}
+            onMouseLeave={() => setIsHover(undefined)}
           >
-            <Image src={item.icon} alt={"icon"}></Image>
+            <Image
+              src={isHover === index ? item.hoverIcon : item.icon}
+              alt={"icon"}
+            ></Image>
           </Flex>
         );
       })}
@@ -116,7 +151,9 @@ const NavItem = (props: { isExpended: boolean }) => {
     <>
       {navItemList.map((item, index) => {
         const capitalLinkName =
-          item.link.charAt(0).toUpperCase() + item.link.slice(1);
+          item.link !== "dao"
+            ? item.link.charAt(0).toUpperCase() + item.link.slice(1)
+            : "DAO";
         return (
           <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
             <Flex pos={"relative"}>
@@ -146,7 +183,9 @@ const NavItem = (props: { isExpended: boolean }) => {
               >
                 <Image
                   src={
-                    isHover === index && pName !== item.link? item.lightHoverIcon:    pName === item.link
+                    isHover === index && pName !== item.link
+                      ? item.lightHoverIcon
+                      : pName === item.link
                       ? item.hoverIcon
                       : item.icon
                   }
@@ -161,26 +200,34 @@ const NavItem = (props: { isExpended: boolean }) => {
                   mt={2}
                   px={18}
                   py={"9px"}
-                  bg={colorMode === 'dark'? "gray.600": 'white.100'}
+                  bg={colorMode === "dark" ? "gray.600" : "white.100"}
                   // bg={'red'}
                   borderRadius={3}
                   alignItems={"center"}
                   justifyContent={"center"}
                   color={"#2775ff"}
                   fontSize={14}
-                  border={colorMode === 'dark'?  "1px solid #313442": '1px solid #e8edf2'}
+                  border={
+                    colorMode === "dark"
+                      ? "1px solid #313442"
+                      : "1px solid #e8edf2"
+                  }
                   zIndex={1000}
                 >
                   <Flex pos={"relative"}>
                     <Box
                       pos={"absolute"}
-                      left={-7}
+                      left={-6}
                       // bg={"red"}
                       top={-3}
-                      style={{ transform: `rotate(270deg)` }}
+                      style={{ transform: `rotate(180deg)` }}
                     >
                       <Image
-                        src={colorMode === 'dark'? TOOLTIP_ARROW_LEFT_ICON: TOOLTIP_ARROW_LEFT_LIGHT_ICON}
+                        src={
+                          colorMode === "dark"
+                            ? TOOLTIP_ARROW_LEFT_ICON
+                            : TOOLTIP_ARROW_LEFT_LIGHT_ICON
+                        }
                         alt={"TOOLTIP_ARROW_LEFT_ICON"}
                       ></Image>
                     </Box>
@@ -249,9 +296,30 @@ function MobileSideBar() {
         alignItems="center"
         bg={colorMode === "light" ? "#ffffff" : "#1f2128"}
       >
-        <Box mb={50}>
+        <Flex
+          flexDir={isExpended ? "row" : "column"}
+          w={"100%"}
+          mb={50}
+          alignItems={"center"}
+          pl={isExpended ? "35px" : "0px"}
+        >
           <Logo isExpended={isExpended}></Logo>
-        </Box>
+          <Text
+            mt={isExpended ? "0px" : "9px"}
+            ml={isExpended ? "15px" : "0px"}
+            w={"41px"}
+            h={"17px"}
+            bg={"#f29b37"}
+            fontSize={10}
+            color={"#1f2128"}
+            fontWeight={"bold"}
+            textAlign={"center"}
+            lineHeight={"17px"}
+            borderRadius={3}
+          >
+            Goerli
+          </Text>
+        </Flex>
         <NavItem isExpended={isExpended}></NavItem>
         <Box w={"100%"} mt={18} px={25}>
           <Line></Line>
@@ -290,9 +358,30 @@ const NavBar = () => {
       <Box onClick={() => setIsExpended(!isExpended)}>
         <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
-      <Box mb={50}>
+      <Flex
+        flexDir={isExpended ? "row" : "column"}
+        w={"100%"}
+        mb={50}
+        alignItems={"center"}
+        pl={isExpended ? "35px" : "0px"}
+      >
         <Logo isExpended={isExpended}></Logo>
-      </Box>
+        <Text
+          mt={isExpended ? "0px" : "9px"}
+          ml={isExpended ? "15px" : "0px"}
+          w={"41px"}
+          h={"17px"}
+          bg={"#f29b37"}
+          fontSize={10}
+          color={"#1f2128"}
+          fontWeight={"bold"}
+          textAlign={"center"}
+          lineHeight={"17px"}
+          borderRadius={3}
+        >
+          Goerli
+        </Text>
+      </Flex>
       <NavItem isExpended={isExpended}></NavItem>
       <Box w={"100%"} mt={18} px={25}>
         <Line></Line>

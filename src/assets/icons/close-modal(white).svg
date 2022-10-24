@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+    <path style="fill:none" d="M0 0h21v21H0z"/>
+    <path data-name="선 44" transform="translate(2 2)" style="stroke:#f1f1f1;stroke-linecap:round;stroke-width:1.5px;fill:none" d="m0 0 16 16"/>
+    <path data-name="선 45" transform="translate(2 2)" style="stroke:#f1f1f1;stroke-linecap:round;stroke-width:1.5px;fill:none" d="M16 0 0 16"/>
+</svg>

@@ -1,46 +1,57 @@
-import { Flex,useColorMode } from "@chakra-ui/react";
+import { Flex, useColorMode } from "@chakra-ui/react";
 import NextButton from "common/button/NextButton";
 import SubmitButton from "common/button/SubmitButton";
 import Pagination from "common/table/Pagination";
 import Image from "next/image";
-import React, { SetStateAction } from "react";
-import PlusIcon from "assets/icons/Plus.svg";
+import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import useModal from "hooks/useModal";
+import useStakeList from "hooks/stake/useStakeList";
 
 function StakeScreenBottom(props: {
   setCurrentPage: React.Dispatch<SetStateAction<number>>;
-  rowNum: number;
+  currentPage: number;
+  pageSize: number;
 }) {
-  const { setCurrentPage, rowNum } = props;
-  const newArr = new Array(rowNum);
+  const { setCurrentPage, currentPage, pageSize } = props;
+  const newArr = new Array(pageSize);
+  const { stakeCards } = useStakeList();
+
   const { openModal } = useModal("stake_stake_modal");
-  const { colorMode } = useColorMode();  
+  const { colorMode } = useColorMode();
+  const pageButtonList = useMemo(() => {
+    if (pageSize) {
+      let arr = [];
+      for (let i = 0; i < pageSize; i++) {
+        arr.push(i);
+      }
+      return arr;
+    }
+  }, [pageSize]);
+
   return (
-    <Flex h={"40px"} mt={"27px"} mb={"3px"} justifyContent={"space-between"}>
+    <Flex h={"40px"} mt={"27px"} mb={"3px"}>
       <Flex>
         <Flex mr={"27px"}>
-          <Pagination
-            onClick={setCurrentPage}
-            pageNumber={1}
-            key={"key"}
-          ></Pagination>
-          <Pagination
-            onClick={setCurrentPage}
-            pageNumber={2}
-            key={"key2"}
-          ></Pagination>
+          {stakeCards &&
+            stakeCards.length > 0 &&
+            pageButtonList?.map((page, index) => {
+              return (
+                <Pagination
+                  currentPage={currentPage}
+                  onClick={setCurrentPage}
+                  pageNumber={index + 1}
+                  key={`key_${index}`}
+                ></Pagination>
+              );
+            })}
         </Flex>
         <Flex>
-          <NextButton></NextButton>
+          <NextButton
+            pageSize={pageSize}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          ></NextButton>
         </Flex>
-      </Flex>
-      <Flex>
-        <Image src={PlusIcon} alt={"PlusIcon"}></Image>
-        <SubmitButton
-          name="Stake"
-          style={{ fontSize: 14 }}
-          onClick={openModal}
-        ></SubmitButton>
       </Flex>
     </Flex>
   );

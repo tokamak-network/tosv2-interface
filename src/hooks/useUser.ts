@@ -1,31 +1,57 @@
+import { convertNumber } from "@/components/number";
+import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
+import CONTRACT_ADDRESS from "services/addresses/contract";
+import { useBlockNumber } from "./useBlockNumber";
+import useCallContract from "./useCallContract";
 import useUserBalance from "./useUserBalance";
 
-function useUser() {
-  //   {
-  //   userBalanceInfo: {
-  //     TOSBalance: string;
-  //     TonBalance: string;
-  //     WTonBalance: string;
-  //   };
-  // }
-  const [userBalance, setUserBalance] = useState({
-    TOSBalance: "",
-    TonBalance: "",
-    WTonBalance: "",
+type UseUser = {
+  tosAllowance: number | undefined;
+  stakeList: string[] | undefined;
+  simpleStakingId: string | undefined;
+};
+
+function useUser(): UseUser {
+  const [userData, setUserData] = useState<UseUser>({
+    tosAllowance: undefined,
+    stakeList: undefined,
+    simpleStakingId: undefined,
   });
-  const { userTOSBalance, userTonBalance, userWTonBalance } = useUserBalance();
+  const { TOS_CONTRACT } = useCallContract();
+  const { account } = useWeb3React();
+  const { StakingV2Proxy } = CONTRACT_ADDRESS;
+  const { blockNumber } = useBlockNumber();
+  const { StakingV2Proxy_CONTRACT } = useCallContract();
 
   useEffect(() => {
-    const userBalanceInfo = {
-      TOSBalance: userTOSBalance,
-      TonBalance: userTonBalance,
-      WTonBalance: userWTonBalance,
-    };
-    setUserBalance(userBalanceInfo);
-  }, [userTOSBalance, userTonBalance, userWTonBalance]);
+    async function fetchUseUser() {
+      if (TOS_CONTRACT && account && StakingV2Proxy_CONTRACT) {
+        const allowance = await TOS_CONTRACT.allowance(account, StakingV2Proxy);
+        const stakeList = await StakingV2Proxy_CONTRACT.stakingOf(account);
 
-  return { userBalance };
+        return setUserData({
+          tosAllowance: Number(convertNumber({ amount: allowance.toString() })),
+          stakeList,
+          simpleStakingId: stakeList[1]?.toString(),
+        });
+      }
+    }
+    fetchUseUser().then((e) => {
+      if (e !== undefined) {
+        console.log("**fetchUseUser err**");
+        console.log(e);
+      }
+    });
+  }, [
+    TOS_CONTRACT,
+    account,
+    StakingV2Proxy,
+    blockNumber,
+    StakingV2Proxy_CONTRACT,
+  ]);
+
+  return userData;
 }
 
 export default useUser;

@@ -6,6 +6,8 @@ import useModal from "hooks/useModal";
 import { useState } from "react";
 import { BondCardProps } from "types/bond";
 import { StakeCardProps } from "types/stake";
+import BondIcon from "assets/icons/bond.svg";
+import Image from "next/image";
 
 function ContentComponent(props: {
   title: string;
@@ -17,34 +19,84 @@ function ContentComponent(props: {
 
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
-      <Text color={colorMode === 'dark'? "gray.100":'gray.1000'}>{title}</Text>
-      <Text color={colorMode === 'dark'? "white.200":'gray.800'} fontWeight={600}>{content}</Text>
+      <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
+        {title}
+      </Text>
+      {content.includes("/") ? (
+        <Flex>
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            fontWeight={600}
+          >
+            {content.split("/")[0]}
+          </Text>
+          <Text color={"#64646f"} mx={"3px"} fontWeight={600}>
+            /
+          </Text>
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            fontWeight={600}
+          >
+            {content.split("/")[1]}
+          </Text>
+        </Flex>
+      ) : (
+        <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontWeight={600}
+        >
+          {content}
+        </Text>
+      )}
     </Flex>
   );
 }
 
-function StakeCard(props: StakeCardProps) {
-  const {
-    amount,
-    discountRate,
-    lockupPeriod,
-    lockupPeriodDate,
-    tokenType,
-    isDisabled,
-  } = props;
-  const { openModal } = useModal("stake_unstake_modal");
+function StakeCard(props: { cardData: StakeCardProps }) {
+  const { cardData } = props;
+  const { openModal: openUnstakeModal } = useModal(
+    "stake_unstake_modal",
+    cardData && cardData.stakedType === "LTOS Staking"
+      ? { hasInput: true, stakedId: cardData.stakedId }
+      : { hasInput: false, stakedId: cardData?.stakedId }
+  );
+  const { openModal } = useModal("stake_stake_modal", cardData);
+  const { openModal: openUpdateModal } = useModal("stake_update_modal", {
+    stakeId: cardData?.stakedId,
+    ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
+  });
+  const { openModal: openUpdateAfterEndTimeModal } = useModal(
+    "stake_updateAfterEndTime_modal",
+    {
+      stakeId: cardData?.stakedId,
+      ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
+    }
+  );
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
   const { colorMode } = useColorMode();
+
+  if (!cardData) {
+    return null;
+  }
+
+  const { isOver, stakedType, tokenType } = cardData;
+  const isDisabled =
+    stakedType === "LTOS Staking" ? cardData.staked.ltos === "0.00" : isOver;
+  const unstakeDisabled =
+    stakedType === "LTOS Staking"
+      ? Number(cardData.staked.ltos.replaceAll("LTOS", "")) === 0
+      : !isDisabled;
 
   return (
     <Flex
       flexDir={"column"}
       w={smallerThan1040 ? "100%" : "31.9%"}
-      h={smallerThan1040 ? "" : "250px"}
+      h={smallerThan1040 ? "" : "273px"}
       minW={["336px", "310px", "362px"]}
+      bg={colorMode === "light" ? "white.100" : "#1f2128"}
       borderWidth={1}
-      borderColor={colorMode === 'dark'? "gray.300": 'gray.900'}
+      borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
       borderRadius={10}
       pt={"18px"}
       px={"20px"}
@@ -58,76 +110,119 @@ function StakeCard(props: StakeCardProps) {
             fontWeight={600}
             textAlign={"center"}
             lineHeight={"46px"}
-            color={colorMode === 'dark'? "white.200": 'gray.800'}
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
             ml={"12px"}
           >
-            {tokenType}
+            {stakedType === "LTOS Staking"
+              ? "Staked"
+              : stakedType === "Bond"
+              ? `${tokenType} Bond`
+              : "Locked"}
           </Text>
         </Flex>
-        <Flex
-          fontSize={12}
-          color={isDisabled ? "blue.200" : "red.100"}
-          textAlign={"center"}
-          alignItems="center"
-          justifyContent={"center"}
-        >
-          <Text>{isDisabled ? "Pending" : "Ended"}</Text>
+        <Flex>
+          {stakedType === "Bond" && (
+            <Image src={BondIcon} alt={"BondIcon"}></Image>
+          )}
+          <Flex
+            fontSize={12}
+            color={
+              stakedType === "LTOS Staking"
+                ? "green.100"
+                : isDisabled
+                ? "blue.200"
+                : "red.100"
+            }
+            textAlign={"center"}
+            alignItems="center"
+            justifyContent={"center"}
+            ml={"9px"}
+          >
+            <Text>
+              {stakedType === "LTOS Staking"
+                ? "No Lock-up"
+                : isDisabled
+                ? "Unlocked"
+                : "Locked"}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
 
       <ContentComponent
-        title="Amount"
-        content={amount}
+        title="Staked"
+        content={
+          // stakedType === "LTOS Staking"
+          //   ? `${cardData.staked.ltos}`
+          //   :
+          `${cardData.staked.ltos} / ${cardData.staked.stos}`
+        }
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
-        title="Discount Rate"
-        content={discountRate}
+        title="Principal"
+        content={`${cardData.principal}`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
-      <ContentComponent
-        title="Lock-Up Period"
-        content={lockupPeriod}
-      ></ContentComponent>
-      <Flex
-        fontSize={9}
-        justifyContent="flex-end"
-        color={"#eaeaf4"}
-        mt={"3px"}
-        mb={"21px"}
-      >
-        <Text color={colorMode==='light'? '#16161e': '#eaeaf4'}>{lockupPeriodDate}</Text>
-      </Flex>
+      {stakedType !== "LTOS Staking" && (
+        <ContentComponent
+          title="End Time"
+          content={cardData.endTime}
+        ></ContentComponent>
+      )}
       <Flex
         alignItems="center"
         justifyContent={smallerThan1440 ? "flex-end" : "center"}
-        flexDir={smallerThan1040 ? "column" : "row"}
-        pos={"relative"}
+        flexDir={"column"}
+        mt={"auto"}
       >
-        {isDisabled === false && (
-          <Flex
-            mb={smallerThan1040 ? "19px" : ""}
-            pos={smallerThan1040 ? {} : "absolute"}
-            mr={"auto"}
-            w={"100%"}
-          >
+        {isDisabled && (
+          <Flex w={"100%"} justifyContent={"center"} mb={"21px"}>
             <CustomCheckBox
-              value={{ test: "test" }}
-              valueKey={amount}
+              valueKey={""}
               pageKey={"Stake_screen"}
+              params={cardData}
+              belongToSelectAll={true}
             ></CustomCheckBox>
-            <Text ml={"9px"} fontSize={12} color={colorMode==='dark'? 'white.200':'gray.800'}>
-              Select
+            <Text
+              ml={"9px"}
+              fontSize={12}
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+            >
+              Unstake Select
             </Text>
           </Flex>
         )}
-        <BasicButton
-          isDisabled={isDisabled}
-          name={isDisabled ? "Pending" : "Unstake"}
-          h={"33px"}
-          onClick={openModal}
-          style={smallerThan1040 ? { width: "100%" } : {}}
-        ></BasicButton>
+        <Flex justifyContent={"space-between"} w={"100%"}>
+          <BasicButton
+            name={
+              stakedType === "LTOS Staking"
+                ? "Stake"
+                : isOver
+                ? "Relock"
+                : "Manage"
+            }
+            h={"33px"}
+            onClick={
+              stakedType === "LTOS Staking"
+                ? openModal
+                : isOver
+                ? openUpdateAfterEndTimeModal
+                : openUpdateModal
+            }
+            style={smallerThan1040 ? { width: "100%" } : {}}
+            tooltip={
+              "You can increase sTOS by using “Manage” function. This costs less gas than using the “Stake” function."
+            }
+          ></BasicButton>
+          <BasicButton
+            isDisabled={unstakeDisabled}
+            name={"Unstake"}
+            h={"33px"}
+            onClick={openUnstakeModal}
+            style={smallerThan1040 ? { width: "100%" } : {}}
+          ></BasicButton>
+        </Flex>
       </Flex>
     </Flex>
   );

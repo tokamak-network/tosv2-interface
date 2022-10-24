@@ -1,17 +1,25 @@
 import { atom, selector } from "recoil";
-import { CheckBoxValuesType } from "types";
+import { CheckBoxValuesType, PageKey } from "types";
 
-const checkboxState = atom<CheckBoxValuesType>({
-  key: "checkValues",
+const checkboxAll = atom<PageKey | undefined>({
+  key: "checkAllValue",
   default: undefined,
 });
 
+const checkboxsState = atom<any[]>({
+  key: "checkboxValue",
+  default: [],
+});
+
 const selectedCheckboxState = selector({
-  key: "selectedValues", // unique ID (with respect to other atoms/selectors)
+  key: "selectedCheckboxValues", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
-    const selectedModalState = get(checkboxState);
+    const selectedModalState = get(checkboxsState);
     return selectedModalState;
+  },
+  set: ({ set }, newValue) => {
+    set(checkboxsState, newValue);
   },
 });
 
-export { checkboxState, selectedCheckboxState };
+export { checkboxAll, checkboxsState, selectedCheckboxState };

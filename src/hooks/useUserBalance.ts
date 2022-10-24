@@ -2,24 +2,56 @@ import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
 import { convertNumber } from "utils/number";
 import useCallContract from "hooks/useCallContract";
+import { useBlockNumber } from "./useBlockNumber";
 
 const useUserBalance = () => {
-  const { account } = useWeb3React();
-  const { TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT } = useCallContract();
+  const { account, library } = useWeb3React();
+  const {
+    TON_CONTRACT,
+    WTON_CONTRACT,
+    TOS_CONTRACT,
+    LockTOS_CONTRACT,
+    StakingV2Proxy_CONTRACT,
+  } = useCallContract();
+  const { blockNumber } = useBlockNumber();
 
-  const [userTonBalance, setUserTonBalance] = useState<string>("");
-  const [userWTonBalance, setUserWTonBalance] = useState<string>("");
-  const [userTOSBalance, setUserTOSBalance] = useState<string>("");
+  const [userTonBalance, setUserTonBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userWTonBalance, setUserWTonBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userTOSBalance, setUserTOSBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userETHBalance, setUserETHBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userLTOSBalance, setUserLTOSBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userSTOSBalance, setUserSTOSBalance] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     async function fetchBalance() {
       try {
-        if (!TON_CONTRACT || !WTON_CONTRACT || !TOS_CONTRACT) {
+        if (
+          !TON_CONTRACT ||
+          !WTON_CONTRACT ||
+          !TOS_CONTRACT ||
+          !LockTOS_CONTRACT ||
+          !StakingV2Proxy_CONTRACT
+        ) {
           return;
         }
         const ton = await TON_CONTRACT.balanceOf(account);
         const wton = await WTON_CONTRACT.balanceOf(account);
         const tos = await TOS_CONTRACT.balanceOf(account);
+        const eth = await library?.getBalance(account);
+        const LTOS = await StakingV2Proxy_CONTRACT.balanceOf(account);
+        const sTOS = await LockTOS_CONTRACT.balanceOf(account);
 
         const convertedTon = convertNumber({
           amount: ton.toString(),
@@ -34,10 +66,25 @@ const useUserBalance = () => {
           amount: tos.toString(),
           localeString: true,
         });
+        const convertedEth = convertNumber({
+          amount: eth.toString(),
+          localeString: true,
+        });
+        const convertedLTOS = convertNumber({
+          amount: LTOS.toString(),
+          localeString: true,
+        });
+        const convertedSTOS = convertNumber({
+          amount: sTOS.toString(),
+          localeString: true,
+        });
 
-        setUserTonBalance(convertedTon || "0.00");
-        setUserWTonBalance(convertedWTon || "0.00");
-        setUserTOSBalance(convertedWTon || "0.00");
+        setUserTonBalance(convertedTon || "-");
+        setUserWTonBalance(convertedWTon || "-");
+        setUserTOSBalance(convertedTos || "-");
+        setUserETHBalance(convertedEth || "-");
+        setUserLTOSBalance(convertedLTOS || "-");
+        setUserSTOSBalance(convertedSTOS || "-");
       } catch (e) {
         console.log("*****fetch balance err*****");
         console.log(e);
@@ -46,9 +93,25 @@ const useUserBalance = () => {
     if (account) {
       fetchBalance();
     }
-  }, [account, TON_CONTRACT, WTON_CONTRACT, TOS_CONTRACT]);
+  }, [
+    account,
+    TON_CONTRACT,
+    WTON_CONTRACT,
+    TOS_CONTRACT,
+    LockTOS_CONTRACT,
+    StakingV2Proxy_CONTRACT,
+    library,
+    blockNumber,
+  ]);
 
-  return { userTonBalance, userWTonBalance, userTOSBalance };
+  return {
+    userTonBalance,
+    userWTonBalance,
+    userTOSBalance,
+    userETHBalance,
+    userLTOSBalance,
+    userSTOSBalance,
+  };
 };
 
 export default useUserBalance;

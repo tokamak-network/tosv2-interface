@@ -1,4 +1,14 @@
-import { Button, useColorMode, useTheme, Spinner } from "@chakra-ui/react";
+import {
+  Button,
+  useColorMode,
+  useTheme,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
+import Image from "next/image";
+import PlusIcon from "assets/icons/Plus.png";
+import ResourcesIcon from "assets/icons/resources_icon@3x.png";
+type IconTypes = "Plus" | "ResourcesIcon" | undefined;
 
 type SubmitButtonProp = {
   name: string;
@@ -7,13 +17,50 @@ type SubmitButtonProp = {
   isDisabled?: boolean;
   isLoading?: boolean;
   style?: {};
-  onClick?: () => void;
+  onClick?: Function;
+  iconName?: IconTypes;
+  iconLocation?: string;
+};
+
+const getIcon = (iconName: IconTypes) => {
+  switch (iconName) {
+    case "Plus":
+      return (
+        <Image
+          src={PlusIcon}
+          alt={"PlusIcon"}
+          style={{ overflow: "visible" }}
+        ></Image>
+      );
+
+    case "ResourcesIcon":
+      return (
+        <Image
+          src={ResourcesIcon}
+          alt={"ResourcesIcon"}
+          style={{ overflow: "visible" }}
+        />
+      );
+    default:
+      return null;
+  }
 };
 
 const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
-  const { name, w, h, isDisabled, isLoading, style, onClick } = props;
+  const {
+    name,
+    w,
+    h,
+    isDisabled,
+    isLoading,
+    style,
+    onClick,
+    iconName,
+    iconLocation,
+  } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
+  const icon = getIcon(iconName);
   return (
     <Button
       w={w || 150}
@@ -21,7 +68,7 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       isDisabled={isDisabled}
       isLoading={isLoading}
       _hover={{}}
-      _focus={{backgroundColor:'#257eee'}}
+      _focus={{ backgroundColor: "#257eee" }}
       fontSize={12}
       spinner={<Spinner size={"md"}></Spinner>}
       {...theme.BUTTON_STYLE.submitButtonStyle(colorMode)}
@@ -29,7 +76,11 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       onClick={() => onClick && onClick()}
       {...style}
     >
-      {name}
+      {iconLocation === "left" && getIcon(iconName)}
+      <Text ml={icon ? "8px" : "0px"} mr={icon ? "23px" : "0px"}>
+        {name}
+      </Text>
+      {iconLocation === "right" && getIcon(iconName)}
     </Button>
   );
 };

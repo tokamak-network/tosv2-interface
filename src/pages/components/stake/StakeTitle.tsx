@@ -1,23 +1,20 @@
-import {
-  Flex,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  useMediaQuery,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import Image from "next/image";
 import ARROW_RIGHT from "assets/icons/arrow-right.svg";
 import { useState } from "react";
 import SubmitButton from "common/button/SubmitButton";
 import useModal from "hooks/useModal";
+import useUserBalance from "hooks/useUserBalance";
+import { useWeb3React } from "@web3-react/core";
 
 function StakeTitle() {
   const [radioValue, setRadioValue] = useState<"All" | "Bond" | "Stake">("All");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const { openModal } = useModal("stake_stake_modal");
-  const {colorMode} = useColorMode();
+  const { colorMode } = useColorMode();
+  const { userLTOSBalance, userSTOSBalance, userTOSBalance } = useUserBalance();
+  const { account } = useWeb3React();
+
   return (
     <Flex
       // h={"31px"}
@@ -27,38 +24,41 @@ function StakeTitle() {
       justifyContent={"space-between"}
       w={"100%"}
     >
-      <Flex justifyContent={smallerThan1040 ? "space-between" : {}}>
-        <Text fontSize={22} fontWeight={600} color={colorMode === 'dark'? "white.200":'gray.800'} mr={"12px"}>
+      <Flex
+        justifyContent={smallerThan1040 ? "space-between" : {}}
+        alignItems={"center"}
+      >
+        <Text
+          fontSize={22}
+          fontWeight={600}
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          mr={"12px"}
+        >
           My Staked
         </Text>
 
-        <Flex>
+        {/* <Flex alignItems={"center"}>
           <Text fontSize={14} color={"blue.200"} mr={"6px"}>
-            My sTOS : 100 sTOS
+            Balance : {userLTOSBalance || "-"} LTOS / {userSTOSBalance || "-"}{" "}
+            sTOS / {userTOSBalance || "-"} TOS
           </Text>
           <Image src={ARROW_RIGHT} alt={"ARROW_RIGHT"}></Image>
-        </Flex>
+        </Flex> */}
       </Flex>
-      {smallerThan1040 && (
+      <Flex fontSize={14}>
         <SubmitButton
           name="Stake"
-          w={"100%"}
-          style={{ fontSize: 14, marginTop: "20px", marginBottom: "30px" }}
+          w={smallerThan1040 ? "100%" : ""}
+          style={
+            smallerThan1040
+              ? { fontSize: 14, marginTop: "20px", marginBottom: "30px" }
+              : { fontSize: 14 }
+          }
           onClick={openModal}
+          iconName={"Plus"}
+          iconLocation={"left"}
+          isDisabled={!account}
         ></SubmitButton>
-      )}
-      <Flex fontSize={14} color={colorMode==='dark'? "gray.100": '#535362'}>
-        <RadioGroup
-          onChange={(value: "All" | "Bond" | "Stake") => setRadioValue(value)}
-          value={radioValue}
-         
-        >
-          <Stack direction="row" columnGap={"34px"}>
-            <Radio value="All"><Text color={radioValue === 'All'? colorMode === 'dark'? 'white.200': 'gray.800':''}>All</Text></Radio>
-            <Radio value="Bond"><Text color={radioValue === 'Bond'? colorMode === 'dark'? 'white.200': 'gray.800':''}>Bond</Text></Radio>
-            <Radio value="Stake"><Text color={radioValue === 'Stake'? colorMode === 'dark'? 'white.200': 'gray.800':''}>Stake</Text></Radio>
-          </Stack>
-        </RadioGroup>
       </Flex>
     </Flex>
   );
