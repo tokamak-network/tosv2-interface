@@ -1,7 +1,16 @@
-import { Box, Flex, Text, useColorMode, Tooltip } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  useColorMode,
+  Tooltip,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import Image from "next/image";
 import question from "assets/icons/question.svg";
 import BasicTooltip from "common/tooltip";
+import useModal from "hooks/useModal";
+import GradientSpinner from "../GradientSpinner";
 
 function Tile(props: {
   title: string;
@@ -11,19 +20,22 @@ function Tile(props: {
 }) {
   const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
+  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  // const { isModalLoading } = useModal();
+  const isModalLoading = true;
+
   return (
     <Box
       display={"flex"}
       flexDir={"column"}
-      mb={"15px"}
+      w={smallerThan1024 ? "155px" : "152px"}
       alignItems={"center"}
-      w={title === "Next Rebase" ? "106px" : ""}
+      mb={"15px"}
     >
-      <Flex alignItems={"center"}>
+      <Flex alignItems={"center"} mb={"6px"}>
         <Text
           color={colorMode === "dark" ? "gray.100" : "gray.1000"}
           h={"17px"}
-          mb={"3px"}
           fontWeight={600}
           fontSize={12}
           textAlign="center"
@@ -34,22 +46,33 @@ function Tile(props: {
         <BasicTooltip label={tooltip} />
       </Flex>
 
-      <Flex fontWeight={"bold"} h={"33px"}>
-        <Text
-          color={colorMode === "dark" ? "white.100" : "gray.800"}
-          fontSize={24}
-          mr={2}
-        >
-          {content || "-"}
-        </Text>
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontSize={14}
-          pt={"5px"}
-          lineHeight={"33px"}
-        >
-          {symbol ? symbol : ""}
-        </Text>
+      <Flex
+        fontWeight={600}
+        justifyContent="center"
+        h={smallerThan1024 ? "28px" : "25px"}
+      >
+        {isModalLoading ? (
+          <Flex w={"100px"} h={"30px"}>
+            <GradientSpinner></GradientSpinner>
+          </Flex>
+        ) : (
+          <>
+            <Text
+              color={colorMode === "dark" ? "white.100" : "gray.800"}
+              fontSize={18}
+              mr={2}
+            >
+              {content || "-"}
+            </Text>
+            <Text
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+              fontSize={12}
+              lineHeight={"33px"}
+            >
+              {symbol ? symbol : ""}
+            </Text>
+          </>
+        )}
       </Flex>
     </Box>
   );

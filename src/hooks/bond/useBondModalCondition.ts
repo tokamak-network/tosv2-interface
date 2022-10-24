@@ -40,10 +40,6 @@ function useBondModalCondition(maxValue: number | undefined) {
     return setInputPeriodOver(false);
   }, [inputPeriod, LOCKTOS_maxWeeks]);
 
-  console.log("---test--");
-  console.log(Number(inputBalance));
-  console.log(inputOver);
-
   useEffect(() => {
     setBtnDisabled(inputOver || inputPeriodOver);
   }, [inputOver, inputPeriodOver]);

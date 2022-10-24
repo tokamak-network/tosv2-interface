@@ -59,141 +59,9 @@ import useLtosIndex from "hooks/gql/useLtosIndex";
 import { useRecoilState, useRecoilValue } from "recoil";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import constant from "constant";
-
-function BottomContent(props: {
-  title: string;
-  content: string | { ltos: string; stos: string };
-  tooltip?: boolean;
-  tooltipMessage?: string;
-  secondTooltip?: string;
-  thirdTooltip?: string;
-}) {
-  const {
-    title,
-    content,
-    tooltip,
-    tooltipMessage,
-    secondTooltip,
-    thirdTooltip,
-  } = props;
-  const { colorMode } = useColorMode();
-
-  const ContentComponent = useMemo(() => {
-    switch (title) {
-      case "You Will Get":
-        return (
-          <Flex>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr={"6px"}
-            >
-              {(typeof content !== "string" && content.ltos) || "-"} LTOS
-            </Text>
-            <BasicTooltip label={secondTooltip} />
-            <Text color={"#64646f"} mx={"5px"}>
-              /
-            </Text>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr={"6px"}
-            >
-              {(typeof content !== "string" && content.stos) || "-"} sTOS
-            </Text>
-            <BasicTooltip label={thirdTooltip} />
-          </Flex>
-        );
-      default:
-        return (
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-          >
-            {content as string}
-          </Text>
-        );
-    }
-  }, [title, content, colorMode, secondTooltip]);
-
-  return (
-    <Flex>
-      <Flex
-        w={"100%"}
-        justifyContent={"space-between"}
-        fontSize={14}
-        mt={"9px"}
-      >
-        <Flex alignItems={"center"}>
-          <Text
-            color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-            mr={"6px"}
-          >
-            {title}
-          </Text>
-          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
-        </Flex>
-        {ContentComponent}
-      </Flex>
-    </Flex>
-  );
-}
-
-function Tile(props: {
-  title: string;
-  content: string | undefined;
-  symbol?: string;
-  tooltip: string;
-}) {
-  const { title, content, symbol, tooltip } = props;
-  const { colorMode } = useColorMode();
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
-
-  return (
-    <Box
-      display={"flex"}
-      flexDir={"column"}
-      w={smallerThan1024 ? "155px" : "152px"}
-      alignItems={"center"}
-      mb={"15px"}
-    >
-      <Flex alignItems={"center"} mb={"6px"}>
-        <Text
-          color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-          h={"17px"}
-          fontWeight={600}
-          fontSize={12}
-          textAlign="center"
-          mr={"6px"}
-        >
-          {title}
-        </Text>
-        <BasicTooltip label={tooltip} />
-      </Flex>
-
-      <Flex
-        fontWeight={600}
-        justifyContent="center"
-        h={smallerThan1024 ? "28px" : "25px"}
-      >
-        <Text
-          color={colorMode === "dark" ? "white.100" : "gray.800"}
-          fontSize={18}
-          mr={2}
-        >
-          {content || "-"}
-        </Text>
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          fontSize={12}
-          lineHeight={"33px"}
-        >
-          {symbol ? symbol : ""}
-        </Text>
-      </Flex>
-    </Box>
-  );
-}
+import GradientSpinner from "../common/GradientSpinner";
+import Tile from "../common/modal/Tile";
+import BottomContent from "../common/modal/BottonContent";
 
 function BondModal() {
   const theme = useTheme();
@@ -222,7 +90,6 @@ function BondModal() {
   const { ltosIndex } = useLtosIndex();
   const { LOCKTOS_maxWeeks } = constant;
 
-  const [isLoading, setLoading] = useRecoilState(modalLoadingState);
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
   );
