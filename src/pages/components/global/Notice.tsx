@@ -10,6 +10,7 @@ import {
   useTheme,
   useColorMode,
   Checkbox,
+  Link,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
@@ -27,7 +28,7 @@ const Notice = () => {
         fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "black.200"}
         maxW="700px"
-        h={"568px"}
+        // h={"568px"}
         pt="25px"
         pb="25px"
       >
@@ -50,7 +51,7 @@ const Notice = () => {
                 color={colorMode === "light" ? "gray.250" : "white.100"}
                 textAlign={"center"}
               >
-                Notice
+                TOSv2 Phase 1 public test announcement
               </Heading>
               <Flex position={"absolute"} right={"25px"}>
                 <Image
@@ -79,7 +80,7 @@ const Notice = () => {
             <Flex w={"100%"} flexDir={"column"}>
               <Flex
                 w={"100%"}
-                h={"300px"}
+                // h={"300px"}
                 overflow={"auto"}
                 fontSize={13}
                 css={{
@@ -97,23 +98,41 @@ const Notice = () => {
                 }}
               >
                 <Flex flexDir={"column"} w={"100%"} pr={"20px"}>
-                  <Text fontSize={15} fontWeight="bold">
+                  {/* <Text fontSize={15} fontWeight="bold">
                     Notice
-                  </Text>
+                  </Text> */}
                   <Text>
-                    <b>1.1</b> By accessing, browsing or using our platform,
-                    system or website operated by us (collectively, the{" "}
-                    <b>`&auot`Platform`&auot`</b>) or linked to our Platform, or
-                    any page thereof, through any direct or indirect means
-                    (individually or collectively), or by using or accessing the
-                    facilities or services (each a <b>`&auot`Service`&auot`</b>,
-                    as the case may be) offered in or through the Platform or
-                    through alternative methods (including, for example,
-                    telephone, mail, email or facsimile), you accept and agree
-                    to be bound by these terms and any other document, terms or
-                    conditions that form part of the same, as may be amended,
-                    supplemented, modified or added from time to time (these{" "}
-                    <b>`&auot`Terms of Use`&auot`</b>).
+                    <b>테스트 범위 : </b> 데스크탑 다크모드 크롬, Metamask &
+                    Trezor <b>(모바일 + 라이트 버전은 제외)</b>
+                    <br />
+                    <b>테스트 피드백 제출 기간 : </b> 2022년 10월 31일 (KST,
+                    UTC+9) 까지
+                    <br />더 자세한 내용은 미디움{" "}
+                    <Link
+                      color={"#2a72e5"}
+                      isExternal={true}
+                      href="https://medium.com/onther-tech/grantos-tosv2-1-%EB%8B%A8%EA%B3%84-%EA%B3%B5%EA%B0%9C-%ED%85%8C%EC%8A%A4%ED%8A%B8-b3b8b32f59c4"
+                    >
+                      포스팅
+                    </Link>
+                    에서 확인.
+                  </Text>
+                  <br />
+                  <Text>
+                    <b>Testing platform : </b> Dark mode desktop chrome,
+                    Metamask & Trezor, <b>excluding Mobile + bright mode</b>
+                    <br />
+                    <b>Feedback submission deadline : </b> October 31st, 2022
+                    (KST, UTC+9) <br />
+                    For more details, check the medium{" "}
+                    <Link
+                      color={"#2a72e5"}
+                      isExternal={true}
+                      href="https://medium.com/onther-tech/grantos-tosv2-phase-1-public-test-473b34eb3198"
+                    >
+                      post
+                    </Link>
+                    .
                   </Text>
                   <br />
                 </Flex>

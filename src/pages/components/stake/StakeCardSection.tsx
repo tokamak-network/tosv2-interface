@@ -1,8 +1,10 @@
 import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
+import { stake_filter_radio } from "atom/stake/filter";
 import TabButton from "common/button/TabButton";
 import useStakeList from "hooks/stake/useStakeList";
 import usePagination from "hooks/usePagination";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { StakeCardProps } from "types/stake";
 import MsgComponent from "./MsgComponent";
 import StakeCard from "./StakeCard";
@@ -14,6 +16,7 @@ function StakeCardSection() {
 
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
     usePagination(stakeCards);
+  const radioValue = useRecoilValue(stake_filter_radio);
 
   return (
     <Flex flexDir={"column"}>
@@ -36,7 +39,11 @@ function StakeCardSection() {
             }
           })
         ) : (
-          <MsgComponent msg={"No Staking History"}></MsgComponent>
+          <MsgComponent
+            msg={
+              radioValue === "Bond" ? "No Bond History" : "No Staking History"
+            }
+          ></MsgComponent>
         )}
       </Flex>
       <StakeScreenBottom
