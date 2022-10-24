@@ -8,22 +8,12 @@ import SortSelect from "pages/components/bond/SortSelect";
 import StakeCheckbox from "pages/components/bond/StakeCheckbox";
 import { useState } from "react";
 import StakeRadioGroup from "./BondRadioGroup";
+import MsgComponent from "./MsgComponent";
 import StakeCardSection from "./StakeCardSection";
 import StakeTitle from "./StakeTitle";
 
-function MsgComponent(props: { msg: string }) {
-  const { msg } = props;
-  return (
-    <Flex pt={"20px"} w={"100%"} justifyContent={"center"}>
-      <Text fontSize={24} fontWeight={600} color={"#f1f1f1"}>
-        {msg}
-      </Text>
-    </Flex>
-  );
-}
-
 function StakeCardContainer() {
-  const { stakeCards } = useStakeList();
+  const { stakeCards, hasList } = useStakeList();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
 
@@ -47,7 +37,7 @@ function StakeCardContainer() {
             onClick={tryActivation}
           ></SubmitButton>
         </Flex>
-      ) : stakeCards && stakeCards?.length > 1 ? (
+      ) : hasList ? (
         <>
           <Flex
             flexDir={["column", "row", "row"]}
@@ -68,10 +58,8 @@ function StakeCardContainer() {
           </Flex>
           <StakeCardSection></StakeCardSection>
         </>
-      ) : stakeCards ? (
-        <MsgComponent msg={"No Staking History"}></MsgComponent>
       ) : (
-        <></>
+        <MsgComponent msg={"No Staking History"}></MsgComponent>
       )}
     </Flex>
   );

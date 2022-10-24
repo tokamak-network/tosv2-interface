@@ -14,6 +14,7 @@ function useStakeList() {
   const [stakeCards, setStakeCards] = useState<StakeCardProps[] | undefined>(
     undefined
   );
+  const [hasList, setHasList] = useState<boolean>(false);
   const filterValue = useRecoilValue(stake_filter_radio);
   const selectFilterValue = useRecoilValue(stake_filter_sort);
 
@@ -140,6 +141,10 @@ function useStakeList() {
           })
         );
 
+        if (stakedList.length > 0) {
+          setHasList(true);
+        }
+
         if (filterValue === "All") {
           if (selectFilterValue === "Earliest") {
             const ealiestList = stakedList.sort((a, b) => {
@@ -252,7 +257,7 @@ function useStakeList() {
     selectFilterValue,
   ]);
 
-  return { stakeCards };
+  return { stakeCards, hasList };
 }
 
 export default useStakeList;

@@ -4,10 +4,9 @@ import useStakeList from "hooks/stake/useStakeList";
 import usePagination from "hooks/usePagination";
 import { useEffect, useState } from "react";
 import { StakeCardProps } from "types/stake";
+import MsgComponent from "./MsgComponent";
 import StakeCard from "./StakeCard";
 import StakeScreenBottom from "./StakeScreenBottom";
-import { useRecoilValue } from "recoil";
-import { stake_filter_radio, stake_filter_sort } from "atom/stake/filter";
 
 function StakeCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
@@ -15,8 +14,6 @@ function StakeCardSection() {
 
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
     usePagination(stakeCards);
-  const filterValue = useRecoilValue(stake_filter_radio);
-  const sortValue = useRecoilValue(stake_filter_sort);
 
   return (
     <Flex flexDir={"column"}>
@@ -39,7 +36,7 @@ function StakeCardSection() {
             }
           })
         ) : (
-          <Flex>go</Flex>
+          <MsgComponent msg={"No Staking History"}></MsgComponent>
         )}
       </Flex>
       <StakeScreenBottom
