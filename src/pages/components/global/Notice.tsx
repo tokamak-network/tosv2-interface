@@ -51,7 +51,7 @@ const Notice = () => {
                 color={colorMode === "light" ? "gray.250" : "white.100"}
                 textAlign={"center"}
               >
-                TOSv2 Phase 1 public test announcement
+                TOSv2 phase 1 public test announcement
               </Heading>
               <Flex position={"absolute"} right={"25px"}>
                 <Image
@@ -120,7 +120,7 @@ const Notice = () => {
                   <br />
                   <Text>
                     <b>Testing platform : </b> Dark mode desktop chrome,
-                    Metamask & Trezor, <b>excluding Mobile + bright mode</b>
+                    Metamask & Trezor, <b>excluding mobile + bright mode</b>
                     <br />
                     <b>Feedback submission deadline : </b> October 31st, 2022
                     (KST, UTC+9) <br />
