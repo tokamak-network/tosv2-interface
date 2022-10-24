@@ -17,6 +17,7 @@ function NextButton(props: {
       h={"40px"}
       border={colorMode === "dark" ? "solid 1px #313442" : "1px solid #e8edf2"}
       borderRadius={6}
+      background={"none"}
       alignItems={"center"}
       justifyContent={"center"}
       cursor={"pointer"}

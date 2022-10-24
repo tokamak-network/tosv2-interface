@@ -19,6 +19,7 @@ import AccountDrawer from "./components/layout/AccountDrawer";
 import HeadMeta from "./Header";
 import NetworkModal from "./components/global/NetworkModal";
 import TermsOfUse from "./components/global/TermsOfUse";
+import Notice from "./components/global/Notice";
 
 function MyApp({ Component, pageProps }: AppProps) {
   test();
@@ -64,6 +65,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     ></AccountDrawer>
                     <NetworkModal />
                     <TermsOfUse />
+                    <Notice />
                   </Flex>
                 </Flex>
               </Flex>
