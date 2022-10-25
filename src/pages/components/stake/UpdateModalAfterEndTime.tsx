@@ -51,6 +51,7 @@ import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
 import BasicTooltip from "common/tooltip/index";
 import constant from "constant";
 import StakeGraph from "../common/modal/StakeGraph";
+import useCustomToast from "hooks/useCustomToast";
 
 function BottomContent(props: {
   title: string;
@@ -188,6 +189,7 @@ function UpdateModalAfterEndTime() {
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const { newBalance, newEndTime } = useUpdateModalAfterEndTime(addTos);
+  const { setTx } = useCustomToast();
 
   const stakeId = selectedModalData?.stakeId;
   const ltosAmount = selectedModalData?.ltosAmount;
@@ -234,7 +236,13 @@ function UpdateModalAfterEndTime() {
     },
   ];
 
-  const callUpdate = useCallback(() => {
+  const closeThisModal = useCallback(() => {
+    setResetValue();
+    setAddTos(false);
+    closeModal();
+  }, [setResetValue, closeModal]);
+
+  const callUpdate = useCallback(async () => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
     if (
@@ -243,41 +251,48 @@ function UpdateModalAfterEndTime() {
       inputValue.stake_relockModal_period
     ) {
       if (addTos && inputValue.stake_relockModal_tos_balance) {
-        console.log(
-          "resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks"
-        );
+        console.log("resetStakeGetStosAfterLock(uint256,uint256,uint256)");
         console.log(
           stakeId,
           convertToWei(inputValue.stake_relockModal_tos_balance),
           inputValue.stake_relockModal_period
         );
-        return StakingV2Proxy_CONTRACT[
+        const tx = await StakingV2Proxy_CONTRACT[
           "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
         ](
           stakeId,
           convertToWei(inputValue.stake_relockModal_tos_balance),
           inputValue.stake_relockModal_period
         );
+        setTx(tx);
+        return closeThisModal();
       }
       //after endTime
       //resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks)
-      console.log(
-        "resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks"
-      );
+      console.log("resetStakeGetStosAfterLock(uint256,uint256,uint256)");
       console.log(
         stakeId,
         convertToWei(inputValue.stake_relockModal_ltos_balance),
         inputValue.stake_relockModal_period
       );
-      return StakingV2Proxy_CONTRACT[
+      const tx = await StakingV2Proxy_CONTRACT[
         "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
       ](
         stakeId,
         convertToWei(inputValue.stake_relockModal_ltos_balance),
         inputValue.stake_relockModal_period
       );
+      setTx(tx);
+      return closeThisModal();
     }
-  }, [StakingV2Proxy_CONTRACT, stakeId, addTos, inputValue]);
+  }, [
+    StakingV2Proxy_CONTRACT,
+    stakeId,
+    addTos,
+    inputValue,
+    setTx,
+    closeThisModal,
+  ]);
 
   const callApprove = useCallback(async () => {
     if (TOS_CONTRACT) {
@@ -285,12 +300,6 @@ function UpdateModalAfterEndTime() {
       return TOS_CONTRACT.approve(StakingV2Proxy, totalSupply);
     }
   }, [TOS_CONTRACT, StakingV2Proxy]);
-
-  const closeThisModal = useCallback(() => {
-    setResetValue();
-    setAddTos(false);
-    closeModal();
-  }, [setResetValue, closeModal]);
 
   useEffect(() => {
     if (tosAllowance && inputValue.stake_relockModal_tos_balance) {
