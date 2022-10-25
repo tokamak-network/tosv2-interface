@@ -15,7 +15,7 @@ import { inputBalanceState, inputState } from "atom/global/input";
 import { selectedModalState } from "atom/global/modal";
 import useInput from "hooks/useInput";
 import { max } from "moment";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
@@ -68,6 +68,15 @@ const InputPeriod: React.FC<InputProp> = (props) => {
     });
   };
 
+  const leftProperty = useMemo(() => {
+    if (value[atomKey]) {
+      if (value[atomKey] < 10 || value[atomKey] === undefined) return "27px";
+      if (value[atomKey] && value[atomKey] < 100) return "37px";
+      return "42px";
+    }
+    return "27px";
+  }, [value, atomKey]);
+
   return (
     <Flex flexDir={"column"} {...style}>
       <InputGroup>
@@ -112,14 +121,7 @@ const InputPeriod: React.FC<InputProp> = (props) => {
         ></Input>
         <Flex
           pos={"absolute"}
-          left={
-            value[atomKey] &&
-            (value[atomKey] < 10 || value[atomKey] === undefined)
-              ? "27px"
-              : value[atomKey] < 100
-              ? "37px"
-              : "42px"
-          }
+          left={leftProperty}
           textAlign={"center"}
           lineHeight={"39px"}
           fontSize={14}
