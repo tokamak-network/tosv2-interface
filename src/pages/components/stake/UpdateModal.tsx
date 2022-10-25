@@ -143,7 +143,7 @@ function BottomContent(props: {
           </Text>
         );
     }
-  }, [title, content, colorMode]);
+  }, [title, content, colorMode, secondTooltip, thirdTooltip]);
 
   return (
     <Flex>
