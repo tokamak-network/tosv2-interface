@@ -1,6 +1,10 @@
 import commafy from "@/components/commafy";
 import { convertNumber, convertToWei } from "@/components/number";
-import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import {
+  convertTimeStamp,
+  getDuration,
+  getNowTimeStamp,
+} from "@/components/time";
 import { BigNumber } from "ethers";
 import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
@@ -22,6 +26,8 @@ type UseUpdateModalData = {
   currentEndTime: string;
   newEndTime: string;
   leftWeeks: number;
+  leftDays: string;
+  leftTime: string;
 };
 
 const defaultBalanceValue = {
@@ -40,6 +46,8 @@ function useUpdateModalData(
   const [currentEndTime, setCurrentEndTime] = useState<string>("-");
   const [newEndTime, setNewEndTime] = useState<string>("-");
   const [leftWeeks, setLeftWeeks] = useState<number>(1);
+  const [leftDays, setLeftDays] = useState<string>("-");
+  const [leftTime, setLeftTime] = useState<string>("-");
 
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
@@ -78,8 +86,21 @@ function useUpdateModalData(
         //weeks left
         const now = getNowTimeStamp();
         const timeDiff = currentEndTimeStamp - now;
-        const timeLeft = timeDiff / epochUnit;
-        setLeftWeeks(Math.ceil(timeLeft));
+        const weeksLeft = timeDiff / epochUnit;
+        const daysLeft = (timeDiff - Math.floor(weeksLeft) * 604800) / 86400;
+        const timeLeft =
+          timeDiff -
+          Math.floor(weeksLeft) * 604800 -
+          Math.floor(daysLeft) * 86400;
+
+        const hours = getDuration(timeLeft, "HH:mm").hours;
+        const mins = getDuration(timeLeft, "HH:mm").mins;
+        const hour = hours.toString().length === 1 ? `0${hours}` : `${hours}`;
+        const min = mins.toString().length === 1 ? `0${mins}` : `${mins}`;
+
+        setLeftWeeks(Math.floor(weeksLeft));
+        setLeftDays(String(Math.floor(daysLeft)));
+        setLeftTime(`${hour}:${min}`);
       }
     }
     fetchUpdateModalData().catch((e) => {
@@ -209,6 +230,8 @@ function useUpdateModalData(
     currentEndTime,
     newEndTime,
     leftWeeks,
+    leftDays,
+    leftTime,
   };
 }
 

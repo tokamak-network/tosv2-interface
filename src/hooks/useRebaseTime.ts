@@ -13,7 +13,7 @@ import {
 Notion link : https://www.notion.so/onther/rebase-time-403b95c624bc4b888978ff47e1f32df9
 */
 
-function useRebaseTime(format?: ":") {
+function useRebaseTime(format: ":") {
   const [rebaseTime, setRebaseTime] = useState<string>("-");
   const { epochLength, beginEpochEnd } = constant.rebase;
 

@@ -92,7 +92,7 @@ const PageTitle = () => {
     }
   }, [pathName, isMobile, colorMode]);
 
-  const rebaseTime = useRebaseTime();
+  const rebaseTime = useRebaseTime(":");
 
   const AdditionalInfo = () => {
     switch (pathName) {

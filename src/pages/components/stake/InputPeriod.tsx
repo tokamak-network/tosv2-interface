@@ -35,26 +35,11 @@ type InputProp = {
   maxValue?: string | number;
   rightUnit?: string;
   minValue?: number;
+  leftDays: string;
+  leftTime: string;
 };
 
-type NumberInputProp = {
-  placeHolder?: string;
-  w?: number | string;
-  h?: number | string;
-  isDisabled?: boolean;
-  inputValue?: string | number | any;
-  isError?: boolean;
-  errorMsg?: string;
-  atomKey: string;
-  style?: any;
-  pageKey: PageKey;
-  recoilKey: InputKey;
-  maxValue?: string | number;
-  rightUnit?: string;
-  minValue?: number;
-};
-
-const TextInput: React.FC<InputProp> = (props) => {
+const InputPeriod: React.FC<InputProp> = (props) => {
   const {
     placeHolder,
     w,
@@ -69,6 +54,8 @@ const TextInput: React.FC<InputProp> = (props) => {
     errorMsg,
     rightUnit,
     minValue,
+    leftDays,
+    leftTime,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -123,7 +110,27 @@ const TextInput: React.FC<InputProp> = (props) => {
           value={`${isDisabled ? "-" : value[atomKey]}`}
           onChange={onChange}
         ></Input>
-        <InputRightElement mr={"12px"}>
+        <Flex
+          pos={"absolute"}
+          left={
+            value[atomKey] < 10 || value[atomKey] === undefined
+              ? "27px"
+              : value[atomKey] < 100
+              ? "37px"
+              : "42px"
+          }
+          textAlign={"center"}
+          lineHeight={"39px"}
+          fontSize={14}
+          color={"white.200"}
+        >
+          <Text>Weeks</Text>
+          <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
+            {leftDays} Days {leftTime}
+          </Text>
+        </Flex>
+
+        <InputRightElement mr={"8px"} display="flex" alignItems={"center"}>
           <Button
             w={"30px"}
             h={"20px"}
@@ -131,7 +138,7 @@ const TextInput: React.FC<InputProp> = (props) => {
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}
-            fontWeight={"normal"}
+            fontWeight={600}
             isDisabled={isDisabled}
             onClick={() =>
               maxValue && setValue({ ...inputValue, [atomKey]: maxValue })
@@ -158,101 +165,4 @@ const TextInput: React.FC<InputProp> = (props) => {
   );
 };
 
-function BalanceInput(props: NumberInputProp) {
-  const {
-    placeHolder,
-    w,
-    h,
-    isDisabled,
-    atomKey,
-    isError,
-    style,
-    pageKey,
-    recoilKey,
-    maxValue,
-    errorMsg,
-    rightUnit,
-  } = props;
-  const theme = useTheme();
-  const { colorMode } = useColorMode();
-
-  const { inputValue, value, setValue } = useInput(pageKey!, recoilKey);
-  const selectedModal = useRecoilValue(selectedModalState);
-
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...inputValue, [atomKey]: event.target.value });
-  };
-
-  useEffect(() => {
-    if (maxValue) {
-      return setValue({ ...inputValue, [atomKey]: maxValue.toString() });
-    }
-  }, [maxValue, selectedModal, atomKey]);
-
-  return (
-    <Flex flexDir={"column"} w={w || 270} {...style}>
-      <InputGroup>
-        <NumberInput
-          isInvalid={isError}
-          isDisabled={isDisabled}
-          w={w || 270}
-          h={h || 45}
-          ml={"auto"}
-          borderRadius={8}
-          borderWidth={1}
-          borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
-          fontSize={14}
-          color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
-          _placeholder={{ color: "#64646f" }}
-          _hover={{
-            borderColor: colorMode === "light" ? "#c6cbd9" : "#535353",
-          }}
-          focusBorderColor="none"
-          placeholder={placeHolder}
-          _focus={{
-            outline: "none",
-            color: colorMode === "light" ? "gray.800" : "#f1f1f1",
-            boxShadow: "",
-            borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
-          }}
-          errorBorderColor={"#e23738"}
-          outline="none"
-          defaultValue={maxValue}
-          value={value[atomKey]}
-        >
-          <NumberInputField
-            h={"100%"}
-            placeholder={placeHolder}
-            onChange={onChange}
-            border={{}}
-          ></NumberInputField>
-        </NumberInput>
-        <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
-          <Button
-            w={"30px"}
-            h={"20px"}
-            color={"#64646f"}
-            _hover={{ color: "#2775ff" }}
-            bg={"none"}
-            fontSize={14}
-            fontWeight={600}
-            isDisabled={isDisabled}
-            onClick={() =>
-              maxValue &&
-              setValue({ ...inputValue, [atomKey]: String(maxValue) })
-            }
-          >
-            Max
-          </Button>
-        </InputRightElement>
-      </InputGroup>
-      {isError && (
-        <Flex fontSize={12} color={"#e23738"} justifyContent={"flex-end"}>
-          <Text>{errorMsg}</Text>
-        </Flex>
-      )}
-    </Flex>
-  );
-}
-
-export { TextInput, BalanceInput };
+export default InputPeriod;

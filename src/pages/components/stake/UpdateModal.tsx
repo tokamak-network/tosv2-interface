@@ -63,6 +63,7 @@ import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
 import useUpdateModalConditon from "hooks/stake/useUpdateModalCondition";
 import constant from "constant";
+import InputPeriod from "./InputPeriod";
 
 function BottomContent(props: {
   title: string;
@@ -192,8 +193,15 @@ function UpdateModal() {
     undefined
   );
   const { stakeId } = useStakeId();
-  const { currentBalance, newBalance, currentEndTime, newEndTime, leftWeeks } =
-    useUpdateModalData(newBalanceType);
+  const {
+    currentBalance,
+    newBalance,
+    currentEndTime,
+    newEndTime,
+    leftWeeks,
+    leftDays,
+    leftTime,
+  } = useUpdateModalData(newBalanceType);
   const { maxWeeks } = useStosReward();
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
@@ -420,42 +428,46 @@ function UpdateModal() {
                   <Text>Your Balance</Text>
                   <Text>{userTOSBalance || "-"} TOS</Text>
                 </Flex>
+                <Text
+                  color={colorMode === "light" ? "gray.800" : "white.200"}
+                  fontSize={12}
+                  mb={"10px"}
+                >
+                  new Lock-Up Period
+                </Text>
                 <Flex
                   fontSize={12}
                   alignItems={smallerThan1024 ? "" : "center"}
                   flexDir={smallerThan1024 ? "column" : "row"}
                 >
-                  <Text
-                    mr={"24px"}
-                    color={colorMode === "light" ? "gray.800" : "white.200"}
-                    mb={smallerThan1024 ? "10px" : ""}
-                  >
-                    New Lock-Up Period
-                  </Text>
                   <Flex
                     w={smallerThan1024 ? "100%" : ""}
                     justifyContent={smallerThan1024 ? "space-between" : ""}
                   >
                     <Flex
-                      w={"120px"}
+                      w={"204px"}
                       h={"39px"}
                       border={"1px solid #313442"}
                       borderRadius={8}
                       alignItems={"center"}
-                      justifyContent={"center"}
+                      pl={"15px"}
                       fontSize={14}
                       color={"#64646f"}
                     >
                       <Text>{leftWeeks} Weeks</Text>
+                      <Text fontSize={12} ml={"9px"} mr={"3px"}>
+                        {leftDays} Days {leftTime}
+                      </Text>
+                      <BasicTooltip label={"test"} />
                     </Flex>
                     <Flex mx={"14px"}>
                       <Image src={ArrowImg} alt={"ArrowImg"}></Image>
                     </Flex>
-                    <TextInput
-                      w={"150px"}
+                    <InputPeriod
+                      w={"220px"}
                       h={"39px"}
                       atomKey={"stake_updateModal_period"}
-                      placeHolder={"1 Weeks"}
+                      // placeHolder={"1 Weeks"}
                       pageKey={"Stake_screen"}
                       recoilKey={"update_modal"}
                       // style={{ marginLeft: "auto" }}
@@ -464,7 +476,9 @@ function UpdateModal() {
                       isDisabled={false}
                       errorMsg={"New lock-up period must be equal or greater"}
                       minValue={leftWeeks}
-                    ></TextInput>
+                      leftDays={leftDays}
+                      leftTime={leftTime}
+                    ></InputPeriod>
                   </Flex>
                 </Flex>
               </Flex>

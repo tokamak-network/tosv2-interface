@@ -61,7 +61,7 @@ import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import constant from "constant";
 import GradientSpinner from "../common/GradientSpinner";
 import Tile from "../common/modal/Tile";
-import BottomContent from "../common/modal/BottonContent";
+import BottomContent from "../common/modal/BottomContent";
 
 function BondModal() {
   const theme = useTheme();

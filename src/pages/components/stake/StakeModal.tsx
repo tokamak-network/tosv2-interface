@@ -54,7 +54,7 @@ import useRebaseTime from "hooks/useRebaseTime";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import useStakeModalCondition from "hooks/stake/useStakeModalCondition";
 import constant from "constant";
-import BottomContent from "../common/modal/BottonContent";
+import BottomContent from "../common/modal/BottomContent";
 
 function StakeModal() {
   const theme = useTheme();
@@ -91,10 +91,6 @@ function StakeModal() {
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
     useStakeModalCondition();
   const { errMsg } = constant;
-
-  console.log("--ltos--");
-
-  console.log(ltos);
 
   const contentList = fiveDaysLockup
     ? [
