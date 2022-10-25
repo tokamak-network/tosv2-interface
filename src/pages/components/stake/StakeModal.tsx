@@ -59,7 +59,7 @@ import BottomContent from "../common/modal/BottomContent";
 function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { selectedModalData, selectedModal, closeModal } =
+  const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
@@ -461,7 +461,9 @@ function StakeModal() {
                   name="Stake"
                   onClick={callStake}
                   isDisabled={
-                    fiveDaysLockup ? zeroInputBalance || inputOver : btnDisabled
+                    (fiveDaysLockup
+                      ? zeroInputBalance || inputOver
+                      : btnDisabled) || isModalLoading
                   }
                 ></SubmitButton>
               ) : (

@@ -17,7 +17,7 @@ function StakeCheckbox() {
       justifyContent={["space-between", "space-between", ""]}
       w={["100%", 275, 275]}
     >
-      <Flex>
+      {/* <Flex>
         <CustomCheckBox
           checkAll={true}
           pageKey={"Stake_screen"}
@@ -37,7 +37,7 @@ function StakeCheckbox() {
         w={"160px"}
         h={"45px"}
         onClick={() => openModal()}
-      ></BasicButton>
+      ></BasicButton> */}
     </Flex>
   );
 }

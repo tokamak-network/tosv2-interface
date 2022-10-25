@@ -178,7 +178,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
       >
         {isDisabled && (
           <Flex w={"100%"} justifyContent={"center"} mb={"21px"}>
-            <CustomCheckBox
+            {/* <CustomCheckBox
               valueKey={""}
               pageKey={"Stake_screen"}
               params={cardData}
@@ -190,7 +190,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
               color={colorMode === "dark" ? "white.200" : "gray.800"}
             >
               Unstake Select
-            </Text>
+            </Text> */}
           </Flex>
         )}
         <Flex justifyContent={"space-between"} w={"100%"}>
