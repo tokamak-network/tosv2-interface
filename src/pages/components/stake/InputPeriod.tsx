@@ -68,14 +68,14 @@ const InputPeriod: React.FC<InputProp> = (props) => {
     });
   };
 
-  const leftProperty = useMemo(() => {
-    if (value && atomKey && value[atomKey]) {
-      if (value[atomKey] < 10 || value[atomKey] === undefined) return "27px";
-      if (value[atomKey] && value[atomKey] < 100) return "37px";
-      return "42px";
-    }
-    return "27px";
-  }, [value, atomKey]);
+  // const leftProperty = useMemo(() => {
+  //   if (value && atomKey && value[atomKey]) {
+  //     if (value[atomKey] < 10 || value[atomKey] === undefined) return "27px";
+  //     if (value[atomKey] && value[atomKey] < 100) return "37px";
+  //     return "42px";
+  //   }
+  //   return "27px";
+  // }, [value, atomKey]);
 
   return (
     <Flex flexDir={"column"} {...style}>
@@ -121,7 +121,7 @@ const InputPeriod: React.FC<InputProp> = (props) => {
         ></Input>
         <Flex
           pos={"absolute"}
-          left={leftProperty}
+          left={""}
           textAlign={"center"}
           lineHeight={"39px"}
           fontSize={14}
