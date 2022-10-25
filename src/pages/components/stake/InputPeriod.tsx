@@ -69,7 +69,7 @@ const InputPeriod: React.FC<InputProp> = (props) => {
   };
 
   const leftProperty = useMemo(() => {
-    if (value[atomKey]) {
+    if (value && atomKey && value[atomKey]) {
       if (value[atomKey] < 10 || value[atomKey] === undefined) return "27px";
       if (value[atomKey] && value[atomKey] < 100) return "37px";
       return "42px";
