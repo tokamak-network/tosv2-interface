@@ -243,6 +243,14 @@ function UpdateModalAfterEndTime() {
       inputValue.stake_relockModal_period
     ) {
       if (addTos && inputValue.stake_relockModal_tos_balance) {
+        console.log(
+          "resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks"
+        );
+        console.log(
+          stakeId,
+          convertToWei(inputValue.stake_relockModal_tos_balance),
+          inputValue.stake_relockModal_period
+        );
         return StakingV2Proxy_CONTRACT[
           "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
         ](
