@@ -316,10 +316,13 @@ function UpdateModal() {
   }, [tosAllowance, inputValue.stake_updateModal_tos_balance]);
 
   useEffect(() => {
+    console.log(inputValue.stake_updateModal_tos_balance);
+    console.log(inputValue.stake_updateModal_period);
+    console.log(leftWeeks);
     if (
-      inputValue.stake_updateModal_tos_balance &&
-      inputValue.stake_updateModal_period &&
-      leftWeeks
+      inputValue.stake_updateModal_tos_balance !== undefined &&
+      inputValue.stake_updateModal_period !== undefined &&
+      leftWeeks !== undefined
     ) {
       //https://github.com/Onther-Tech/tosv2-contracts/blob/3f4c3bdb4f4bf3a39adc23e43585456ed98562d5/test/phase1.test.js#L2579-L2599
       //case1
