@@ -21,8 +21,7 @@ function BottomContent(props: {
     thirdTooltip,
   } = props;
   const { colorMode } = useColorMode();
-  //   const { isModalLoading } = useModal();
-  const isModalLoading = false;
+  const { isModalLoading } = useModal();
 
   const ContentComponent = useMemo(() => {
     switch (title) {

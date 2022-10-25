@@ -58,9 +58,16 @@ function BottomContent(props: {
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
-  thirdTooltip?:string;
+  thirdTooltip?: string;
 }) {
-  const { title, content, tooltip, tooltipMessage, secondTooltip,thirdTooltip } = props;
+  const {
+    title,
+    content,
+    tooltip,
+    tooltipMessage,
+    secondTooltip,
+    thirdTooltip,
+  } = props;
   const { colorMode } = useColorMode();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
@@ -87,7 +94,7 @@ function BottomContent(props: {
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
               fontWeight={600}
-              mr={'6px'}
+              mr={"6px"}
             >
               {typeof content !== "string" && content.stos} sTOS
             </Text>
@@ -132,7 +139,7 @@ function BottomContent(props: {
           </Text>
         );
     }
-  }, [title, content, colorMode, secondTooltip]);
+  }, [title, content, colorMode, secondTooltip, thirdTooltip, smallerThan1024]);
 
   return (
     <Flex>
@@ -216,7 +223,7 @@ function UpdateModalAfterEndTime() {
         "Amount of LTOS, sTOS, and TOS you will get after the update. ",
       secondTooltip:
         "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
-        thirdTooltip:
+      thirdTooltip:
         "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {

@@ -21,8 +21,7 @@ function Tile(props: {
   const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
-  // const { isModalLoading } = useModal();
-  const isModalLoading = true;
+  const { isModalLoading } = useModal();
 
   return (
     <Box
