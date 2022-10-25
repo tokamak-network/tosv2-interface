@@ -113,7 +113,8 @@ const InputPeriod: React.FC<InputProp> = (props) => {
         <Flex
           pos={"absolute"}
           left={
-            value[atomKey] < 10 || value[atomKey] === undefined
+            value[atomKey] &&
+            (value[atomKey] < 10 || value[atomKey] === undefined)
               ? "27px"
               : value[atomKey] < 100
               ? "37px"
