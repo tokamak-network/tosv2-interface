@@ -35,11 +35,11 @@ type InputProp = {
   maxValue?: string | number;
   rightUnit?: string;
   minValue?: number;
-  leftDays: string;
-  leftTime: string;
+  leftDays?: string;
+  leftTime?: string;
 };
 
-const InputPeriod: React.FC<InputProp> = (props) => {
+const InputPeriod = (props: InputProp) => {
   const {
     placeHolder,
     w,
@@ -98,7 +98,7 @@ const InputPeriod: React.FC<InputProp> = (props) => {
               : "#f1f1f1"
           }
           _placeholder={{ color: "#64646f" }}
-          placeholder={placeHolder || ""}
+          placeholder={placeHolder}
           _hover={{
             borderColor: colorMode === "light" ? "#c6cbd9" : "#535353",
           }}
@@ -115,7 +115,6 @@ const InputPeriod: React.FC<InputProp> = (props) => {
           }
           outline="none"
           errorBorderColor={isDisabled ? "none" : "#e23738"}
-          // errorBorderColor={isDisabled === false ? "#e23738" : "#e23738"}
           value={`${isDisabled ? "-" : value[atomKey]}`}
           onChange={onChange}
         ></Input>

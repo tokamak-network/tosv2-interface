@@ -63,7 +63,7 @@ import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
 import useUpdateModalConditon from "hooks/stake/useUpdateModalCondition";
 import constant from "constant";
-import InputPeriod from "./InputPeriod";
+import InputPeriod from "common/input/InputPeriod";
 
 function BottomContent(props: {
   title: string;
