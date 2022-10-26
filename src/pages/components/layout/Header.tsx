@@ -64,11 +64,6 @@ function Header(props: HeaderProps) {
   const { pcView } = useMediaView();
   const text = useColorModeValue("dark", "light");
   const { activate, active, account } = useWeb3React();
-  // const handleWalletModalOpen = (state: string) => {
-  //   setWalletState(state);
-  //   onOpen();
-  // };
-
   const txPending = useRecoilValue(selectedTxState);
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
   const { isConnectedToChain } = useClient();
@@ -85,7 +80,7 @@ function Header(props: HeaderProps) {
       bg={colorMode === "light" ? "white.100" : "black.100"}
       position={"sticky"}
       top={0}
-      zIndex={10000}
+      zIndex={100}
     >
       {!pcView && <BurgerButton></BurgerButton>}
       <Flex>
@@ -150,12 +145,16 @@ function Header(props: HeaderProps) {
             border: !account ? "1px solid #2775ff" : "",
           }}
           fontWeight={"bold"}
-          // onClick={props.walletopen}
-          onClick={
-            account === undefined
-              ? props.walletopen
-              : () => setOpenedAccountBar(true)
-          }
+          onClick={() => {
+            //@ts-ignore
+            if (!window.web3) {
+              return window.open("https://metamask.io/download/");
+            }
+            if (account === undefined) {
+              return props.walletopen();
+            }
+            setOpenedAccountBar(true);
+          }}
         >
           {txPending === true ? (
             <TxPending></TxPending>

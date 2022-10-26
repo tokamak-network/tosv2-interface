@@ -7,6 +7,11 @@ function useWallet() {
   const { activate, active, account } = useWeb3React();
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
+    //@ts-ignore
+    if (!window.web3) {
+      return window.open("https://metamask.io/download/");
+    }
+
     Object.keys(SUPPORTED_WALLETS).map((key) => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
         return SUPPORTED_WALLETS[key].name;

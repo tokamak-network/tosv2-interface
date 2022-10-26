@@ -20,7 +20,7 @@ function usePagination(listArr: any[] | undefined) {
       const currentPageData =
         pageCardSize >= listArr.length
           ? listArr.slice((currentPage - 1) * 12)
-          : listArr.slice((currentPage - 1) * 12 + 1, 12 * currentPage + 1);
+          : listArr.slice((currentPage - 1) * 12, 12 * currentPage);
 
       setCurrentPageList(currentPageData);
     }

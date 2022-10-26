@@ -223,8 +223,9 @@ function AccountDrawer(props: HeaderProps) {
               fontWeight={500}
               onClick={() => {
                 deactivate();
+                setIsOpen(false);
               }}
-              _hover={{cursor: account? 'pointer':'not-allowed'}}
+              _hover={{ cursor: account ? "pointer" : "not-allowed" }}
             >
               Disconnect
             </Flex>

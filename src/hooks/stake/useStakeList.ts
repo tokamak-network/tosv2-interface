@@ -150,13 +150,22 @@ function useStakeList() {
           setHasList(true);
         }
 
-        console.log("stakedList");
-        console.log(stakedList);
-
         if (filterValue === "All") {
           if (selectFilterValue === "Recently") {
-            // const recentlyList = stakedList.reverse();
-            return setStakeCards(stakedList);
+            const reversedList = stakedList.reverse();
+            const ltosStaking = stakedList.filter((stakeData) => {
+              if (stakeData?.stakedType === "LTOS Staking") {
+                return stakeData;
+              }
+            });
+            const stakeList = reversedList.filter((stakeData) => {
+              if (stakeData?.stakedType !== "LTOS Staking") {
+                return stakeData;
+              }
+            });
+
+            const recentlyList = ltosStaking.concat(stakeList);
+            return setStakeCards(recentlyList);
           }
           if (selectFilterValue === "Earliest") {
             const ealiestList = stakedList.sort((a, b) => {
@@ -191,6 +200,10 @@ function useStakeList() {
               return stakeData;
             }
           });
+          if (selectFilterValue === "Recently") {
+            const reversedList = bondFilteredList.reverse();
+            return setStakeCards(reversedList);
+          }
           if (selectFilterValue === "Earliest") {
             const ealiestList = bondFilteredList.sort((a, b) => {
               if (a && b) {
@@ -211,7 +224,7 @@ function useStakeList() {
           }
         }
         if (filterValue === "Stake") {
-          const bondFilteredList = stakedList.filter((stakeData) => {
+          const stakeFilteredList = stakedList.filter((stakeData) => {
             if (
               stakeData?.stakedType === "LTOS Staking" ||
               stakeData?.stakedType === "Staking"
@@ -220,8 +233,25 @@ function useStakeList() {
             }
           });
 
+          if (selectFilterValue === "Recently") {
+            const reversedList = stakeFilteredList.reverse();
+            const ltosStaking = stakeFilteredList.filter((stakeData) => {
+              if (stakeData?.stakedType === "LTOS Staking") {
+                return stakeData;
+              }
+            });
+            const stakeList = reversedList.filter((stakeData) => {
+              if (stakeData?.stakedType !== "LTOS Staking") {
+                return stakeData;
+              }
+            });
+
+            const recentlyList = ltosStaking.concat(stakeList);
+            return setStakeCards(recentlyList);
+          }
+
           if (selectFilterValue === "Earliest") {
-            const ealiestList = bondFilteredList.sort((a, b) => {
+            const ealiestList = stakeFilteredList.sort((a, b) => {
               if (a?.stakedType === "LTOS Staking") {
                 return 0;
               }
@@ -234,7 +264,7 @@ function useStakeList() {
             return setStakeCards(ealiestList);
           }
           if (selectFilterValue === "Latest") {
-            const latestList = bondFilteredList
+            const latestList = stakeFilteredList
               .sort((a, b) => {
                 if (a?.stakedType === "LTOS Staking") {
                   return 0;

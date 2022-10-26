@@ -24,7 +24,7 @@ const stake_filter_sort = atom<T_SortValues>({
 const stake_filter_sort_state = selector({
   key: "stake_filter_sort_state", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
-    const stakeFilterSortState = get(stake_filter_radio);
+    const stakeFilterSortState = get(stake_filter_sort);
     return stakeFilterSortState;
   },
 });

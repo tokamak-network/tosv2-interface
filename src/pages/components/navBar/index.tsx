@@ -295,6 +295,7 @@ function MobileSideBar() {
         pt={33}
         alignItems="center"
         bg={colorMode === "light" ? "#ffffff" : "#1f2128"}
+        zIndex={1000000}
       >
         <Flex
           flexDir={isExpended ? "row" : "column"}

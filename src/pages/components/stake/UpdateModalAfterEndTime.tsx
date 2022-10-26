@@ -433,7 +433,7 @@ function UpdateModalAfterEndTime() {
                         </Text>
                         <BasicTooltip
                           label={
-                            "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
+                            "If you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
                           }
                         />
                       </Flex>
