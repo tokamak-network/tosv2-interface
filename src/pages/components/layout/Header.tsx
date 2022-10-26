@@ -83,6 +83,9 @@ function Header(props: HeaderProps) {
       h={"96px"}
       borderBottom={colorMode === "light" ? "1px solid #e8edf2" : ""}
       bg={colorMode === "light" ? "white.100" : "black.100"}
+      position={"sticky"}
+      top={0}
+      zIndex={10000}
     >
       {!pcView && <BurgerButton></BurgerButton>}
       <Flex>

@@ -1,10 +1,11 @@
 import { Select, useColorMode } from "@chakra-ui/react";
-import { stake_filter_sort } from "atom/stake/filter";
+import { stake_filter_sort, T_SortValues } from "atom/stake/filter";
 import { useRecoilState } from "recoil";
 
 function SortSelect() {
   const { colorMode } = useColorMode();
-  const [sortValue, setSortValue] = useRecoilState(stake_filter_sort);
+  const [sortValue, setSortValue] =
+    useRecoilState<T_SortValues>(stake_filter_sort);
 
   return (
     <Select
@@ -17,10 +18,15 @@ function SortSelect() {
       focusBorderColor={colorMode === "light" ? "#c6cbd9" : "#535353"}
       borderColor={colorMode === "dark" ? "#8a8a98" : "#e8edf2"}
       onChange={(e) => {
-        if (e.target.value === "Earliest" || e.target.value === "Latest")
+        if (
+          e.target.value === "Recently" ||
+          e.target.value === "Earliest" ||
+          e.target.value === "Latest"
+        )
           setSortValue(e.target.value);
       }}
     >
+      <option value={"Recently"}>Recently Added</option>
       <option value={"Earliest"}>Earliest </option>
       <option value={"Latest"}>Latest </option>
     </Select>

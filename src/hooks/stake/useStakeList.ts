@@ -2,7 +2,11 @@ import commafy from "@/components/commafy";
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp, isTimeOver } from "@/components/time";
 import { useWeb3React } from "@web3-react/core";
-import { stake_filter_radio, stake_filter_sort } from "atom/stake/filter";
+import {
+  stake_filter_radio,
+  stake_filter_sort,
+  T_SortValues,
+} from "atom/stake/filter";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import useCallContract from "hooks/useCallContract";
 import usePrice from "hooks/usePrice";
@@ -16,7 +20,7 @@ function useStakeList() {
   );
   const [hasList, setHasList] = useState<boolean>(false);
   const filterValue = useRecoilValue(stake_filter_radio);
-  const selectFilterValue = useRecoilValue(stake_filter_sort);
+  const selectFilterValue = useRecoilValue<T_SortValues>(stake_filter_sort);
 
   const { account } = useWeb3React();
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
@@ -84,6 +88,7 @@ function useStakeList() {
                 stakedId
               );
               const connectId = connectIdBN.toString();
+
               if (marketId !== "0") {
                 //BOND without lockup periods
                 if (connectId === "0") {
@@ -145,7 +150,14 @@ function useStakeList() {
           setHasList(true);
         }
 
+        console.log("stakedList");
+        console.log(stakedList);
+
         if (filterValue === "All") {
+          if (selectFilterValue === "Recently") {
+            // const recentlyList = stakedList.reverse();
+            return setStakeCards(stakedList);
+          }
           if (selectFilterValue === "Earliest") {
             const ealiestList = stakedList.sort((a, b) => {
               if (a && b) {

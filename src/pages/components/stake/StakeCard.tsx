@@ -88,6 +88,9 @@ function StakeCard(props: { cardData: StakeCardProps }) {
       ? Number(cardData.staked.ltos.replaceAll("LTOS", "")) === 0
       : !isDisabled;
 
+  const buttonName =
+    stakedType === "LTOS Staking" ? "Stake" : isOver ? "Relock" : "Manage";
+
   return (
     <Flex
       flexDir={"column"}
@@ -195,13 +198,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
         )}
         <Flex justifyContent={"space-between"} w={"100%"}>
           <BasicButton
-            name={
-              stakedType === "LTOS Staking"
-                ? "Stake"
-                : isOver
-                ? "Relock"
-                : "Manage"
-            }
+            name={buttonName}
             h={"33px"}
             onClick={
               stakedType === "LTOS Staking"
@@ -210,6 +207,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
                 ? openUpdateAfterEndTimeModal
                 : openUpdateModal
             }
+            isDisabled={buttonName === "Relock"}
             style={smallerThan1040 ? { width: "100%" } : {}}
             tooltip={
               "You can increase sTOS by using “Manage” function. This costs less gas than using the “Stake” function."

@@ -1,6 +1,8 @@
 import { atom, selector } from "recoil";
 import constant from "constant";
 
+export type T_SortValues = "Earliest" | "Latest" | "Recently";
+
 const stake_filter_radio = atom({
   key: "stake_filter_radio",
   default: "All",
@@ -14,9 +16,9 @@ const stake_filter_radio_state = selector({
   },
 });
 
-const stake_filter_sort = atom<"Earliest" | "Latest">({
+const stake_filter_sort = atom<T_SortValues>({
   key: "stake_filter_sort",
-  default: "Earliest",
+  default: "Recently",
 });
 
 const stake_filter_sort_state = selector({
