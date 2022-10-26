@@ -12,25 +12,30 @@ import {
   Text,
   Grid,
   GridItem,
+  useColorMode,
 } from "@chakra-ui/react";
 import { accountBar } from "atom/global/sidebar";
 import { useRecoilState } from "recoil";
 import WalletIconLayOut from "./components/WalletIconLayout";
 import CLOSE_ICON from "assets/icons/close-modal(white).svg";
+import CLOSE_ICON_LIGHT from "assets/icons/close-modal(dark).svg";
+import TokenSymbol from "common/token/TokenSymol";
 import Image from "next/image";
 import useUserBalance from "hooks/useUserBalance";
 import BasicButton from "common/button/BasicButton";
 import SubmitButton from "common/button/SubmitButton";
 import { useRouter } from "next/router";
 import useModal from "hooks/useModal";
+import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
 
 type HeaderProps = {
   walletopen: () => void;
 };
 
 function TitleText(props: { title: string }) {
+  const { colorMode } = useColorMode();
   return (
-    <Text fontSize={12} color={"#8b8b93"}>
+    <Text fontSize={12} color={colorMode === "light" ? "#7e7e8f" : "#8b8b93"}>
       {props.title}
     </Text>
   );
@@ -39,10 +44,11 @@ function TitleText(props: { title: string }) {
 function AccountDrawer(props: HeaderProps) {
   const [isOpen, setIsOpen] = useRecoilState(accountBar);
   const { userTOSBalance, userLTOSBalance, userSTOSBalance } = useUserBalance();
-
+  const { colorMode } = useColorMode();
   const router = useRouter();
   const { openModal } = useModal("stake_stake_modal");
-
+  const { account, connector, activate, active, error, deactivate } =
+    useWeb3React();
   const sendToStake = () => {
     router.push("/stake");
     openModal();
@@ -58,17 +64,45 @@ function AccountDrawer(props: HeaderProps) {
       }}
     >
       <DrawerOverlay />
-      <DrawerContent bg={"#1f2128"} px={"23px"} minW={"340px"} maxW={"340px"}>
+      <DrawerContent
+        bg={colorMode === "dark" ? "#1f2128" : "white.0"}
+        px={"23px"}
+        minW={"360px"}
+        maxW={"360px"}
+      >
         <DrawerHeader p={0}>
           <Flex alignItems={"center"} pt={"13px"}>
+            <Box
+              h="48px"
+              w="48px"
+              border="1px solid"
+              justifyContent={"center"}
+              alignItems="center"
+              p="12px"
+              borderRadius={"8px"}
+              mr="9px"
+              bg={colorMode === "dark" ? "#07070c" : "transparent"}
+              borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
+            >
+              <TokenSymbol
+                tokenType="ETH"
+                w={"24px"}
+                h={"24px"}
+                imageW="20px"
+                imageH="20px"
+              />
+            </Box>
+
             <WalletIconLayOut
               w={"179px"}
               fontSize={16}
-              bg={"#07070c"}
+              bg={colorMode === "dark" ? "#07070c" : "transparent"}
               h={"48px"}
               pl={"15px"}
               borderRadius={8}
-              border={"1px solid #313442"}
+              border={
+                colorMode === "dark" ? "1px solid #313442" : "1px solid #e8edf2"
+              }
             ></WalletIconLayOut>
             <Text
               fontSize={13}
@@ -81,9 +115,9 @@ function AccountDrawer(props: HeaderProps) {
               Change
             </Text>
             <Image
-              src={CLOSE_ICON}
+              src={colorMode === "dark" ? CLOSE_ICON : CLOSE_ICON_LIGHT}
               alt={"CLOSE_ICON"}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", height: "21px", width: "21px" }}
               onClick={() => setIsOpen(false)}
             ></Image>
           </Flex>
@@ -94,13 +128,15 @@ function AccountDrawer(props: HeaderProps) {
             <GridItem>
               <TitleText title={"Available Balance"}></TitleText>
               <Flex
-                color={"white.200"}
+                color={colorMode === "dark" ? "white.200" : "gray.800"}
                 alignItems={"center"}
                 justifyContent={"space-between"}
                 mt={"6px"}
               >
                 <Flex alignItems={"center"} h={"25px"}>
-                  <Text fontSize={18}>{userTOSBalance || "-"}</Text>
+                  <Text fontSize={18} fontWeight={600}>
+                    {userTOSBalance || "-"}
+                  </Text>
                   <Flex
                     fontSize={12}
                     height={"27px"}
@@ -122,32 +158,48 @@ function AccountDrawer(props: HeaderProps) {
             <GridItem>
               <TitleText title={"My Staked"}></TitleText>
               <Flex
-                color={"white.200"}
+                color={colorMode === "dark" ? "white.200" : "gray.800"}
                 alignItems={"center"}
-                justifyContent={"space-between"}
+                // justifyContent={"space-between"}
                 mt={"8px"}
               >
                 <Flex alignItems={"center"}>
-                  <Text fontSize={16}>{userLTOSBalance}</Text>
+                  <Text fontSize={"16px"} fontWeight={600}>
+                    {userLTOSBalance}
+                  </Text>
                   <Flex
-                    fontSize={12}
+                    fontSize={"12px"}
                     height={"24px"}
                     ml={"5px"}
                     alignItems={"flex-end"}
                     pb={"2px"}
+                    mr="9px"
+                    fontWeight={600}
                   >
                     LTOS
                   </Flex>
                 </Flex>
-                <Text color={"#64646f"}>/</Text>
+                <Text
+                  color={colorMode === "dark" ? "#64646f" : "#9a9aaf"}
+                  mr="9px"
+                >
+                  /
+                </Text>
                 <Flex alignItems={"center"}>
-                  <Text fontSize={16}>{userSTOSBalance}</Text>
+                  <Text
+                    fontWeight={600}
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
+                    fontSize={"16px"}
+                  >
+                    {userSTOSBalance}
+                  </Text>
                   <Flex
-                    fontSize={12}
+                    fontSize={"12px"}
                     height={"24px"}
                     ml={"5px"}
                     alignItems={"flex-end"}
                     pb={"2px"}
+                    fontWeight={600}
                   >
                     sTOS
                   </Flex>
@@ -157,7 +209,27 @@ function AccountDrawer(props: HeaderProps) {
           </Grid>
         </DrawerBody>
 
-        <DrawerFooter></DrawerFooter>
+        <DrawerFooter>
+          <Flex width={"100%"} justifyContent={"center"}>
+            <Flex
+              h="42px"
+              w="170px"
+              border={"1px solid"}
+              borderColor={colorMode === "light" ? "#7e7e8f" : "#8a8a98"}
+              borderRadius="8px"
+              justifyContent="center"
+              alignItems={"center"}
+              color={colorMode === "light" ? "gray.800" : "white.200"}
+              fontWeight={500}
+              onClick={() => {
+                deactivate();
+              }}
+              _hover={{cursor: account? 'pointer':'not-allowed'}}
+            >
+              Disconnect
+            </Flex>
+          </Flex>
+        </DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

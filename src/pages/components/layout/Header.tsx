@@ -64,10 +64,10 @@ function Header(props: HeaderProps) {
   const { pcView } = useMediaView();
   const text = useColorModeValue("dark", "light");
   const { activate, active, account } = useWeb3React();
-  const handleWalletModalOpen = (state: string) => {
-    setWalletState(state);
-    onOpen();
-  };
+  // const handleWalletModalOpen = (state: string) => {
+  //   setWalletState(state);
+  //   onOpen();
+  // };
 
   const txPending = useRecoilValue(selectedTxState);
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);

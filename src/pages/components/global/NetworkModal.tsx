@@ -8,12 +8,16 @@ import {
   ModalContent,
   ModalOverlay,
   Text,
+  useColorMode,
 } from "@chakra-ui/react";
 import useModal from "hooks/useModal";
-import CLOSE_ICON from "assets/icons/close-modal.svg";
+import CLOSE_ICON from "assets/icons/close-modal(white).svg";
+import CLOSE_ICON_LIGHT from "assets/icons/close-modal(dark).svg";
+
 import TokenSymbol from "common/token/TokenSymol";
 import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
+import { cp } from "fs";
 
 const networkList = [
   {
@@ -33,6 +37,7 @@ const networkList = [
 function NetworkModal() {
   const { selectedModal, closeModal } = useModal();
   const { chainId, library } = useWeb3React();
+  const { colorMode } = useColorMode();
 
   const changeNetwork = async (chainIdHex: string) => {
     //@ts-ignore
@@ -53,9 +58,11 @@ function NetworkModal() {
         <ModalBody
           minW={"360px"}
           minH={"223px"}
-          bg={"black.200"}
+          bg={colorMode === "dark" ? "black.200" : "white.0"}
           p={"24px"}
-          color={"white.100"}
+          borderRadius="16px"
+          border={colorMode === "light" ? "solid 1px #e8edf2" : ""}
+          color={colorMode === "dark" ? "white.100" : "gray.800"}
         >
           <Flex flexDir={"column"}>
             <Flex
@@ -67,13 +74,16 @@ function NetworkModal() {
                 Switch Networks
               </Text>
               <Image
-                src={CLOSE_ICON}
+                src={colorMode === "dark" ? CLOSE_ICON : CLOSE_ICON_LIGHT}
                 style={{ cursor: "pointer", right: "15px" }}
-                alt={"CLOSE_ICON"}
+                alt={colorMode === "dark" ? 'CLOSE_ICON' : 'CLOSE_ICON_LIGHT'}
                 onClick={() => closeModal()}
               ></Image>
             </Flex>
-            <Grid color={"white.100"} rowGap={"3px"}>
+            <Grid
+              color={colorMode === "dark" ? "white.100" : "gray.1100"}
+              rowGap={"3px"}
+            >
               {networkList.map((item) => {
                 const isConnected = chainId === item.chainId;
                 return (
@@ -86,7 +96,15 @@ function NetworkModal() {
                     borderRadius={8}
                     key={item.chainId}
                     cursor={isConnected ? "" : "pointer"}
-                    bg={isConnected ? "#70707c" : "#1f2128"}
+                    bg={
+                      isConnected
+                        ? colorMode === "dark"
+                          ? "#70707c"
+                          : "#e2e2ea"
+                        : colorMode === "dark"
+                        ? "#1f2128"
+                        : "#f5f5fa"
+                    }
                     onClick={() => changeNetwork(item.chainIdHex)}
                   >
                     <Flex alignItems={"center"} pl={"12px"}>
@@ -97,7 +115,7 @@ function NetworkModal() {
                         imageW="20px"
                         imageH="20px"
                       />
-                      <Text fontSize={16} fontWeight={600} ml={"15px"}>
+                      <Text fontSize={16} fontWeight={600} ml={"15px"}    color={colorMode === "dark" ? "white.100" : "#07070c"}>
                         {item.name}
                       </Text>
                     </Flex>
