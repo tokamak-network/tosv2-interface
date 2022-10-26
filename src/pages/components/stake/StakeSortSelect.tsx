@@ -2,7 +2,7 @@ import { Select, useColorMode } from "@chakra-ui/react";
 import { stake_filter_sort, T_SortValues } from "atom/stake/filter";
 import { useRecoilState } from "recoil";
 
-function SortSelect() {
+function StakeSortSelect() {
   const { colorMode } = useColorMode();
   const [sortValue, setSortValue] =
     useRecoilState<T_SortValues>(stake_filter_sort);
@@ -29,4 +29,4 @@ function SortSelect() {
   );
 }
 
-export default SortSelect;
+export default StakeSortSelect;

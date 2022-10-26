@@ -4,7 +4,7 @@ import SubmitButton from "common/button/SubmitButton";
 import TabButton from "common/button/TabButton";
 import useStakeList from "hooks/stake/useStakeList";
 import useWallet from "hooks/useWallet";
-import SortSelect from "pages/components/bond/SortSelect";
+import StakeSortSelect from "pages/components/stake/StakeSortSelect";
 import StakeCheckbox from "pages/components/bond/StakeCheckbox";
 import { useState } from "react";
 import StakeRadioGroup from "./BondRadioGroup";
@@ -53,7 +53,7 @@ function StakeCardContainer() {
               mt={["", "", ""]}
             >
               <StakeRadioGroup></StakeRadioGroup>
-              <SortSelect></SortSelect>
+              <StakeSortSelect></StakeSortSelect>
             </Flex>
           </Flex>
           <StakeCardSection></StakeCardSection>
