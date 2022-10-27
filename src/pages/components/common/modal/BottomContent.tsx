@@ -100,7 +100,7 @@ function BottomContent(props: {
           {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
         </Flex>
         {isModalLoading ? (
-          <Flex w={"100px"} h={"30px"}>
+          <Flex w={"100px"} h={"21px"}>
             <GradientSpinner></GradientSpinner>
           </Flex>
         ) : (

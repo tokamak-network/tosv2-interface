@@ -64,6 +64,7 @@ import useCustomToast from "hooks/useCustomToast";
 import useUpdateModalConditon from "hooks/stake/useUpdateModalCondition";
 import constant from "constant";
 import InputPeriod from "common/input/InputPeriod";
+import GradientSpinner from "../common/GradientSpinner";
 
 function BottomContent(props: {
   title: string;
@@ -82,6 +83,7 @@ function BottomContent(props: {
     thirdTooltip,
   } = props;
   const { colorMode } = useColorMode();
+  const { isModalLoading } = useModal();
 
   const ContentComponent = useMemo(() => {
     switch (title) {
@@ -162,7 +164,13 @@ function BottomContent(props: {
           </Text>
           {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
         </Flex>
-        {ContentComponent}
+        {isModalLoading ? (
+          <Flex w={"100px"} h={"21px"}>
+            <GradientSpinner></GradientSpinner>
+          </Flex>
+        ) : (
+          ContentComponent
+        )}
       </Flex>
     </Flex>
   );
@@ -171,10 +179,10 @@ function BottomContent(props: {
 function UpdateModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal } = useModal();
-  const { selectedModalData, selectedModal } = useModal<{
-    ltosAmount: string | undefined;
-  }>();
+  const { selectedModalData, selectedModal, closeModal, isModalLoading } =
+    useModal<{
+      ltosAmount: string | undefined;
+    }>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue, setValue } = useInput(
@@ -283,6 +291,15 @@ function UpdateModal() {
     if (StakingV2Proxy_CONTRACT && stakeId && leftWeeks) {
       //before endTime
       //increaseBeforeEndOrNonEnd(uint256 _stakeId, uint256 _amount uint256, uint256 _unlockWeeks)
+      console.log(`StakingV2Proxy_CONTRACT[
+        "increaseBeforeEndOrNonEnd(uint256,uint256,uint256)"
+      ]`);
+      console.log(
+        stakeId,
+        convertToWei(inputValue.stake_updateModal_tos_balance),
+        inputValue.stake_updateModal_period - leftWeeks
+      );
+
       const tx = await StakingV2Proxy_CONTRACT[
         "increaseBeforeEndOrNonEnd(uint256,uint256,uint256)"
       ](
@@ -316,9 +333,6 @@ function UpdateModal() {
   }, [tosAllowance, inputValue.stake_updateModal_tos_balance]);
 
   useEffect(() => {
-    console.log(inputValue.stake_updateModal_tos_balance);
-    console.log(inputValue.stake_updateModal_period);
-    console.log(leftWeeks);
     if (
       inputValue.stake_updateModal_tos_balance !== undefined &&
       inputValue.stake_updateModal_period !== undefined &&
@@ -344,6 +358,16 @@ function UpdateModal() {
     }
     return setNewBalanceType(undefined);
   }, [inputValue, leftWeeks]);
+
+  useEffect(() => {
+    if (userTOSBalance) {
+      const tosBalance = userTOSBalance?.replaceAll(",", "");
+      setValue({
+        ...inputValue,
+        stake_updateModal_tos_balance: String(tosBalance),
+      });
+    }
+  }, [userTOSBalance]);
 
   return (
     <Modal
@@ -415,7 +439,7 @@ function UpdateModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     atomKey={"stake_updateModal_tos_balance"}
-                    maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
+                    maxValue={Number(userTOSBalance?.replaceAll(",", "")) ?? 0}
                     isError={inputOver}
                     errorMsg={errMsg.balanceExceed}
                   ></BalanceInput>
@@ -523,7 +547,7 @@ function UpdateModal() {
                   w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Update"
-                  isDisabled={btnDisabled}
+                  isDisabled={btnDisabled || isModalLoading}
                   onClick={callUpdate}
                 ></SubmitButton>
               ) : (
@@ -534,7 +558,8 @@ function UpdateModal() {
                     Number(userTOSBalance?.replaceAll(",", "")) <= 0 ||
                     inputValue.stake_updateModal_tos_balance === undefined ||
                     inputValue.stake_updateModal_tos_balance.length === 0 ||
-                    Number(inputValue.stake_updateModal_tos_balance) > 0
+                    Number(inputValue.stake_updateModal_tos_balance) > 0 ||
+                    isModalLoading
                   }
                   name="Approve"
                   isLoading={isApproving}

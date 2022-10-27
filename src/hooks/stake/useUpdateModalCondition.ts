@@ -15,6 +15,9 @@ function useUpdateModalConditon(leftWeeks: number) {
   const inputPeriod = inputValue.stake_updateModal_period;
   const { LOCKTOS_maxWeeks } = constant;
 
+  console.log("--useupdate");
+  console.log(inputTosAmount);
+
   useEffect(() => {
     if (inputTosAmount === undefined || inputTosAmount === "") {
       return setInputOver(false);
@@ -40,7 +43,10 @@ function useUpdateModalConditon(leftWeeks: number) {
 
   useEffect(() => {
     setBtnDisabled(
-      inputOver || inputPeriodOver || inputTosAmount?.length === 0
+      inputOver ||
+        inputPeriodOver ||
+        inputTosAmount === undefined ||
+        inputTosAmount?.length === 0
     );
   }, [inputOver, inputPeriodOver, inputTosAmount]);
 

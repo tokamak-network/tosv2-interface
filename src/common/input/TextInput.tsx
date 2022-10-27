@@ -180,9 +180,6 @@ function BalanceInput(props: NumberInputProp) {
   const selectedModal = useRecoilValue(selectedModalState);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("gogo");
-
-    console.log(event.target.value);
     return setValue({
       ...inputValue,
       [atomKey]: event.target.value,
@@ -190,10 +187,10 @@ function BalanceInput(props: NumberInputProp) {
   };
 
   useEffect(() => {
-    if (maxValue) {
-      return setValue({ ...inputValue, [atomKey]: maxValue.toString() });
+    if (maxValue && atomKey) {
+      return setValue({ ...inputValue, [atomKey]: String(maxValue) });
     }
-  }, [maxValue, selectedModal, atomKey]);
+  }, [maxValue, selectedModal, atomKey, setValue]);
 
   return (
     <Flex flexDir={"column"} w={w || 270} {...style}>
