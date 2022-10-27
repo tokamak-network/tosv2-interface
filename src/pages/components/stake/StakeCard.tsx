@@ -8,6 +8,8 @@ import { BondCardProps } from "types/bond";
 import { StakeCardProps } from "types/stake";
 import BondIcon from "assets/icons/bond.svg";
 import Image from "next/image";
+import { selectedTxState } from "atom/global/tx";
+import { useRecoilValue } from "recoil";
 
 function ContentComponent(props: {
   title: string;
@@ -75,6 +77,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
   const [smallerThan1440] = useMediaQuery("(max-width: 1440px)");
   const { colorMode } = useColorMode();
+  const txPending = useRecoilValue(selectedTxState);
 
   if (!cardData) {
     return null;
@@ -207,14 +210,16 @@ function StakeCard(props: { cardData: StakeCardProps }) {
                 ? openUpdateAfterEndTimeModal
                 : openUpdateModal
             }
-            isDisabled={buttonName === "Relock"}
+            isDisabled={buttonName === "Relock" || txPending}
+            isLoading={txPending}
             style={smallerThan1040 ? { width: "100%" } : {}}
             tooltip={
               "You can increase sTOS by using “Manage” function. This costs less gas than using the “Stake” function."
             }
           ></BasicButton>
           <BasicButton
-            isDisabled={unstakeDisabled}
+            isDisabled={unstakeDisabled || txPending}
+            isLoading={txPending}
             name={"Unstake"}
             h={"33px"}
             onClick={openUnstakeModal}

@@ -14,10 +14,11 @@ type BasicButtonProp = {
   style?: any;
   onClick?: () => void;
   tooltip?: string;
+  isLoading?: boolean;
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const { name, w, h, isDisabled, style, onClick, tooltip } = props;
+  const { name, w, h, isDisabled, style, onClick, tooltip, isLoading } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   return (
@@ -35,6 +36,7 @@ const BasicButton: React.FC<BasicButtonProp> = (props) => {
       }}
       _active={{ backgroundColor: "transparent" }}
       fontSize={12}
+      isLoading={isLoading}
       {...theme.BUTTON_STYLE.basicButtonStyle(colorMode)}
       color={colorMode === "dark" ? "#f1f1f1" : "#07070c"}
       {...style}
