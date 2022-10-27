@@ -4,7 +4,7 @@ import TabButton from "common/button/TabButton";
 import { useState } from "react";
 import BondCardSection from "./BondCardSection";
 import MyHistory from "./MyHistory";
-import SortSelect from "./SortSelect";
+import BondSortSelect from "./BondSortSelect";
 import StakeCheckbox from "./StakeCheckbox";
 
 function BondCardContainer() {
@@ -24,7 +24,8 @@ function BondCardContainer() {
         mb={"27px"}
         alignItems="center"
       >
-        {tab === 0 || (tab === 1 && account && <SortSelect></SortSelect>)}
+        {tab === 0 ||
+          (tab === 1 && account && <BondSortSelect></BondSortSelect>)}
       </Flex>
       {tab === 0 ? (
         <BondCardSection></BondCardSection>

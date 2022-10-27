@@ -7,12 +7,14 @@ import {
 } from "@/components/time";
 import { useQuery } from "@apollo/client";
 import { useWeb3React } from "@web3-react/core";
+import { bond_filter_sort } from "atom/bond/filter";
 import { GET_BOND_MYHISTORY } from "graphql/bond/getBond";
 import { GET_TOKEN_PRICE } from "graphql/general/getTokenPrice";
 import useLockTOS from "hooks/contract/useLockTOS";
 import useCallContract from "hooks/useCallContract";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { GetMyHistory, MyCardProps } from "types/bond";
 
 function useMyHistory() {
@@ -35,6 +37,8 @@ function useMyHistory() {
       tokenId: "ethereum",
     },
   });
+
+  const sortValue = useRecoilValue(bond_filter_sort);
 
   useEffect(() => {
     const fetchListdata = async () => {
@@ -117,7 +121,16 @@ function useMyHistory() {
           }
         });
 
-        return setCardList(await Promise.all(result));
+        const myhistoryList = await Promise.all(result);
+
+        setCardList(myhistoryList);
+
+        // if (sortValue === 'Earliest') {
+        // return setCardList();
+        // } else {
+        // return setCardList();
+
+        // }
       }
     };
     fetchListdata().catch((e) => {
@@ -131,6 +144,7 @@ function useMyHistory() {
     epochUnit,
     StakingV2Proxy_CONTRACT,
     LockTOS_CONTRACT,
+    sortValue,
   ]);
 
   return { cardList };
