@@ -39,8 +39,10 @@ function useUpdateModalConditon(leftWeeks: number) {
   }, [inputPeriod, leftWeeks, LOCKTOS_maxWeeks]);
 
   useEffect(() => {
-    setBtnDisabled(inputOver || inputPeriodOver);
-  }, [inputOver, inputPeriodOver]);
+    setBtnDisabled(
+      inputOver || inputPeriodOver || inputTosAmount?.length === 0
+    );
+  }, [inputOver, inputPeriodOver, inputTosAmount]);
 
   return { inputOver, inputPeriodOver, btnDisabled };
 }

@@ -1,12 +1,9 @@
-import { useToast } from "@chakra-ui/react";
+import { Flex, useToast } from "@chakra-ui/react";
 import { selectedTxState } from "atom/global/tx";
-import {
-  successContainerStyle,
-  errorContainerStyle,
-  toastConfig,
-} from "constants/toast";
+import { toastConfig } from "constants/toast";
 import { useRecoilState } from "recoil";
 import { Contract } from "@ethersproject/contracts";
+import CustomToast from "common/toast/CustomToast";
 
 type ToastPayload = {
   status: "success" | "error";
@@ -29,7 +26,7 @@ function useCustomToast(props?: ToastPayload) {
           status: "success",
           title: "Success",
           description: `Tx is successfully pending!`,
-          ...successContainerStyle,
+          // render: ()=>(<Flex></Flex>),
           ...toastConfig,
         });
         const wait = await receipt.wait();
@@ -43,7 +40,6 @@ function useCustomToast(props?: ToastPayload) {
         status: "error",
         title: "Tx fail to send",
         description: `something went wrong`,
-        ...errorContainerStyle,
         ...toastConfig,
       });
     }

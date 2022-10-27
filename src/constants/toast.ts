@@ -11,20 +11,9 @@ type ToastConfig = {
 };
 
 const toastConfig: ToastConfig = {
-  duration: 5000,
+  duration: 5000000000,
   isClosable: true,
   position: "top",
 };
 
-const successContainerStyle = {
-  backgroundColor: "#50d1b2",
-};
-
-const errorContainerStyle = {
-  backgroundColor: "#e23738",
-};
-
-//  const receipt = await tx.wait();
-//  const { logs } = receipt;
-
-export { toastConfig, successContainerStyle, errorContainerStyle };
+export { toastConfig };

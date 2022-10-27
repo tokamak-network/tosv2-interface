@@ -180,7 +180,13 @@ function BalanceInput(props: NumberInputProp) {
   const selectedModal = useRecoilValue(selectedModalState);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue({ ...inputValue, [atomKey]: event.target.value });
+    console.log("gogo");
+
+    console.log(event.target.value);
+    return setValue({
+      ...inputValue,
+      [atomKey]: event.target.value,
+    });
   };
 
   useEffect(() => {

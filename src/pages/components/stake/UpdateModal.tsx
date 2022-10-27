@@ -210,6 +210,9 @@ function UpdateModal() {
     useUpdateModalConditon(leftWeeks);
   const { errMsg } = constant;
 
+  console.log("-----");
+  console.log(currentBalance);
+
   const contentList = [
     {
       title: "You Give",
@@ -533,7 +536,7 @@ function UpdateModal() {
                   isDisabled={
                     Number(userTOSBalance?.replaceAll(",", "")) <= 0 ||
                     inputValue.stake_updateModal_tos_balance === undefined ||
-                    inputValue.stake_updateModal_tos_balance === "" ||
+                    inputValue.stake_updateModal_tos_balance.length === 0 ||
                     Number(inputValue.stake_updateModal_tos_balance) > 0
                   }
                   name="Approve"

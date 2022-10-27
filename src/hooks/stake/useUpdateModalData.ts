@@ -118,6 +118,13 @@ function useUpdateModalData(
           stos: "-",
         });
       }
+
+      if (inputValue.stake_updateModal_tos_balance?.length === 0) {
+        return setNewBalance({
+          ltos: "-",
+          stos: "-",
+        });
+      }
       if (
         StakingV2Proxy_CONTRACT &&
         stakeId &&
@@ -155,7 +162,7 @@ function useUpdateModalData(
 
           return setNewBalance({
             ltos: commafy(resultLtos),
-            stos: commafy(resultStos),
+            stos: isNaN(resultStos) ? "-" : commafy(resultStos),
           });
         }
 
@@ -170,9 +177,9 @@ function useUpdateModalData(
             Number(stosReward.replaceAll(",", ""));
 
           setNewStosBalance(commafy(resultStos));
-          return setCurrentBalance({
+          return setNewBalance({
             ltos: commafy(resultLtos),
-            stos: commafy(resultStos),
+            stos: isNaN(resultStos) ? "-" : commafy(resultStos),
           });
         }
 
@@ -204,7 +211,7 @@ function useUpdateModalData(
 
           return setNewBalance({
             ltos: commafy(resultLtos),
-            stos: commafy(resultStos),
+            stos: isNaN(resultStos) ? "-" : commafy(resultStos),
           });
         }
       }
