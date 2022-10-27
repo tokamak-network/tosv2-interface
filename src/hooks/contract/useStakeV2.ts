@@ -1,6 +1,6 @@
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp } from "@/components/time";
-import { BigNumber } from "ethers";
+import { BigNumber, utils } from "ethers";
 import useCallContract from "hooks/useCallContract";
 import { useEffect, useState } from "react";
 
@@ -18,16 +18,17 @@ function useStakeV2() {
     async function fetchAsyncData() {
       if (StakingV2Proxy_CONTRACT) {
         const ltosIndexBN = await StakingV2Proxy_CONTRACT.possibleIndex();
-        const ltosIndex = convertNumber({
-          amount: ltosIndexBN?.toString(),
-          decimalPoints: 7,
-        }) as string;
+
+        const ltosIndex = utils.formatUnits(ltosIndexBN.toString(), 18);
+        const splitedLtosIndex = ltosIndex.split(".");
+        const ltosIndexResult =
+          splitedLtosIndex[0] + "." + splitedLtosIndex[1].slice(0, 7);
 
         const rebase = await StakingV2Proxy_CONTRACT.epoch();
         const rebaseTime = rebase.end;
         const nextRebase = convertTimeStamp(rebaseTime.toString(), "HH:mm:ss");
         setStakeV2({
-          ltosIndex,
+          ltosIndex: ltosIndexResult,
           ltosIndexBN,
           nextRebase,
         });
