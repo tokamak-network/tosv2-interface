@@ -210,9 +210,6 @@ function UpdateModal() {
     useUpdateModalConditon(leftWeeks);
   const { errMsg } = constant;
 
-  console.log("-----");
-  console.log(currentBalance);
-
   const contentList = [
     {
       title: "You Give",
