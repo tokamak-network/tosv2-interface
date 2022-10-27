@@ -1,3 +1,4 @@
+import commafy from "@/components/commafy";
 import { convertNumber, convertToWei } from "@/components/number";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
 import { BigNumber } from "ethers";
@@ -16,6 +17,7 @@ type Balance = {
 type UseUpdateMAfterEndTime = {
   newBalance: Balance;
   newEndTime: string;
+  inputTosAmount: string;
 };
 
 const defaultBalanceValue = {
@@ -126,6 +128,7 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
   return {
     newBalance,
     newEndTime,
+    inputTosAmount: commafy(inputTosAmount),
   };
 }
 

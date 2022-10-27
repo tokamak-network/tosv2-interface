@@ -188,7 +188,8 @@ function UpdateModalAfterEndTime() {
   const { userTOSBalance, userLTOSBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-  const { newBalance, newEndTime } = useUpdateModalAfterEndTime(addTos);
+  const { newBalance, newEndTime, inputTosAmount } =
+    useUpdateModalAfterEndTime(addTos);
   const { setTx } = useCustomToast();
 
   const stakeId = selectedModalData?.stakeId;
@@ -204,8 +205,11 @@ function UpdateModalAfterEndTime() {
       } ${addTos ? "TOS" : "LTOS"}`,
       tooltip: true,
       tooltipMessage: "Amount of LTOS and TOS used for staking.",
-      secondTooltip:
-        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      secondTooltip: `Currently worth ${
+        addTos
+          ? inputValue.stake_relockModal_tos_balance || "-"
+          : inputValue.stake_relockModal_ltos_balance || "-"
+      } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
     },
     {
       title: "You Will Get",
@@ -223,10 +227,9 @@ function UpdateModalAfterEndTime() {
       tooltip: true,
       tooltipMessage:
         "Amount of LTOS, sTOS, and TOS you will get after the update. ",
-      secondTooltip:
-        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      secondTooltip: `Currently worth ${inputTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
       thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).`,
     },
     {
       title: "New End Time",
