@@ -29,7 +29,7 @@ import DASHBOARD_LIGHT_HOVER from "assets/icons/dashboard-LightHover.svg";
 import DAO_LIGHT_HOVER from "assets/icons/DAO-LightHover.svg";
 
 import TONSTARTER_GRAY_ICON from "assets/icons/lnb-icon-ton-starter.svg";
-import TONSTARTER_HOVER from "assets/icons/ton-starter.svg";
+import TONSTARTER_HOVER from "assets/icons/TONStarter-HOVER.svg";
 import TONSTARTER_LIGHT from "assets/icons/ton-starter-light.svg";
 
 import MEDIUM_ICON from "assets/icons/medium.svg";
@@ -159,7 +159,7 @@ const NavItem = (props: { isExpended: boolean }) => {
             ? item.link.charAt(0).toUpperCase() + item.link.slice(1)
             : "DAO";
         return (
-          <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
+          <>
             <Flex pos={"relative"}>
               <Flex
                 w={isExpended ? 206 : 54}
@@ -240,7 +240,7 @@ const NavItem = (props: { isExpended: boolean }) => {
                 </Flex>
               )}
             </Flex>
-          </Link>
+          </>
         );
       })}
     </>
@@ -259,8 +259,9 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
     {
       icon: TONSTARTER_GRAY_ICON,
       hoverIcon: TONSTARTER_HOVER,
-      lightHoverIcon: TONSTARTER_LIGHT,
+      lightHoverIcon: TONSTARTER_HOVER,
       link: "TONStarter",
+      href: "https://tonstarter.tokamak.network/",
     },
   ];
   return (
@@ -271,7 +272,7 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
             ? item.link.charAt(0).toUpperCase() + item.link.slice(1)
             : "DAO";
         return (
-          <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
+          <>
             <Flex pos={"relative"}>
               <Flex
                 w={isExpended ? 206 : 54}
@@ -279,7 +280,7 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
                 alignItems="center"
                 justifyContent={isExpended ? "flex-start" : "center"}
                 borderRadius={10}
-                bg={pName === item.link ? "blue.100" : "transparent"}
+                bg={"transparent"}
                 color={
                   isHover === index
                     ? pName === item.link
@@ -295,14 +296,14 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
                 onMouseEnter={() => setIsHover(index)}
                 onMouseLeave={() => setIsHover(undefined)}
                 pl={isExpended ? 15 : 0}
-                onClick={() => setIsOpen(false)}
+                onClick={() => window.open(item.href)}
               >
                 <Image
                   src={
-                    isHover === index && pName !== item.link
-                      ? item.lightHoverIcon
-                      : pName === item.link
-                      ? item.hoverIcon
+                    isHover === index
+                      ? colorMode === "dark"
+                        ? item.hoverIcon
+                        : item.lightHoverIcon
                       : item.icon
                   }
                   alt={"icon"}
@@ -352,7 +353,7 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
                 </Flex>
               )}
             </Flex>
-          </Link>
+          </>
         );
       })}
     </>
@@ -473,7 +474,7 @@ const NavBar = () => {
       // mr={isExpended ? "50%" : "100px"}
     >
       {/* menu button */}
-      <Box onClick={() => setIsExpended(!isExpended)}>
+      <Box onClick={() => setIsExpended(!isExpended)} zIndex={10000}>
         <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
       <Flex
@@ -501,9 +502,10 @@ const NavBar = () => {
         </Text>
       </Flex>
       <NavItem isExpended={isExpended}></NavItem>
-      <Box w={"100%"} mt={18} px={25}>
+      <Box w={"100%"} my={18} px={25}>
         <Line></Line>
       </Box>
+      <NavItemBottom isExpended={isExpended}></NavItemBottom>
       <LinkContainer isExpended={isExpended}></LinkContainer>
     </Flex>
   );

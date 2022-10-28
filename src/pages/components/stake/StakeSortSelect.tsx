@@ -9,7 +9,7 @@ function StakeSortSelect() {
 
   return (
     <Select
-      w={["165px", "190px", "173px"]}
+      w={["170px", "195px", "178px"]}
       h={"45px"}
       bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
       borderWidth={1}
@@ -23,7 +23,7 @@ function StakeSortSelect() {
       }}
     >
       <option value={"Recently"}>Recently Added</option>
-      <option value={"Earliest"}>Earliest </option>
+      <option value={"Earliest"}>End time </option>
       {/* <option value={"Latest"}>Latest </option> */}
     </Select>
   );
