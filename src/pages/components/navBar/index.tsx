@@ -28,6 +28,10 @@ import STAKE_LIGHT_HOVER from "assets/icons/stake-LightHover.svg";
 import DASHBOARD_LIGHT_HOVER from "assets/icons/dashboard-LightHover.svg";
 import DAO_LIGHT_HOVER from "assets/icons/DAO-LightHover.svg";
 
+import TONSTARTER_GRAY_ICON from "assets/icons/lnb-icon-ton-starter.svg";
+import TONSTARTER_HOVER from "assets/icons/ton-starter.svg";
+import TONSTARTER_LIGHT from "assets/icons/ton-starter-light.svg";
+
 import MEDIUM_ICON from "assets/icons/medium.svg";
 import TWITTER_ICON from "assets/icons/twitter.svg";
 import GITHUB_ICON from "assets/icons/github.svg";
@@ -243,6 +247,118 @@ const NavItem = (props: { isExpended: boolean }) => {
   );
 };
 
+const NavItemBottom = (props: { isExpended: boolean }) => {
+  const [isHover, setIsHover] = useState<number | undefined>(undefined);
+  const { isExpended } = props;
+  const router = useRouter();
+  const { pathname } = router;
+  const pName = pathname.replaceAll("/", "");
+  const [isOpen, setIsOpen] = useRecoilState(sidebarState);
+  const { colorMode } = useColorMode();
+  const navItemBottomList = [
+    {
+      icon: TONSTARTER_GRAY_ICON,
+      hoverIcon: TONSTARTER_HOVER,
+      lightHoverIcon: TONSTARTER_LIGHT,
+      link: "TONStarter",
+    },
+  ];
+  return (
+    <>
+      {navItemBottomList.map((item, index) => {
+        const capitalLinkName =
+          item.link !== "dao"
+            ? item.link.charAt(0).toUpperCase() + item.link.slice(1)
+            : "DAO";
+        return (
+          <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
+            <Flex pos={"relative"}>
+              <Flex
+                w={isExpended ? 206 : 54}
+                h={54}
+                alignItems="center"
+                justifyContent={isExpended ? "flex-start" : "center"}
+                borderRadius={10}
+                bg={pName === item.link ? "blue.100" : "transparent"}
+                color={
+                  isHover === index
+                    ? pName === item.link
+                      ? "white.200"
+                      : "#2775ff"
+                    : pName === item.link
+                    ? "white.200"
+                    : colorMode === "dark"
+                    ? "#8b8b93"
+                    : "#7e7e8f"
+                }
+                cursor={"pointer"}
+                onMouseEnter={() => setIsHover(index)}
+                onMouseLeave={() => setIsHover(undefined)}
+                pl={isExpended ? 15 : 0}
+                onClick={() => setIsOpen(false)}
+              >
+                <Image
+                  src={
+                    isHover === index && pName !== item.link
+                      ? item.lightHoverIcon
+                      : pName === item.link
+                      ? item.hoverIcon
+                      : item.icon
+                  }
+                  alt={"icon"}
+                ></Image>
+                {isExpended && <Text ml={"9px"}>{capitalLinkName}</Text>}
+              </Flex>
+              {isHover === index && !isExpended && (
+                <Flex
+                  pos={"absolute"}
+                  ml={"90px"}
+                  mt={2}
+                  px={18}
+                  py={"9px"}
+                  bg={colorMode === "dark" ? "gray.600" : "white.100"}
+                  // bg={'red'}
+                  borderRadius={3}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  color={"#2775ff"}
+                  fontSize={14}
+                  border={
+                    colorMode === "dark"
+                      ? "1px solid #313442"
+                      : "1px solid #e8edf2"
+                  }
+                  zIndex={1000}
+                >
+                  <Flex pos={"relative"}>
+                    <Box
+                      pos={"absolute"}
+                      left={-6}
+                      // bg={"red"}
+                      top={-3}
+                      style={{ transform: `rotate(180deg)` }}
+                    >
+                      <Image
+                        src={
+                          colorMode === "dark"
+                            ? TOOLTIP_ARROW_LEFT_ICON
+                            : TOOLTIP_ARROW_LEFT_LIGHT_ICON
+                        }
+                        alt={"TOOLTIP_ARROW_LEFT_ICON"}
+                      ></Image>
+                    </Box>
+                  </Flex>
+                  <Text>{capitalLinkName}</Text>
+                </Flex>
+              )}
+            </Flex>
+          </Link>
+        );
+      })}
+    </>
+  );
+};
+
 const MenuButton = (props: { isExpended: boolean }) => {
   const { colorMode } = useColorMode();
   return (
@@ -322,9 +438,10 @@ function MobileSideBar() {
           </Text>
         </Flex>
         <NavItem isExpended={isExpended}></NavItem>
-        <Box w={"100%"} mt={18} px={25}>
+        <Box w={"100%"} my={18} px={25}>
           <Line></Line>
         </Box>
+        <NavItemBottom isExpended={isExpended}></NavItemBottom>
         <LinkContainer isExpended={isExpended}></LinkContainer>
       </DrawerContent>
     </Drawer>
