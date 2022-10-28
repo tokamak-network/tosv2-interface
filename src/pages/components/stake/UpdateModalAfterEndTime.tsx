@@ -536,7 +536,6 @@ function UpdateModalAfterEndTime() {
                       tooltip={content.tooltip}
                       tooltipMessage={content.tooltipMessage}
                       secondTooltip={content.secondTooltip}
-                      thirdTooltip={content.thirdTooltip}
                     ></BottomContent>
                   );
                 })}
