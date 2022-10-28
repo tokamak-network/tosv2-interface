@@ -11,7 +11,7 @@ type ToastConfig = {
 };
 
 const toastConfig: ToastConfig = {
-  duration: 5000000000,
+  duration: 5000,
   isClosable: true,
   position: "top",
 };

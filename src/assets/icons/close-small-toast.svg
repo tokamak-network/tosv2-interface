@@ -1,0 +1,7 @@
+<svg data-name="close-small(toast)" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+    <path style="fill:none" d="M0 0h30v30H0z"/>
+    <g style="opacity:.4">
+        <path data-name="선 44" style="stroke:#fff;stroke-linecap:round;stroke-width:1.5px;fill:none" d="m0 0 12 12" transform="translate(9 9)"/>
+        <path data-name="선 45" style="stroke:#fff;stroke-linecap:round;stroke-width:1.5px;fill:none" d="M12 0 0 12" transform="translate(9 9)"/>
+    </g>
+</svg>
