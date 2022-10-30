@@ -12,6 +12,7 @@ type UseModalContract = {
   stosBN: BigNumber;
   currentEndTime: string;
   currentEndTimeStamp: number;
+  currentTosAmount: string;
 };
 
 function useModalContract(): UseModalContract | undefined {
@@ -29,6 +30,10 @@ function useModalContract(): UseModalContract | undefined {
         );
         const stosBalanceBN = await LockTOS_CONTRACT.balanceOfLock(connectId);
         const stakeInfo = await StakingV2Proxy_CONTRACT.stakeInfo(stakeId);
+        const currentTosAmountBN =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
+            ltosBalanceBN
+          );
 
         const ltosBalance =
           convertNumber({
@@ -44,6 +49,11 @@ function useModalContract(): UseModalContract | undefined {
           stakeInfo.endTime,
           "YYYY. MM.DD. HH:mm"
         );
+        const currentTosAmount =
+          convertNumber({
+            amount: currentTosAmountBN.toString(),
+            localeString: true,
+          }) || "0";
         const currentEndTimeStamp = Number(stakeInfo.endTime.toString());
 
         setModalContractData({
@@ -53,6 +63,7 @@ function useModalContract(): UseModalContract | undefined {
           stosBN: stosBalanceBN,
           currentEndTime,
           currentEndTimeStamp,
+          currentTosAmount,
         });
       }
     }

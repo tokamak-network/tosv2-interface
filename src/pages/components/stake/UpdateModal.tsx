@@ -65,6 +65,7 @@ import useUpdateModalConditon from "hooks/stake/useUpdateModalCondition";
 import constant from "constant";
 import InputPeriod from "common/input/InputPeriod";
 import GradientSpinner from "../common/GradientSpinner";
+import useModalContract from "hooks/contract/useModalContract";
 
 function BottomContent(props: {
   title: string;
@@ -209,7 +210,10 @@ function UpdateModal() {
     leftWeeks,
     leftDays,
     leftTime,
+    newTosAmount,
   } = useUpdateModalData(newBalanceType);
+  const modalContractData = useModalContract();
+
   const { maxWeeks } = useStosReward();
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
@@ -231,7 +235,7 @@ function UpdateModal() {
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS before the0 update.",
       secondTooltip: `Currently worth ${
-        inputValue.stake_updateModal_tos_balance || 0
+        modalContractData?.currentTosAmount || "-"
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
         "sTOS’s lock-up period is calculated relative to Thursday 0:00 (UTC+0).",
@@ -241,8 +245,7 @@ function UpdateModal() {
       content: { ltos: newBalance.ltos, stos: newBalance.stos },
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
-      secondTooltip:
-        "Currently worth 200 TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      secondTooltip: `Currently worth ${newTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
         "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },

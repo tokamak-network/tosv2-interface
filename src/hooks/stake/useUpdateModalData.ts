@@ -28,6 +28,7 @@ type UseUpdateModalData = {
   leftWeeks: number;
   leftDays: string;
   leftTime: string;
+  newTosAmount: string;
 };
 
 const defaultBalanceValue = {
@@ -48,6 +49,8 @@ function useUpdateModalData(
   const [leftWeeks, setLeftWeeks] = useState<number>(1);
   const [leftDays, setLeftDays] = useState<string>("-");
   const [leftTime, setLeftTime] = useState<string>("-");
+
+  const [newTosAmount, setNewTosAmount] = useState<string>("-");
 
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
@@ -79,6 +82,9 @@ function useUpdateModalData(
         const currentBalance = { ltos, stos };
         const currentEndTime = modalContractData.currentEndTime;
         const currentEndTimeStamp = modalContractData.currentEndTimeStamp;
+
+        const currentTosAmount =
+          StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(ltos);
 
         setCurrentEndTime(currentEndTime);
         setCurrentBalance(currentBalance);
@@ -153,12 +159,25 @@ function useUpdateModalData(
               localeString: false,
               round: false,
             }) || "0";
+
+          const newTOSAmount =
+            await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(newLTOS);
+
           const resultLtos =
             Number(currentBalance.ltos.replaceAll(",", "")) +
             Number(ltos.replaceAll(",", ""));
           const resultStos =
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
+
+          const newTosAmount =
+            convertNumber({
+              amount: newTOSAmount.toString(),
+              localeString: false,
+              round: false,
+            }) || "-";
+
+          setNewTosAmount(newTosAmount);
 
           return setNewBalance({
             ltos: commafy(resultLtos),
@@ -175,6 +194,8 @@ function useUpdateModalData(
           const resultStos =
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
+
+          setNewTosAmount(modalContractData.currentTosAmount);
 
           setNewStosBalance(commafy(resultStos));
           return setNewBalance({
@@ -201,6 +222,22 @@ function useUpdateModalData(
               localeString: true,
               round: false,
             }) || "0";
+
+          const ltosBN = modalContractData.ltosBN;
+          const totalTosAmountBN = BigNumber.from(ltosBN).add(newLTOS);
+          const newTosAmountBN =
+            await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
+              totalTosAmountBN
+            );
+
+          const newTosAmount =
+            convertNumber({
+              amount: newTosAmountBN.toString(),
+              localeString: true,
+              round: false,
+            }) || "-";
+
+          setNewTosAmount(newTosAmount);
 
           const resultLtos =
             Number(currentBalance.ltos.replaceAll(",", "")) +
@@ -239,6 +276,7 @@ function useUpdateModalData(
     leftWeeks,
     leftDays,
     leftTime,
+    newTosAmount,
   };
 }
 
