@@ -159,7 +159,7 @@ const NavItem = (props: { isExpended: boolean }) => {
             ? item.link.charAt(0).toUpperCase() + item.link.slice(1)
             : "DAO";
         return (
-          <>
+          <Link href={`${item.link}`} key={`nav-item-${index}`} passHref>
             <Flex pos={"relative"}>
               <Flex
                 w={isExpended ? 206 : 54}
@@ -240,7 +240,7 @@ const NavItem = (props: { isExpended: boolean }) => {
                 </Flex>
               )}
             </Flex>
-          </>
+          </Link>
         );
       })}
     </>
