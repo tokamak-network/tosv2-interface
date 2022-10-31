@@ -79,12 +79,10 @@ function useStakeModaldata(): StakeModalBottomContents {
         setCurrentBlaance(currentBalance);
 
         //new balance
-        const newBalanceBN = BigNumber.from(currentBalanceWei).add(
-          convertToWei(LTOS_BN.toString())
-        );
         const newBalance =
-          convertNumber({ amount: newBalanceBN.toString() }) || "0";
-        setNewBalance(newBalance);
+          Number(ltos.replaceAll(",", "")) +
+          Number(currentBalance.replaceAll(",", ""));
+        setNewBalance(commafy(String(newBalance)));
       }
     };
     fetchListdata()
