@@ -39,13 +39,19 @@ function useUpdateModalConditon(leftWeeks: number) {
   }, [inputPeriod, leftWeeks, LOCKTOS_maxWeeks]);
 
   useEffect(() => {
-    setBtnDisabled(
+    if (
       inputOver ||
-        inputPeriodOver ||
-        inputTosAmount === undefined ||
-        inputTosAmount?.length === 0
-    );
-  }, [inputOver, inputPeriodOver, inputTosAmount]);
+      inputPeriodOver ||
+      inputTosAmount === undefined ||
+      inputTosAmount?.length === 0
+    ) {
+      return setBtnDisabled(true);
+    }
+    if (Number(inputTosAmount) === 0 && inputPeriod - leftWeeks === 0) {
+      return setBtnDisabled(true);
+    }
+    return setBtnDisabled(false);
+  }, [inputOver, inputPeriodOver, inputTosAmount, inputPeriod, leftWeeks]);
 
   return { inputOver, inputPeriodOver, btnDisabled };
 }
