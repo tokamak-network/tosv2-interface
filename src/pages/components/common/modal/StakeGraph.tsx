@@ -20,6 +20,7 @@ import {
   SliderMark,
   Tooltip,
 } from "@chakra-ui/react";
+import constant from "constant";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 import { PageKey } from "types";
@@ -74,7 +75,7 @@ function StakeGraph(props: {
       }
     }
     return setValue({ ...inputValue, [periodKey]: sliderValue });
-  }, [sliderValue, periodKey, balanceKey]);
+  }, [sliderValue, periodKey, balanceKey, isChanged]);
 
   useEffect(() => {
     if (inputValue[periodKey])
@@ -93,7 +94,7 @@ function StakeGraph(props: {
         aria-label="slider-ex-1"
         defaultValue={0}
         min={1}
-        max={156}
+        max={constant.modalMaxWeeks}
         value={sliderValue}
         onChange={(val: number) => {
           if (minValue && minValue > val) {

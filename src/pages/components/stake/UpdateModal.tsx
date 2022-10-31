@@ -291,7 +291,7 @@ function UpdateModal() {
   const callUpdate = useCallback(async () => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
-    if (StakingV2Proxy_CONTRACT && stakeId && leftWeeks) {
+    if (StakingV2Proxy_CONTRACT && stakeId && leftWeeks >= 0) {
       //before endTime
       //increaseBeforeEndOrNonEnd(uint256 _stakeId, uint256 _amount uint256, uint256 _unlockWeeks)
       console.log(`StakingV2Proxy_CONTRACT[
@@ -313,6 +313,7 @@ function UpdateModal() {
       setTx(tx);
       return closeThisModal();
     }
+    console.log("?");
   }, [
     inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period,
@@ -370,7 +371,7 @@ function UpdateModal() {
         stake_updateModal_tos_balance: String(tosBalance),
       });
     }
-  }, [userTOSBalance]);
+  }, [userTOSBalance, setValue]);
 
   return (
     <Modal
@@ -501,7 +502,7 @@ function UpdateModal() {
                       pageKey={"Stake_screen"}
                       recoilKey={"update_modal"}
                       // style={{ marginLeft: "auto" }}
-                      maxValue={156}
+                      maxValue={constant.modalMaxWeeks}
                       isError={inputPeriodOver}
                       isDisabled={false}
                       errorMsg={"New lock-up period must be equal or greater"}
