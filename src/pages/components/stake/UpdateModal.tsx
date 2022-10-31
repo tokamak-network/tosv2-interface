@@ -463,7 +463,7 @@ function UpdateModal() {
                   fontSize={12}
                   mb={"10px"}
                 >
-                  new Lock-Up Period
+                  New Lock-Up Period
                 </Text>
                 <Flex
                   fontSize={12}
