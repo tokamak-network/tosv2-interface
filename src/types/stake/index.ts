@@ -26,4 +26,6 @@ export type StakeModalBottomContents = {
   ltos: string | undefined;
   currentBalance: string | undefined;
   newBalance: string | undefined;
+  currentTosValue: string | undefined;
+  newBalanceTosValue: string | undefined;
 };

@@ -31,6 +31,13 @@ function useStakeModaldata(): StakeModalBottomContents {
   const [newBalance, setNewBalance] = useState<string | undefined>(undefined);
   const [endTime, setEndTime] = useState<string | undefined>(undefined);
 
+  const [currentTosValue, setCurrentTosValue] = useState<string | undefined>(
+    undefined
+  );
+  const [newBalanceTosValue, setNewBalanceTosValue] = useState<
+    string | undefined
+  >(undefined);
+
   const { BondDepositoryProxy_CONTRACT, StakingV2Proxy_CONTRACT } =
     useCallContract();
   const { account } = useWeb3React();
@@ -75,14 +82,35 @@ function useStakeModaldata(): StakeModalBottomContents {
             amount: currentBalanceWei.toString(),
             localeString: true,
           }) || "0";
+        const tosBalanceBN =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
+            currentBalanceWei
+          );
+        const tosBalance =
+          convertNumber({
+            amount: tosBalanceBN.toString(),
+            localeString: true,
+          }) || "0";
 
         setCurrentBlaance(currentBalance);
+        setCurrentTosValue(tosBalance);
 
         //new balance
         const newBalance =
           Number(ltos.replaceAll(",", "")) +
           Number(currentBalance.replaceAll(",", ""));
         setNewBalance(commafy(String(newBalance)));
+
+        const newBalanceBN = convertToWei(String(newBalance));
+        const newBalanceTosBN =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(newBalanceBN);
+        const newBlanaceTos =
+          convertNumber({
+            amount: newBalanceTosBN.toString(),
+            localeString: true,
+          }) || "0";
+
+        setNewBalanceTosValue(newBlanaceTos);
       }
     };
     fetchListdata()
@@ -107,6 +135,8 @@ function useStakeModaldata(): StakeModalBottomContents {
     ltos,
     currentBalance,
     newBalance,
+    currentTosValue,
+    newBalanceTosValue,
   };
 }
 

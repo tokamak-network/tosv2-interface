@@ -63,7 +63,13 @@ function StakeModal() {
     useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
-  const { ltos, currentBalance, newBalance } = useStakeModaldata();
+  const {
+    ltos,
+    currentBalance,
+    newBalance,
+    currentTosValue,
+    newBalanceTosValue,
+  } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance } = useUserBalance();
@@ -115,7 +121,7 @@ function StakeModal() {
           content: `${currentBalance || "-"} LTOS`,
           tooltip: true,
           tooltipMessage: "Current LTOS balance without Lock-Up period",
-          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+          secondTooltip: `${currentTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         },
         {
           title: "New Balance",
@@ -123,7 +129,7 @@ function StakeModal() {
           tooltip: true,
           tooltipMessage:
             "New LTOS balance without Lock-Up period after staking. ",
-          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+          secondTooltip: `${newBalanceTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         },
       ]
     : [
