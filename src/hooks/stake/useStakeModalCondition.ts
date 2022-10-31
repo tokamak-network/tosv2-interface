@@ -40,6 +40,7 @@ function useStakeModalCondition() {
     }
     return () => {
       setZeroInputBalance(false);
+      setInputOver(false);
     };
   }, [inputTosAmount, userTOSBalance, isModalLoading]);
 

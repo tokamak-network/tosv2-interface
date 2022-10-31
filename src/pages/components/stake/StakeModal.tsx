@@ -238,7 +238,7 @@ function StakeModal() {
     if (userTOSBalance) {
       setTimeout(() => {
         setMaxValue(Number(userTOSBalance.replaceAll(",", "")));
-      }, 1500);
+      }, 2000);
     }
   }, [userTOSBalance]);
 
