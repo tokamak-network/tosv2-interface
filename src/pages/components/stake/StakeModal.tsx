@@ -76,7 +76,7 @@ function StakeModal() {
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const { stosReward, newEndTime, maxWeeks } = useStosReward(
+  const { stosReward, newEndTime } = useStosReward(
     inputValue.stake_modal_balance,
     inputValue.stake_modal_period
   );
@@ -90,7 +90,7 @@ function StakeModal() {
   const { setTx } = useCustomToast();
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
     useStakeModalCondition();
-  const { errMsg } = constant;
+  const { errMsg, modalMaxWeeks } = constant;
 
   const contentList = fiveDaysLockup
     ? [
@@ -382,11 +382,9 @@ function StakeModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
-                      maxValue={maxWeeks}
+                      maxValue={modalMaxWeeks}
                       isError={true}
-                      errorMsg={
-                        "Lock-up period must be an integer between 1 and 156"
-                      }
+                      errorMsg={errMsg.periodExceed}
                     ></TextInput>
                   </Flex>
                 ) : (
@@ -414,11 +412,9 @@ function StakeModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
-                      maxValue={maxWeeks}
+                      maxValue={modalMaxWeeks}
                       isError={inputPeriodOver}
-                      errorMsg={
-                        "Lock-up period must be an integer between 1 and 156"
-                      }
+                      errorMsg={errMsg.periodExceed}
                     ></TextInput>
                   </Flex>
                 )}

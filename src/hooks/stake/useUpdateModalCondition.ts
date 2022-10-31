@@ -13,7 +13,7 @@ function useUpdateModalConditon(leftWeeks: number) {
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const inputTosAmount = inputValue.stake_updateModal_tos_balance;
   const inputPeriod = inputValue.stake_updateModal_period;
-  const { LOCKTOS_maxWeeks } = constant;
+  const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
 
   useEffect(() => {
     if (inputTosAmount === undefined || inputTosAmount === "") {
@@ -31,7 +31,7 @@ function useUpdateModalConditon(leftWeeks: number) {
     if (
       LOCKTOS_maxWeeks < Number(inputPeriod) ||
       Number(inputPeriod) < leftWeeks ||
-      Number(inputPeriod) < 1
+      Number(inputPeriod) < 0
     ) {
       return setInputPeriodOver(true);
     }

@@ -84,7 +84,7 @@ function StakeGraph(props: {
 
   useEffect(() => {
     if (isSlideDisabled) return setSliderValue(0);
-    return setSliderValue(156);
+    return setSliderValue(constant.modalMaxWeeks);
   }, [isSlideDisabled]);
 
   return (
@@ -93,7 +93,7 @@ function StakeGraph(props: {
         focusThumbOnChange={false}
         aria-label="slider-ex-1"
         defaultValue={0}
-        min={1}
+        min={0}
         max={constant.modalMaxWeeks}
         value={sliderValue}
         onChange={(val: number) => {
@@ -123,7 +123,7 @@ function StakeGraph(props: {
         <SliderMark value={104} {...labelStyles}>
           2y
         </SliderMark>
-        <SliderMark value={156} {...labelStyles}>
+        <SliderMark value={155} {...labelStyles}>
           3y
         </SliderMark>
 
@@ -146,7 +146,7 @@ function StakeGraph(props: {
           <SliderFilledTrack bg={"#2775ff"} />
           {minValue && (
             <SliderFilledTrack
-              maxW={`${(minValue / 156) * 100}%`}
+              maxW={`${(minValue / 155) * 100}%`}
               bg={"#2bb415"}
             />
           )}

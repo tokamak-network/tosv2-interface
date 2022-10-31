@@ -12,7 +12,7 @@ function useBondModalCondition(maxValue: number | undefined) {
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const inputBalance = inputValue.bond_modal_balance;
   const inputPeriod = inputValue.bond_modal_period;
-  const { LOCKTOS_maxWeeks } = constant;
+  const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
 
   useEffect(() => {
     if (inputBalance === undefined || inputBalance === "") {

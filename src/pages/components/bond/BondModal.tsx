@@ -88,7 +88,7 @@ function BondModal() {
 
   const { setTx } = useCustomToast();
   const { ltosIndex } = useLtosIndex();
-  const { LOCKTOS_maxWeeks } = constant;
+  const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
 
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState

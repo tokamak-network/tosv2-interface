@@ -1,7 +1,7 @@
 import { atom, selector } from "recoil";
 
 //stake & update max weeks
-const maxPeriod = 156;
+const maxPeriod = 155;
 
 //stake modal states
 const bond_bondModal_defaultValue = {

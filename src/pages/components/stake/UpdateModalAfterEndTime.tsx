@@ -508,7 +508,7 @@ function UpdateModalAfterEndTime() {
                     atomKey={"stake_relockModal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
-                    maxValue={constant.LOCKTOS_maxWeeks}
+                    maxValue={constant.modalMaxWeeks}
                   ></TextInput>
                 </Flex>
               </Flex>

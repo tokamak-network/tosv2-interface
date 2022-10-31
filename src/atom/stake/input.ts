@@ -2,7 +2,7 @@ import { atom, selector } from "recoil";
 import constant from "constant";
 
 //stake & update max weeks
-const maxPeriod = constant.LOCKTOS_maxWeeks;
+const maxPeriod = constant.modalMaxWeeks;
 
 //stake modal states
 const stake_stakeModal_defaultValue = {
