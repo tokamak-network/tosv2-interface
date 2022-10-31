@@ -390,7 +390,7 @@ function BondModal() {
                         <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
                       </Flex>
                     </Flex>
-                    <TextInput
+                    <BalanceInput
                       w={"100%"}
                       h={"39px"}
                       pageKey={"Bond_screen"}
@@ -399,7 +399,7 @@ function BondModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
-                    ></TextInput>
+                    ></BalanceInput>
                   </Flex>
                 ) : (
                   <Flex fontSize={12} alignItems="center" mt="10px">

@@ -180,9 +180,18 @@ function BalanceInput(props: NumberInputProp) {
   const selectedModal = useRecoilValue(selectedModalState);
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let newValue = event.target.value;
+    if (String(newValue).split(".").length >= 3) {
+      // const index = newValue.lastIndexOf(".");
+      // newValue = newValue.substring(0, index);
+      return;
+    }
+    if (newValue === ".") {
+      return;
+    }
     return setValue({
       ...inputValue,
-      [atomKey]: event.target.value,
+      [atomKey]: newValue,
     });
   };
 

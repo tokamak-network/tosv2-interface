@@ -37,6 +37,7 @@ type InputProp = {
   minValue?: number;
   leftDays?: string;
   leftTime?: string;
+  isDisabledText?: string | number;
 };
 
 const InputPeriod = (props: InputProp) => {
@@ -56,6 +57,7 @@ const InputPeriod = (props: InputProp) => {
     minValue,
     leftDays,
     leftTime,
+    isDisabledText,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -115,7 +117,7 @@ const InputPeriod = (props: InputProp) => {
           }
           outline="none"
           errorBorderColor={isDisabled ? "none" : "#e23738"}
-          value={`${isDisabled ? "-" : value[atomKey]}`}
+          value={`${isDisabled ? isDisabledText || "-" : value[atomKey]}`}
           onChange={onChange}
         ></Input>
         <Flex
@@ -126,7 +128,7 @@ const InputPeriod = (props: InputProp) => {
           fontSize={14}
           color={"white.200"}
         >
-          <Text>Weeks</Text>
+          <Text color={isDisabled ? "#8b8b93" : ""}>Weeks</Text>
           <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
             {leftDays} Days {leftTime}
           </Text>
@@ -154,7 +156,7 @@ const InputPeriod = (props: InputProp) => {
         <Flex
           fontSize={12}
           color={"#e23738"}
-          justifyContent={"flex-end"}
+          justifyContent={"flex-eisDisabledTextnd"}
           pos={"absolute"}
           mt={"40px"}
           textAlign={"right"}

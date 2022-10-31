@@ -505,6 +505,7 @@ function UpdateModal() {
                       maxValue={constant.modalMaxWeeks}
                       isError={inputPeriodOver}
                       isDisabled={leftWeeks === constant.modalMaxWeeks}
+                      isDisabledText={constant.modalMaxWeeks}
                       errorMsg={"New lock-up period must be equal or greater"}
                       minValue={leftWeeks}
                       leftDays={leftDays}
