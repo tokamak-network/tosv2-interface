@@ -180,15 +180,13 @@ function StakeModal() {
         setTx(tx);
         return closeThisModal();
       }
+      const periodWeeks = inputValue.stake_modal_period + 1;
       console.log("---stakeGetStos()---");
-      console.log(
-        convertToWei(inputValue.stake_modal_balance),
-        inputValue.stake_modal_period
-      );
+      console.log(convertToWei(inputValue.stake_modal_balance), periodWeeks);
 
       const tx = await StakingV2Proxy_CONTRACT.stakeGetStos(
         convertToWei(inputValue.stake_modal_balance),
-        inputValue.stake_modal_period
+        periodWeeks
       );
       setTx(tx);
       return closeThisModal();
