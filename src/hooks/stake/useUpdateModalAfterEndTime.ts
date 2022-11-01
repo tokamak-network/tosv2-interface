@@ -1,11 +1,13 @@
 import commafy from "@/components/commafy";
 import { convertNumber, convertToWei } from "@/components/number";
 import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import constant from "constant";
 import { BigNumber } from "ethers";
 import useStakeId from "hooks/contract/useStakeId";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
-import { useEffect, useState } from "react";
+import moment from "moment";
+import { useEffect, useMemo, useState } from "react";
 import useStosReward from "./useStosReward";
 
 type Balance = {
@@ -17,6 +19,7 @@ type Balance = {
 type UseUpdateMAfterEndTime = {
   newBalance: Balance;
   newEndTime: string;
+  newEndTimeWithoutStos: string;
   inputTosAmount: string;
   tosValue: string;
 };
@@ -30,6 +33,8 @@ const defaultBalanceValue = {
 function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
   const [newEndTime, setNewEndTime] = useState<string>("-");
+  const [newEndTimeWithoutStos, setNewEndTimeWithoutStos] =
+    useState<string>("-");
   const [tosValue, setTosValue] = useState<string>("-");
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
@@ -127,9 +132,19 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
         //endTime
         const inputPeriod = inputValue.stake_relockModal_period;
         const sTosEpochUnit = await LockTOS_CONTRACT.epochUnit();
-        const unlockTimeStamp =
-          getNowTimeStamp() + inputPeriod * Number(sTosEpochUnit.toString());
-        const endTime = convertTimeStamp(unlockTimeStamp, "YYYY. MM.DD. HH:mm");
+        const epochUnit = Number(sTosEpochUnit.toString());
+        const now = getNowTimeStamp();
+        const unlockTimeStamp = now + inputPeriod * epochUnit;
+        const endTimeWithoutStos = convertTimeStamp(
+          unlockTimeStamp,
+          "YYYY. MM.DD. HH:mm"
+        );
+        setNewEndTimeWithoutStos(endTimeWithoutStos || "-");
+
+        //old script
+        const date =
+          Math.floor((now + inputPeriod * epochUnit) / epochUnit) * epochUnit;
+        const endTime = moment.unix(date).format("YYYY.MM.DD");
         setNewEndTime(endTime || "-");
       }
     }
@@ -142,6 +157,7 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
   return {
     newBalance,
     newEndTime,
+    newEndTimeWithoutStos,
     inputTosAmount: commafy(inputTosAmount),
     tosValue,
   };

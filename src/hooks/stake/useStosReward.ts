@@ -8,6 +8,7 @@ import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -15,8 +16,8 @@ type UseStosReward = {
   stosReward: string;
   originalTosAmount: string;
   newEndTime: string;
+  newEndTimeWithoutStos: string;
   maxWeeks: number;
-  unlockTime: number;
 };
 
 function useStosReward(
@@ -26,8 +27,10 @@ function useStosReward(
   const [stosReward, setStosRewards] = useState<string>("0");
   const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
   const [newEndTime, setNewEndTime] = useState<string>("-");
+  const [newEndTimeWithoutStos, setNewEndTimeWithoutStos] =
+    useState<string>("-");
   const [maxWeeks, setMaxWeeks] = useState<number>(156);
-  const [unlockTime, setUnlockTime] = useState<number>(0);
+
   const { LockTOS_CONTRACT } = useCallContract();
   const modalContractData = useModalContract();
   const { epochUnit } = useLockTOS();
@@ -36,7 +39,10 @@ function useStosReward(
 
   useEffect(() => {
     async function fetchStosRewardData() {
-      if (inputTosAmount?.toString() === "") {
+      if (
+        inputTosAmount?.toString() === "" ||
+        inputTosAmount?.toString().length === 0
+      ) {
         return setStosRewards("-");
       }
       if (inputTosAmount === undefined) {
@@ -49,7 +55,7 @@ function useStosReward(
         return setStosRewards("0");
       }
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
-        const weekPeriod = inputPeriod || 1;
+        const weekPeriod = inputPeriod + 1 || 1;
 
         //New script
         const interestRate = 0.00008704505; // 이자율 0.0087% = 0.000087 (APY =9.994%)
@@ -92,10 +98,18 @@ function useStosReward(
     //endTime
     async function calculateUnlockTime() {
       if (LockTOS_CONTRACT && inputPeriod) {
+        const _inputPeriod = inputPeriod + 1;
+        const now = getNowTimeStamp();
         const unlockTimeStamp =
-          getNowTimeStamp() + inputPeriod * Number(epochUnit);
-        setNewEndTime(convertTimeStamp(unlockTimeStamp, "YYYY. MM.DD. HH:mm"));
-        return setUnlockTime(unlockTimeStamp);
+          getNowTimeStamp() + _inputPeriod * Number(epochUnit);
+        setNewEndTimeWithoutStos(
+          convertTimeStamp(unlockTimeStamp, "YYYY. MM.DD. HH:mm")
+        );
+        //old script
+        const date =
+          Math.floor((now + _inputPeriod * epochUnit) / epochUnit) * epochUnit;
+        const endTime = moment.unix(date).format("YYYY.MM.DD");
+        setNewEndTime(endTime || "-");
       }
     }
 
@@ -105,7 +119,13 @@ function useStosReward(
     });
   }, [LockTOS_CONTRACT, inputPeriod, epochUnit]);
 
-  return { stosReward, newEndTime, maxWeeks, unlockTime, originalTosAmount };
+  return {
+    stosReward,
+    newEndTime,
+    newEndTimeWithoutStos,
+    maxWeeks,
+    originalTosAmount,
+  };
 }
 
 export default useStosReward;

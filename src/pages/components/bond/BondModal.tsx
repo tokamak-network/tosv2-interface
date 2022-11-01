@@ -147,18 +147,15 @@ function BondModal() {
     try {
       if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
         const inputAmount = inputValue.bond_modal_balance;
+        const periodWeeks = inputValue.bond_modal_period + 1;
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           console.log("---ETHDepositWithSTOS()---");
-          console.log(
-            marketId,
-            convertToWei(inputAmount),
-            inputValue.bond_modal_period
-          );
+          console.log(marketId, convertToWei(inputAmount), periodWeeks);
           const tx = await BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
             marketId,
             convertToWei(inputAmount),
-            inputValue.bond_modal_period,
+            periodWeeks,
             { value: convertToWei(inputAmount) }
           );
           setTx(tx);

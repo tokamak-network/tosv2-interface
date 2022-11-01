@@ -95,7 +95,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
     async function fetchBondModalInputData() {
       if (
         inputValue?.bond_modal_balance === "" ||
-        inputValue?.bond_modal_balance === undefined
+        inputValue?.bond_modal_balance === undefined ||
+        inputValue?.bond_modal_balance.length === 0
       ) {
         return setInputTosAmount(undefined);
       }
