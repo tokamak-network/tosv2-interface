@@ -190,7 +190,7 @@ function useBondModalInputData(marketId: number): UseUnstake {
 
   useEffect(() => {
     async function fetchBondModalInputData() {
-      return setEndTime(`${newEndTime} (${getTimeZone()})`);
+      return setEndTime(`${newEndTime}`);
     }
     fetchBondModalInputData().catch((e) => {
       console.log("**useBondModalInputData2 err**");

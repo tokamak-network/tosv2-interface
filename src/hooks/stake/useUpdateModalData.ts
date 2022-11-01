@@ -4,6 +4,7 @@ import {
   convertTimeStamp,
   getDuration,
   getNowTimeStamp,
+  getTimeZone,
 } from "@/components/time";
 import { BigNumber } from "ethers";
 import useLockTOS from "hooks/contract/useLockTOS";
@@ -45,7 +46,6 @@ function useUpdateModalData(
   const [newLtosBalance, setNewLtosBalance] = useState<string>("-");
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
   const [currentEndTime, setCurrentEndTime] = useState<string>("-");
-  const [newEndTime, setNewEndTime] = useState<string>("-");
   const [leftWeeks, setLeftWeeks] = useState<number>(1);
   const [leftDays, setLeftDays] = useState<string>("-");
   const [leftTime, setLeftTime] = useState<string>("-");
@@ -62,15 +62,11 @@ function useUpdateModalData(
       ? 1
       : inputValue.stake_updateModal_period - leftWeeks
   );
-  const { unlockTime } = useStosReward(
+  const { newEndTime } = useStosReward(
     inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period
   );
   const { epochUnit } = useLockTOS();
-
-  useEffect(() => {
-    setNewEndTime(convertTimeStamp(unlockTime, "YYYY. MM.DD. HH:mm"));
-  }, [unlockTime]);
 
   //current
   useEffect(() => {
@@ -86,7 +82,7 @@ function useUpdateModalData(
         const currentTosAmount =
           StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(ltos);
 
-        setCurrentEndTime(currentEndTime);
+        setCurrentEndTime(`${currentEndTime} (${getTimeZone()})`);
         setCurrentBalance(currentBalance);
 
         //weeks left
@@ -263,7 +259,6 @@ function useUpdateModalData(
     inputValue,
     stosReward,
     modalContractData,
-    unlockTime,
     currentBalance,
     newBalanceType,
   ]);

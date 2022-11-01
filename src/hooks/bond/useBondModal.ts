@@ -68,6 +68,8 @@ function useBondModal() {
           );
         const ltosIndexWei = await StakingV2Proxy_CONTRACT?.possibleIndex();
 
+        const bondInfo = await BondDepositoryProxy_CONTRACT.getBonds();
+
         const gasPriceWei = await context.library?.getGasPrice();
         const gasPrice = Number(utils.formatUnits(gasPriceWei, 9));
 
@@ -77,8 +79,12 @@ function useBondModal() {
         const ltosIndex = convertNumber({
           amount: ltosIndexWei?.toString(),
         }) as string;
-        const bondPrice = (1 / priceData.tosPrice) * 1e18 * priceData.ethPrice;
+
+        const _tosPrice = bondInfo[4];
+        const bondPrice =
+          (1 / Number(_tosPrice.toString())) * 1e18 * priceData.ethPrice;
         const marketPrice = commafy(apiData.getDashboard[0].tosPrice);
+
         const discount =
           Number(marketPrice) -
           Number(propData.bondingPrice) / (Number(marketPrice) * 100);

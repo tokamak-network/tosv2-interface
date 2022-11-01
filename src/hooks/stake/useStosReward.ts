@@ -1,6 +1,10 @@
 import commafy from "@/components/commafy";
 import { convertNumber } from "@/components/number";
-import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import {
+  convertTimeStamp,
+  getNowTimeStamp,
+  getTimeZone,
+} from "@/components/time";
 import { stosLoadingState } from "atom/global/modal";
 import constant from "constant";
 import Decimal from "decimal.js";
@@ -9,6 +13,7 @@ import useModalContract from "hooks/contract/useModalContract";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import moment from "moment";
+import Moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -109,7 +114,12 @@ function useStosReward(
         const date =
           Math.floor((now + _inputPeriod * epochUnit) / epochUnit) * epochUnit;
         const endTime = moment.unix(date).format("YYYY.MM.DD");
-        setNewEndTime(endTime || "-");
+        const endTimeWithTimezone = moment.tz(
+          `${endTime} 00:00`,
+          Moment.tz.guess()
+        );
+        const endTimeWithTz = endTimeWithTimezone.format("YYYY.MM.DD. HH:mm");
+        setNewEndTime(`${endTimeWithTz} (${getTimeZone()})` || "-");
       }
     }
 

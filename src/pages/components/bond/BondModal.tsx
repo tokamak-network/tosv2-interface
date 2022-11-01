@@ -147,6 +147,7 @@ function BondModal() {
     try {
       if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
         const inputAmount = inputValue.bond_modal_balance;
+
         const periodWeeks = inputValue.bond_modal_period + 1;
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
@@ -279,7 +280,7 @@ function BondModal() {
                     <GridItem>
                       <Tile
                         title={"Bond Price"}
-                        content={`$${propData?.bondingPrice}`}
+                        content={`${bondModalData?.bondPrice}`}
                         tooltip={"Bonding price for 1 TOS in USD."}
                       />
                     </GridItem>
