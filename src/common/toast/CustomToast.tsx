@@ -5,8 +5,8 @@ import CLOSE_ICON from "assets/icons/close-small-toast.svg";
 import { useCallback, useRef, useState } from "react";
 import idGenerator from "@/components/idGenerator";
 import { ToastType } from "types/toast";
-import { useRecoilValue } from "recoil";
-import { txInfoState } from "atom/global/tx";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { txInfoState, txInfo as txInfos } from "atom/global/tx";
 
 function CustomToastComponent(props: {
   type: ToastType;
@@ -59,26 +59,31 @@ function CustomToastComponent(props: {
 function CustomToast() {
   const toast = useToast();
   const txInfo = useRecoilValue(txInfoState);
+  const [txInfosData, setTxInfosData] = useRecoilState(txInfos);
 
-  const test = useCallback(() => {
-    if (txInfo && !toast.isActive(txInfo.id)) {
-      toast({
-        position: "top",
-        duration: 5000,
-        isClosable: true,
-        id: txInfo.id,
-        render: () => (
-          <CustomToastComponent
-            id={txInfo.id}
-            message={txInfo.message}
-            onClose={() => {}}
-            type={txInfo.type}
-          ></CustomToastComponent>
-        ),
-      });
+  const callToast = () => {
+    try {
+      if (txInfo && !toast.isActive(txInfo.id)) {
+        toast({
+          position: "top",
+          duration: 5000,
+          isClosable: true,
+          id: txInfo.id,
+          render: () => (
+            <CustomToastComponent
+              id={txInfo.id}
+              message={txInfo.message}
+              onClose={() => {}}
+              type={txInfo.type}
+            ></CustomToastComponent>
+          ),
+        });
+      }
+    } finally {
+      setTxInfosData(null);
     }
-  }, [txInfo, toast]);
-  return <>{test()}</>;
+  };
+  return <>{callToast()}</>;
 }
 
 export default CustomToast;
