@@ -1,3 +1,4 @@
+import constant from "constant";
 import moment from "moment";
 import Moment from "moment-timezone";
 
@@ -55,7 +56,30 @@ function getTimeZone() {
   // const timeZone = Moment.tz(Moment.tz.guess()).zoneAbbr();
   const timeZone = Moment.tz(Moment.tz.guess()).format("Z");
   const trimedTimeZone = timeZone.split(":")[0].replaceAll("0", "");
-  return `UTC ${trimedTimeZone}`;
+  return `UTC${trimedTimeZone}`;
+}
+
+function getModalTimeleft(params: { currentEndTimeStamp: number }) {
+  const { currentEndTimeStamp } = params;
+  const { LOCKTOS_epochUnit } = constant;
+  const now = getNowTimeStamp();
+  const timeDiff = currentEndTimeStamp - now;
+  //LOCKTOS_epochUnit = 604800
+  const weeksLeft = timeDiff / LOCKTOS_epochUnit;
+  const daysLeft = (timeDiff - Math.floor(weeksLeft) * 604800) / 86400;
+  const timeLeft =
+    timeDiff - Math.floor(weeksLeft) * 604800 - Math.floor(daysLeft) * 86400;
+
+  const hours = getDuration(timeLeft, "HH:mm").hours;
+  const mins = getDuration(timeLeft, "HH:mm").mins;
+  const hour = hours.toString().length === 1 ? `0${hours}` : `${hours}`;
+  const min = mins.toString().length === 1 ? `0${mins}` : `${mins}`;
+
+  const leftWeeks = Math.floor(weeksLeft).toString();
+  const leftDays = String(Math.floor(daysLeft));
+  const leftHourAndMin = `${hour}:${min}`;
+
+  return { leftWeeks, leftDays, leftHourAndMin };
 }
 
 export {
@@ -65,4 +89,5 @@ export {
   getTimeLeft,
   getDuration,
   getTimeZone,
+  getModalTimeleft,
 };

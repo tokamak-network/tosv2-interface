@@ -311,6 +311,7 @@ function UpdateModalAfterEndTime() {
     inputValue,
     setTx,
     closeThisModal,
+    ltosAmount,
   ]);
 
   const callApprove = useCallback(async () => {
@@ -339,7 +340,7 @@ function UpdateModalAfterEndTime() {
         stake_relockModal_ltos_balance: ltosAmount?.replaceAll(",", ""),
       });
     }
-  }, [addTos, ltosAmount]);
+  }, [addTos, ltosAmount, setValue]);
 
   return (
     <Modal

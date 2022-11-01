@@ -312,7 +312,6 @@ function UpdateModal() {
       setTx(tx);
       return closeThisModal();
     }
-    console.log("?");
   }, [
     inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period,

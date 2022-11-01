@@ -2,6 +2,7 @@ import commafy from "@/components/commafy";
 import { convertNumber } from "@/components/number";
 import {
   convertTimeStamp,
+  getModalTimeleft,
   getNowTimeStamp,
   getTimeZone,
 } from "@/components/time";
@@ -23,6 +24,9 @@ type UseStosReward = {
   newEndTime: string;
   newEndTimeWithoutStos: string;
   maxWeeks: number;
+  leftWeeks: string;
+  leftDays: string;
+  leftHourAndMin: string;
 };
 
 function useStosReward(
@@ -35,6 +39,9 @@ function useStosReward(
   const [newEndTimeWithoutStos, setNewEndTimeWithoutStos] =
     useState<string>("-");
   const [maxWeeks, setMaxWeeks] = useState<number>(156);
+  const [leftWeeks, setLeftWeeks] = useState<string>("-");
+  const [leftDays, setLeftDays] = useState<string>("-");
+  const [leftHourAndMin, setLeftHourAndMin] = useState<string>("-");
 
   const { LockTOS_CONTRACT } = useCallContract();
   const modalContractData = useModalContract();
@@ -75,6 +82,7 @@ function useStosReward(
         const oneWeek = parseInt(await LockTOS_CONTRACT.epochUnit());
         const maxTime = parseInt(await LockTOS_CONTRACT.maxTime());
         const avgProfit = resultInputAmount / maxTime;
+
         const now = getNowTimeStamp();
         const date =
           Math.floor((now + weekPeriod * oneWeek) / oneWeek) * oneWeek;
@@ -110,6 +118,7 @@ function useStosReward(
         setNewEndTimeWithoutStos(
           convertTimeStamp(unlockTimeStamp, "YYYY. MM.DD. HH:mm")
         );
+
         //old script
         const date =
           Math.floor((now + _inputPeriod * epochUnit) / epochUnit) * epochUnit;
@@ -120,6 +129,14 @@ function useStosReward(
         );
         const endTimeWithTz = endTimeWithTimezone.format("YYYY.MM.DD. HH:mm");
         setNewEndTime(`${endTimeWithTz} (${getTimeZone()})` || "-");
+
+        const { leftWeeks, leftDays, leftHourAndMin } = getModalTimeleft({
+          currentEndTimeStamp: date,
+        });
+
+        setLeftWeeks(leftWeeks);
+        setLeftDays(leftDays);
+        setLeftHourAndMin(leftHourAndMin);
       }
     }
 
@@ -135,6 +152,9 @@ function useStosReward(
     newEndTimeWithoutStos,
     maxWeeks,
     originalTosAmount,
+    leftWeeks,
+    leftDays,
+    leftHourAndMin,
   };
 }
 

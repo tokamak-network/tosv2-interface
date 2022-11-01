@@ -128,10 +128,14 @@ const InputPeriod = (props: InputProp) => {
           fontSize={14}
           color={"white.200"}
         >
-          <Text color={isDisabled ? "#8b8b93" : ""}>Weeks</Text>
-          <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
-            {leftDays} Days {leftTime}
-          </Text>
+          {leftDays && leftTime && (
+            <>
+              <Text color={isDisabled ? "#8b8b93" : ""}>Weeks</Text>
+              <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
+                {leftDays} Days {leftTime}
+              </Text>
+            </>
+          )}
         </Flex>
 
         <InputRightElement mr={"8px"} display="flex" alignItems={"center"}>

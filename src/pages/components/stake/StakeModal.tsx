@@ -55,6 +55,8 @@ import useLtosIndex from "hooks/gql/useLtosIndex";
 import useStakeModalCondition from "hooks/stake/useStakeModalCondition";
 import constant from "constant";
 import BottomContent from "../common/modal/BottomContent";
+import EndTime from "../common/modal/EndTime";
+import InputPeriod from "common/input/InputPeriod";
 
 function StakeModal() {
   const theme = useTheme();
@@ -82,10 +84,11 @@ function StakeModal() {
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const { stosReward, newEndTime } = useStosReward(
-    inputValue.stake_modal_balance,
-    inputValue.stake_modal_period
-  );
+  const { stosReward, newEndTime, leftDays, leftWeeks, leftHourAndMin } =
+    useStosReward(
+      inputValue.stake_modal_balance,
+      inputValue.stake_modal_period
+    );
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
   const [bottomLoading, setBottomLoading] = useRecoilState(
@@ -248,7 +251,7 @@ function StakeModal() {
 
   useEffect(() => {
     setStosLoading(true);
-  }, [inputValue]);
+  }, [inputValue, setStosLoading]);
 
   useEffect(() => {
     setBottomLoading(true);
@@ -392,34 +395,39 @@ function StakeModal() {
                     ></TextInput>
                   </Flex>
                 ) : (
-                  <Flex fontSize={12} alignItems="center">
-                    <Text
-                      mr={"24px"}
-                      color={colorMode === "light" ? "gray.800" : "white.200"}
-                    >
-                      Lock-Up Period
-                    </Text>
-                    <CustomCheckBox
-                      pageKey="Bond_screen"
-                      value={""}
-                      valueKey={"Bond_Modal"}
-                      state={fiveDaysLockup}
-                      setState={setFiveDaysLockup}
-                    ></CustomCheckBox>
-                    <Text ml={"9px"}>No Lock-Up</Text>
-                    <TextInput
-                      w={"170px"}
-                      h={"39px"}
-                      pageKey={"Stake_screen"}
-                      recoilKey={"stake_modal"}
-                      atomKey={"stake_modal_period"}
-                      placeHolder={"1 Weeks"}
-                      style={{ marginLeft: "auto" }}
-                      isDisabled={fiveDaysLockup}
-                      maxValue={modalMaxWeeks}
-                      isError={inputPeriodOver}
-                      errorMsg={errMsg.periodExceed}
-                    ></TextInput>
+                  <Flex flexDir={"column"}>
+                    <Flex fontSize={12} alignItems="center">
+                      <Text
+                        mr={"24px"}
+                        color={colorMode === "light" ? "gray.800" : "white.200"}
+                      >
+                        Lock-Up Period
+                      </Text>
+                      <CustomCheckBox
+                        pageKey="Bond_screen"
+                        value={""}
+                        valueKey={"Bond_Modal"}
+                        state={fiveDaysLockup}
+                        setState={setFiveDaysLockup}
+                      ></CustomCheckBox>
+                      <Text ml={"9px"}>No Lock-Up</Text>
+                      <InputPeriod
+                        w={"220px"}
+                        h={"39px"}
+                        pageKey={"Stake_screen"}
+                        recoilKey={"stake_modal"}
+                        atomKey={"stake_modal_period"}
+                        placeHolder={"1 Weeks"}
+                        style={{ marginLeft: "auto" }}
+                        isDisabled={fiveDaysLockup}
+                        maxValue={modalMaxWeeks}
+                        isError={inputPeriodOver}
+                        errorMsg={errMsg.periodExceed}
+                        leftDays={fiveDaysLockup ? undefined : leftDays}
+                        leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
+                      ></InputPeriod>
+                    </Flex>
+                    {fiveDaysLockup && <EndTime time={newEndTime}></EndTime>}
                   </Flex>
                 )}
               </Flex>

@@ -4,6 +4,7 @@ const constant = {
     beginEpochEnd: 1663772748,
   },
   LOCKTOS_maxWeeks: 156,
+  LOCKTOS_epochUnit: 604800,
   modalMaxWeeks: 155,
   rebasePeriod: 60 * 60 * 8, //8Hours
   mainnetGasPrice: "6849315",
