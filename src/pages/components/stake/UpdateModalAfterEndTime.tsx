@@ -52,6 +52,7 @@ import BasicTooltip from "common/tooltip/index";
 import constant from "constant";
 import StakeGraph from "../common/modal/StakeGraph";
 import useCustomToast from "hooks/useCustomToast";
+import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 
 function BottomContent(props: {
   title: string;
@@ -195,6 +196,10 @@ function UpdateModalAfterEndTime() {
   const stakeId = selectedModalData?.stakeId;
   const ltosAmount = selectedModalData?.ltosAmount;
 
+  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
+    useRelockModalCondition(addTos);
+  const { errMsg, modalMaxWeeks } = constant;
+
   const contentList = [
     {
       title: "You Give",
@@ -253,23 +258,26 @@ function UpdateModalAfterEndTime() {
       stakeId &&
       inputValue.stake_relockModal_period
     ) {
-      if (addTos && inputValue.stake_relockModal_tos_balance) {
+      const periodWeeks = inputValue.stake_relockModal_period + 1;
+      if (addTos && inputValue.stake_relockModal_tos_balance && ltosAmount) {
+        const ltosValue = Number(ltosAmount?.replaceAll(",", ""));
+        const ltosBN = convertToWei(ltosValue.toString());
         console.log(
           "resetStakeGetStosAfterLock(uint256,uint256,uint256, uint256)"
         );
         console.log(
           stakeId,
           convertToWei(inputValue.stake_relockModal_tos_balance),
-          convertToWei(inputValue.stake_relockModal_ltos_balance),
-          inputValue.stake_relockModal_period
+          ltosBN,
+          periodWeeks
         );
         const tx = await StakingV2Proxy_CONTRACT[
           "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
         ](
           stakeId,
           convertToWei(inputValue.stake_relockModal_tos_balance),
-          convertToWei(inputValue.stake_relockModal_ltos_balance),
-          inputValue.stake_relockModal_period
+          ltosBN,
+          periodWeeks
         );
         setTx(tx);
         return closeThisModal();
@@ -323,6 +331,15 @@ function UpdateModalAfterEndTime() {
       return setIsAllowance(false);
     }
   }, [tosAllowance, inputValue.stake_relockModal_tos_balance]);
+
+  useEffect(() => {
+    if (addTos && ltosAmount) {
+      setValue({
+        ...inputValue,
+        stake_relockModal_ltos_balance: ltosAmount?.replaceAll(",", ""),
+      });
+    }
+  }, [addTos, ltosAmount]);
 
   return (
     <Modal
@@ -459,6 +476,14 @@ function UpdateModalAfterEndTime() {
                         recoilKey={"relock_modal"}
                         isDisabled={addTos}
                         maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                        isError={
+                          addTos === false && (zeroInputBalance || inputOver)
+                        }
+                        errorMsg={
+                          zeroInputBalance
+                            ? errMsg.zeroInput
+                            : errMsg.balanceExceed
+                        }
                       ></BalanceInput>
                     </Flex>
                   </Flex>
@@ -487,6 +512,12 @@ function UpdateModalAfterEndTime() {
                         recoilKey={"relock_modal"}
                         atomKey={"stake_relockModal_tos_balance"}
                         maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
+                        isError={zeroInputBalance || inputOver}
+                        errorMsg={
+                          addTos && zeroInputBalance
+                            ? errMsg.zeroInput
+                            : errMsg.balanceExceed
+                        }
                       ></BalanceInput>
                     </Flex>
                     <Flex
@@ -516,7 +547,9 @@ function UpdateModalAfterEndTime() {
                     atomKey={"stake_relockModal_period"}
                     placeHolder={"1 Weeks"}
                     style={{ marginLeft: "auto" }}
-                    maxValue={constant.modalMaxWeeks}
+                    maxValue={modalMaxWeeks}
+                    isError={inputPeriodOver}
+                    errorMsg={errMsg.periodExceed}
                   ></TextInput>
                 </Flex>
               </Flex>
@@ -556,6 +589,7 @@ function UpdateModalAfterEndTime() {
                     w={smallerThan1024 ? 310 : 460}
                     h={42}
                     name="Update"
+                    isDisabled={btnDisabled}
                     onClick={callUpdate}
                   ></SubmitButton>
                 ) : (
@@ -571,6 +605,7 @@ function UpdateModalAfterEndTime() {
                   w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Update"
+                  isDisabled={btnDisabled}
                   onClick={callUpdate}
                 ></SubmitButton>
               )}

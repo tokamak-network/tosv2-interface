@@ -19,7 +19,6 @@ type Balance = {
 type UseUpdateMAfterEndTime = {
   newBalance: Balance;
   newEndTime: string;
-  newEndTimeWithoutStos: string;
   inputTosAmount: string;
   tosValue: string;
 };
@@ -32,15 +31,12 @@ const defaultBalanceValue = {
 
 function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
-  const [newEndTime, setNewEndTime] = useState<string>("-");
-  const [newEndTimeWithoutStos, setNewEndTimeWithoutStos] =
-    useState<string>("-");
   const [tosValue, setTosValue] = useState<string>("-");
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const { inputValue } = useInput("Stake_screen", "relock_modal");
   const [inputTosAmount, setInputTosAmount] = useState<number>(0);
-  const { stosReward } = useStosReward(
+  const { stosReward, newEndTime } = useStosReward(
     inputTosAmount,
     inputValue.stake_relockModal_period
   );
@@ -126,38 +122,9 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
     });
   }, [stakeId, StakingV2Proxy_CONTRACT, inputValue, stosReward, addTos]);
 
-  useEffect(() => {
-    async function fetchEndTime() {
-      if (LockTOS_CONTRACT && inputValue?.stake_relockModal_period) {
-        //endTime
-        const inputPeriod = inputValue.stake_relockModal_period;
-        const sTosEpochUnit = await LockTOS_CONTRACT.epochUnit();
-        const epochUnit = Number(sTosEpochUnit.toString());
-        const now = getNowTimeStamp();
-        const unlockTimeStamp = now + inputPeriod * epochUnit;
-        const endTimeWithoutStos = convertTimeStamp(
-          unlockTimeStamp,
-          "YYYY. MM.DD. HH:mm"
-        );
-        setNewEndTimeWithoutStos(endTimeWithoutStos || "-");
-
-        //old script
-        const date =
-          Math.floor((now + inputPeriod * epochUnit) / epochUnit) * epochUnit;
-        const endTime = moment.unix(date).format("YYYY.MM.DD");
-        setNewEndTime(endTime || "-");
-      }
-    }
-    fetchEndTime().catch((e) => {
-      console.log("**useUpdateMAfterEndTime2 err**");
-      console.log(e);
-    });
-  }, [LockTOS_CONTRACT, inputValue.stake_relockModal_period]);
-
   return {
     newBalance,
     newEndTime,
-    newEndTimeWithoutStos,
     inputTosAmount: commafy(inputTosAmount),
     tosValue,
   };
