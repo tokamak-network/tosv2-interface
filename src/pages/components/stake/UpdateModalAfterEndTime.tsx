@@ -188,7 +188,7 @@ function UpdateModalAfterEndTime() {
   const { userTOSBalance, userLTOSBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-  const { newBalance, newEndTime, inputTosAmount } =
+  const { newBalance, newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(addTos);
   const { setTx } = useCustomToast();
 
@@ -208,7 +208,7 @@ function UpdateModalAfterEndTime() {
       secondTooltip: `Currently worth ${
         addTos
           ? inputValue.stake_relockModal_tos_balance || "-"
-          : inputValue.stake_relockModal_ltos_balance || "-"
+          : tosValue || "-"
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
     },
     {
@@ -227,9 +227,9 @@ function UpdateModalAfterEndTime() {
       tooltip: true,
       tooltipMessage:
         "Amount of LTOS, sTOS, and TOS you will get after the update. ",
-      secondTooltip: `Currently worth ${inputTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.",
+      secondTooltip: `Currently worth ${tosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).`,
+        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "New End Time",
@@ -254,17 +254,21 @@ function UpdateModalAfterEndTime() {
       inputValue.stake_relockModal_period
     ) {
       if (addTos && inputValue.stake_relockModal_tos_balance) {
-        console.log("resetStakeGetStosAfterLock(uint256,uint256,uint256)");
+        console.log(
+          "resetStakeGetStosAfterLock(uint256,uint256,uint256, uint256)"
+        );
         console.log(
           stakeId,
           convertToWei(inputValue.stake_relockModal_tos_balance),
+          convertToWei(inputValue.stake_relockModal_ltos_balance),
           inputValue.stake_relockModal_period
         );
         const tx = await StakingV2Proxy_CONTRACT[
-          "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
+          "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
         ](
           stakeId,
           convertToWei(inputValue.stake_relockModal_tos_balance),
+          convertToWei(inputValue.stake_relockModal_ltos_balance),
           inputValue.stake_relockModal_period
         );
         setTx(tx);
@@ -272,16 +276,20 @@ function UpdateModalAfterEndTime() {
       }
       //after endTime
       //resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks)
-      console.log("resetStakeGetStosAfterLock(uint256,uint256,uint256)");
+      console.log(
+        "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
+      );
       console.log(
         stakeId,
+        0,
         convertToWei(inputValue.stake_relockModal_ltos_balance),
         inputValue.stake_relockModal_period
       );
       const tx = await StakingV2Proxy_CONTRACT[
-        "resetStakeGetStosAfterLock(uint256,uint256,uint256)"
+        "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
       ](
         stakeId,
+        0,
         convertToWei(inputValue.stake_relockModal_ltos_balance),
         inputValue.stake_relockModal_period
       );

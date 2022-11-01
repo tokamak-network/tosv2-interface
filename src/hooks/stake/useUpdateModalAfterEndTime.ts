@@ -18,6 +18,7 @@ type UseUpdateMAfterEndTime = {
   newBalance: Balance;
   newEndTime: string;
   inputTosAmount: string;
+  tosValue: string;
 };
 
 const defaultBalanceValue = {
@@ -29,6 +30,7 @@ const defaultBalanceValue = {
 function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
   const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
   const [newEndTime, setNewEndTime] = useState<string>("-");
+  const [tosValue, setTosValue] = useState<string>("-");
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const { inputValue } = useInput("Stake_screen", "relock_modal");
@@ -56,6 +58,8 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
               amount: possibleTOSAmount.toString(),
               localeString: true,
             }) || "0";
+
+          setTosValue(tos);
           setInputTosAmount(Number(tos.replaceAll(",", "")));
 
           return setNewBalance({
@@ -82,8 +86,18 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
             convertNumber({
               amount: totalAmount.toString(),
               localeString: true,
-            }) || "0";
+            }) || "-";
+          const tosValueBN =
+            await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
+              totalAmount
+            );
+          const tosValue =
+            convertNumber({
+              amount: tosValueBN.toString(),
+              localeString: true,
+            }) || "-";
 
+          setTosValue(tosValue);
           setInputTosAmount(
             Number(inputValue.stake_relockModal_tos_balance.replaceAll(",", ""))
           );
@@ -129,6 +143,7 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
     newBalance,
     newEndTime,
     inputTosAmount: commafy(inputTosAmount),
+    tosValue,
   };
 }
 
