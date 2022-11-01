@@ -487,7 +487,11 @@ function UpdateModal() {
                       <Text fontSize={12} ml={"9px"} mr={"3px"}>
                         {leftDays} Days {leftTime}
                       </Text>
-                      <BasicTooltip label={"test"} />
+                      <BasicTooltip
+                        label={
+                          "This is the current lock-up period. The new lock-up period has to be equal or greater than this."
+                        }
+                      />
                     </Flex>
                     <Flex mx={"14px"}>
                       <Image src={ArrowImg} alt={"ArrowImg"}></Image>
