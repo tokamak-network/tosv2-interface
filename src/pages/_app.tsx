@@ -21,6 +21,7 @@ import NetworkModal from "./components/global/NetworkModal";
 import TermsOfUse from "./components/global/TermsOfUse";
 import Notice from "./components/global/Notice";
 import "css/gradient.css";
+import "css/modalOverlay.css";
 import CustomToast from "common/toast/CustomToast";
 
 function MyApp({ Component, pageProps }: AppProps) {

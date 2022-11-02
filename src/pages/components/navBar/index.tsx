@@ -450,7 +450,7 @@ function MobileSideBar() {
 }
 
 const NavBar = () => {
-  const [isExpended, setIsExpended] = useState<boolean>(false);
+  const [isExpended, setIsExpended] = useState<boolean>(true);
   const { pcView } = useMediaView();
   const { colorMode } = useColorMode();
   if (!pcView) {
