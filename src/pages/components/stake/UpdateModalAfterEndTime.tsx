@@ -429,6 +429,7 @@ function UpdateModalAfterEndTime() {
                         recoilKey={"relock_modal"}
                         isDisabled={addTos}
                         maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                        rightUnit={"LTOS"}
                       ></BalanceInput>
                     </Flex>
                   </Flex>
@@ -485,6 +486,7 @@ function UpdateModalAfterEndTime() {
                             ? errMsg.zeroInput
                             : errMsg.balanceExceed
                         }
+                        rightUnit={"LTOS"}
                       ></BalanceInput>
                     </Flex>
                   </Flex>
@@ -519,6 +521,7 @@ function UpdateModalAfterEndTime() {
                             ? errMsg.zeroInput
                             : errMsg.balanceExceed
                         }
+                        rightUnit={"TOS"}
                       ></BalanceInput>
                     </Flex>
                     <Flex

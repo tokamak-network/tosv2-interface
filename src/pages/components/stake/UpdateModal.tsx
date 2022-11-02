@@ -444,6 +444,7 @@ function UpdateModal() {
                     maxValue={Number(userTOSBalance?.replaceAll(",", "")) ?? 0}
                     isError={inputOver}
                     errorMsg={errMsg.balanceExceed}
+                    rightUnit={"TOS"}
                   ></BalanceInput>
                 </Flex>
                 <Flex

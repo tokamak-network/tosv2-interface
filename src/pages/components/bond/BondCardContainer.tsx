@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import TabButton from "common/button/TabButton";
 import { useState } from "react";
@@ -12,8 +12,11 @@ function BondCardContainer() {
   const { account } = useWeb3React();
 
   return (
-    <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
-      <TabButton
+    <Flex mt={"55px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
+      <Text fontSize={22} fontWeight={"bold"} color={"white.200"} mb={"34px"}>
+        Bond List
+      </Text>
+      {/* <TabButton
         nameList={["Bond List", "My History"]}
         tabIndex={tab}
         onClick={setTab}
@@ -26,7 +29,7 @@ function BondCardContainer() {
       >
         {tab === 0 ||
           (tab === 1 && account && <BondSortSelect></BondSortSelect>)}
-      </Flex>
+      </Flex> */}
       {tab === 0 ? (
         <BondCardSection></BondCardSection>
       ) : (

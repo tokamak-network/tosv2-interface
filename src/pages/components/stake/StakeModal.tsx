@@ -341,6 +341,7 @@ function StakeModal() {
                     errorMsg={
                       zeroInputBalance ? errMsg.zeroInput : errMsg.balanceExceed
                     }
+                    rightUnit={"TOS"}
                   ></BalanceInput>
                 </Flex>
                 <Flex

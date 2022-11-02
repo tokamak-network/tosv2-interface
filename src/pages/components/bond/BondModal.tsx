@@ -345,6 +345,7 @@ function BondModal() {
                         ? errMsg.zeroInput
                         : "input has exceeded maximum bondable amount per 1 transaction"
                     }
+                    rightUnit={"ETH"}
                   ></BalanceInput>
                 </Flex>
                 <Flex
@@ -397,6 +398,7 @@ function BondModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
+                      rightUnit={"ETH"}
                     ></BalanceInput>
                   </Flex>
                 ) : (
