@@ -94,7 +94,7 @@ function DaoTopContainer() {
           {...theme.BUTTON_STYLE.submitButtonStyle(colorMode)}
           fontSize={"14px"}
         >
-          <Text mr="23px">Go to governance</Text>
+          <Text mr="23px">Go to Governance</Text>
           <Image src={ResourcesIcon} alt={"ResourcesIcon"} />
         </Button>
       </Link>
