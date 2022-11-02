@@ -614,7 +614,7 @@ function UpdateModalAfterEndTime() {
                 ></SubmitButton>
               )}
             </Flex>
-            <Flex
+            {/* <Flex
               fontSize={11}
               color={"#64646f"}
               textAlign="center"
@@ -629,7 +629,7 @@ function UpdateModalAfterEndTime() {
                 If this is First time bonding, Please approve TONStarter to use
                 your DAI for bonding.
               </Text>
-            </Flex>
+            </Flex> */}
           </Flex>
         </ModalBody>
       </ModalContent>
