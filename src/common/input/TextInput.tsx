@@ -266,7 +266,7 @@ function BalanceInput(props: NumberInputProp) {
             ref={inputRef}
           ></NumberInputField>
         </NumberInput>
-        {value[atomKey] && (
+        {value[atomKey] && rightUnit && (
           <Flex
             pos={"absolute"}
             textAlign={"center"}
@@ -275,7 +275,7 @@ function BalanceInput(props: NumberInputProp) {
             left={leftProperty}
             color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
           >
-            <Text>TOS</Text>
+            <Text>{rightUnit}</Text>
           </Flex>
         )}
         <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
