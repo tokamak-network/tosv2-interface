@@ -298,7 +298,12 @@ function BalanceInput(props: NumberInputProp) {
         </InputRightElement>
       </InputGroup>
       {isError && (
-        <Flex fontSize={12} color={"#e23738"} justifyContent={"flex-end"}>
+        <Flex
+          fontSize={12}
+          color={"#e23738"}
+          justifyContent={"flex-start"}
+          pl={"6px"}
+        >
           <Text>{errorMsg}</Text>
         </Flex>
       )}

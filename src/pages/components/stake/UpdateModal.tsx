@@ -217,8 +217,13 @@ function UpdateModal() {
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();
-  const { inputOver, inputPeriodOver, btnDisabled } =
-    useUpdateModalConditon(leftWeeks);
+  const {
+    inputOver,
+    inputPeriodOver,
+    btnDisabled,
+    zeroInputBalance,
+    bothConditionsErr,
+  } = useUpdateModalConditon(leftWeeks);
   const { errMsg } = constant;
 
   const contentList = [
@@ -232,7 +237,7 @@ function UpdateModal() {
       title: "Current Balance",
       content: currentBalance,
       tooltip: true,
-      tooltipMessage: "Amount of LTOS and sTOS before the0 update.",
+      tooltipMessage: "Amount of LTOS and sTOS before the update.",
       secondTooltip: `Currently worth ${
         modalContractData?.currentTosAmount || "-"
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
@@ -253,14 +258,14 @@ function UpdateModal() {
       content: currentEndTime,
       tooltip: true,
       tooltipMessage:
-        "Lock-Up period end time before the update.before the update.",
+        "Lock-Up period end time before the update before the update.",
     },
     {
       title: "New End Time",
       content: newEndTime,
       tooltip: true,
       tooltipMessage:
-        "Lock-Up period end time after the update.before the update.",
+        "Lock-Up period end time after the update before the update.",
     },
   ];
 
@@ -442,8 +447,20 @@ function UpdateModal() {
                     recoilKey={"update_modal"}
                     atomKey={"stake_updateModal_tos_balance"}
                     maxValue={Number(userTOSBalance?.replaceAll(",", "")) ?? 0}
-                    isError={inputOver}
-                    errorMsg={errMsg.balanceExceed}
+                    isError={
+                      bothConditionsErr ||
+                      inputValue?.stake_updateModal_tos_balance === undefined ||
+                      inputValue?.stake_updateModal_tos_balance?.length === 0 ||
+                      (btnDisable === true && zeroInputBalance) ||
+                      inputOver
+                    }
+                    errorMsg={
+                      bothConditionsErr
+                        ? undefined
+                        : zeroInputBalance
+                        ? errMsg.zeroInput
+                        : errMsg.balanceExceed
+                    }
                     rightUnit={"TOS"}
                   ></BalanceInput>
                 </Flex>
@@ -490,7 +507,7 @@ function UpdateModal() {
                       </Text>
                       <BasicTooltip
                         label={
-                          "This is the current lock-up period. The new lock-up period has to be equal or greater than this."
+                          "This is the current Lock-Up period. The new Lock-Up period has to be equal or greater than this."
                         }
                       />
                     </Flex>
@@ -506,13 +523,27 @@ function UpdateModal() {
                       recoilKey={"update_modal"}
                       // style={{ marginLeft: "auto" }}
                       maxValue={constant.modalMaxWeeks}
-                      isError={inputPeriodOver}
+                      isError={bothConditionsErr || inputPeriodOver}
                       isDisabled={leftWeeks === constant.modalMaxWeeks}
                       isDisabledText={constant.modalMaxWeeks}
-                      errorMsg={"New lock-up period must be equal or greater"}
+                      errorMsg={
+                        bothConditionsErr
+                          ? undefined
+                          : Number(inputValue.stake_updateModal_period) > 155
+                          ? "New lock-up period must be less than 156 weeks"
+                          : errMsg.managePeriodExceed
+                      }
                       minValue={leftWeeks}
                       leftDays={leftDays}
                       leftTime={leftTime}
+                      endTime={
+                        bothConditionsErr ||
+                        Number(inputValue.stake_updateModal_period) <
+                          leftWeeks ||
+                        inputValue?.stake_updateModal_period?.length === 0
+                          ? undefined
+                          : newEndTime
+                      }
                     ></InputPeriod>
                   </Flex>
                 </Flex>
@@ -588,6 +619,14 @@ function UpdateModal() {
                   color={colorMode === "dark" ? "gray.200" : "gray.700"}
                 >
                   Please approve your TOS to use this service
+                </Text>
+              </Flex>
+            )}
+            {bothConditionsErr && (
+              <Flex fontSize={11} textAlign="center" w={"100%"} mb={"24px"}>
+                <Text w={"100%"} color={"red.100"} fontWeight={"bold"}>
+                  You have to lock additional TOS or/and increase the lock-up
+                  period by at least 1 week.
                 </Text>
               </Flex>
             )}

@@ -33,7 +33,6 @@ import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
-import commafy from "@/components/commafy";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/components/number";
 import { useWeb3React } from "@web3-react/core";
@@ -57,6 +56,7 @@ import constant from "constant";
 import BottomContent from "../common/modal/BottomContent";
 import EndTime from "../common/modal/EndTime";
 import InputPeriod from "common/input/InputPeriod";
+import { convertWithDigits } from "@/components/convertWithDigits";
 
 function StakeModal() {
   const theme = useTheme();
@@ -151,7 +151,9 @@ function StakeModal() {
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+          secondTooltip: `${convertWithDigits(
+            inputValue.stake_modal_balance
+          )} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
           thirdTooltip:
             "sTOS’s Lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
         },
@@ -226,6 +228,12 @@ function StakeModal() {
     if (tosAllowance) {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
+      }
+      if (
+        inputValue.stake_modal_balance?.length <= 0 ||
+        inputValue.stake_modal_balance === undefined
+      ) {
+        return setIsAllowance(true);
       }
       if (tosAllowance >= Number(inputValue.stake_modal_balance)) {
         return setIsAllowance(true);
@@ -428,7 +436,7 @@ function StakeModal() {
                         isDisabled={fiveDaysLockup}
                         maxValue={modalMaxWeeks}
                         isError={inputPeriodOver}
-                        errorMsg={errMsg.periodExceed}
+                        errorMsg={errMsg.stakePeriodExceed}
                         leftDays={fiveDaysLockup ? undefined : leftDays}
                         leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
                         endTime={
@@ -492,7 +500,7 @@ function StakeModal() {
                   h={42}
                   name="Approve"
                   onClick={callApprove}
-                  isDisabled={inputOver}
+                  isDisabled={zeroInputBalance || inputOver || isModalLoading}
                   isLoading={isApproving}
                 ></SubmitButton>
               )}
