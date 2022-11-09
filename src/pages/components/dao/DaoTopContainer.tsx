@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import SubmitButton from "common/button/SubmitButton";
 import Image from "next/image";
 import ResourcesIcon from "assets/icons/resources_icon.png";
+import useModal from "hooks/useModal";
 
 function DaoTopContainer() {
   const { colorMode } = useColorMode();
@@ -19,8 +20,10 @@ function DaoTopContainer() {
   const router = useRouter();
   const theme = useTheme();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const { openModal } = useModal("stake_stake_modal");
   const sendToStake = () => {
     router.push("/stake");
+    openModal();
   };
 
   return (
@@ -33,6 +36,15 @@ function DaoTopContainer() {
       alignItems="center"
       px="102px"
     >
+      <Text
+        fontSize={"22px"}
+        color={colorMode === "light" ? "gray.800" : "white.200"}
+        letterSpacing="0.55px"
+        fontWeight="bold"
+        mb={"12px"}
+      >
+        Governance
+      </Text>
       <Text
         color={colorMode === "dark" ? "gray.100" : "gray.1000"}
         textAlign="center"

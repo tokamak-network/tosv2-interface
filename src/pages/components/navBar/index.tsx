@@ -80,12 +80,12 @@ const iconList = [
 ];
 
 const navItemList = [
-  {
-    icon: DASHBOARD_GRAY_ICON,
-    hoverIcon: DASHBOARD_ICON,
-    lightHoverIcon: DASHBOARD_LIGHT_HOVER,
-    link: "dashboard",
-  },
+  // {
+  //   icon: DASHBOARD_GRAY_ICON,
+  //   hoverIcon: DASHBOARD_ICON,
+  //   lightHoverIcon: DASHBOARD_LIGHT_HOVER,
+  //   link: "dashboard",
+  // },
   {
     icon: BOND_GRAY_ICON,
     hoverIcon: BOND_ICON,
