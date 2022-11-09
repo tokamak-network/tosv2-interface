@@ -117,7 +117,7 @@ function StakeModal() {
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
           secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
           thirdTooltip:
-            "sTOS’s Lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
         },
         {
           title: "Current Balance",
@@ -155,7 +155,7 @@ function StakeModal() {
             inputValue.stake_modal_balance
           )} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
           thirdTooltip:
-            "sTOS’s Lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
         },
         {
           title: "End Time",

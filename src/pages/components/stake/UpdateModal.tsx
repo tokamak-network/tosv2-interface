@@ -242,7 +242,7 @@ function UpdateModal() {
         modalContractData?.currentTosAmount || "-"
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
-        "sTOS’s Lock-up period is calculated relative to Thursday 0:00 (UTC+0).",
+        "sTOS’s lock-up period is calculated relative to Thursday 0:00 (UTC+0).",
     },
     {
       title: "New Balance",
@@ -251,7 +251,7 @@ function UpdateModal() {
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
       secondTooltip: `Currently worth ${newTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
-        "sTOS’s Lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "Current End Time",
