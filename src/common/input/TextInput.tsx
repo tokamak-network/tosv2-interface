@@ -209,7 +209,7 @@ function BalanceInput(props: NumberInputProp) {
   }, [maxValue, selectedModal, atomKey, setValue]);
 
   const leftProperty = useMemo(() => {
-    console.log("inputRef");
+    // console.log("inputRef");
     //@ts-ignore
     if (inputRef.current && inputRef.current.value) {
       // if (inputRef.current.value.length === 1) {
@@ -218,7 +218,7 @@ function BalanceInput(props: NumberInputProp) {
       // if (inputRef.current.value.length === 2) {
       //   return "35px";
       // }
-      console.log(inputRef.current.value.length * 9 + 17);
+      // console.log(inputRef.current.value.length * 9 + 17);
 
       return `${inputRef.current.value.length * 9 + 17}px`;
     }

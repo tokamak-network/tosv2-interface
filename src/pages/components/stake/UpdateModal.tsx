@@ -213,7 +213,6 @@ function UpdateModal() {
     newTosAmount,
   } = useUpdateModalData(newBalanceType);
   const modalContractData = useModalContract();
-
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();

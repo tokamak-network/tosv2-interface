@@ -57,7 +57,9 @@ function useUpdateModalData(
   const modalContractData = useModalContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward } = useStosReward(
-    inputValue.stake_updateModal_tos_balance,
+    newBalanceType === 2
+      ? currentBalance.stos
+      : inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period - leftWeeks < 1
       ? 1
       : inputValue.stake_updateModal_period - leftWeeks
@@ -190,6 +192,8 @@ function useUpdateModalData(
           const resultStos =
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
+
+          console.log(stosReward);
 
           setNewTosAmount(modalContractData.currentTosAmount);
 
