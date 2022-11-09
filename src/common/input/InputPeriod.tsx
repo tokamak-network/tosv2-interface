@@ -132,7 +132,9 @@ const InputPeriod = (props: InputProp) => {
         >
           {isDisabled === false && leftDays && leftTime && (
             <>
-              <Text color={isDisabled ? "#8b8b93" : ""}>Weeks</Text>
+              <Text color={isDisabled ? "#8b8b93" : ""}>
+                {value && atomKey && value[atomKey] === 1 ? "Week" : "Weeks"}
+              </Text>
               <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
                 {leftDays} Days {leftTime}
               </Text>
