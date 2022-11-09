@@ -27,6 +27,7 @@ import SubmitButton from "common/button/SubmitButton";
 import { useRouter } from "next/router";
 import useModal from "hooks/useModal";
 import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+import NetworkIcon from "./components/NetworkIcon";
 
 type HeaderProps = {
   walletopen: () => void;
@@ -63,38 +64,19 @@ function AccountDrawer(props: HeaderProps) {
         setIsOpen(false);
       }}
     >
-      <DrawerOverlay />
+      <DrawerOverlay zIndex={1001} className="modalOverlay" />
       <DrawerContent
         bg={colorMode === "dark" ? "#1f2128" : "white.0"}
         px={"23px"}
         minW={"360px"}
         maxW={"360px"}
       >
-        <DrawerHeader p={0}>
+        <DrawerHeader p={0} zIndex={10000}>
           <Flex alignItems={"center"} pt={"13px"}>
-            <Box
-              h="48px"
-              w="48px"
-              border="1px solid"
-              justifyContent={"center"}
-              alignItems="center"
-              p="12px"
-              borderRadius={"8px"}
-              mr="9px"
-              bg={colorMode === "dark" ? "#07070c" : "transparent"}
-              borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
-            >
-              <TokenSymbol
-                tokenType="ETH"
-                w={"24px"}
-                h={"24px"}
-                imageW="20px"
-                imageH="20px"
-              />
-            </Box>
-
+            <NetworkIcon />
             <WalletIconLayOut
-              w={"179px"}
+              ml={"9px"}
+              w={"147px"}
               fontSize={16}
               bg={colorMode === "dark" ? "#07070c" : "transparent"}
               h={"48px"}
@@ -106,8 +88,8 @@ function AccountDrawer(props: HeaderProps) {
             ></WalletIconLayOut>
             <Text
               fontSize={13}
-              ml={"15px"}
-              mr={"24px"}
+              ml={"14px"}
+              mr={"23px"}
               color={"blue.200"}
               cursor={"pointer"}
               onClick={props.walletopen}

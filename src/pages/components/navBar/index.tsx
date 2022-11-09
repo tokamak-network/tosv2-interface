@@ -412,7 +412,7 @@ function MobileSideBar() {
         pt={33}
         alignItems="center"
         bg={colorMode === "light" ? "#ffffff" : "#1f2128"}
-        zIndex={1000000}
+        // zIndex={10}
       >
         <Flex
           flexDir={isExpended ? "row" : "column"}
@@ -474,7 +474,7 @@ const NavBar = () => {
       // mr={isExpended ? "50%" : "100px"}
     >
       {/* menu button */}
-      <Box onClick={() => setIsExpended(!isExpended)} zIndex={10000}>
+      <Box onClick={() => setIsExpended(!isExpended)} zIndex={10}>
         <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
       <Flex

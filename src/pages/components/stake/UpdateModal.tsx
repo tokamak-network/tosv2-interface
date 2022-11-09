@@ -382,7 +382,7 @@ function UpdateModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay />
+      <ModalOverlay className="modalOverlay" />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}

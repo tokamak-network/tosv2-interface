@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               {/* PC VIEW = 1440px */}
               {/* TABLET VIEW = 1040px */}
               {/* MOBILE VIEW = 360px */}
-              <Flex flexDir={"column"} w={"100%"}>
+              <Flex flexDir={"column"} w={"100%"} alignItems={"center"}>
                 <Header
                   walletopen={() => handleWalletModalOpen("wallet")}
                 ></Header>
