@@ -435,6 +435,7 @@ function BondModal() {
                       placeHolder={"1 Weeks"}
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
+                      isDisabledText={"5 Days"}
                       rightUnit={"Weeks"}
                       maxValue={LOCKTOS_maxWeeks}
                       minValue={1}
@@ -442,6 +443,7 @@ function BondModal() {
                       errorMsg={errMsg.periodExceed}
                       leftTime={leftHourAndMin}
                       leftDays={leftDays}
+                      endTime={fiveDaysLockup ? undefined : endTime}
                     ></InputPeriod>
                   </Flex>
                 )}

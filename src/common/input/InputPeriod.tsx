@@ -38,6 +38,7 @@ type InputProp = {
   leftDays?: string;
   leftTime?: string;
   isDisabledText?: string | number;
+  endTime?: string;
 };
 
 const InputPeriod = (props: InputProp) => {
@@ -58,6 +59,7 @@ const InputPeriod = (props: InputProp) => {
     leftDays,
     leftTime,
     isDisabledText,
+    endTime,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -80,7 +82,7 @@ const InputPeriod = (props: InputProp) => {
   }, [value, atomKey]);
 
   return (
-    <Flex flexDir={"column"} {...style}>
+    <Flex flexDir={"column"} pos={"relative"} {...style}>
       <InputGroup>
         <Input
           isInvalid={isError}
@@ -128,7 +130,7 @@ const InputPeriod = (props: InputProp) => {
           fontSize={14}
           color={"white.200"}
         >
-          {leftDays && leftTime && (
+          {isDisabled === false && leftDays && leftTime && (
             <>
               <Text color={isDisabled ? "#8b8b93" : ""}>Weeks</Text>
               <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
@@ -167,6 +169,16 @@ const InputPeriod = (props: InputProp) => {
           right={"120px"}
         >
           <Text>{errorMsg}</Text>
+        </Flex>
+      )}
+      {endTime && (
+        <Flex
+          pos={"absolute"}
+          top={"48px"}
+          w={w || 270}
+          justifyContent={"center"}
+        >
+          <Text>End Time : {endTime}</Text>
         </Flex>
       )}
     </Flex>
