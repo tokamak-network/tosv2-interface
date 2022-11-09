@@ -43,7 +43,7 @@ function DaoTopContainer() {
         fontWeight="bold"
         mb={"12px"}
       >
-        Governance
+        Stake
       </Text>
       <Text
         color={colorMode === "dark" ? "gray.100" : "gray.1000"}
