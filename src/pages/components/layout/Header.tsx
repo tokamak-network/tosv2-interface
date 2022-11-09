@@ -82,7 +82,7 @@ function Header(props: HeaderProps) {
       <Flex>
         <NetworkIcon />
         <Flex
-          w={"157px"}
+          w={account ? "157px" : "211px"}
           h={"48px"}
           borderWidth={1}
           borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
