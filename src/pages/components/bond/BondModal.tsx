@@ -443,7 +443,9 @@ function BondModal() {
                       errorMsg={errMsg.periodExceed}
                       leftTime={leftHourAndMin}
                       leftDays={leftDays}
-                      endTime={fiveDaysLockup ? undefined : endTime}
+                      endTime={
+                        fiveDaysLockup || inputPeriodOver ? undefined : endTime
+                      }
                     ></InputPeriod>
                   </Flex>
                 )}

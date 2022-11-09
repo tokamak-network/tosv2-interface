@@ -397,7 +397,7 @@ function StakeModal() {
                       isDisabled={fiveDaysLockup}
                       maxValue={modalMaxWeeks}
                       isError={true}
-                      errorMsg={errMsg.periodExceed}
+                      errorMsg={errMsg.stakePeriodExceed}
                     ></TextInput>
                   </Flex>
                 ) : (
@@ -431,6 +431,11 @@ function StakeModal() {
                         errorMsg={errMsg.periodExceed}
                         leftDays={fiveDaysLockup ? undefined : leftDays}
                         leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
+                        endTime={
+                          fiveDaysLockup || inputPeriodOver
+                            ? undefined
+                            : newEndTime
+                        }
                       ></InputPeriod>
                     </Flex>
                     {fiveDaysLockup && <EndTime time={newEndTime}></EndTime>}
@@ -443,6 +448,7 @@ function StakeModal() {
                   subKey={"stake_modal"}
                   periodKey={"stake_modal_period"}
                   isSlideDisabled={fiveDaysLockup}
+                  minValue={0}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}

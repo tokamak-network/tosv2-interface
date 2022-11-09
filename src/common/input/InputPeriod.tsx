@@ -102,7 +102,7 @@ const InputPeriod = (props: InputProp) => {
               : "#f1f1f1"
           }
           _placeholder={{ color: "#64646f" }}
-          placeholder={placeHolder}
+          // placeholder={placeHolder}
           _hover={{
             borderColor: colorMode === "light" ? "#c6cbd9" : "#535353",
           }}
@@ -160,13 +160,12 @@ const InputPeriod = (props: InputProp) => {
       </InputGroup>
       {isError && isDisabled === false && (
         <Flex
+          w={"100%"}
           fontSize={12}
           color={"#e23738"}
-          justifyContent={"flex-eisDisabledTextnd"}
           pos={"absolute"}
           mt={"40px"}
           textAlign={"right"}
-          right={"120px"}
         >
           <Text>{errorMsg}</Text>
         </Flex>
