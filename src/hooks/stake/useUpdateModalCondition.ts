@@ -41,10 +41,10 @@ function useUpdateModalConditon(leftWeeks: number) {
       setZeroInputBalance(false);
       return setInputOver(false);
     }
-    return () => {
-      setZeroInputBalance(false);
-      setInputOver(false);
-    };
+    // return () => {
+    //   setZeroInputBalance(false);
+    //   setInputOver(false);
+    // };
   }, [inputTosAmount, userTOSBalance, isModalLoading]);
 
   useEffect(() => {

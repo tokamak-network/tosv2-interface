@@ -11,10 +11,10 @@ const constant = {
   errMsg: {
     balanceExceed: "Input has exceeded your balance",
     periodExceed: "Must be between 1 and 155",
-    stakePeriodExceed: "Must be an integer between 0 and 155",
+    stakePeriodExceed: "Must be between 0 and 155",
     managePeriodExceed:
       "New lock-up period must be equal or greater than the existing lock-up period",
-    zeroInput: "Input has to be greater than 0",
+    zeroInput: "Input has to be equal to or greater than 0",
     periodExceedThanMaximum: "Must be less than 156 weeks",
   },
 };
