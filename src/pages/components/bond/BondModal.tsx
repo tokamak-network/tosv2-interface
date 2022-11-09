@@ -62,6 +62,8 @@ import constant from "constant";
 import GradientSpinner from "../common/GradientSpinner";
 import Tile from "../common/modal/Tile";
 import BottomContent from "../common/modal/BottomContent";
+import InputPeriod from "common/input/InputPeriod";
+import useStosReward from "hooks/stake/useStosReward";
 
 function BondModal() {
   const theme = useTheme();
@@ -85,6 +87,10 @@ function BondModal() {
 
   const { youWillGet, endTime, stosReward, originalTosAmount } =
     useBondModalInputData(marketId);
+  const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
+    inputValue.bond_modal_balance,
+    inputValue.bond_modal_period
+  );
 
   const { setTx } = useCustomToast();
   const { ltosIndex } = useLtosIndex();
@@ -127,7 +133,7 @@ function BondModal() {
         "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
       secondTooltip: `Currently worth ${originalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+        "sTOS’s Lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "End Time",
@@ -343,7 +349,7 @@ function BondModal() {
                     errorMsg={
                       zeroInputBalance
                         ? errMsg.zeroInput
-                        : "input has exceeded maximum bondable amount per 1 transaction"
+                        : "Input has exceeded maximum bondable amount per 1 transaction"
                     }
                     rightUnit={"ETH"}
                   ></BalanceInput>
@@ -404,7 +410,7 @@ function BondModal() {
                 ) : (
                   <Flex fontSize={12} alignItems="center" mt="10px">
                     <Text
-                      mr={"24px"}
+                      mr={"6px"}
                       color={colorMode === "light" ? "gray.800" : "white.200"}
                     >
                       Lock-Up Period
@@ -416,12 +422,12 @@ function BondModal() {
                       state={fiveDaysLockup}
                       setState={setFiveDaysLockup}
                     ></CustomCheckBox>
-                    <Text ml={"9px"} mr="6px">
+                    <Text ml={"6px"} mr="3px">
                       5 days Lock-Up
                     </Text>
                     <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
-                    <TextInput
-                      w={"170px"}
+                    <InputPeriod
+                      w={"220px"}
                       h={"39px"}
                       pageKey={"Bond_screen"}
                       recoilKey={"bond_modal"}
@@ -431,9 +437,12 @@ function BondModal() {
                       isDisabled={fiveDaysLockup}
                       rightUnit={"Weeks"}
                       maxValue={LOCKTOS_maxWeeks}
+                      minValue={1}
                       isError={inputPeriodOver}
                       errorMsg={errMsg.periodExceed}
-                    ></TextInput>
+                      leftTime={leftHourAndMin}
+                      leftDays={leftDays}
+                    ></InputPeriod>
                   </Flex>
                 )}
               </Flex>
@@ -443,6 +452,7 @@ function BondModal() {
                   subKey={"bond_modal"}
                   periodKey={"bond_modal_period"}
                   isSlideDisabled={fiveDaysLockup}
+                  minValue={1}
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}

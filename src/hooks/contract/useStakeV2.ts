@@ -1,6 +1,7 @@
 import { convertNumber } from "@/components/number";
 import { convertTimeStamp } from "@/components/time";
 import { BigNumber, utils } from "ethers";
+import { useBlockNumber } from "hooks/useBlockNumber";
 import useCallContract from "hooks/useCallContract";
 import { useEffect, useState } from "react";
 
@@ -13,6 +14,7 @@ type UseStakeV2 = {
 function useStakeV2() {
   const [stakeV2, setStakeV2] = useState<UseStakeV2 | undefined>(undefined);
   const { StakingV2Proxy_CONTRACT } = useCallContract();
+  const { blockNumber } = useBlockNumber();
 
   useEffect(() => {
     async function fetchAsyncData() {
@@ -40,7 +42,7 @@ function useStakeV2() {
         console.log(e);
       }
     });
-  }, [StakingV2Proxy_CONTRACT]);
+  }, [StakingV2Proxy_CONTRACT, blockNumber]);
 
   return { stakeV2 };
 }

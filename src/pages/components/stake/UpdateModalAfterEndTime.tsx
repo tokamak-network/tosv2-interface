@@ -234,7 +234,7 @@ function UpdateModalAfterEndTime() {
         "Amount of LTOS, sTOS, and TOS you will get after the update. ",
       secondTooltip: `Currently worth ${tosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+        "sTOS’s Lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
     },
     {
       title: "New End Time",
