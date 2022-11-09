@@ -530,7 +530,7 @@ function UpdateModal() {
                         bothConditionsErr
                           ? undefined
                           : Number(inputValue.stake_updateModal_period) > 155
-                          ? "New lock-up period must be less than 156 weeks"
+                          ? errMsg.periodExceedThanMaximum
                           : errMsg.managePeriodExceed
                       }
                       minValue={leftWeeks}
@@ -540,7 +540,8 @@ function UpdateModal() {
                         bothConditionsErr ||
                         Number(inputValue.stake_updateModal_period) <
                           leftWeeks ||
-                        inputValue?.stake_updateModal_period?.length === 0
+                        inputValue?.stake_updateModal_period?.length === 0 ||
+                        Number(inputValue.stake_updateModal_period) > 155
                           ? undefined
                           : newEndTime
                       }

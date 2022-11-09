@@ -21,6 +21,7 @@ function useRelockModalCondition(addTos: boolean) {
   //   const inputLTosAmount = inputValue.stake_relockModal_ltos_balance;
   const inputPeriod = inputValue.stake_relockModal_period;
   const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
+  const minimumWeeks = 0;
 
   useEffect(() => {
     if (isModalLoading) {
@@ -49,7 +50,11 @@ function useRelockModalCondition(addTos: boolean) {
   }, [inputTosAmount, userTOSBalance, isModalLoading]);
 
   useEffect(() => {
-    if (Number(inputPeriod) > LOCKTOS_maxWeeks || Number(inputPeriod) < 1) {
+    if (
+      Number(inputPeriod) > LOCKTOS_maxWeeks ||
+      Number(inputPeriod) < minimumWeeks ||
+      inputPeriod?.length === 0
+    ) {
       return setInputPeriodOver(true);
     }
     return setInputPeriodOver(false);

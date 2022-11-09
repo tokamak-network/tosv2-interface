@@ -166,6 +166,7 @@ const InputPeriod = (props: InputProp) => {
           pos={"absolute"}
           mt={"40px"}
           textAlign={"right"}
+          justifyContent={"center"}
         >
           <Text>{errorMsg}</Text>
         </Flex>

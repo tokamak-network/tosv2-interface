@@ -53,6 +53,8 @@ import constant from "constant";
 import StakeGraph from "../common/modal/StakeGraph";
 import useCustomToast from "hooks/useCustomToast";
 import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
+import useStosReward from "hooks/stake/useStosReward";
+import InputPeriod from "common/input/InputPeriod";
 
 function BottomContent(props: {
   title: string;
@@ -191,6 +193,10 @@ function UpdateModalAfterEndTime() {
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const { newBalance, newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(addTos);
+  const { leftDays, leftHourAndMin } = useStosReward(
+    inputValue.stake_relockModal_ltos_balance,
+    inputValue.stake_relockModal_period
+  );
   const { setTx } = useCustomToast();
 
   const stakeId = selectedModalData?.stakeId;
@@ -256,10 +262,15 @@ function UpdateModalAfterEndTime() {
     if (
       StakingV2Proxy_CONTRACT &&
       stakeId &&
-      inputValue.stake_relockModal_period
+      String(inputValue.stake_relockModal_period)?.length > 0
     ) {
       const periodWeeks = inputValue.stake_relockModal_period + 1;
-      if (addTos && inputValue.stake_relockModal_tos_balance && ltosAmount) {
+      if (
+        addTos &&
+        (inputValue.stake_relockModal_tos_balance !== undefined ||
+          inputValue.stake_relockModal_tos_balance?.length > 0) &&
+        ltosAmount
+      ) {
         const ltosValue = Number(ltosAmount?.replaceAll(",", ""));
         const ltosBN = convertToWei(ltosValue.toString());
         console.log(
@@ -291,7 +302,7 @@ function UpdateModalAfterEndTime() {
         stakeId,
         0,
         convertToWei(inputValue.stake_relockModal_ltos_balance),
-        inputValue.stake_relockModal_period
+        periodWeeks
       );
       const tx = await StakingV2Proxy_CONTRACT[
         "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
@@ -299,7 +310,7 @@ function UpdateModalAfterEndTime() {
         stakeId,
         0,
         convertToWei(inputValue.stake_relockModal_ltos_balance),
-        inputValue.stake_relockModal_period
+        periodWeeks
       );
       setTx(tx);
       return closeThisModal();
@@ -543,8 +554,8 @@ function UpdateModalAfterEndTime() {
                   >
                     New Lock-Up Period
                   </Text>
-                  <TextInput
-                    w={"170px"}
+                  <InputPeriod
+                    w={"220px"}
                     h={"39px"}
                     pageKey={"Stake_screen"}
                     recoilKey={"relock_modal"}
@@ -553,8 +564,12 @@ function UpdateModalAfterEndTime() {
                     style={{ marginLeft: "auto" }}
                     maxValue={modalMaxWeeks}
                     isError={inputPeriodOver}
-                    errorMsg={errMsg.periodExceed}
-                  ></TextInput>
+                    errorMsg={errMsg.stakePeriodExceed}
+                    isDisabled={false}
+                    leftDays={leftDays}
+                    leftTime={leftHourAndMin}
+                    endTime={inputPeriodOver ? undefined : newEndTime}
+                  ></InputPeriod>
                 </Flex>
               </Flex>
               <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
@@ -587,30 +602,20 @@ function UpdateModalAfterEndTime() {
               </Flex>
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
-              {addTos ? (
-                isAllowance ? (
-                  <SubmitButton
-                    w={smallerThan1024 ? 310 : 460}
-                    h={42}
-                    name="Update"
-                    isDisabled={btnDisabled}
-                    onClick={callUpdate}
-                  ></SubmitButton>
-                ) : (
-                  <SubmitButton
-                    w={smallerThan1024 ? 310 : 460}
-                    h={42}
-                    name="Approve"
-                    onClick={callApprove}
-                  ></SubmitButton>
-                )
-              ) : (
+              {isAllowance ? (
                 <SubmitButton
                   w={smallerThan1024 ? 310 : 460}
                   h={42}
                   name="Update"
                   isDisabled={btnDisabled}
                   onClick={callUpdate}
+                ></SubmitButton>
+              ) : (
+                <SubmitButton
+                  w={smallerThan1024 ? 310 : 460}
+                  h={42}
+                  name="Approve"
+                  onClick={callApprove}
                 ></SubmitButton>
               )}
             </Flex>

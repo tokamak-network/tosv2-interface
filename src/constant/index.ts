@@ -10,11 +10,12 @@ const constant = {
   mainnetGasPrice: "6849315",
   errMsg: {
     balanceExceed: "Input has exceeded your balance",
-    periodExceed: "Lock-up period must be an integer between 1 and 155",
-    stakePeriodExceed: "Lock-up period must be an integer between 0 and 155",
+    periodExceed: "Must be between 1 and 155",
+    stakePeriodExceed: "Must be an integer between 0 and 155",
     managePeriodExceed:
       "New lock-up period must be equal or greater than the existing lock-up period",
     zeroInput: "Input has to be greater than 0",
+    periodExceedThanMaximum: "Must be less than 156 weeks",
   },
 };
 
