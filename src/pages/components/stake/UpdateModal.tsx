@@ -500,7 +500,9 @@ function UpdateModal() {
                       fontSize={14}
                       color={"#64646f"}
                     >
-                      <Text>{leftWeeks} Weeks</Text>
+                      <Text>
+                        {leftWeeks} {leftWeeks < 2 ? "Week" : "Weeks"}
+                      </Text>
                       <Text fontSize={12} ml={"9px"} mr={"3px"}>
                         {leftDays} Days {leftTime}
                       </Text>
