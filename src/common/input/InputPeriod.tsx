@@ -63,12 +63,18 @@ const InputPeriod = (props: InputProp) => {
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
+  const [weeksUnit, setWeeksUnit] = useState<"Week" | "Weeks">("Weeks");
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     //@ts-ignore
     if (isNaN(event.target.value)) {
       return;
+    }
+    if (Number(event.target.value) !== 1) {
+      setWeeksUnit("Weeks");
+    } else {
+      setWeeksUnit("Week");
     }
     return setValue({
       ...inputValue,
@@ -136,9 +142,7 @@ const InputPeriod = (props: InputProp) => {
         >
           {isDisabled === false && leftDays && leftTime && (
             <>
-              <Text color={isDisabled ? "#8b8b93" : ""}>
-                {value && atomKey && value[atomKey] === 1 ? "Week" : "Weeks"}
-              </Text>
+              <Text color={isDisabled ? "#8b8b93" : ""}>{weeksUnit}</Text>
               <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
                 {leftDays} Days {leftTime}
               </Text>
