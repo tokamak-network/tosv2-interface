@@ -446,7 +446,7 @@ function StakeModal() {
                         }
                       ></InputPeriod>
                     </Flex>
-                    {fiveDaysLockup && <EndTime time={newEndTime}></EndTime>}
+                    {!fiveDaysLockup && <EndTime time={newEndTime}></EndTime>}
                   </Flex>
                 )}
               </Flex>
