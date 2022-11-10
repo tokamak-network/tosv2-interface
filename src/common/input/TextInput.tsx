@@ -196,6 +196,9 @@ function BalanceInput(props: NumberInputProp) {
     if (newValue === ".") {
       return;
     }
+    if (newValue === "-") {
+      return;
+    }
     return setValue({
       ...inputValue,
       [atomKey]: newValue,
