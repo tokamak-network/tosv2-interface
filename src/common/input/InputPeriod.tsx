@@ -66,6 +66,10 @@ const InputPeriod = (props: InputProp) => {
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //@ts-ignore
+    if (isNaN(event.target.value)) {
+      return;
+    }
     return setValue({
       ...inputValue,
       [atomKey]: event.target.value,
