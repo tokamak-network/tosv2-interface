@@ -224,6 +224,7 @@ const NavItem = (props: { isExpended: boolean }) => {
                       // bg={"red"}
                       top={-3}
                       style={{ transform: `rotate(180deg)` }}
+                      zIndex={10000}
                     >
                       <Image
                         src={
