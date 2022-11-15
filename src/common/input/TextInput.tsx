@@ -193,6 +193,13 @@ function BalanceInput(props: NumberInputProp) {
       // newValue = newValue.substring(0, index);
       return;
     }
+    //@ts-ignore
+    if (isNaN(event.target.value)) {
+      return;
+    }
+    if (event.target.value.includes(" ")) {
+      return;
+    }
     if (newValue === ".") {
       return;
     }

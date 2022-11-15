@@ -27,12 +27,12 @@ const Notice = () => {
       <ModalContent
         fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "black.200"}
-        maxW="700px"
+        maxW="5500px"
         // h={"568px"}
         pt="25px"
         pb="25px"
       >
-        <ModalBody p={0}>
+        <ModalBody p={0} className={"modalOverlay"}>
           <Box
             pb={"1.250em"}
             borderBottom={

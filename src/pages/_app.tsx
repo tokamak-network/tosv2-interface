@@ -68,7 +68,8 @@ function MyApp({ Component, pageProps }: AppProps) {
                     ></AccountDrawer>
                     <NetworkModal />
                     <TermsOfUse />
-                    <Notice />
+                    {/* Use when it does need to pop Notice Modal up */}
+                    {/* <Notice /> */}
                     <CustomToast />
                   </Flex>
                 </Flex>
