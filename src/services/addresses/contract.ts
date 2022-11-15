@@ -1,6 +1,8 @@
 //Phase1 contract datas
 //https://www.notion.so/onther/Phase1-deploy-contract-interface-b48f4c779c7043df971ddc3dac783ec8
 
+import { REACT_APP_MODE } from "constants";
+
 type CONTRACT_ADDRESSES_TYPE = {
   TON_ADDRESS:
     | "0x2be5e8c109e2197D077D13A82dAead6a9b3433C5"
@@ -75,7 +77,6 @@ const GOERLI: CONTRACT_ADDRESSES_TYPE = {
   LockTOS: "0x770e0d682277A4a9167971073f1Aa6d6403bb315",
 };
 
-const REACT_APP_MODE = process.env.REACT_APP_MODE as string;
 const CONTRACT_ADDRESS: CONTRACT_ADDRESSES_TYPE =
   REACT_APP_MODE === "PRODUCTION" ? MAINNET : GOERLI;
 

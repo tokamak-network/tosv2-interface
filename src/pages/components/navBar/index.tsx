@@ -421,7 +421,7 @@ function MobileSideBar() {
           pl={isExpended ? "35px" : "0px"}
         >
           <Logo isExpended={isExpended}></Logo>
-          <Text
+          {/* <Text
             mt={isExpended ? "0px" : "9px"}
             ml={isExpended ? "15px" : "0px"}
             w={"41px"}
@@ -435,7 +435,7 @@ function MobileSideBar() {
             borderRadius={3}
           >
             Goerli
-          </Text>
+          </Text> */}
         </Flex>
         <NavItem isExpended={isExpended}></NavItem>
         <Box w={"100%"} my={18} px={25}>
@@ -484,7 +484,7 @@ const NavBar = () => {
         pl={isExpended ? "35px" : "0px"}
       >
         <Logo isExpended={isExpended}></Logo>
-        <Text
+        {/* <Text
           mt={isExpended ? "0px" : "9px"}
           ml={isExpended ? "15px" : "0px"}
           w={"41px"}
@@ -498,7 +498,7 @@ const NavBar = () => {
           borderRadius={3}
         >
           Goerli
-        </Text>
+        </Text> */}
       </Flex>
       <NavItem isExpended={isExpended}></NavItem>
       <Box w={"100%"} my={18} px={25}>
