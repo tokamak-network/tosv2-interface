@@ -1,7 +1,7 @@
 //Phase1 contract datas
 //https://www.notion.so/onther/Phase1-deploy-contract-interface-b48f4c779c7043df971ddc3dac783ec8
 
-import { REACT_APP_MODE } from "constants";
+import { REACT_APP_MODE } from "../../constants";
 
 type CONTRACT_ADDRESSES_TYPE = {
   TON_ADDRESS:
