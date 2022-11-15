@@ -8,6 +8,9 @@ const constant = {
   modalMaxWeeks: 155,
   rebasePeriod: 60 * 60 * 8, //8Hours
   mainnetGasPrice: "6849315",
+  //https://www.notion.so/onther/11-3-TOSv2-phase-1-open-check-ef653dca90584edf8d7c25e767cfff3f
+  //285,753 → 279,458
+  minBondGasPrice: "279458",
   errMsg: {
     balanceExceed: "Input has exceeded your balance",
     bondZeroInput: "Input has to be greater than 0",

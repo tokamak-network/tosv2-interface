@@ -71,6 +71,9 @@ const InputPeriod = (props: InputProp) => {
     if (isNaN(event.target.value)) {
       return;
     }
+    if (event.target.value.includes(".")) {
+      return;
+    }
     if (Number(event.target.value) !== 1) {
       setWeeksUnit("Weeks");
     } else {

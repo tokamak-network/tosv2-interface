@@ -125,8 +125,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
       }
     }
     fetchBondModalInputData().catch((e) => {
-      console.log("**useBondModalInputData1 err**");
-      console.log(e);
+      // console.log("**useBondModalInputData1 err**");
+      // console.log(e);
     });
   }, [
     inputValue,
@@ -175,8 +175,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
     }
     fetchLtosData()
       .catch((e) => {
-        console.log("**useBondModalInputData3 err**");
-        console.log(e);
+        // console.log("**useBondModalInputData3 err**");
+        // console.log(e);
       })
       .finally(() => {
         setLoading(false);
@@ -193,8 +193,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
       return setEndTime(`${newEndTime}`);
     }
     fetchBondModalInputData().catch((e) => {
-      console.log("**useBondModalInputData2 err**");
-      console.log(e);
+      // console.log("**useBondModalInputData2 err**");
+      // console.log(e);
     });
   }, [newEndTime]);
 

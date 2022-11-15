@@ -100,7 +100,7 @@ function useStosReward(
     fetchStosRewardData()
       .catch((e) => {
         console.log("**fetchStosRewardData err**");
-        console.log(e);
+        // console.log(e);
       })
       .finally(() => {
         setLoading(false);
@@ -142,7 +142,7 @@ function useStosReward(
 
     calculateUnlockTime().catch((e) => {
       console.log("**fetchStosRewardData3 err**");
-      console.log(e);
+      // console.log(e);
     });
   }, [LockTOS_CONTRACT, inputPeriod, epochUnit]);
 

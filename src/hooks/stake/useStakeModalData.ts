@@ -115,8 +115,8 @@ function useStakeModaldata(): StakeModalBottomContents {
     };
     fetchListdata()
       .catch((e) => {
-        console.log("**useStakeModalData err**");
-        console.log(e);
+        // console.log("**useStakeModalData err**");
+        // console.log(e);
       })
       .finally(() => {
         return setBottomLoading(false);

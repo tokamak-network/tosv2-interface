@@ -52,7 +52,7 @@ function useBondModal() {
 
   const context = useWeb3React();
   const { priceData } = usePrice();
-  const { mainnetGasPrice } = constant;
+  const { mainnetGasPrice, minBondGasPrice } = constant;
 
   useEffect(() => {
     async function fetchAsyncData() {
@@ -98,7 +98,7 @@ function useBondModal() {
         const divParam =
           Number(propData.discountRate.replaceAll("%", "")) / 100;
 
-        const minbond = BigNumber.from(convertToWei("285753"))
+        const minbond = BigNumber.from(convertToWei(minBondGasPrice))
           .mul(gasPriceWei)
           .div(convertToWei(divParam.toString()));
         // .mul(mainnetGasPrice);
@@ -122,8 +122,8 @@ function useBondModal() {
     try {
       fetchAsyncData();
     } catch (e) {
-      console.log("**useBondModal err**");
-      console.log(e);
+      // console.log("**useBondModal err**");
+      // console.log(e);
     }
   }, [
     propData,
@@ -132,6 +132,7 @@ function useBondModal() {
     StakingV2Proxy_CONTRACT,
     context?.library,
     priceData,
+    minBondGasPrice,
   ]);
 
   return {

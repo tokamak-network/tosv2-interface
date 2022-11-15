@@ -109,8 +109,8 @@ function useUpdateModalData(
       }
     }
     fetchUpdateModalData().catch((e) => {
-      console.log("**useUpdateModalData1 err**");
-      console.log(e);
+      // console.log("**useUpdateModalData1 err**");
+      // console.log(e);
     });
   }, [stakeId, StakingV2Proxy_CONTRACT, modalContractData, epochUnit]);
 
@@ -254,8 +254,8 @@ function useUpdateModalData(
       }
     }
     fetchUpdateModalData().catch((e) => {
-      console.log("**useUpdateModalData2 err**");
-      console.log(e);
+      // console.log("**useUpdateModalData2 err**");
+      // console.log(e);
     });
   }, [
     stakeId,

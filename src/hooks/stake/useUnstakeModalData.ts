@@ -42,8 +42,8 @@ function useUnstakeModalData(stakeId: string | undefined) {
       }
     }
     fetchUnstakeData().catch((e) => {
-      console.log("**useUnstake fetchUnstakeData1 err**");
-      console.log(e);
+      // console.log("**useUnstake fetchUnstakeData1 err**");
+      // console.log(e);
     });
   }, [stakeId, StakingV2Proxy_CONTRACT]);
 
@@ -76,8 +76,8 @@ function useUnstakeModalData(stakeId: string | undefined) {
       return setYouWillGet("0");
     }
     fetchUnstakeData().catch((e) => {
-      console.log("**useUnstake fetchUnstakeData2 err**");
-      console.log(e);
+      // console.log("**useUnstake fetchUnstakeData2 err**");
+      // console.log(e);
     });
   }, [StakingV2Proxy_CONTRACT, inputValue.stake_unstakeModal_balance, stakeV2]);
 
@@ -96,8 +96,8 @@ function useUnstakeModalData(stakeId: string | undefined) {
       return setYouWillGet("0");
     }
     fetchUnstakeData().catch((e) => {
-      console.log("**useUnstake fetchUnstakeData3 err**");
-      console.log(e);
+      // console.log("**useUnstake fetchUnstakeData3 err**");
+      // console.log(e);
     });
   }, [StakingV2Proxy_CONTRACT, stakeId, stakeV2]);
 
