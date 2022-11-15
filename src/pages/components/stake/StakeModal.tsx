@@ -101,12 +101,6 @@ function StakeModal() {
     useStakeModalCondition();
   const { errMsg, modalMaxWeeks } = constant;
 
-  console.log("go");
-
-  console.log(
-    fiveDaysLockup || inputPeriodOver || inputOver || zeroInputBalance
-  );
-
   const contentList = fiveDaysLockup
     ? [
         {

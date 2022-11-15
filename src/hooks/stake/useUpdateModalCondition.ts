@@ -48,10 +48,6 @@ function useUpdateModalConditon(leftWeeks: number) {
   }, [inputTosAmount, userTOSBalance, isModalLoading]);
 
   useEffect(() => {
-    console.log("inputPeriod");
-    console.log(inputPeriod);
-    console.log(inputPeriod?.length);
-
     if (
       LOCKTOS_maxWeeks < Number(inputPeriod) ||
       Number(inputPeriod) < leftWeeks ||

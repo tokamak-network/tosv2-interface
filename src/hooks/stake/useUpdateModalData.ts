@@ -52,18 +52,22 @@ function useUpdateModalData(
 
   const [newTosAmount, setNewTosAmount] = useState<string>("-");
 
+  console.log("newBalanceType");
+  console.log(newBalanceType);
+
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const modalContractData = useModalContract();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward } = useStosReward(
     newBalanceType === 2
-      ? currentBalance.stos
+      ? Number(currentBalance.stos.replaceAll(",", ""))
       : inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period - leftWeeks < 1
       ? 1
       : inputValue.stake_updateModal_period - leftWeeks
   );
+
   const { newEndTime } = useStosReward(
     inputValue.stake_updateModal_tos_balance,
     inputValue.stake_updateModal_period
@@ -164,6 +168,7 @@ function useUpdateModalData(
           const resultLtos =
             Number(currentBalance.ltos.replaceAll(",", "")) +
             Number(ltos.replaceAll(",", ""));
+
           const resultStos =
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
@@ -178,7 +183,7 @@ function useUpdateModalData(
           setNewTosAmount(newTosAmount);
 
           return setNewBalance({
-            ltos: commafy(resultLtos),
+            ltos: ltos,
             stos: isNaN(resultStos) ? "-" : commafy(resultStos),
           });
         }
@@ -192,8 +197,6 @@ function useUpdateModalData(
           const resultStos =
             Number(currentBalance.stos.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", ""));
-
-          console.log(stosReward);
 
           setNewTosAmount(modalContractData.currentTosAmount);
 
