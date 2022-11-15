@@ -7,7 +7,7 @@ import ETH_SYMBOL from "assets/icons/eth_24.svg";
 import { useWeb3React } from "@web3-react/core";
 
 function NetworkIcon() {
-  const { isConnectedToChain } = useClient();
+  const { isConnectedToChain, networkName } = useClient();
   const { openModal } = useModal("network_swtich");
   const { account } = useWeb3React();
 
@@ -16,8 +16,8 @@ function NetworkIcon() {
       <Flex
         w={"48px"}
         h={"48px"}
-        bg={isConnectedToChain ? "#f29b37" : "#080808"}
-        border={isConnectedToChain ? {} : "1px solid #313442"}
+        bg={isConnectedToChain ? "#080808" : "#080808"}
+        border={isConnectedToChain ? "1px solid #313442" : "1px solid #313442"}
         borderRadius={8}
         justifyContent={"center"}
         alignItems={"center"}
@@ -47,7 +47,7 @@ function NetworkIcon() {
             >
               <Image src={Tooltips_left_arrow} alt={"tooltip_arrow"}></Image>
             </Flex>
-            <Text>Please connect to Goerli testnet </Text>
+            <Text>Please connect to {networkName} </Text>
             <Text>to use this service.</Text>
           </Flex>
         )}
