@@ -440,7 +440,10 @@ function StakeModal() {
                         leftDays={fiveDaysLockup ? undefined : leftDays}
                         leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
                         endTime={
-                          fiveDaysLockup || inputPeriodOver
+                          fiveDaysLockup ||
+                          inputPeriodOver ||
+                          inputOver ||
+                          zeroInputBalance
                             ? undefined
                             : newEndTime
                         }

@@ -6,6 +6,9 @@ import {
 } from "@apollo/client";
 import { MIDDLEWARE_API } from "constants/index";
 
+console.log("middleware api");
+console.log(MIDDLEWARE_API);
+
 const client = new ApolloClient({
   uri: MIDDLEWARE_API || "https://tosv2-server.tokamak.network/graphql",
   cache: new InMemoryCache(),
