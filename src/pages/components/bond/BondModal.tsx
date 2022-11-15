@@ -487,7 +487,7 @@ function BondModal() {
                 h={42}
                 name="Bond"
                 onClick={callBond}
-                isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
+                // isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
             </Flex>
             {/* <Flex
