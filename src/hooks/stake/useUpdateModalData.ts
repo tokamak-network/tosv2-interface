@@ -58,7 +58,8 @@ function useUpdateModalData(
   const { stosReward } = useStosReward(
     newBalanceType === 2
       ? Number(currentBalance.stos.replaceAll(",", ""))
-      : inputValue.stake_updateModal_tos_balance,
+      : Number(inputValue.stake_updateModal_tos_balance) +
+          Number(currentBalance.stos.replaceAll(",", "")),
     inputValue.stake_updateModal_period - leftWeeks < 1
       ? 1
       : inputValue.stake_updateModal_period - leftWeeks
