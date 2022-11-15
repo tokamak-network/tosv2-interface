@@ -67,7 +67,7 @@ function Header(props: HeaderProps) {
   return (
     <Flex
       w={"100%"}
-      maxW={"1136px"}
+      // maxW={"1136px"}
       justifyContent={["space-between", "space-between", "end"]}
       pr={["10px", "11px", "35px"]}
       pt={"24px"}
