@@ -101,6 +101,12 @@ function StakeModal() {
     useStakeModalCondition();
   const { errMsg, modalMaxWeeks } = constant;
 
+  console.log("go");
+
+  console.log(
+    fiveDaysLockup || inputPeriodOver || inputOver || zeroInputBalance
+  );
+
   const contentList = fiveDaysLockup
     ? [
         {
@@ -449,7 +455,6 @@ function StakeModal() {
                         }
                       ></InputPeriod>
                     </Flex>
-                    {!fiveDaysLockup && <EndTime time={newEndTime}></EndTime>}
                   </Flex>
                 )}
               </Flex>

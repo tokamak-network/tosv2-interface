@@ -31,9 +31,6 @@ function useBondTopCards() {
     pollInterval: 10000,
   });
 
-  console.log("test");
-  console.log(loading, error, data);
-
   useEffect(() => {
     const fetchData = async () => {
       if (
