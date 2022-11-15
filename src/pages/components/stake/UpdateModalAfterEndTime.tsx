@@ -58,7 +58,7 @@ import InputPeriod from "common/input/InputPeriod";
 
 function BottomContent(props: {
   title: string;
-  content: string | { ltos: string; stos: string; tos?: string };
+  content: any;
   tooltip?: boolean;
   tooltipMessage?: string;
   secondTooltip?: string;
@@ -74,6 +74,11 @@ function BottomContent(props: {
   } = props;
   const { colorMode } = useColorMode();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
+  console.log("test");
+  console.log(title);
+  console.log(content);
+  console.log(thirdTooltip);
 
   const ContentComponent = useMemo(() => {
     switch (title) {
@@ -128,9 +133,23 @@ function BottomContent(props: {
               fontWeight={600}
               mr="6px"
             >
-              {content as string}
+              {(typeof content !== "string" && content.ltos) || "-"} LTOS
             </Text>
             <BasicTooltip label={secondTooltip} />
+            {typeof content !== "string" && content.tos && (
+              <>
+                {" "}
+                <Text color={"#64646f"} mx={"5px"}>
+                  /
+                </Text>
+                <Text
+                  color={colorMode === "dark" ? "white.200" : "gray.800"}
+                  fontWeight={600}
+                >
+                  {content.tos || "-"} TOS
+                </Text>
+              </>
+            )}
           </Flex>
         );
       default:
@@ -217,17 +236,23 @@ function UpdateModalAfterEndTime() {
   const contentList = [
     {
       title: "You Give",
-      content: `${
-        addTos
-          ? inputValue.stake_relockModal_tos_balance || "-"
-          : inputValue.stake_relockModal_ltos_balance || "-"
-      } ${addTos ? "TOS" : "LTOS"}`,
+      // content: `${
+      //   addTos
+      //     ? inputValue.stake_relockModal_tos_balance || "-"
+      //     : inputValue.stake_relockModal_ltos_balance || "-"
+      //   } ${addTos ? "TOS" : "LTOS"}`,
+      content: addTos
+        ? {
+            ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
+            tos: inputValue.stake_relockModal_tos_balance ?? "-",
+          }
+        : {
+            ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
+          },
       tooltip: true,
       tooltipMessage: "Amount of LTOS and TOS used for staking.",
       secondTooltip: `Currently worth ${
-        addTos
-          ? inputValue.stake_relockModal_tos_balance || "-"
-          : tosValue || "-"
+        tosValue || "-"
       } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
     },
     {
@@ -611,6 +636,7 @@ function UpdateModalAfterEndTime() {
                       tooltip={content.tooltip}
                       tooltipMessage={content.tooltipMessage}
                       secondTooltip={content.secondTooltip}
+                      thirdTooltip={content.thirdTooltip}
                     ></BottomContent>
                   );
                 })}
