@@ -203,8 +203,16 @@ function UpdateModalAfterEndTime() {
   const ltosAmount = selectedModalData?.ltosAmount;
 
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
-    useRelockModalCondition(addTos);
+    useRelockModalCondition(Number(ltosAmount?.replaceAll("", "")));
   const { errMsg, modalMaxWeeks } = constant;
+
+  //maxValues
+  const [maxLtosValue, setMaxLtosValue] = useState<number | undefined>(
+    undefined
+  );
+  const [maxStosValue, setMaxStosValue] = useState<number | undefined>(
+    undefined
+  );
 
   const contentList = [
     {
@@ -345,13 +353,20 @@ function UpdateModalAfterEndTime() {
   }, [tosAllowance, inputValue.stake_relockModal_tos_balance]);
 
   useEffect(() => {
-    if (addTos && ltosAmount) {
-      setValue({
-        ...inputValue,
-        stake_relockModal_ltos_balance: ltosAmount?.replaceAll(",", ""),
-      });
+    if (userTOSBalance) {
+      setTimeout(() => {
+        setMaxStosValue(Number(userTOSBalance.replaceAll(",", "")));
+      }, 2000);
     }
-  }, [addTos, ltosAmount, setValue]);
+  }, [userTOSBalance]);
+
+  useEffect(() => {
+    if (ltosAmount) {
+      setTimeout(() => {
+        setMaxLtosValue(Number(ltosAmount.replaceAll(",", "")));
+      }, 2000);
+    }
+  }, [ltosAmount]);
 
   return (
     <Modal
@@ -439,8 +454,8 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"relock_modal"}
                         isDisabled={addTos}
-                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
                         rightUnit={"LTOS"}
+                        maxValue={maxLtosValue}
                       ></BalanceInput>
                     </Flex>
                   </Flex>
@@ -488,7 +503,7 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"relock_modal"}
                         isDisabled={addTos}
-                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                        maxValue={maxLtosValue}
                         isError={
                           addTos === false && (zeroInputBalance || inputOver)
                         }
@@ -525,7 +540,7 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"relock_modal"}
                         atomKey={"stake_relockModal_tos_balance"}
-                        maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
+                        maxValue={maxStosValue}
                         isError={zeroInputBalance || inputOver}
                         errorMsg={
                           addTos && zeroInputBalance
@@ -616,6 +631,7 @@ function UpdateModalAfterEndTime() {
                   h={42}
                   name="Approve"
                   onClick={callApprove}
+                  isDisabled={zeroInputBalance || inputOver || inputPeriodOver}
                 ></SubmitButton>
               )}
             </Flex>

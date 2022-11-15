@@ -67,7 +67,7 @@ function UnstakeModal() {
   const selectedModal = useRecoilValue(selectedModalState);
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal, selectedModalData } = useModal<{
+  const { closeModal, selectedModalData, isModalLoading } = useModal<{
     hasInput: boolean;
     stakedId: string;
   }>();
@@ -274,10 +274,11 @@ function UnstakeModal() {
                 name="Unstake"
                 onClick={callUnstake}
                 isDisabled={
-                  unstakeData?.maxValue
+                  isModalLoading ||
+                  (unstakeData?.maxValue
                     ? inputValue.stake_unstakeModal_balance >
                       Number(unstakeData.maxValue)
-                    : false
+                    : false)
                 }
               ></SubmitButton>
             </Flex>

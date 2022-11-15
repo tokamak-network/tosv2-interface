@@ -51,10 +51,6 @@ function useUpdateModalData(
   const [leftTime, setLeftTime] = useState<string>("-");
 
   const [newTosAmount, setNewTosAmount] = useState<string>("-");
-
-  console.log("newBalanceType");
-  console.log(newBalanceType);
-
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const modalContractData = useModalContract();
