@@ -92,7 +92,10 @@ function BondModal() {
     inputValue.bond_modal_period
   );
 
-  const { setTx } = useCustomToast();
+  const { setTx } = useCustomToast({
+    confirmedMessage: "Bond purchase success! Go to",
+    confirmedLink: "Stake_screen",
+  });
   const { ltosIndex } = useLtosIndex();
   const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
 
@@ -221,6 +224,10 @@ function BondModal() {
         bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
           ? Number(userETHBalance.replaceAll(",", ""))
           : Number(bondModalData?.maxBond.replaceAll(",", ""));
+
+      if (Number(bondModalData?.maxBond) === 0) {
+        return setMaxValue(Number(userETHBalance.replaceAll(",", "")));
+      }
       setMaxValue(mValue);
     }
   }, [bondModalData, userETHBalance]);
@@ -348,7 +355,7 @@ function BondModal() {
                     isError={bondModalData && (zeroInputBalance || inputOver)}
                     errorMsg={
                       zeroInputBalance
-                        ? errMsg.zeroInput
+                        ? errMsg.bondZeroInput
                         : "Input has exceeded maximum bondable amount per 1 transaction"
                     }
                     rightUnit={"ETH"}
@@ -392,7 +399,7 @@ function BondModal() {
                         <Text ml={"9px"} mr="6px">
                           5 days Lock-Up
                         </Text>
-                        <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+                        <BasicTooltip label="No sTOS is given for 5 day lock-up option" />
                       </Flex>
                     </Flex>
                     <BalanceInput
@@ -487,7 +494,7 @@ function BondModal() {
                 h={42}
                 name="Bond"
                 onClick={callBond}
-                // isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
+                isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
             </Flex>
             {/* <Flex

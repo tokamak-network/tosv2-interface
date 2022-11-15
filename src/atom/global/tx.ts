@@ -1,10 +1,12 @@
 import { atom, selector } from "recoil";
+import { PageKey } from "types";
 import { ToastType } from "types/toast";
 
 export type T_TxInfoState = {
   id: string;
   message: string;
   type: ToastType;
+  link?: PageKey;
 } | null;
 
 const txState = atom({

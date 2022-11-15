@@ -7,17 +7,21 @@ import idGenerator from "@/components/idGenerator";
 import { ToastType } from "types/toast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { txInfoState, txInfo as txInfos } from "atom/global/tx";
+import { PageKey } from "types";
+import { useRouter } from "next/router";
 
 function CustomToastComponent(props: {
   type: ToastType;
   message: string;
   id: string;
   onClose(): void;
+  link?: PageKey;
 }) {
-  const { type, message, id, onClose } = props;
+  const { type, message, id, onClose, link } = props;
   const toast = useToast();
   const toastIdRef = useRef(null);
   const [isOpen, setIsOpen] = useState<boolean>(true);
+  const router = useRouter();
 
   function close() {
     setIsOpen(false);
@@ -43,11 +47,19 @@ function CustomToastComponent(props: {
       borderRadius={14}
       display={isOpen ? "flex" : "none"}
     >
-      <Flex>
+      <Flex color={"#ffffff"}>
         <Image src={INFO_ICON} alt={"info_icon"}></Image>
-        <Text ml={"12px"} color={"#ffffff"}>
-          {message}
+        <Text ml={"12px"}>{message}</Text>
+        <Text
+          onClick={() =>
+            router.push(link === "Stake_screen" ? "/stake" : "/bond")
+          }
+          color={"blue.200"}
+          ml={"5px"}
+        >
+          {link === "Stake_screen" ? "Stake" : "Bond"}
         </Text>
+        <Text>.</Text>
       </Flex>
       <Flex cursor={"pointer"} onClick={close} w={"30px"} h={"30px"}>
         <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
@@ -66,7 +78,7 @@ function CustomToast() {
       if (txInfo && !toast.isActive(txInfo.id)) {
         toast({
           position: "top",
-          duration: 5000,
+          // duration: 5000,
           isClosable: true,
           id: txInfo.id,
           render: () => (
@@ -75,6 +87,7 @@ function CustomToast() {
               message={txInfo.message}
               onClose={() => {}}
               type={txInfo.type}
+              link={txInfo.link}
             ></CustomToastComponent>
           ),
         });

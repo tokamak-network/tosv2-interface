@@ -113,7 +113,7 @@ function BondCard(props: { data: BondCardProps }) {
           name={account ? "Bond" : "Connect Wallet"}
           h={"33px"}
           style={{ alignSelf: "center", marginTop: "9px" }}
-          isDisabled={bondIsDisabled}
+          isDisabled={bondIsDisabled || Number(data?.discountRate) < 0}
           onClick={account ? openModal : tryActivation}
         ></BasicButton>
       </Flex>

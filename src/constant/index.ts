@@ -10,6 +10,7 @@ const constant = {
   mainnetGasPrice: "6849315",
   errMsg: {
     balanceExceed: "Input has exceeded your balance",
+    bondZeroInput: "Input has to be greater than 0",
     periodExceed: "Must be between 1 and 155",
     stakePeriodExceed: "Must be between 0 and 155",
     managePeriodExceed:

@@ -9,8 +9,12 @@ import idGenerator from "@/components/idGenerator";
 import { PageKey } from "types";
 
 type ToastPayload = {
-  description?: string;
-  link?: PageKey;
+  submittedMessage?: string;
+  confirmedMessage?: string;
+  errorMessage?: string;
+  submittedLink?: PageKey;
+  confirmedLink?: PageKey;
+  errorLink?: PageKey;
 };
 
 function useCustomToast(props?: ToastPayload) {
@@ -33,16 +37,18 @@ function useCustomToast(props?: ToastPayload) {
         const id = idGenerator();
         setTxInfos({
           id,
-          message: "Tx is successfully pending!",
+          message: props?.submittedMessage ?? "Tx is successfully submmited!",
           type: "success",
+          link: props?.submittedLink,
         });
         const wait = await receipt.wait();
         if (wait) {
           const id = idGenerator();
           setTxInfos({
             id,
-            message: "Tx is successfully confirmed!",
+            message: props?.confirmedMessage ?? "Tx is successfully confirmed!",
             type: "confirmed",
+            link: props?.confirmedLink,
           });
           return setTxPending(false);
         }
@@ -52,8 +58,9 @@ function useCustomToast(props?: ToastPayload) {
       const id = idGenerator();
       setTxInfos({
         id,
-        message: "Something went wrong",
+        message: props?.errorMessage ?? "Something went wrong",
         type: "error",
+        link: props?.errorLink,
       });
     }
   }

@@ -39,7 +39,7 @@ function TxPending() {
   return (
     <Flex w={"100%"} alignItems={"center"}>
       <Spinner size={"md"} color={"blue.200"}></Spinner>
-      <Text fontSize={16} fontWeight={"bold"} color={"#f1f1f1"} ml={"21px"}>
+      <Text fontSize={16} fontWeight={"bold"} color={"#f1f1f1"} ml={"9px"}>
         Tx Pending...
       </Text>
     </Flex>
@@ -62,6 +62,7 @@ function Header(props: HeaderProps) {
   const text = useColorModeValue("dark", "light");
   const { activate, active, account } = useWeb3React();
   const txPending = useRecoilValue(selectedTxState);
+
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
 
   return (
@@ -88,7 +89,8 @@ function Header(props: HeaderProps) {
           borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
           borderRadius={8}
           ml={"20px"}
-          px={"20px"}
+          pl={txPending ? "9px" : "20px"}
+          pr={txPending ? "0px" : "20px"}
           cursor={"pointer"}
           fontSize={16}
           onMouseEnter={() => setIsHover(true)}
