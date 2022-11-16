@@ -29,7 +29,7 @@ function CustomToastComponent(props: {
 
   return (
     <Flex
-      w={"620px"}
+      w={"340px"}
       h={"60px"}
       pl={"15px"}
       pr={"20px"}
@@ -48,18 +48,34 @@ function CustomToastComponent(props: {
       display={isOpen ? "flex" : "none"}
     >
       <Flex color={"#ffffff"}>
-        <Image src={INFO_ICON} alt={"info_icon"}></Image>
-        <Text ml={"12px"}>{message}</Text>
-        <Text
-          onClick={() =>
-            router.push(link === "Stake_screen" ? "/stake" : "/bond")
-          }
-          color={"blue.200"}
-          ml={"5px"}
-        >
-          {link === "Stake_screen" ? "Stake" : "Bond"}
-        </Text>
-        <Text>.</Text>
+        <Image
+          src={INFO_ICON}
+          alt={"info_icon"}
+          // style={{ marginRight: "12px" }}
+        ></Image>
+        {message !== "Bond purchase success! Go to" ? (
+          <Text w={"320px"} ml={"12px"}>
+            {message}
+          </Text>
+        ) : (
+          <Flex flexDir={"column"} w={"320px"} ml={"12px"}>
+            <Text>Bond purchase success!</Text>
+            <Flex>
+              <Text>Go to </Text>
+              <Text
+                ml={"5px"}
+                onClick={() =>
+                  router.push(link === "Stake_screen" ? "/stake" : "/bond")
+                }
+                color={"blue.200"}
+                cursor={"pointer"}
+              >
+                {link === "Stake_screen" ? "Stake" : "Bond"}
+              </Text>
+              <Text>.</Text>
+            </Flex>
+          </Flex>
+        )}
       </Flex>
       <Flex cursor={"pointer"} onClick={close} w={"30px"} h={"30px"}>
         <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
@@ -73,12 +89,14 @@ function CustomToast() {
   const txInfo = useRecoilValue(txInfoState);
   const [txInfosData, setTxInfosData] = useRecoilState(txInfos);
 
+  console.log(txInfosData);
+
   const callToast = () => {
     try {
       if (txInfo && !toast.isActive(txInfo.id)) {
         toast({
           position: "top",
-          // duration: 5000,
+          duration: 5000,
           isClosable: true,
           id: txInfo.id,
           render: () => (
