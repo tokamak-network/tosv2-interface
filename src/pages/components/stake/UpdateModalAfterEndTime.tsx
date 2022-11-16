@@ -392,10 +392,8 @@ function UpdateModalAfterEndTime() {
     if (ltosAmount && userTOSBalance) {
       setValue({
         ...inputValue,
-        stake_relockModal_ltos_balance: Number(ltosAmount.replaceAll(",", "")),
-        stake_relockModal_tos_balance: Number(
-          userTOSBalance.replaceAll(",", "")
-        ),
+        stake_relockModal_ltos_balance: ltosAmount.replaceAll(",", ""),
+        stake_relockModal_tos_balance: userTOSBalance.replaceAll(",", ""),
       });
     }
   }, [ltosAmount, userTOSBalance, setValue]);

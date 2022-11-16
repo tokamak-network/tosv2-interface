@@ -255,7 +255,7 @@ function StakeModal() {
     if (userTOSBalance) {
       setValue({
         ...inputValue,
-        stake_modal_balance: Number(userTOSBalance.replaceAll(",", "")),
+        stake_modal_balance: String(userTOSBalance),
       });
     }
   }, [userTOSBalance, setValue]);

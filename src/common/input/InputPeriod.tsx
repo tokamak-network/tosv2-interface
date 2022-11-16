@@ -80,7 +80,7 @@ const InputPeriod = (props: InputProp) => {
     if (event.target.value.includes(" ")) {
       return;
     }
-    if (Number(event.target.value) !== 1) {
+    if (Number(event.target.value) > 1) {
       setWeeksUnit("Weeks");
     } else {
       setWeeksUnit("Week");

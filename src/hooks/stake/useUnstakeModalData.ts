@@ -29,8 +29,6 @@ function useUnstakeModalData(stakeId: string | undefined) {
         // const maxValueData = await StakingV2Proxy_CONTRACT.claimableTos(
         //   stakeId
         // );
-        console.log("maxValueBN--");
-        console.log(maxValueBN.toString());
 
         const maxValue = convertNumber({
           amount: maxValueBN.toString(),

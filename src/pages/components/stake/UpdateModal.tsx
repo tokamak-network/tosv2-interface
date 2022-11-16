@@ -381,10 +381,12 @@ function UpdateModal() {
 
   useEffect(() => {
     if (userTOSBalance) {
-      const tosBalance = userTOSBalance?.replaceAll(",", "");
+      const tosBalance = userTOSBalance
+        ?.replaceAll(",", "")
+        .replaceAll(" ", "");
       setValue({
         ...inputValue,
-        stake_updateModal_tos_balance: String(tosBalance),
+        stake_updateModal_tos_balance: tosBalance,
       });
     }
   }, [userTOSBalance, setValue]);
@@ -467,7 +469,9 @@ function UpdateModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     atomKey={"stake_updateModal_tos_balance"}
-                    maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
+                    maxValue={Number(
+                      userTOSBalance?.replaceAll(",", "").replaceAll(" ", "")
+                    )}
                     isError={
                       bothConditionsErr ||
                       inputValue?.stake_updateModal_tos_balance === undefined ||
