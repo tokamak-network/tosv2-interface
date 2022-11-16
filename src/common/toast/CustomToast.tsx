@@ -89,8 +89,6 @@ function CustomToast() {
   const txInfo = useRecoilValue(txInfoState);
   const [txInfosData, setTxInfosData] = useRecoilState(txInfos);
 
-  console.log(txInfosData);
-
   const callToast = () => {
     try {
       if (txInfo && !toast.isActive(txInfo.id)) {

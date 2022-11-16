@@ -66,6 +66,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   const { openModal: openUpdateModal } = useModal("stake_update_modal", {
     stakeId: cardData?.stakedId,
     ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
+    principal: cardData?.principal.replaceAll("TOS", "").replaceAll(" ", ""),
   });
   const { openModal: openUpdateAfterEndTimeModal } = useModal(
     "stake_updateAfterEndTime_modal",

@@ -393,6 +393,15 @@ function UpdateModalAfterEndTime() {
     }
   }, [ltosAmount]);
 
+  // useEffect(() => {
+  //   if (ltosAmount && userTOSBalance) {
+  //     setValue({
+  //       ...inputValue,
+
+  //     })
+  //   }
+  // }, [ltosAmount, userTOSBalance])
+
   return (
     <Modal
       isOpen={selectedModal === "stake_updateAfterEndTime_modal"}
@@ -534,7 +543,7 @@ function UpdateModalAfterEndTime() {
                         }
                         errorMsg={
                           zeroInputBalance
-                            ? errMsg.zeroInput
+                            ? errMsg.bondZeroInput
                             : errMsg.balanceExceed
                         }
                         rightUnit={"LTOS"}
@@ -569,7 +578,7 @@ function UpdateModalAfterEndTime() {
                         isError={zeroInputBalance || inputOver}
                         errorMsg={
                           addTos && zeroInputBalance
-                            ? errMsg.zeroInput
+                            ? errMsg.bondZeroInput
                             : errMsg.balanceExceed
                         }
                         rightUnit={"TOS"}

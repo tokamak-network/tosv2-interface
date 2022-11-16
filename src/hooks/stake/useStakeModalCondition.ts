@@ -21,6 +21,7 @@ function useStakeModalCondition() {
 
   useEffect(() => {
     if (isModalLoading) {
+      setInputOver(false);
       return setZeroInputBalance(false);
     }
     if (

@@ -64,7 +64,7 @@ function useStosReward(
         return setStosRewards("-");
       }
       if (inputTosAmount === 0) {
-        return setStosRewards("0");
+        return setStosRewards("0.00");
       }
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
         const weekPeriod = inputPeriod + 1 || 1;

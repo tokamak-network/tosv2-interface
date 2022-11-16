@@ -25,6 +25,7 @@ type InputProp = {
   w?: number | string;
   h?: number | string;
   isDisabled?: boolean;
+  isManageModal?: boolean;
   inputValue?: string | number | any;
   isError?: boolean;
   errorMsg?: string;
@@ -60,6 +61,7 @@ const InputPeriod = (props: InputProp) => {
     leftTime,
     isDisabledText,
     endTime,
+    isManageModal,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -146,14 +148,16 @@ const InputPeriod = (props: InputProp) => {
           fontSize={14}
           color={"white.200"}
         >
-          {isDisabled === false && leftDays && leftTime && (
-            <>
-              <Text color={isDisabled ? "#8b8b93" : ""}>{weeksUnit}</Text>
-              <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
-                {leftDays} Days {leftTime}
-              </Text>
-            </>
-          )}
+          {(isDisabled === false || isManageModal === true) &&
+            leftDays &&
+            leftTime && (
+              <>
+                <Text color={isDisabled ? "#8b8b93" : ""}>{weeksUnit}</Text>
+                <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
+                  {leftDays} Days {leftTime}
+                </Text>
+              </>
+            )}
         </Flex>
 
         <InputRightElement mr={"8px"} display="flex" alignItems={"center"}>

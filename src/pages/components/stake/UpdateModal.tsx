@@ -23,7 +23,12 @@ import {
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedModalData, selectedModalState } from "atom//global/modal";
+import {
+  modalBottomLoadingState,
+  selectedModalData,
+  selectedModalState,
+  stosLoadingState,
+} from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
@@ -202,6 +207,8 @@ function UpdateModal() {
     undefined
   );
   const { stakeId } = useStakeId();
+  const modalContractData = useModalContract();
+
   const {
     currentBalance,
     newBalance,
@@ -212,7 +219,6 @@ function UpdateModal() {
     leftTime,
     newTosAmount,
   } = useUpdateModalData(newBalanceType);
-  const modalContractData = useModalContract();
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();
@@ -224,6 +230,14 @@ function UpdateModal() {
     bothConditionsErr,
   } = useUpdateModalConditon(leftWeeks);
   const { errMsg } = constant;
+
+  const [bottomLoading, setBottomLoading] = useRecoilState(
+    modalBottomLoadingState
+  );
+  const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
+
+  console.log("--test--");
+  console.log(selectedModalData);
 
   const contentList = [
     {
@@ -245,7 +259,10 @@ function UpdateModal() {
     },
     {
       title: "New Balance",
-      content: { ltos: newBalance.ltos, stos: newBalance.stos },
+      content: {
+        ltos: bottomLoading ? "......" : newBalance.ltos,
+        stos: stosLoading ? "......" : newBalance.stos,
+      },
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
       secondTooltip: `Currently worth ${newTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
@@ -375,6 +392,14 @@ function UpdateModal() {
     }
   }, [userTOSBalance, setValue]);
 
+  useEffect(() => {
+    setStosLoading(true);
+  }, [inputValue, setStosLoading]);
+
+  useEffect(() => {
+    setBottomLoading(true);
+  }, [inputValue.stake_modal_balance, setBottomLoading]);
+
   return (
     <Modal
       isOpen={selectedModal === "stake_update_modal"}
@@ -445,7 +470,7 @@ function UpdateModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     atomKey={"stake_updateModal_tos_balance"}
-                    maxValue={Number(userTOSBalance?.replaceAll(",", "")) ?? 0}
+                    maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
                     isError={
                       bothConditionsErr ||
                       inputValue?.stake_updateModal_tos_balance === undefined ||
@@ -546,6 +571,7 @@ function UpdateModal() {
                           ? undefined
                           : newEndTime
                       }
+                      isManageModal={true}
                     ></InputPeriod>
                   </Flex>
                 </Flex>

@@ -95,7 +95,7 @@ function useStakeList() {
                   return {
                     staked: {
                       ltos,
-                      stos: `${0} sTOS`,
+                      stos: `0.00 sTOS`,
                     },
                     principal,
                     isOver,
@@ -115,6 +115,7 @@ function useStakeList() {
                     stos: `${convertNumber({
                       amount: sTOSwei.toString(),
                       localeString: true,
+                      round: false,
                     })} sTOS`,
                   },
                   principal,
