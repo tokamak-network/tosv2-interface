@@ -154,8 +154,8 @@ function MultiUnstakeModal() {
       }
     }
     fetchMultiUnstakeModal().catch((e) => {
-      console.log("**fetchMultiUnstakeModal err**");
-      console.log(e);
+      // console.log("**fetchMultiUnstakeModal err**");
+      // console.log(e);
     });
   }, [StakingV2Proxy_CONTRACT, selectedModalData]);
 

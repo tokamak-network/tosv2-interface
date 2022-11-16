@@ -16,7 +16,8 @@ function StakeSortSelect() {
       _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}
       color={colorMode === "dark" ? "#64646f" : "#7e7e8f"}
       focusBorderColor={colorMode === "light" ? "#c6cbd9" : "#535353"}
-      borderColor={colorMode === "dark" ? "#8a8a98" : "#e8edf2"}
+      borderColor={colorMode === "dark" ? "#313442" : "#e8edf2"}
+      fontSize={14}
       onChange={(e) => {
         if (e.target.value === "Recently" || e.target.value === "Earliest")
           setSortValue(e.target.value);
