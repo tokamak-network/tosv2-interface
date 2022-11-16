@@ -461,7 +461,6 @@ const NavBar = () => {
     <Flex
       minW={isExpended ? 256 : [0, 0, 104]}
       w={0}
-      minH={"100vh"}
       flexDir="column"
       pt={33}
       alignItems="center"
@@ -470,11 +469,15 @@ const NavBar = () => {
       borderRight={
         colorMode === "dark" ? "1px solid #313442" : "1px solid #e8edf2"
       }
-
+      position={"sticky"}
+      h={"100%"}
+      minH={"100vh"}
+      top={0}
+      zIndex={10000}
       // mr={isExpended ? "50%" : "100px"}
     >
       {/* menu button */}
-      <Box onClick={() => setIsExpended(!isExpended)} zIndex={10}>
+      <Box onClick={() => setIsExpended(!isExpended)} zIndex={1000}>
         <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
       <Flex

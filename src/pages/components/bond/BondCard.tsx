@@ -51,6 +51,8 @@ function BondCard(props: { data: BondCardProps }) {
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
+  const bondButtonIsDisabled =
+    bondIsDisabled || Number(data?.discountRate.replaceAll("%", "")) < 0;
 
   //vierport ref 1134px
   return (
@@ -116,7 +118,7 @@ function BondCard(props: { data: BondCardProps }) {
           name={account ? "Bond" : "Connect Wallet"}
           h={"33px"}
           style={{ alignSelf: "center", marginTop: "9px" }}
-          isDisabled={bondIsDisabled || Number(data?.discountRate) < 0}
+          isDisabled={bondButtonIsDisabled}
           isLoading={txPending}
           onClick={account ? openModal : tryActivation}
         ></BasicButton>
