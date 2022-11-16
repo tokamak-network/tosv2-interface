@@ -210,7 +210,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
                 ? openUpdateAfterEndTimeModal
                 : openUpdateModal
             }
-            // isDisabled={buttonName === "Relock" || txPending}
+            isDisabled={cardData.isWithoutLockup && !isOver}
             isLoading={txPending}
             style={smallerThan1040 ? { width: "100%" } : {}}
             tooltip={

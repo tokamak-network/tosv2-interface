@@ -19,6 +19,7 @@ export type StakeCardProps =
       stakedType: "Staking" | "LTOS Staking" | "Bond";
       tokenType: TokenTypes;
       stakedId: string;
+      isWithoutLockup?: boolean;
     }
   | undefined;
 

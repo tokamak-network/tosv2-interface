@@ -19,7 +19,7 @@ function useRebaseTime(format: ":") {
 
   useEffect(() => {
     // epoch.length = 600
-    // begin_epoch.end = 1660888927
+    // begin_epoch.end = 1668682800
     // 현재시간_서버시간 = unix epoch time
     //time left until next rebase = 600 - (현재시간_서버시간 - (begin_epoch.end-epoch.length))%epoch.length
     setInterval(() => {
