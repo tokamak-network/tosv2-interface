@@ -66,6 +66,7 @@ const InputPeriod = (props: InputProp) => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const [weeksUnit, setWeeksUnit] = useState<"Week" | "Weeks">("Weeks");
+  const [isFocus, setIsFocus] = useState<boolean>(false);
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +114,9 @@ const InputPeriod = (props: InputProp) => {
           borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
           fontSize={14}
           color={
-            colorMode === "light"
+            isFocus === false
+              ? "#64646f"
+              : colorMode === "light"
               ? "gray.800"
               : isDisabled
               ? "#64646f"
@@ -139,6 +142,8 @@ const InputPeriod = (props: InputProp) => {
           errorBorderColor={isDisabled ? "none" : "#e23738"}
           value={`${isDisabled ? isDisabledText || "-" : value[atomKey]}`}
           onChange={onChange}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
         ></Input>
         <Flex
           pos={"absolute"}
@@ -152,8 +157,15 @@ const InputPeriod = (props: InputProp) => {
             leftDays &&
             leftTime && (
               <>
-                <Text color={isDisabled ? "#8b8b93" : ""}>{weeksUnit}</Text>
-                <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
+                <Text color={isFocus === false || isDisabled ? "#64646F" : ""}>
+                  {weeksUnit}
+                </Text>
+                <Text
+                  fontSize={12}
+                  ml={"9px"}
+                  mr={"3px"}
+                  color={isFocus ? "#8b8b93" : ""}
+                >
                   {leftDays} Days {leftTime}
                 </Text>
               </>
