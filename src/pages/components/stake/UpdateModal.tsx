@@ -236,9 +236,6 @@ function UpdateModal() {
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
-  console.log("--test--");
-  console.log(selectedModalData);
-
   const contentList = [
     {
       title: "You Give",

@@ -75,11 +75,6 @@ function BottomContent(props: {
   const { colorMode } = useColorMode();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  console.log("test");
-  console.log(title);
-  console.log(content);
-  console.log(thirdTooltip);
-
   const ContentComponent = useMemo(() => {
     switch (title) {
       case "You Will Get":
@@ -377,30 +372,33 @@ function UpdateModalAfterEndTime() {
     }
   }, [tosAllowance, inputValue.stake_relockModal_tos_balance]);
 
-  useEffect(() => {
-    if (userTOSBalance) {
-      setTimeout(() => {
-        setMaxStosValue(Number(userTOSBalance.replaceAll(",", "")));
-      }, 2000);
-    }
-  }, [userTOSBalance]);
-
-  useEffect(() => {
-    if (ltosAmount) {
-      setTimeout(() => {
-        setMaxLtosValue(Number(ltosAmount.replaceAll(",", "")));
-      }, 2000);
-    }
-  }, [ltosAmount]);
+  // useEffect(() => {
+  //   if (userTOSBalance) {
+  //     setTimeout(() => {
+  //       setMaxStosValue(Number(userTOSBalance.replaceAll(",", "")));
+  //     }, 2000);
+  //   }
+  // }, [userTOSBalance]);
 
   // useEffect(() => {
-  //   if (ltosAmount && userTOSBalance) {
-  //     setValue({
-  //       ...inputValue,
-
-  //     })
+  //   if (ltosAmount) {
+  //     setTimeout(() => {
+  //       setMaxLtosValue(Number(ltosAmount.replaceAll(",", "")));
+  //     }, 2000);
   //   }
-  // }, [ltosAmount, userTOSBalance])
+  // }, [ltosAmount]);
+
+  useEffect(() => {
+    if (ltosAmount && userTOSBalance) {
+      setValue({
+        ...inputValue,
+        stake_relockModal_ltos_balance: Number(ltosAmount.replaceAll(",", "")),
+        stake_relockModal_tos_balance: Number(
+          userTOSBalance.replaceAll(",", "")
+        ),
+      });
+    }
+  }, [ltosAmount, userTOSBalance, setValue]);
 
   return (
     <Modal
@@ -489,7 +487,7 @@ function UpdateModalAfterEndTime() {
                         recoilKey={"relock_modal"}
                         isDisabled={addTos}
                         rightUnit={"LTOS"}
-                        maxValue={maxLtosValue}
+                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
                       ></BalanceInput>
                     </Flex>
                   </Flex>
@@ -537,7 +535,7 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"relock_modal"}
                         isDisabled={addTos}
-                        maxValue={maxLtosValue}
+                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
                         isError={
                           addTos === false && (zeroInputBalance || inputOver)
                         }
@@ -574,7 +572,7 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"relock_modal"}
                         atomKey={"stake_relockModal_tos_balance"}
-                        maxValue={maxStosValue}
+                        maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
                         isError={zeroInputBalance || inputOver}
                         errorMsg={
                           addTos && zeroInputBalance

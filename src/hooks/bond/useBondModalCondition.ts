@@ -1,5 +1,6 @@
 import constant from "constant";
 import useInput from "hooks/useInput";
+import useModal from "hooks/useModal";
 import { useEffect, useState } from "react";
 import { BondModalInput } from "types/bond";
 
@@ -13,8 +14,13 @@ function useBondModalCondition(maxValue: number | undefined) {
   const inputBalance = inputValue.bond_modal_balance;
   const inputPeriod = inputValue.bond_modal_period;
   const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
+  const { isModalLoading } = useModal();
 
   useEffect(() => {
+    if (isModalLoading) {
+      setZeroInputBalance(false);
+      return setInputOver(false);
+    }
     if (inputBalance === undefined || inputBalance === "") {
       setZeroInputBalance(true);
       return setInputOver(true);
@@ -31,7 +37,7 @@ function useBondModalCondition(maxValue: number | undefined) {
       setZeroInputBalance(false);
       return setInputOver(false);
     }
-  }, [inputBalance, maxValue]);
+  }, [inputBalance, maxValue, isModalLoading]);
 
   useEffect(() => {
     if (Number(inputPeriod) > LOCKTOS_maxWeeks || Number(inputPeriod) < 1) {

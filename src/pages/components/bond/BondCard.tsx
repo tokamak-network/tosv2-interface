@@ -5,11 +5,13 @@ import {
 } from "@/components/time";
 import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
+import { selectedTxState } from "atom/global/tx";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 
 function ContentComponent(props: {
@@ -42,6 +44,7 @@ function BondCard(props: { data: BondCardProps }) {
 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const countDown = getDuration(timeDiff);
+  const txPending = useRecoilValue(selectedTxState);
 
   const [isOpen, setIsOpen] = useState(timeDiff >= 0);
   const bondIsDisabled = timeDiff < 0;
@@ -114,6 +117,7 @@ function BondCard(props: { data: BondCardProps }) {
           h={"33px"}
           style={{ alignSelf: "center", marginTop: "9px" }}
           isDisabled={bondIsDisabled || Number(data?.discountRate) < 0}
+          isLoading={txPending}
           onClick={account ? openModal : tryActivation}
         ></BasicButton>
       </Flex>
