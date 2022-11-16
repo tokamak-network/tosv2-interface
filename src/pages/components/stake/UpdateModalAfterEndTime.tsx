@@ -533,7 +533,9 @@ function UpdateModalAfterEndTime() {
                         pageKey={"Stake_screen"}
                         recoilKey={"relock_modal"}
                         isDisabled={addTos}
-                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
+                        maxValue={Number(
+                          ltosAmount?.replaceAll(",", "").replaceAll(" ", "")
+                        )}
                         isError={
                           addTos === false && (zeroInputBalance || inputOver)
                         }

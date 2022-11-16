@@ -283,7 +283,13 @@ function BalanceInput(props: NumberInputProp) {
             lineHeight={"45px"}
             fontSize={14}
             left={leftProperty}
-            color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
+            color={
+              isDisabled
+                ? "#64646f"
+                : colorMode === "light"
+                ? "gray.800"
+                : "#f1f1f1"
+            }
           >
             <Text>{rightUnit}</Text>
           </Flex>
