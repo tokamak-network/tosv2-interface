@@ -158,12 +158,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
 
       <ContentComponent
         title="Staked"
-        content={
-          // stakedType === "LTOS Staking"
-          //   ? `${cardData.staked.ltos}`
-          //   :
-          `${cardData.staked.ltos} / ${cardData.staked.stos}`
-        }
+        content={`${cardData.staked.ltos} / ${cardData.staked.stos}`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent

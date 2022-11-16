@@ -72,7 +72,7 @@ function useStakeList() {
               return {
                 staked: {
                   ltos,
-                  stos: `${0} sTOS`,
+                  stos: undefined,
                 },
                 principal,
                 isOver: false,
@@ -95,7 +95,7 @@ function useStakeList() {
                   return {
                     staked: {
                       ltos,
-                      stos: `0.00 sTOS`,
+                      stos: undefined,
                     },
                     principal,
                     isOver,
