@@ -114,7 +114,7 @@ const InputPeriod = (props: InputProp) => {
           borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
           fontSize={14}
           color={
-            isFocus === false
+            weeksUnit === "Week"
               ? "#64646f"
               : colorMode === "light"
               ? "gray.800"
@@ -142,8 +142,8 @@ const InputPeriod = (props: InputProp) => {
           errorBorderColor={isDisabled ? "none" : "#e23738"}
           value={`${isDisabled ? isDisabledText || "-" : value[atomKey]}`}
           onChange={onChange}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          // onFocus={() => setIsFocus(true)}
+          // onBlur={() => setIsFocus(false)}
         ></Input>
         <Flex
           pos={"absolute"}
@@ -157,14 +157,16 @@ const InputPeriod = (props: InputProp) => {
             leftDays &&
             leftTime && (
               <>
-                <Text color={isFocus === false || isDisabled ? "#64646F" : ""}>
+                <Text
+                  color={weeksUnit === "Week" || isDisabled ? "#64646F" : ""}
+                >
                   {weeksUnit}
                 </Text>
                 <Text
                   fontSize={12}
                   ml={"9px"}
                   mr={"3px"}
-                  color={isFocus ? "#8b8b93" : ""}
+                  color={weeksUnit === "Weeks" ? "#8b8b93" : ""}
                 >
                   {leftDays} Days {leftTime}
                 </Text>
