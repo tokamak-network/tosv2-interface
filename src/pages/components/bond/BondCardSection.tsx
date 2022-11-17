@@ -60,6 +60,8 @@ function BondCardSection() {
     }
   }, [data, priceData]);
 
+  console.log(cardList);
+
   return (
     <Flex
       // columns={3} gridRowGap={"24px"} columnGap={"25px"}
@@ -69,7 +71,7 @@ function BondCardSection() {
       flexWrap={"wrap"}
     >
       {cardList?.map((cardData: BondCardProps, index) =>
-        index === 0 ? null : (
+        index === 1 ? null : (
           <BondCard
             data={cardData}
             key={cardData.bondCapacity + index}
