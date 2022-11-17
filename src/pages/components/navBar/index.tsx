@@ -271,7 +271,7 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
       hoverIcon: USERGUIDE_HOVER_ICON,
       lightHoverIcon: USERGUIDE_HOVER_ICON,
       link: "User Guide",
-      href: "https://onther.gitbook.io/tokamak_network/v/er/02-website-guide/tosv2",
+      href: "https://onther.gitbook.io/tosv2/website-guide/tosv2",
     },
   ];
   return (
