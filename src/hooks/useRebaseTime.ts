@@ -26,6 +26,7 @@ function useRebaseTime(format: ":") {
       const nowTimeStamp = getNowTimeStamp();
       const nextRebaseTimeStamp =
         epochLength - ((nowTimeStamp - beginEpochEnd) % epochLength);
+
       const nextRebaseTime = getDuration(nextRebaseTimeStamp, "HH:mm:ss");
       // console.log(nextRebaseTime);
       const { hours, mins, secs } = nextRebaseTime;

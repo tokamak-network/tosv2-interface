@@ -60,8 +60,6 @@ function BondCardSection() {
     }
   }, [data, priceData]);
 
-  console.log(cardList);
-
   return (
     <Flex
       // columns={3} gridRowGap={"24px"} columnGap={"25px"}
