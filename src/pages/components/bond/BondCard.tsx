@@ -118,7 +118,7 @@ function BondCard(props: { data: BondCardProps }) {
           content={timeLeft}
         ></ContentComponent>
         <BasicButton
-          name={account ? "Bond" : "Connect Wallet"}
+          name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
           h={"33px"}
           style={{ alignSelf: "center", marginTop: "9px" }}
           isDisabled={bondButtonIsDisabled}
