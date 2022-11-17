@@ -7,10 +7,7 @@ const HeadMeta: NextPage = () => {
       <Head>
         <title>TOSv2 - Tokamak</title>
         <meta property="og:type" content="website" />
-        <meta
-          property="og:url"
-          content="https://goerli.tosv2.tokamak.network"
-        />
+        <meta property="og:url" content="https://tosv2.tokamak.network" />
         <meta property="title" content="TOSv2 - Tokamak" />
         <meta property="og:title" content="TOSv2 - Tokamak" />
         <meta
@@ -21,7 +18,7 @@ const HeadMeta: NextPage = () => {
           property="og:description"
           content="Functional upgrade to TONStarter ecosystem"
         />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/favicon.ico" />
       </Head>
     </div>
   );
