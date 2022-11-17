@@ -341,6 +341,10 @@ function UpdateModal() {
   ]);
 
   useEffect(() => {
+    if (newBalanceType === 2) {
+      return setIsAllowance(true);
+    }
+
     if (tosAllowance) {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
@@ -350,7 +354,7 @@ function UpdateModal() {
       }
       return setIsAllowance(false);
     }
-  }, [tosAllowance, inputValue.stake_updateModal_tos_balance]);
+  }, [tosAllowance, inputValue.stake_updateModal_tos_balance, newBalanceType]);
 
   useEffect(() => {
     if (
@@ -623,10 +627,12 @@ function UpdateModal() {
                   w={smallerThan1024 ? 310 : 460}
                   h={42}
                   isDisabled={
-                    Number(userTOSBalance?.replaceAll(",", "")) <= 0 ||
+                    bothConditionsErr === true ||
+                    inputOver ||
+                    Number(userTOSBalance?.replaceAll(",", "")) < 0 ||
                     inputValue.stake_updateModal_tos_balance === undefined ||
                     inputValue.stake_updateModal_tos_balance.length === 0 ||
-                    Number(inputValue.stake_updateModal_tos_balance) > 0 ||
+                    inputPeriodOver ||
                     isModalLoading
                   }
                   name="Approve"

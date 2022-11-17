@@ -19,6 +19,9 @@ function ContentComponent(props: {
   const { title, content, style } = props;
   const { colorMode } = useColorMode();
 
+  console.log("--dev--");
+  console.log(content.split("/"));
+
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
       <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
@@ -32,15 +35,19 @@ function ContentComponent(props: {
           >
             {content.split("/")[0]}
           </Text>
-          <Text color={"#64646f"} mx={"3px"} fontWeight={600}>
-            /
-          </Text>
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-          >
-            {content.split("/")[1]}
-          </Text>
+          {content.split("/")[1] !== " undefined" && (
+            <>
+              <Text color={"#64646f"} mx={"3px"} fontWeight={600}>
+                /
+              </Text>
+              <Text
+                color={colorMode === "dark" ? "white.200" : "gray.800"}
+                fontWeight={600}
+              >
+                {content.split("/")[1]}
+              </Text>
+            </>
+          )}
         </Flex>
       ) : (
         <Text
@@ -66,7 +73,10 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   const { openModal: openUpdateModal } = useModal("stake_update_modal", {
     stakeId: cardData?.stakedId,
     ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
-    principal: cardData?.principal.replaceAll("TOS", "").replaceAll(" ", ""),
+    principal: cardData?.principal
+      .replaceAll("TOS", "")
+      .replaceAll(",", "")
+      .replaceAll(" ", ""),
   });
   const { openModal: openUpdateAfterEndTimeModal } = useModal(
     "stake_updateAfterEndTime_modal",

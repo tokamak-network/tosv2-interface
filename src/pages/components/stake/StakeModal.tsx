@@ -88,7 +88,7 @@ function StakeModal() {
 
   const { stosReward, newEndTime, leftDays, leftWeeks, leftHourAndMin } =
     useStosReward(
-      inputValue.stake_modal_balance,
+      Number(inputValue.stake_modal_balance),
       inputValue.stake_modal_period
     );
   const { ltosIndex } = useLtosIndex();
@@ -255,7 +255,7 @@ function StakeModal() {
     if (userTOSBalance) {
       setValue({
         ...inputValue,
-        stake_modal_balance: String(userTOSBalance),
+        stake_modal_balance: String(userTOSBalance.replaceAll(",", "")),
       });
     }
   }, [userTOSBalance, setValue]);

@@ -1,3 +1,4 @@
+import calculateCompound from "@/components/calculateCompound";
 import commafy from "@/components/commafy";
 import { convertNumber, convertToWei } from "@/components/number";
 import {
@@ -13,10 +14,12 @@ import useModalContract from "hooks/contract/useModalContract";
 import useStakeId from "hooks/contract/useStakeId";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
+import useModal from "hooks/useModal";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import useStosReward from "./useStosReward";
+import constant from "constant/index";
 
 type Balance = {
   ltos: string;
@@ -60,6 +63,7 @@ function useUpdateModalData(
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const modalContractData = useModalContract();
+  const { selectedModalData } = useModal<{ principal: string }>();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward } = useStosReward(
     newBalanceType === 2
@@ -228,9 +232,6 @@ function useUpdateModalData(
 
           setNewTosAmount(modalContractData.currentTosAmount);
 
-          console.log("result--");
-          console.log(stosReward);
-
           setNewStosBalance(commafy(resultStos));
           return setNewBalance({
             ltos: commafy(resultLtos),
@@ -305,6 +306,33 @@ function useUpdateModalData(
     newBalanceType,
     setBottomLoading,
   ]);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (modalContractData && selectedModalData) {
+        const { rebase } = constant;
+
+        console.log("selectedModalData");
+        console.log(selectedModalData);
+        console.log("modalContractData");
+        console.log(modalContractData);
+
+        const test = await calculateCompound({
+          // tosValuation: BigNumber.from(selectedModalData.principal),
+          tosValuation: BigNumber.from(
+            convertToWei(selectedModalData.principal)
+          ),
+
+          rebasePerEpoch: modalContractData.rebasePerEpcoh,
+          n: BigNumber.from(inputValue.stake_updateModal_period),
+        });
+
+        console.log("test");
+        console.log(test);
+      }
+    }
+    fetchData();
+  }, [modalContractData]);
 
   return {
     currentBalance,
