@@ -19,9 +19,6 @@ function ContentComponent(props: {
   const { title, content, style } = props;
   const { colorMode } = useColorMode();
 
-  console.log("--dev--");
-  console.log(content.split("/"));
-
   return (
     <Flex justifyContent={"space-between"} fontSize={14} h={"20px"} {...style}>
       <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>

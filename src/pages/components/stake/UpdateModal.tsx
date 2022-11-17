@@ -71,6 +71,7 @@ import constant from "constant";
 import InputPeriod from "common/input/InputPeriod";
 import GradientSpinner from "../common/GradientSpinner";
 import useModalContract from "hooks/contract/useModalContract";
+import Notice from "../global/Notice";
 
 function BottomContent(props: {
   title: string;
@@ -136,9 +137,9 @@ function BottomContent(props: {
               fontWeight={600}
               mr={"6px"}
             >
-              {typeof content !== "string" && content.stos} sTOS
+              {typeof content !== "string" && content.stos}
             </Text>
-            <BasicTooltip label={thirdTooltip} />
+            {/* <BasicTooltip label={thirdTooltip} /> */}
           </Flex>
         );
       default:
@@ -258,7 +259,7 @@ function UpdateModal() {
       title: "New Balance",
       content: {
         ltos: bottomLoading ? "......" : newBalance.ltos,
-        stos: stosLoading ? "......" : newBalance.stos,
+        stos: stosLoading ? "......" : "Will be updated later",
       },
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
@@ -668,6 +669,7 @@ function UpdateModal() {
           </Flex>
         </ModalBody>
       </ModalContent>
+      <Notice></Notice>
     </Modal>
   );
 }

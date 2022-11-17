@@ -311,12 +311,6 @@ function useUpdateModalData(
     async function fetchData() {
       if (modalContractData && selectedModalData) {
         const { rebase } = constant;
-
-        console.log("selectedModalData");
-        console.log(selectedModalData);
-        console.log("modalContractData");
-        console.log(modalContractData);
-
         const test = await calculateCompound({
           // tosValuation: BigNumber.from(selectedModalData.principal),
           tosValuation: BigNumber.from(
@@ -326,9 +320,6 @@ function useUpdateModalData(
           rebasePerEpoch: modalContractData.rebasePerEpcoh,
           n: BigNumber.from(inputValue.stake_updateModal_period),
         });
-
-        console.log("test");
-        console.log(test);
       }
     }
     fetchData();

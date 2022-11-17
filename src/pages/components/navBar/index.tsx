@@ -32,6 +32,7 @@ import TONSTARTER_HOVER from "assets/icons/TONStarter-HOVER.svg";
 import TONSTARTER_LIGHT from "assets/icons/ton-starter-light.svg";
 
 import USERGUIDE_GRAY_ICON from "assets/icons/User_guide.svg";
+import USERGUIDE_HOVER_ICON from "assets/icons/User_guide_hover.svg";
 
 import MEDIUM_ICON from "assets/icons/medium.svg";
 import TWITTER_ICON from "assets/icons/twitter.svg";
@@ -267,10 +268,10 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
     },
     {
       icon: USERGUIDE_GRAY_ICON,
-      hoverIcon: TONSTARTER_HOVER,
-      lightHoverIcon: TONSTARTER_HOVER,
+      hoverIcon: USERGUIDE_HOVER_ICON,
+      lightHoverIcon: USERGUIDE_HOVER_ICON,
       link: "User Guide",
-      href: "https://tonstarter.tokamak.network/",
+      href: "https://onther.gitbook.io/tokamak_network/v/er/02-website-guide/tosv2",
     },
   ];
   return (
