@@ -107,16 +107,17 @@ const TermsOfUse = () => {
                   <Text>
                     <b>1.1</b> By accessing, browsing or using our platform,
                     system or website operated by us (collectively, the{" "}
-                    <b>"Platform"</b>) or linked to our Platform, or any page
-                    thereof, through any direct or indirect means (individually
-                    or collectively), or by using or accessing the facilities or
-                    services (each a <b>"Service"</b>, as the case may be)
-                    offered in or through the Platform or through alternative
-                    methods (including, for example, telephone, mail, email or
-                    facsimile), you accept and agree to be bound by these terms
-                    and any other document, terms or conditions that form part
-                    of the same, as may be amended, supplemented, modified or
-                    added from time to time (these <b>"Terms of Use"</b>).
+                    <b>&apos;Platform&apos;</b>) or linked to our Platform, or
+                    any page thereof, through any direct or indirect means
+                    (individually or collectively), or by using or accessing the
+                    facilities or services (each a <b>&apos;Service&apos;</b>,
+                    as the case may be) offered in or through the Platform or
+                    through alternative methods (including, for example,
+                    telephone, mail, email or facsimile), you accept and agree
+                    to be bound by these terms and any other document, terms or
+                    conditions that form part of the same, as may be amended,
+                    supplemented, modified or added from time to time (these{" "}
+                    <b>&apos;Terms of Use&apos;</b>).
                   </Text>
                   <br />
                   <Text>
@@ -133,21 +134,23 @@ const TermsOfUse = () => {
                   </Text>
                   <br />
                   <Text>
-                    <b>1.3</b> Onther Pte. Ltd. ("<b>Onther</b>") operates the
-                    Platform and shall have the right at any time to change or
-                    discontinue any aspect or feature of the Platform and the
-                    right to modify these Terms of Use and/or any other terms
-                    and conditions applicable to users of the Platform, or any
-                    part thereof. Such changes, modification, additions or
-                    deletions shall be effective immediately upon posting on the
-                    Platform. Any continued use by you of the Platform or the
-                    use of the Services offered in or through the Platform shall
-                    be deemed to constitute your acceptance of such changes.
+                    <b>1.3</b> Onther Pte. Ltd. (&apos;<b>Onther</b>&apos;)
+                    operates the Platform and shall have the right at any time
+                    to change or discontinue any aspect or feature of the
+                    Platform and the right to modify these Terms of Use and/or
+                    any other terms and conditions applicable to users of the
+                    Platform, or any part thereof. Such changes, modification,
+                    additions or deletions shall be effective immediately upon
+                    posting on the Platform. Any continued use by you of the
+                    Platform or the use of the Services offered in or through
+                    the Platform shall be deemed to constitute your acceptance
+                    of such changes.
                   </Text>
                   <br />
                   <Text>
-                    <b>1.4</b> In these Terms of Use, "we", "our" and "us"
-                    refers to Onther and "you" and "your" is defined to any
+                    <b>1.4</b> In these Terms of Use, &apos;we&apos;,
+                    &apos;our&apos; and &apos;us&apos; refers to Onther and
+                    &apos;you&apos; and &apos;your&apos; is defined to any
                     person who accesses and uses the Platform.
                   </Text>
                   <br />
@@ -300,9 +303,9 @@ const TermsOfUse = () => {
                     <b>4.3.9</b> is likely to deceive any person; 
                   </Text>
                   <Text>
-                    <b>4.3.10</b> is threatening, abusive, or invade another's
-                    privacy, or cause annoyance, inconvenience or needless
-                    anxiety; 
+                    <b>4.3.10</b> is threatening, abusive, or invade
+                    another&apos;s privacy, or cause annoyance, inconvenience or
+                    needless anxiety; 
                   </Text>
                   <Text>
                     <b>4.3.11</b> is likely to harass, upset, embarrass, alarm
@@ -660,15 +663,15 @@ const TermsOfUse = () => {
                     equipment, software, failure of email or players on account
                     of technical problems or traffic congestion on the Internet
                     or at any website or combination thereof, including injury
-                    or damage to users or to any other person's computer related
-                    to or resulting from participating or downloading materials
-                    in connection with the Platform and/or in connection with
-                    the Services.
+                    or damage to users or to any other person&apos;s computer
+                    related to or resulting from participating or downloading
+                    materials in connection with the Platform and/or in
+                    connection with the Services.
                   </Text>
                   <br />
                   <Text>
                     <b>14.6</b>Under no circumstances will we be responsible for
-                    any loss or damage, resulting from anyone's use of the
+                    any loss or damage, resulting from anyone&apos;s use of the
                     Platform or the Services, any content posted on the Platform
                     or transmitted to any third party, or any interaction or
                     contact between users of the Platform whether online or
@@ -680,12 +683,12 @@ const TermsOfUse = () => {
                     made available through the Platform are Onther’s or its
                     licensors’ exclusive property. To the fullest extent allowed
                     by law, we provide the Platform, Services and Content on an
-                    "as-is" and "as-available" basis and grant no warranties of
-                    any kind, either express, implied, statutory or otherwise
-                    with respect to the Services or the Platform (including all
-                    content contained therein) including (without limitation)
-                    any implied warranties of satisfactory quality,
-                    merchantability, fitness for a particular purpose,
+                    &apos;as-is&apos; and &apos;as-available&apos; basis and
+                    grant no warranties of any kind, either express, implied,
+                    statutory or otherwise with respect to the Services or the
+                    Platform (including all content contained therein) including
+                    (without limitation) any implied warranties of satisfactory
+                    quality, merchantability, fitness for a particular purpose,
                     expectations of privacy, or non-infringement. We do not
                     warrant that the Platform or Services will be uninterrupted
                     or error-free, secure, or that any defects or errors will be
