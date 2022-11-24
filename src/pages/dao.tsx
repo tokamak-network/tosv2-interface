@@ -14,7 +14,7 @@ const DAO = () => {
     >
       <PageLayout></PageLayout>
       <DaoTopContainer />
-      {/* <StatisticContainer /> */}
+      <StatisticContainer />
       {/* <GraphContainer/> */}
     </Flex>
   );
