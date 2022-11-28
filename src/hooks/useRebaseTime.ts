@@ -18,16 +18,22 @@ function useRebaseTime(format: ":") {
   const { epochLength, beginEpochEnd } = constant.rebase;
 
   useEffect(() => {
-    // epoch.length = 600
-    // begin_epoch.end = 1660888927
+    // epoch.length = 28800
+    // begin_epoch.end = 1668682800
     // 현재시간_서버시간 = unix epoch time
     //time left until next rebase = 600 - (현재시간_서버시간 - (begin_epoch.end-epoch.length))%epoch.length
     setInterval(() => {
       const nowTimeStamp = getNowTimeStamp();
       const nextRebaseTimeStamp =
         epochLength - ((nowTimeStamp - beginEpochEnd) % epochLength);
-      const nextRebaseTime = getDuration(nextRebaseTimeStamp, "HH:mm:ss");
-      // console.log(nextRebaseTime);
+
+      const nextRebaseTime = getDuration(
+        nowTimeStamp - beginEpochEnd > 0
+          ? nextRebaseTimeStamp
+          : beginEpochEnd - nowTimeStamp,
+        "HH:mm:ss"
+      );
+
       const { hours, mins, secs } = nextRebaseTime;
       const hour =
         hours.toString().length === 1

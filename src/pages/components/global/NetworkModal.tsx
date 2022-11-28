@@ -53,7 +53,7 @@ function NetworkModal() {
       isCentered
       onClose={() => closeModal()}
     >
-      <ModalOverlay />
+      <ModalOverlay className={"modalOverlay"} />
       <ModalContent w={"360px"} h={"223px"} borderRadius={16} p={0}>
         <ModalBody
           minW={"360px"}
@@ -76,7 +76,7 @@ function NetworkModal() {
               <Image
                 src={colorMode === "dark" ? CLOSE_ICON : CLOSE_ICON_LIGHT}
                 style={{ cursor: "pointer", right: "15px" }}
-                alt={colorMode === "dark" ? 'CLOSE_ICON' : 'CLOSE_ICON_LIGHT'}
+                alt={colorMode === "dark" ? "CLOSE_ICON" : "CLOSE_ICON_LIGHT"}
                 onClick={() => closeModal()}
               ></Image>
             </Flex>
@@ -115,7 +115,12 @@ function NetworkModal() {
                         imageW="20px"
                         imageH="20px"
                       />
-                      <Text fontSize={16} fontWeight={600} ml={"15px"}    color={colorMode === "dark" ? "white.100" : "#07070c"}>
+                      <Text
+                        fontSize={16}
+                        fontWeight={600}
+                        ml={"15px"}
+                        color={colorMode === "dark" ? "white.100" : "#07070c"}
+                      >
                         {item.name}
                       </Text>
                     </Flex>

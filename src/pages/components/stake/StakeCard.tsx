@@ -32,15 +32,19 @@ function ContentComponent(props: {
           >
             {content.split("/")[0]}
           </Text>
-          <Text color={"#64646f"} mx={"3px"} fontWeight={600}>
-            /
-          </Text>
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-          >
-            {content.split("/")[1]}
-          </Text>
+          {content.split("/")[1] !== " undefined" && (
+            <>
+              <Text color={"#64646f"} mx={"3px"} fontWeight={600}>
+                /
+              </Text>
+              <Text
+                color={colorMode === "dark" ? "white.200" : "gray.800"}
+                fontWeight={600}
+              >
+                {content.split("/")[1]}
+              </Text>
+            </>
+          )}
         </Flex>
       ) : (
         <Text
@@ -66,6 +70,10 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   const { openModal: openUpdateModal } = useModal("stake_update_modal", {
     stakeId: cardData?.stakedId,
     ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
+    principal: cardData?.principal
+      .replaceAll("TOS", "")
+      .replaceAll(",", "")
+      .replaceAll(" ", ""),
   });
   const { openModal: openUpdateAfterEndTimeModal } = useModal(
     "stake_updateAfterEndTime_modal",
@@ -157,12 +165,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
 
       <ContentComponent
         title="Staked"
-        content={
-          // stakedType === "LTOS Staking"
-          //   ? `${cardData.staked.ltos}`
-          //   :
-          `${cardData.staked.ltos} / ${cardData.staked.stos}`
-        }
+        content={`${cardData.staked.ltos} / ${cardData.staked.stos}`}
         style={{ marginBottom: "9px" }}
       ></ContentComponent>
       <ContentComponent
@@ -210,7 +213,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
                 ? openUpdateAfterEndTimeModal
                 : openUpdateModal
             }
-            // isDisabled={buttonName === "Relock" || txPending}
+            isDisabled={cardData.isWithoutLockup && !isOver}
             isLoading={txPending}
             style={smallerThan1040 ? { width: "100%" } : {}}
             tooltip={

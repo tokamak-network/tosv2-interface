@@ -1,3 +1,4 @@
+import calculateCompound from "@/components/calculateCompound";
 import commafy from "@/components/commafy";
 import { convertNumber, convertToWei } from "@/components/number";
 import {
@@ -6,15 +7,19 @@ import {
   getNowTimeStamp,
   getTimeZone,
 } from "@/components/time";
+import { modalBottomLoadingState } from "atom/global/modal";
 import { BigNumber } from "ethers";
 import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
 import useStakeId from "hooks/contract/useStakeId";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
+import useModal from "hooks/useModal";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import useStosReward from "./useStosReward";
+import constant from "constant/index";
 
 type Balance = {
   ltos: string;
@@ -50,16 +55,21 @@ function useUpdateModalData(
   const [leftDays, setLeftDays] = useState<string>("-");
   const [leftTime, setLeftTime] = useState<string>("-");
 
+  const [currentWorthTosAmount, setCurrentWorthTosAmount] = useState<
+    string | undefined
+  >(undefined);
+
   const [newTosAmount, setNewTosAmount] = useState<string>("-");
   const { StakingV2Proxy_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const modalContractData = useModalContract();
+  const { selectedModalData } = useModal<{ principal: string }>();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward } = useStosReward(
     newBalanceType === 2
-      ? Number(currentBalance.stos.replaceAll(",", ""))
+      ? Number(currentWorthTosAmount?.replaceAll(",", ""))
       : Number(inputValue.stake_updateModal_tos_balance) +
-          Number(currentBalance.stos.replaceAll(",", "")),
+          Number(currentWorthTosAmount?.replaceAll(",", "")),
     inputValue.stake_updateModal_period - leftWeeks < 1
       ? 1
       : inputValue.stake_updateModal_period - leftWeeks
@@ -70,6 +80,10 @@ function useUpdateModalData(
     inputValue.stake_updateModal_period
   );
   const { epochUnit } = useLockTOS();
+
+  const [bottomLoading, setBottomLoading] = useRecoilState(
+    modalBottomLoadingState
+  );
 
   //current
   useEffect(() => {
@@ -113,6 +127,27 @@ function useUpdateModalData(
       // console.log(e);
     });
   }, [stakeId, StakingV2Proxy_CONTRACT, modalContractData, epochUnit]);
+
+  //cauculate current ltos to stos
+  useEffect(() => {
+    async function fetchCurrentWorhTosAmount() {
+      if (modalContractData && StakingV2Proxy_CONTRACT) {
+        const ltosBN = modalContractData.ltosBN;
+        const possibleTOS_BN =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(ltosBN);
+        const worthTosAmount = convertNumber({
+          amount: possibleTOS_BN.toString(),
+          localeString: false,
+          round: false,
+        });
+        setCurrentWorthTosAmount(worthTosAmount);
+      }
+    }
+    fetchCurrentWorhTosAmount().catch((e) => {
+      console.log("**fetchCurrentWorhTosAmount err**");
+      console.log(e);
+    });
+  }, [modalContractData, StakingV2Proxy_CONTRACT]);
 
   //new
   useEffect(() => {
@@ -253,10 +288,14 @@ function useUpdateModalData(
         }
       }
     }
-    fetchUpdateModalData().catch((e) => {
-      // console.log("**useUpdateModalData2 err**");
-      // console.log(e);
-    });
+    fetchUpdateModalData()
+      .catch((e) => {
+        // console.log("**useUpdateModalData2 err**");
+        // console.log(e);
+      })
+      .finally(() => {
+        return setBottomLoading(false);
+      });
   }, [
     stakeId,
     StakingV2Proxy_CONTRACT,
@@ -265,7 +304,26 @@ function useUpdateModalData(
     modalContractData,
     currentBalance,
     newBalanceType,
+    setBottomLoading,
   ]);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (modalContractData && selectedModalData) {
+        const { rebase } = constant;
+        const test = await calculateCompound({
+          // tosValuation: BigNumber.from(selectedModalData.principal),
+          tosValuation: BigNumber.from(
+            convertToWei(selectedModalData.principal)
+          ),
+
+          rebasePerEpoch: modalContractData.rebasePerEpcoh,
+          n: BigNumber.from(inputValue.stake_updateModal_period),
+        });
+      }
+    }
+    fetchData();
+  }, [modalContractData]);
 
   return {
     currentBalance,

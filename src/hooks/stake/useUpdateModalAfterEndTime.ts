@@ -50,7 +50,10 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
         //LTOS relock
         if (!addTos) {
           const ltosAmount = convertToWei(
-            inputValue.stake_relockModal_ltos_balance
+            String(inputValue.stake_relockModal_ltos_balance).replaceAll(
+              " ",
+              ""
+            )
           );
           const possibleTOSAmount =
             await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(ltosAmount);
@@ -58,7 +61,7 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
             convertNumber({
               amount: possibleTOSAmount.toString(),
               localeString: true,
-            }) || "0";
+            }) || "-";
 
           setTosValue(tos);
           setInputTosAmount(Number(tos.replaceAll(",", "")));

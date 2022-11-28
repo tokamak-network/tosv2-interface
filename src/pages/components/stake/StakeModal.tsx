@@ -64,7 +64,10 @@ function StakeModal() {
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
-  const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
+  const { inputValue, setValue, setResetValue } = useInput(
+    "Stake_screen",
+    "stake_modal"
+  );
   const {
     ltos,
     currentBalance,
@@ -80,13 +83,12 @@ function StakeModal() {
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
-  const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const { stosReward, newEndTime, leftDays, leftWeeks, leftHourAndMin } =
     useStosReward(
-      inputValue.stake_modal_balance,
+      Number(inputValue.stake_modal_balance),
       inputValue.stake_modal_period
     );
   const { ltosIndex } = useLtosIndex();
@@ -251,11 +253,12 @@ function StakeModal() {
 
   useEffect(() => {
     if (userTOSBalance) {
-      setTimeout(() => {
-        setMaxValue(Number(userTOSBalance.replaceAll(",", "")));
-      }, 2000);
+      setValue({
+        ...inputValue,
+        stake_modal_balance: String(userTOSBalance.replaceAll(",", "")),
+      });
     }
-  }, [userTOSBalance]);
+  }, [userTOSBalance, setValue]);
 
   useEffect(() => {
     setStosLoading(true);
@@ -349,10 +352,12 @@ function StakeModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
-                    maxValue={maxValue}
+                    maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
                     isError={zeroInputBalance || inputOver}
                     errorMsg={
-                      zeroInputBalance ? errMsg.zeroInput : errMsg.balanceExceed
+                      zeroInputBalance
+                        ? errMsg.bondZeroInput
+                        : errMsg.balanceExceed
                     }
                     rightUnit={"TOS"}
                   ></BalanceInput>

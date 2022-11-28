@@ -5,11 +5,13 @@ import {
 } from "@/components/time";
 import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
+import { selectedTxState } from "atom/global/tx";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 
 function ContentComponent(props: {
@@ -42,12 +44,18 @@ function BondCard(props: { data: BondCardProps }) {
 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const countDown = getDuration(timeDiff);
+  const txPending = useRecoilValue(selectedTxState);
 
-  const [isOpen, setIsOpen] = useState(timeDiff >= 0);
+  const capacityIsZero = Number(data?.bondCapacity.replaceAll("%", "")) <= 0;
+  const discountIsMinus = Number(data?.discountRate.replaceAll("%", "")) < 0;
+
+  const [isOpen, setIsOpen] = useState(timeDiff >= 0 && !capacityIsZero);
   const bondIsDisabled = timeDiff < 0;
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
+  const bondButtonIsDisabled =
+    bondIsDisabled || capacityIsZero || discountIsMinus;
 
   //vierport ref 1134px
   return (
@@ -110,10 +118,11 @@ function BondCard(props: { data: BondCardProps }) {
           content={timeLeft}
         ></ContentComponent>
         <BasicButton
-          name={account ? "Bond" : "Connect Wallet"}
+          name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
           h={"33px"}
           style={{ alignSelf: "center", marginTop: "9px" }}
-          isDisabled={bondIsDisabled || Number(data?.discountRate) < 0}
+          isDisabled={bondButtonIsDisabled}
+          isLoading={txPending}
           onClick={account ? openModal : tryActivation}
         ></BasicButton>
       </Flex>

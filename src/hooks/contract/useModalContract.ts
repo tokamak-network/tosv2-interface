@@ -13,6 +13,7 @@ type UseModalContract = {
   currentEndTime: string;
   currentEndTimeStamp: number;
   currentTosAmount: string;
+  rebasePerEpcoh: BigNumber;
 };
 
 function useModalContract(): UseModalContract | undefined {
@@ -34,6 +35,7 @@ function useModalContract(): UseModalContract | undefined {
           await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
             ltosBalanceBN
           );
+        const rebasePerEpcoh = await StakingV2Proxy_CONTRACT.rebasePerEpoch();
 
         const ltosBalance =
           convertNumber({
@@ -64,6 +66,7 @@ function useModalContract(): UseModalContract | undefined {
           currentEndTime,
           currentEndTimeStamp,
           currentTosAmount,
+          rebasePerEpcoh,
         });
       }
     }

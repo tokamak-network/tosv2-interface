@@ -34,8 +34,8 @@ function useStakeList() {
         //from index2 -> need to check with stakeInfo()
         //if it has no marketId -> it means TOS Staking with lockup periods
         //if it has a marketId -> need to check with connectedId()
-        //connectedId(marketId) returns 0 -> it means BOND without lockup periods
-        //connectedId(marketId) returns lockTOS ID -> it means BOND with lockup periods
+        //connectedId(stakeId) returns 0 -> it means BOND without lockup periods
+        //connectedId(stakeId) returns lockTOS ID -> it means BOND with lockup periods
         const stakingList = await StakingV2Proxy_CONTRACT.stakingOf(account);
 
         const stakedList: StakeCardProps[] = await Promise.all(
@@ -72,7 +72,7 @@ function useStakeList() {
               return {
                 staked: {
                   ltos,
-                  stos: `${0} sTOS`,
+                  stos: undefined,
                 },
                 principal,
                 isOver: false,
@@ -95,7 +95,7 @@ function useStakeList() {
                   return {
                     staked: {
                       ltos,
-                      stos: `${0} sTOS`,
+                      stos: undefined,
                     },
                     principal,
                     isOver,
@@ -103,6 +103,7 @@ function useStakeList() {
                     endTime,
                     tokenType: "ETH",
                     stakedId,
+                    isWithoutLockup: true,
                   };
                 }
                 //BOND with lockup periods
@@ -114,6 +115,7 @@ function useStakeList() {
                     stos: `${convertNumber({
                       amount: sTOSwei.toString(),
                       localeString: true,
+                      round: false,
                     })} sTOS`,
                   },
                   principal,

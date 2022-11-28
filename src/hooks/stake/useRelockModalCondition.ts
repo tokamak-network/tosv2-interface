@@ -24,7 +24,8 @@ function useRelockModalCondition(stakedLtosBalance: number) {
 
   useEffect(() => {
     if (isModalLoading) {
-      return setZeroInputBalance(false);
+      setZeroInputBalance(false);
+      return setInputOver(false);
     }
     if (
       inputTosAmount === undefined ||

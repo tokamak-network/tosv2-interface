@@ -293,7 +293,8 @@ function BondModal() {
                     <GridItem>
                       <Tile
                         title={"Bond Price"}
-                        content={`${bondModalData?.bondPrice}`}
+                        //@ts-ignore
+                        content={`$${selectedModalData?.bondingPrice}`}
                         tooltip={"Bonding price for 1 TOS in USD."}
                       />
                     </GridItem>

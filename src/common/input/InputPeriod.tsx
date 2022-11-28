@@ -25,6 +25,7 @@ type InputProp = {
   w?: number | string;
   h?: number | string;
   isDisabled?: boolean;
+  isManageModal?: boolean;
   inputValue?: string | number | any;
   isError?: boolean;
   errorMsg?: string;
@@ -60,10 +61,12 @@ const InputPeriod = (props: InputProp) => {
     leftTime,
     isDisabledText,
     endTime,
+    isManageModal,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const [weeksUnit, setWeeksUnit] = useState<"Week" | "Weeks">("Weeks");
+  const [isFocus, setIsFocus] = useState<boolean>(false);
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +80,7 @@ const InputPeriod = (props: InputProp) => {
     if (event.target.value.includes(" ")) {
       return;
     }
-    if (Number(event.target.value) !== 1) {
+    if (Number(event.target.value) > 1) {
       setWeeksUnit("Weeks");
     } else {
       setWeeksUnit("Week");
@@ -111,7 +114,9 @@ const InputPeriod = (props: InputProp) => {
           borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
           fontSize={14}
           color={
-            colorMode === "light"
+            weeksUnit === "Week"
+              ? "#64646f"
+              : colorMode === "light"
               ? "gray.800"
               : isDisabled
               ? "#64646f"
@@ -137,6 +142,8 @@ const InputPeriod = (props: InputProp) => {
           errorBorderColor={isDisabled ? "none" : "#e23738"}
           value={`${isDisabled ? isDisabledText || "-" : value[atomKey]}`}
           onChange={onChange}
+          // onFocus={() => setIsFocus(true)}
+          // onBlur={() => setIsFocus(false)}
         ></Input>
         <Flex
           pos={"absolute"}
@@ -146,14 +153,25 @@ const InputPeriod = (props: InputProp) => {
           fontSize={14}
           color={"white.200"}
         >
-          {isDisabled === false && leftDays && leftTime && (
-            <>
-              <Text color={isDisabled ? "#8b8b93" : ""}>{weeksUnit}</Text>
-              <Text fontSize={12} ml={"9px"} mr={"3px"} color={"#8b8b93"}>
-                {leftDays} Days {leftTime}
-              </Text>
-            </>
-          )}
+          {(isDisabled === false || isManageModal === true) &&
+            leftDays &&
+            leftTime && (
+              <>
+                <Text
+                  color={weeksUnit === "Week" || isDisabled ? "#64646F" : ""}
+                >
+                  {weeksUnit}
+                </Text>
+                <Text
+                  fontSize={12}
+                  ml={"9px"}
+                  mr={"3px"}
+                  color={weeksUnit === "Weeks" ? "#8b8b93" : ""}
+                >
+                  {leftDays} Days {leftTime}
+                </Text>
+              </>
+            )}
         </Flex>
 
         <InputRightElement mr={"8px"} display="flex" alignItems={"center"}>

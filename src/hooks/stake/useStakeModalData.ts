@@ -18,11 +18,9 @@ import { useRecoilState } from "recoil";
 import { modalBottomLoadingState } from "atom/global/modal";
 
 function useStakeModaldata(): StakeModalBottomContents {
-  const { selectedModalData } = useModal<BondCardProps>();
+  const { selectedModalData, isModalLoading } = useModal<BondCardProps>();
   const propData = selectedModalData;
   const { inputValue } = useInput("Stake_screen", "stake_modal");
-  const inputAmount = inputValue.stake_modal_balance;
-  const inputPeriod = inputValue.stake_modal_period;
 
   const [ltos, setLtos] = useState<string | undefined>(undefined);
   const [currentBalance, setCurrentBlaance] = useState<string | undefined>(
@@ -47,10 +45,15 @@ function useStakeModaldata(): StakeModalBottomContents {
   );
 
   useEffect(() => {
+    const inputAmount = inputValue.stake_modal_balance;
+    const inputPeriod = inputValue.stake_modal_period;
     const fetchListdata = async () => {
-      if (inputAmount === "" || inputAmount === undefined) {
+      if (isModalLoading) {
+        return;
+      }
+      if (String(inputAmount).length === 0 || inputAmount === undefined) {
         setLtos("-");
-        setNewBalance("-");
+        return setNewBalance("-");
       }
       if (
         BondDepositoryProxy_CONTRACT &&
@@ -59,7 +62,9 @@ function useStakeModaldata(): StakeModalBottomContents {
         simpleStakingId &&
         inputAmount
       ) {
-        const tosAmount = convertToWei(inputAmount);
+        const tosAmount = convertToWei(
+          inputAmount.replaceAll(",", "").toString()
+        );
         const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
         const LTOS_BN = BigNumber.from(tosAmount).div(LTOS_Index);
 
@@ -70,7 +75,7 @@ function useStakeModaldata(): StakeModalBottomContents {
           convertNumber({
             amount: youWillGetLTOS.toString(),
             localeString: true,
-          }) || "0";
+          }) || "-";
         setLtos(ltos);
 
         //currentBalance
@@ -81,7 +86,7 @@ function useStakeModaldata(): StakeModalBottomContents {
           convertNumber({
             amount: currentBalanceWei.toString(),
             localeString: true,
-          }) || "0";
+          }) || "-";
         const tosBalanceBN =
           await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
             currentBalanceWei
@@ -90,7 +95,7 @@ function useStakeModaldata(): StakeModalBottomContents {
           convertNumber({
             amount: tosBalanceBN.toString(),
             localeString: true,
-          }) || "0";
+          }) || "-";
 
         setCurrentBlaance(currentBalance);
         setCurrentTosValue(tosBalance);
@@ -108,15 +113,15 @@ function useStakeModaldata(): StakeModalBottomContents {
           convertNumber({
             amount: newBalanceTosBN.toString(),
             localeString: true,
-          }) || "0";
+          }) || "-";
 
         setNewBalanceTosValue(newBlanaceTos);
       }
     };
     fetchListdata()
       .catch((e) => {
-        // console.log("**useStakeModalData err**");
-        // console.log(e);
+        console.log("**useStakeModalData err**");
+        console.log(e);
       })
       .finally(() => {
         return setBottomLoading(false);
@@ -124,11 +129,11 @@ function useStakeModaldata(): StakeModalBottomContents {
   }, [
     BondDepositoryProxy_CONTRACT,
     StakingV2Proxy_CONTRACT,
-    inputAmount,
-    inputPeriod,
+    inputValue,
     account,
     simpleStakingId,
     setBottomLoading,
+    isModalLoading,
   ]);
 
   return {

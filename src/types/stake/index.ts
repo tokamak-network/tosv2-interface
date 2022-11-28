@@ -11,7 +11,7 @@ export type StakeCardProps =
   | {
       staked: {
         ltos: string;
-        stos: string;
+        stos: string | undefined;
       };
       principal: string;
       endTime: string;
@@ -19,6 +19,7 @@ export type StakeCardProps =
       stakedType: "Staking" | "LTOS Staking" | "Bond";
       tokenType: TokenTypes;
       stakedId: string;
+      isWithoutLockup?: boolean;
     }
   | undefined;
 

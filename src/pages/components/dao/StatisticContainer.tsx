@@ -9,6 +9,7 @@ import {
   GridItem,
   useMediaQuery,
 } from "@chakra-ui/react";
+import useCallStatics from "hooks/dao/useCallStatics";
 
 function StatContainer(props: { title: string; data: any }) {
   const { colorMode } = useColorMode();
@@ -241,20 +242,22 @@ function StatisticContainer() {
   const { colorMode } = useColorMode();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
+  const { totalTos, totalLTos, totalSTos } = useCallStatics();
+
   const statistics = [
     {
       title: "Total TOS locked",
-      value: "1,000,000.00",
+      value: totalTos,
       symbol: "TOS",
     },
     {
       title: "Total LTOS",
-      value: "1,000,000.00",
+      value: totalLTos,
       symbol: "LTOS",
     },
     {
       title: "Total sTOS",
-      value: "1,000,000.00",
+      value: totalSTos,
       symbol: "sTOS",
     },
   ];

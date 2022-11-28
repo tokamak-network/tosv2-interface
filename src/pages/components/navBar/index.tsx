@@ -31,10 +31,19 @@ import TONSTARTER_GRAY_ICON from "assets/icons/lnb-icon-ton-starter.svg";
 import TONSTARTER_HOVER from "assets/icons/TONStarter-HOVER.svg";
 import TONSTARTER_LIGHT from "assets/icons/ton-starter-light.svg";
 
+import USERGUIDE_GRAY_ICON from "assets/icons/User_guide.svg";
+import USERGUIDE_HOVER_ICON from "assets/icons/User_guide_hover.svg";
+
 import MEDIUM_ICON from "assets/icons/medium.svg";
 import TWITTER_ICON from "assets/icons/twitter.svg";
 import GITHUB_ICON from "assets/icons/github.svg";
 import TELEGRAM_ICON from "assets/icons/telegram.svg";
+
+import TWITTER_HOVER_ICON from "assets/icons/twitter_hover.svg";
+import MEDIUM_HOVER_ICON from "assets/icons/medium_hover.svg";
+import GITHUB_HOVER_ICON from "assets/icons/github_hover.svg";
+import TELEGRAM_HOVER_ICON from "assets/icons/telegram_hover.svg";
+
 import ARROW_LEFT_ICON from "assets/icons/arrow-left.svg";
 import ARROW_RIGHT_ICON from "assets/icons/arrow-right.svg";
 import ARROW_LEFT_LIGHT_ICON from "assets/icons/arrow-leftLight.svg";
@@ -58,22 +67,22 @@ import { sidebarSelectedState, sidebarState } from "atom//header";
 const iconList = [
   {
     icon: MEDIUM_ICON,
-    hoverIcon: MEDIUM_W_ICON,
+    hoverIcon: MEDIUM_HOVER_ICON,
     href: "https://medium.com/onther-tech",
   },
   {
     icon: TWITTER_ICON,
-    hoverIcon: TWITTER_W_ICON,
+    hoverIcon: TWITTER_HOVER_ICON,
     href: "https://twitter.com/tokamak_network?lang=en",
   },
   {
     icon: GITHUB_ICON,
-    hoverIcon: GITHUB_W_ICON,
+    hoverIcon: GITHUB_HOVER_ICON,
     href: "https://github.com/Onther-Tech",
   },
   {
     icon: TELEGRAM_ICON,
-    hoverIcon: TELEGRAM_W_ICON,
+    hoverIcon: TELEGRAM_HOVER_ICON,
     href: "http://bit.ly/3gH1bCr",
   },
 ];
@@ -123,7 +132,7 @@ const LinkContainer = (props: { isExpended: boolean }) => {
             alignItems="center"
             justifyContent={"center"}
             borderRadius={10}
-            _hover={{ backgroundColor: "blue.100" }}
+            // _hover={{ backgroundColor: "blue.100" }}
             key={`link-container-${index}`}
             mb={"10px"}
             cursor={"pointer"}
@@ -262,6 +271,13 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
       lightHoverIcon: TONSTARTER_HOVER,
       link: "TONStarter",
       href: "https://tonstarter.tokamak.network/",
+    },
+    {
+      icon: USERGUIDE_GRAY_ICON,
+      hoverIcon: USERGUIDE_HOVER_ICON,
+      lightHoverIcon: USERGUIDE_HOVER_ICON,
+      link: "User Guide",
+      href: "https://onther.gitbook.io/tokamaknetwork/website-guide/tosv2",
     },
   ];
   return (
@@ -461,7 +477,6 @@ const NavBar = () => {
     <Flex
       minW={isExpended ? 256 : [0, 0, 104]}
       w={0}
-      minH={"100vh"}
       flexDir="column"
       pt={33}
       alignItems="center"
@@ -470,11 +485,15 @@ const NavBar = () => {
       borderRight={
         colorMode === "dark" ? "1px solid #313442" : "1px solid #e8edf2"
       }
-
+      position={"sticky"}
+      h={"100%"}
+      minH={"100vh"}
+      top={0}
+      zIndex={10000}
       // mr={isExpended ? "50%" : "100px"}
     >
       {/* menu button */}
-      <Box onClick={() => setIsExpended(!isExpended)} zIndex={10}>
+      <Box onClick={() => setIsExpended(!isExpended)} zIndex={1000}>
         <MenuButton isExpended={isExpended}></MenuButton>
       </Box>
       <Flex
