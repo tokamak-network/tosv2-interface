@@ -69,7 +69,7 @@ function BondCardSection() {
       flexWrap={"wrap"}
     >
       {cardList?.map((cardData: BondCardProps, index) =>
-        index === 1 ? null : (
+        index === cardList.length - 1 ? null : (
           <BondCard
             data={cardData}
             key={cardData.bondCapacity + index}
