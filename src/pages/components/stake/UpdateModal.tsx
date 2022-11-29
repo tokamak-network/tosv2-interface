@@ -219,6 +219,7 @@ function UpdateModal() {
     leftDays,
     leftTime,
     newTosAmount,
+    newStosBalance,
   } = useUpdateModalData(newBalanceType);
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
@@ -259,7 +260,7 @@ function UpdateModal() {
       title: "New Balance",
       content: {
         ltos: bottomLoading ? "......" : newBalance.ltos,
-        stos: stosLoading ? "......" : "Will be updated later",
+        stos: stosLoading ? "......" : `${newStosBalance} sTOS`,
       },
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
@@ -669,7 +670,7 @@ function UpdateModal() {
           </Flex>
         </ModalBody>
       </ModalContent>
-      <Notice></Notice>
+      {/* <Notice></Notice> */}
     </Modal>
   );
 }

@@ -35,6 +35,7 @@ type UseUpdateModalData = {
   leftDays: string;
   leftTime: string;
   newTosAmount: string;
+  newStosBalance: string;
 };
 
 const defaultBalanceValue = {
@@ -66,14 +67,22 @@ function useUpdateModalData(
   const { selectedModalData } = useModal<{ principal: string }>();
   const { inputValue } = useInput("Stake_screen", "update_modal");
   const { stosReward } = useStosReward(
-    newBalanceType === 2
-      ? Number(currentWorthTosAmount?.replaceAll(",", ""))
-      : Number(inputValue.stake_updateModal_tos_balance) +
-          Number(currentWorthTosAmount?.replaceAll(",", "")),
-    inputValue.stake_updateModal_period - leftWeeks < 1
-      ? 1
-      : inputValue.stake_updateModal_period - leftWeeks
+    Number(inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")),
+    inputValue.stake_updateModal_period
   );
+  const { stosReward: secondTypeStosReward } = useStosReward(
+    Number(currentWorthTosAmount?.replaceAll(",", "")),
+    Number(inputValue.stake_updateModal_period) - leftWeeks
+  );
+
+  // console.log(`stos reward ${stosReward} ${secondTypeStosReward}`);
+  // console.log(`tosAmount: ${Number(inputValue.stake_updateModal_tos_balance)}`);
+  // console.log(`weeks : ${inputValue.stake_updateModal_period} ${leftWeeks}`);
+  // console.log(
+  //   `currentWorthTosAmount : ${Number(
+  //     currentWorthTosAmount?.replaceAll(",", "")
+  //   )}`
+  // );
 
   const { newEndTime } = useStosReward(
     inputValue.stake_updateModal_tos_balance,
@@ -213,7 +222,7 @@ function useUpdateModalData(
             }) || "-";
 
           setNewTosAmount(newTosAmount);
-
+          setNewStosBalance(commafy(resultStos));
           return setNewBalance({
             ltos: ltos,
             stos: isNaN(resultStos) ? "-" : commafy(resultStos),
@@ -228,7 +237,7 @@ function useUpdateModalData(
           const resultLtos = Number(currentBalance.ltos.replaceAll(",", ""));
           const resultStos =
             Number(currentBalance.stos.replaceAll(",", "")) +
-            Number(stosReward.replaceAll(",", ""));
+            Number(secondTypeStosReward.replaceAll(",", ""));
 
           setNewTosAmount(modalContractData.currentTosAmount);
 
@@ -278,8 +287,11 @@ function useUpdateModalData(
             Number(currentBalance.ltos.replaceAll(",", "")) +
             Number(ltos.replaceAll(",", ""));
           const resultStos =
-            Number(currentBalance.stos.replaceAll(",", "")) +
-            Number(stosReward.replaceAll(",", ""));
+            Number(secondTypeStosReward.replaceAll(",", "")) +
+            Number(stosReward.replaceAll(",", "")) +
+            Number(currentBalance.stos.replaceAll(",", ""));
+
+          setNewStosBalance(commafy(resultStos));
 
           return setNewBalance({
             ltos: commafy(resultLtos),
@@ -305,6 +317,7 @@ function useUpdateModalData(
     currentBalance,
     newBalanceType,
     setBottomLoading,
+    secondTypeStosReward,
   ]);
 
   useEffect(() => {
@@ -334,6 +347,7 @@ function useUpdateModalData(
     leftDays,
     leftTime,
     newTosAmount,
+    newStosBalance,
   };
 }
 

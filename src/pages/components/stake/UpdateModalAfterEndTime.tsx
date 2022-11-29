@@ -396,7 +396,13 @@ function UpdateModalAfterEndTime() {
         stake_relockModal_tos_balance: userTOSBalance.replaceAll(",", ""),
       });
     }
-  }, [ltosAmount, userTOSBalance, setValue]);
+    if (addTos && ltosAmount) {
+      setValue({
+        ...inputValue,
+        stake_relockModal_ltos_balance: ltosAmount.replaceAll(",", ""),
+      });
+    }
+  }, [ltosAmount, userTOSBalance, setValue, addTos]);
 
   return (
     <Modal
