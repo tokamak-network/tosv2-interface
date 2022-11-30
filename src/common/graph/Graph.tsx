@@ -29,7 +29,7 @@ function Graph(props: {
 }) {
   const { data, title, amount, tooltipTitle } = props;
   const { colorMode } = useColorMode();
-  
+
   const theme = {
     axis: {
       ticks: {
@@ -70,7 +70,6 @@ function Graph(props: {
           {title}{" "}
         </Text>
         <BasicTooltip label={tooltipTitle} />
-      
       </Flex>
       <Text
         color={colorMode === "dark" ? "white.100" : "gray.800"}
@@ -82,16 +81,13 @@ function Graph(props: {
 
       <ResponsiveLine
         data={data}
-     
         theme={theme}
-      
         margin={{ top: 14, right: 20, bottom: 65, left: 50 }}
-      
         colors={["#405df9", "#e23738", "#50d1b2"]}
         xScale={{
           type: "time",
           format: "%Y-%m-%d %H:%M:%S",
-          precision: 'millisecond',
+          precision: "millisecond",
           useUTC: false,
         }}
         yScale={{
@@ -118,38 +114,43 @@ function Graph(props: {
           },
         }}
         enableSlices="x"
+        enableCrosshair={false}
         axisLeft={{
           tickSize: 0,
           tickPadding: 5,
           tickRotation: 0,
-          tickValues:4,
+          tickValues: 4,
           legendOffset: -40,
           legendPosition: "middle",
           format: function (value) {
             if (title === "Runway") {
-
-              return value === 0 ? `${value} Days`:`${Number(value).toLocaleString(undefined, {
-                minimumFractionDigits: 0,maximumFractionDigits: 0
-              })}`;
+              return value === 0
+                ? `${value} Days`
+                : `${Number(value).toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  })}`;
             } else {
               if (Number(value) > 1000000) {
                 return `$${(Number(value) / 1000000).toLocaleString(undefined, {
-                  minimumFractionDigits: 0,maximumFractionDigits: 0
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
                 })}M`;
               } else {
-                return `$${(Number(value)).toLocaleString(undefined, {
-                  minimumFractionDigits: 0,maximumFractionDigits: 0
+                return `$${Number(value).toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
                 })}`;
               }
             }
           },
         }}
-        pointSize={10}
+        // pointSize={10}
         pointColor={{ theme: "background" }}
         pointBorderWidth={0}
         pointBorderColor={"#405df9"}
         pointLabelYOffset={-12}
-        useMesh={true}
+        // useMesh={true}
         sliceTooltip={({ slice }) => {
           return (
             <div
@@ -167,6 +168,7 @@ function Graph(props: {
                 borderRadius: "14px",
                 height: slice.points.length !== 1 ? "112px" : "74px",
                 width: "155px",
+                // position: "absolute",
               }}
             >
               {slice.points.map((point, index) => {
@@ -177,17 +179,17 @@ function Graph(props: {
                       display: "flex",
                       flexDirection: "row",
                       alignItems: "center",
+                      marginBottom: "12px",
                     }}
                     key={`${index}_${point.serieColor}`}
                   >
                     <div
                       style={{
-                        background: point.serieColor,
+                        background: "#2775ff",
                         marginRight: "9px",
                         borderRadius: "50%",
                         height: "10px",
                         width: "10px",
-                        marginBottom: "12px",
                       }}
                     ></div>
 
@@ -195,14 +197,18 @@ function Graph(props: {
                       style={{
                         color: colorMode === "dark" ? "#d0d0da" : "#07070c",
                       }}
-                    > {
-                      title ==='Runway'?  ` ${Number(point.data.y).toLocaleString(undefined, {
-                        minimumFractionDigits: 0,maximumFractionDigits: 0
-                      })} Days`:`$
+                    >
+                      {" "}
+                      {title === "Runway"
+                        ? ` ${Number(point.data.y).toLocaleString(undefined, {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          })} Days`
+                        : `$
                       ${Number(point.data.y).toLocaleString(undefined, {
-                        minimumFractionDigits: 0,maximumFractionDigits: 0
-                      })}`
-                    }
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      })}`}
                       {/* $
                       {Number(point.data.y).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
@@ -229,7 +235,7 @@ function Graph(props: {
                 </div> */}
 
               <div
-                style={{ color: colorMode === "dark" ? "#d0d0da" : "#9a9aaf" }}
+                style={{ color: colorMode === "dark" ? "#64646f" : "#9a9aaf" }}
               >
                 {moment(slice.points[0].data.x).format("MMM DD, YYYY")}
               </div>
@@ -239,6 +245,7 @@ function Graph(props: {
         enableArea={true}
         enableGridX={false}
         enableGridY={false}
+
         // legends={[
         //   {
         //     anchor: "bottom-right",
