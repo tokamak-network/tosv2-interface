@@ -20,6 +20,7 @@ function GraphContainer() {
   const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
   const [treasuryBalanceDatas, setTreasuryBalanceDatas] = useState<any[]>([]);
   const [selectedDates, setSelectedDates] = useState<number>(7);
+
   useEffect(() => {
     if (data) {
       const graphData = getGraphData();
@@ -39,7 +40,8 @@ function GraphContainer() {
 
         for (let i = 1; i <= difference; i++) {
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           marketCap.push({
             x: formattedDate,
@@ -75,7 +77,8 @@ function GraphContainer() {
 
         for (let i = 1; i <= difference; i++) {
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           totalStaked.push({
             x: formattedDate,
@@ -109,7 +112,8 @@ function GraphContainer() {
 
         for (let i = 1; i <= difference; i++) {
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           runway.push({
             x: formattedDate,
@@ -145,7 +149,8 @@ function GraphContainer() {
 
         for (let i = 1; i <= difference; i++) {
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           treasuryBalance.push({
             x: formattedDate,
@@ -164,7 +169,7 @@ function GraphContainer() {
 
       setTreasuryBalanceDatas(treasuryData);
     }
-  }, [filteredValue, data]);
+  }, [filteredValue, data, selectedDates]);
 
   const getGraphData = () => {
     switch (filteredValue) {
@@ -182,6 +187,9 @@ function GraphContainer() {
         return data;
     }
   };
+
+  console.log("--gogo--");
+  console.log(marketCapDatas);
 
   return (
     <Flex flexDir={"column"}>
