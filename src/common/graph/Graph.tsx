@@ -39,6 +39,14 @@ function Graph(props: {
         },
       },
     },
+    crosshair: {
+      line: {
+          stroke: colorMode === "dark" ? '#ffffff': '#9a9aaf',
+          strokeWidth: 1,
+          strokeOpacity: 0.35,
+          strokeDasharray: '0'
+      },
+  }
   };
 
   const selectedFilter = useRecoilValue(selectedFilterState);
@@ -114,7 +122,7 @@ function Graph(props: {
           },
         }}
         enableSlices="x"
-        enableCrosshair={false}
+        enableCrosshair={true}
         axisLeft={{
           tickSize: 0,
           tickPadding: 5,
