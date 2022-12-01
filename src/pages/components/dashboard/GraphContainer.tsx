@@ -14,7 +14,7 @@ function GraphContainer() {
     },
   });
 
-  const [filteredValue, setFilteredValue] = useState("1 Week");
+  const [filteredValue, setFilteredValue] = useState<string>("1 Week");
   const [marketCapDatas, setMarketCapDatas] = useState<any[]>([]);
   const [totalStakedDatas, setTotalStakedDatas] = useState<any[]>([]);
   const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
@@ -25,13 +25,19 @@ function GraphContainer() {
     if (data) {
       const graphData = getGraphData();
 
+      let indexNum = -1;
+
       const marketCap = graphData.map((arrayData: any, index: number) => {
+        indexNum += 1;
         return {
-          x: moment(arrayData.createdAt).format("YYYY-MM-DD HH:mm:ss"),
+          x: `${moment(arrayData.createdAt).format(
+            "YYYY-MM-DD HH:mm:ss"
+          )}_${indexNum}`,
           y:
             arrayData.marketCap === "-Infinity"
               ? 0
               : Number(arrayData.marketCap),
+          dataIndex: indexNum,
         };
       });
 
@@ -39,13 +45,16 @@ function GraphContainer() {
         const difference = selectedDates - marketCap.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum += 1;
+
           const date =
             moment(graphData[graphData.length - 1].createdAt).unix() -
             86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           marketCap.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum}`,
             y: 0,
+            dataIndex: indexNum,
           });
         }
       }
@@ -58,6 +67,10 @@ function GraphContainer() {
         },
       ];
 
+      console.log("--marketCapData--");
+
+      console.log(marketCapData);
+
       setMarketCapDatas(marketCapData);
 
       const totalStaked = graphData.map((arrayData: any, index: number) => {
@@ -69,6 +82,7 @@ function GraphContainer() {
             arrayData.totalValueStaked === "-Infinity"
               ? 0
               : Number(arrayData.totalValueStaked) || 0,
+          dataIndex: index,
         };
       });
 
@@ -83,6 +97,7 @@ function GraphContainer() {
           totalStaked.push({
             x: formattedDate,
             y: 0,
+            dataIndex: i,
           });
         }
       }
@@ -104,6 +119,7 @@ function GraphContainer() {
             arrayData.runway === "-Infinity"
               ? 0
               : Number(arrayData.runway) || 0,
+          dataIndex: index,
         };
       });
 
@@ -118,6 +134,7 @@ function GraphContainer() {
           runway.push({
             x: formattedDate,
             y: 0,
+            dataIndex: i,
           });
         }
       }
@@ -141,6 +158,7 @@ function GraphContainer() {
             arrayData.treasuryBalance === "-Infinity"
               ? 0
               : Number(arrayData.treasuryBalance) || 0,
+          dataIndex: index,
         };
       });
 
@@ -155,6 +173,7 @@ function GraphContainer() {
           treasuryBalance.push({
             x: formattedDate,
             y: 0,
+            dataIndex: i,
           });
         }
       }
@@ -174,22 +193,57 @@ function GraphContainer() {
   const getGraphData = () => {
     switch (filteredValue) {
       case "1 Week":
-        return data.getDashboard.slice(0, 7);
+        const slicedData = data.getDashboard.slice(0, 8);
+        const filteredData = slicedData.filter((data: any, index: number) => {
+          if (index !== 1) {
+            return data;
+          }
+        });
+        return filteredData;
       case "1 Month":
-        return data.getDashboard.slice(0, 30);
+        const slicedDataMonth = data.getDashboard.slice(0, 31);
+        const filteredDataMonth = slicedDataMonth.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredDataMonth;
       case "3 Months":
-        return data.getDashboard.slice(0, 90);
+        const slicedData3Month = data.getDashboard.slice(0, 91);
+        const filteredData3Month = slicedData3Month.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredData3Month;
       case "6 Months":
-        return data.getDashboard.slice(0, 183);
+        const slicedData6Month = data.getDashboard.slice(0, 184);
+        const filteredData6Month = slicedData6Month.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredData6Month;
       case "1 Year":
-        return data.getDashboard.slice(0, 366);
+        const slicedDataYear = data.getDashboard.slice(0, 367);
+        const filteredDataYear = slicedDataYear.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredDataYear;
       default:
         return data;
     }
   };
-
-  console.log("--gogo--");
-  console.log(marketCapDatas);
 
   return (
     <Flex flexDir={"column"}>

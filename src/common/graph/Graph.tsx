@@ -1,26 +1,20 @@
 import { selector, useRecoilValue } from "recoil";
 import { filterState } from "atom//dashboard";
 import {
+  Box,
   Flex,
   Text,
   Tooltip,
   useColorMode,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { ResponsiveLine } from "@nivo/line";
+import { DatumValue, ResponsiveLine } from "@nivo/line";
 import question from "assets/icons/question.svg";
 import Image from "next/image";
 import moment from "moment";
 import BasicTooltip from "common/tooltip";
-const selectedFilterState = selector({
-  key: "selectedFilterState", // unique ID (with respect to other atoms/selectors)
-  get: ({ get }) => {
-    const selectedFilter = get(filterState);
+import { useEffect, useRef, useState } from "react";
 
-    return selectedFilter;
-  },
-});
-// typeof global.ResizeObserver === "undefined";
 function Graph(props: {
   data: any[];
   title: string;
@@ -29,6 +23,10 @@ function Graph(props: {
 }) {
   const { data, title, amount, tooltipTitle } = props;
   const { colorMode } = useColorMode();
+  const [hoverDataIndex, setHoverDataIndex] = useState<number | undefined>(
+    undefined
+  );
+  const filterValue = useRecoilValue(filterState);
 
   const theme = {
     axis: {
@@ -41,16 +39,45 @@ function Graph(props: {
     },
     crosshair: {
       line: {
-          stroke: colorMode === "dark" ? '#ffffff': '#9a9aaf',
-          strokeWidth: 1,
-          strokeOpacity: 0.35,
-          strokeDasharray: '0'
+        stroke: colorMode === "dark" ? "#ffffff" : "#9a9aaf",
+        strokeWidth: 2,
+        strokeOpacity: 0.4,
+        strokeDasharray: "0",
       },
-  }
+    },
   };
 
-  const selectedFilter = useRecoilValue(selectedFilterState);
+  // console.log("--hoverData--");
+  // console.log(hoverData);
+  // const selectedFilter = useRecoilValue(selectedFilterState);
+
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
+  const CustomPoint = (props: any) => {
+    const { currentPoint, borderWidth, borderColor, points } = props;
+
+    // it will show the current point
+    if (hoverDataIndex !== props.datum.dataIndex) {
+      return null;
+    }
+
+    return (
+      <g>
+        <circle
+          fill="#ffffff"
+          r={5}
+          strokeWidth={borderWidth}
+          stroke={borderColor}
+        />
+        <circle
+          r={4}
+          strokeWidth={borderWidth}
+          stroke={borderColor}
+          fill={"#2775ff"}
+        />
+      </g>
+    );
+  };
 
   return (
     <Flex
@@ -86,17 +113,16 @@ function Graph(props: {
       >
         {amount}
       </Text>
-
       <ResponsiveLine
         data={data}
         theme={theme}
         margin={{ top: 14, right: 20, bottom: 65, left: 50 }}
         colors={["#405df9", "#e23738", "#50d1b2"]}
         xScale={{
-          type: "time",
-          format: "%Y-%m-%d %H:%M:%S",
-          precision: "millisecond",
-          useUTC: false,
+          type: "point",
+          // format: "%Y-%m-%d %H:%M:%S",
+          // precision: "millisecond",
+          // useUTC: false,
         }}
         yScale={{
           type: "linear",
@@ -116,9 +142,55 @@ function Graph(props: {
           tickRotation: 0,
           legendOffset: 36,
           tickValues: 4,
-          legendPosition: "middle",
-          format: function (value) {
-            return moment(value).format("MMM DD");
+          legendPosition: "end",
+          // renderTick: (e) => {
+          //   // console.log(e);
+          //   const test = moment(e.value).format("MMM DD");
+
+          //   return (
+          //     <g>
+          //       <text style={{ top: "-10px", background: "red" }}>test</text>
+          //     </g>
+          //   );
+          // },
+          format: (value) => {
+            const splitedValue = value.split("_");
+            const indexNum = Number(splitedValue[1]);
+
+            const filterCondition =
+              filterValue === "1 Week"
+                ? indexNum === 0 ||
+                  indexNum === 2 ||
+                  indexNum === 4 ||
+                  indexNum === 6
+                : filterValue === "1 Month"
+                ? indexNum === 0 ||
+                  indexNum === 9 ||
+                  indexNum === 19 ||
+                  indexNum === 29
+                : filterValue === "3 Months"
+                ? indexNum === 0 ||
+                  indexNum === 29 ||
+                  indexNum === 59 ||
+                  indexNum === 89
+                : filterValue === "6 Months"
+                ? indexNum === 0 ||
+                  indexNum === 60 ||
+                  indexNum === 120 ||
+                  indexNum === 181
+                : indexNum === 0 ||
+                  indexNum === 121 ||
+                  indexNum === 242 ||
+                  indexNum === 364;
+
+            if (indexNum !== undefined && filterCondition) {
+              console.log("--test--");
+
+              console.log(indexNum);
+              return moment(splitedValue[0]).format("MMM DD");
+            }
+
+            return "";
           },
         }}
         enableSlices="x"
@@ -154,78 +226,102 @@ function Graph(props: {
           },
         }}
         // pointSize={10}
-        pointColor={{ theme: "background" }}
-        pointBorderWidth={0}
-        pointBorderColor={"#405df9"}
+        enablePoints={true}
+        pointSymbol={CustomPoint}
+        // pointColor={{ theme: "background" }}
+        // layers={[CustomPoint]}
+        // pointBorderWidth={0}
+        // pointBorderColor={"#405df9"}
+        useMesh={true}
         pointLabelYOffset={-12}
-        // useMesh={true}
+        tooltip={() => {
+          return <Flex w={100} h={100} bg={"red"}></Flex>;
+        }}
         sliceTooltip={({ slice }) => {
+          //@ts-ignore
+          const thisIndex = slice.points[0].data.dataIndex;
+          setHoverDataIndex(thisIndex);
+
           return (
             <div
               style={{
-                background: colorMode === "dark" ? "#1f2128" : "#ffffff",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                paddingLeft: "24px",
-                fontSize: "11px",
-                border:
-                  colorMode === "dark"
-                    ? "1px solid #313442"
-                    : "1px solid #e8edf2",
-                borderRadius: "14px",
-                height: slice.points.length !== 1 ? "112px" : "74px",
-                width: "155px",
-                // position: "absolute",
+                position: "absolute",
+                width: "100%",
+                height: "100%",
               }}
             >
-              {slice.points.map((point, index) => {
-                const color = point.borderColor.toString();
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      marginBottom: "12px",
-                    }}
-                    key={`${index}_${point.serieColor}`}
-                  >
+              {/* <Box
+                pos={"absolute"}
+                w={100}
+                h={10}
+                bg={"#2775ff"}
+                top={-10}
+              ></Box> */}
+              <div
+                style={{
+                  background: colorMode === "dark" ? "#1f2128" : "#ffffff",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  paddingLeft: "24px",
+                  fontSize: "11px",
+                  border:
+                    colorMode === "dark"
+                      ? "1px solid #313442"
+                      : "1px solid #e8edf2",
+                  borderRadius: "14px",
+                  height: slice.points.length !== 1 ? "112px" : "74px",
+                  width: "155px",
+                  position: "absolute",
+                }}
+              >
+                {slice.points.map((point, index) => {
+                  const color = point.borderColor.toString();
+                  return (
                     <div
                       style={{
-                        background: "#2775ff",
-                        marginRight: "9px",
-                        borderRadius: "50%",
-                        height: "10px",
-                        width: "10px",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        marginBottom: "12px",
                       }}
-                    ></div>
-
-                    <div
-                      style={{
-                        color: colorMode === "dark" ? "#d0d0da" : "#07070c",
-                      }}
+                      key={`${index}_${point.serieColor}`}
                     >
-                      {" "}
-                      {title === "Runway"
-                        ? ` ${Number(point.data.y).toLocaleString(undefined, {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                          })} Days`
-                        : `$
+                      <div
+                        style={{
+                          background: "#2775ff",
+                          marginRight: "9px",
+                          borderRadius: "50%",
+                          height: "10px",
+                          width: "10px",
+                        }}
+                      ></div>
+
+                      <div
+                        style={{
+                          color: colorMode === "dark" ? "#d0d0da" : "#07070c",
+                        }}
+                      >
+                        {" "}
+                        {title === "Runway"
+                          ? ` ${Number(point.data.y).toLocaleString(undefined, {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
+                            })} Days`
+                          : `$
                       ${Number(point.data.y).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0,
                       })}`}
-                      {/* $
+                        {/* $
                       {Number(point.data.y).toLocaleString(undefined, {
                         minimumFractionDigits: 0,
                       })} */}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-              {/* <div
+                  );
+                })}
+                {/* <div
                   style={{
                     background: "#405df9",
                     marginRight: "9px",
@@ -242,10 +338,13 @@ function Graph(props: {
                   })}
                 </div> */}
 
-              <div
-                style={{ color: colorMode === "dark" ? "#64646f" : "#9a9aaf" }}
-              >
-                {moment(slice.points[0].data.x).format("MMM DD, YYYY")}
+                <div
+                  style={{
+                    color: colorMode === "dark" ? "#64646f" : "#9a9aaf",
+                  }}
+                >
+                  {moment(slice.points[0].data.x).format("MMM DD, YYYY")}
+                </div>
               </div>
             </div>
           );
