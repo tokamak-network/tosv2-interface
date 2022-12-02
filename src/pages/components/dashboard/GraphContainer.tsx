@@ -26,6 +26,9 @@ function GraphContainer() {
       const graphData = getGraphData();
 
       let indexNum = -1;
+      let indexNum2 = -1;
+      let indexNum3 = -1;
+      let indexNum4 = -1;
 
       const marketCap = graphData.map((arrayData: any, index: number) => {
         indexNum += 1;
@@ -67,22 +70,20 @@ function GraphContainer() {
         },
       ];
 
-      console.log("--marketCapData--");
-
-      console.log(marketCapData);
-
       setMarketCapDatas(marketCapData);
 
       const totalStaked = graphData.map((arrayData: any, index: number) => {
+        indexNum2 += 1;
+
         return {
-          x: moment(new Date(arrayData.createdAt)).format(
+          x: `${moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
-          ),
+          )}_${indexNum2}`,
           y:
             arrayData.totalValueStaked === "-Infinity"
               ? 0
               : Number(arrayData.totalValueStaked) || 0,
-          dataIndex: index,
+          dataIndex: indexNum2,
         };
       });
 
@@ -90,14 +91,15 @@ function GraphContainer() {
         const difference = selectedDates - totalStaked.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum2 += 1;
           const date =
             moment(graphData[graphData.length - 1].createdAt).unix() -
             86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           totalStaked.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum2}`,
             y: 0,
-            dataIndex: i,
+            dataIndex: indexNum2,
           });
         }
       }
@@ -111,15 +113,17 @@ function GraphContainer() {
       setTotalStakedDatas(totalStakedData);
 
       const runway = graphData.map((arrayData: any, index: number) => {
+        indexNum3 += 1;
+
         return {
-          x: moment(new Date(arrayData.createdAt)).format(
+          x: `${moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
-          ),
+          )}_${indexNum3}`,
           y:
             arrayData.runway === "-Infinity"
               ? 0
               : Number(arrayData.runway) || 0,
-          dataIndex: index,
+          dataIndex: indexNum3,
         };
       });
 
@@ -127,14 +131,16 @@ function GraphContainer() {
         const difference = selectedDates - runway.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum3 += 1;
+
           const date =
             moment(graphData[graphData.length - 1].createdAt).unix() -
             86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           runway.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum3}`,
             y: 0,
-            dataIndex: i,
+            dataIndex: indexNum3,
           });
         }
       }
@@ -150,15 +156,16 @@ function GraphContainer() {
       setRunwayDatas(runwayData);
 
       const treasuryBalance = graphData.map((arrayData: any, index: number) => {
+        indexNum4 += 1;
         return {
-          x: moment(new Date(arrayData.createdAt)).format(
+          x: `${moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
-          ),
+          )}_${indexNum4}`,
           y:
             arrayData.treasuryBalance === "-Infinity"
               ? 0
               : Number(arrayData.treasuryBalance) || 0,
-          dataIndex: index,
+          dataIndex: indexNum4,
         };
       });
 
@@ -166,14 +173,16 @@ function GraphContainer() {
         const difference = selectedDates - treasuryBalance.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum4 += 1;
+
           const date =
             moment(graphData[graphData.length - 1].createdAt).unix() -
             86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           treasuryBalance.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum4}`,
             y: 0,
-            dataIndex: i,
+            dataIndex: indexNum4,
           });
         }
       }
