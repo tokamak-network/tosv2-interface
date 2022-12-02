@@ -26,6 +26,7 @@ function Graph(props: {
   const [hoverDataIndex, setHoverDataIndex] = useState<number | undefined>(
     undefined
   );
+  const [mouseLeave, setMouseLeave] = useState<boolean>(true);
   const filterValue = useRecoilValue(filterState);
 
   const theme = {
@@ -58,6 +59,10 @@ function Graph(props: {
 
     // it will show the current point
     if (hoverDataIndex !== props.datum.dataIndex) {
+      return null;
+    }
+
+    if (mouseLeave) {
       return null;
     }
 
@@ -94,6 +99,8 @@ function Graph(props: {
       // pt={'18px'}
       // pl={'20px'}
       p={" 18px 20px 10px 20px"}
+      onMouseEnter={() => setMouseLeave(false)}
+      onMouseLeave={() => setMouseLeave(true)}
     >
       <Flex flexDir={"row"}>
         <Text
@@ -184,9 +191,6 @@ function Graph(props: {
                   indexNum === 364;
 
             if (indexNum !== undefined && filterCondition) {
-              console.log("--test--");
-
-              console.log(indexNum);
               return moment(splitedValue[0]).format("MMM DD");
             }
 
