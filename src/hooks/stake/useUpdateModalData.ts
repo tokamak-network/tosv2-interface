@@ -61,8 +61,12 @@ function useUpdateModalData(
   >(undefined);
 
   const [newTosAmount, setNewTosAmount] = useState<string>("-");
-  const { StakingV2Proxy_CONTRACT } = useCallContract();
-  const { stakeId } = useStakeId();
+  const [lockTosAmount, setLockTosAmount] = useState<number | undefined>(
+    undefined
+  );
+
+  const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
+  const { stakeId, connectId } = useStakeId();
   const modalContractData = useModalContract();
   const { selectedModalData } = useModal<{ principal: string }>();
   const { inputValue } = useInput("Stake_screen", "update_modal");
@@ -72,6 +76,10 @@ function useUpdateModalData(
   );
   const { stosReward: secondTypeStosReward } = useStosReward(
     Number(currentWorthTosAmount?.replaceAll(",", "")),
+    Number(inputValue.stake_updateModal_period) - leftWeeks
+  );
+  const { stosReward: thirdTypeStosReward } = useStosReward(
+    Number(lockTosAmount),
     Number(inputValue.stake_updateModal_period) - leftWeeks
   );
 
@@ -93,6 +101,19 @@ function useUpdateModalData(
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
   );
+
+  useEffect(() => {
+    async function fetchLockTosData() {
+      if (LockTOS_CONTRACT && connectId) {
+        const test = await LockTOS_CONTRACT.locksInfo(connectId);
+        const amountBN = test.amount;
+        const amount = convertNumber({ amount: amountBN });
+
+        setLockTosAmount(Number(amount?.replaceAll(",", "")));
+      }
+    }
+    fetchLockTosData();
+  }, [LockTOS_CONTRACT, connectId]);
 
   //current
   useEffect(() => {
@@ -287,7 +308,7 @@ function useUpdateModalData(
             Number(currentBalance.ltos.replaceAll(",", "")) +
             Number(ltos.replaceAll(",", ""));
           const resultStos =
-            Number(secondTypeStosReward.replaceAll(",", "")) +
+            Number(thirdTypeStosReward.replaceAll(",", "")) +
             Number(stosReward.replaceAll(",", "")) +
             Number(currentBalance.stos.replaceAll(",", ""));
 
@@ -318,6 +339,7 @@ function useUpdateModalData(
     newBalanceType,
     setBottomLoading,
     secondTypeStosReward,
+    thirdTypeStosReward,
   ]);
 
   useEffect(() => {

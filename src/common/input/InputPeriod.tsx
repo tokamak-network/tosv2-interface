@@ -184,9 +184,12 @@ const InputPeriod = (props: InputProp) => {
             fontSize={14}
             fontWeight={600}
             isDisabled={isDisabled}
-            onClick={() =>
-              maxValue && setValue({ ...inputValue, [atomKey]: maxValue })
-            }
+            onClick={() => {
+              if (inputValue[atomKey] === maxValue) {
+                return;
+              }
+              maxValue && setValue({ ...inputValue, [atomKey]: maxValue });
+            }}
           >
             Max
           </Button>

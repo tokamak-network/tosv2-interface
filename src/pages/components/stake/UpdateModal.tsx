@@ -221,6 +221,7 @@ function UpdateModal() {
     newTosAmount,
     newStosBalance,
   } = useUpdateModalData(newBalanceType);
+
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();
@@ -260,7 +261,11 @@ function UpdateModal() {
       title: "New Balance",
       content: {
         ltos: bottomLoading ? "......" : newBalance.ltos,
-        stos: stosLoading ? "......" : `${newStosBalance} sTOS`,
+        stos: stosLoading
+          ? "......"
+          : isNaN(Number(newStosBalance.replaceAll(",", "")))
+          ? "- sTOS"
+          : `${newStosBalance} sTOS`,
       },
       tooltip: true,
       tooltipMessage: "Amount of LTOS and sTOS after the update.",
