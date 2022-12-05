@@ -347,7 +347,12 @@ function Graph(props: {
                     color: colorMode === "dark" ? "#64646f" : "#9a9aaf",
                   }}
                 >
-                  {moment(slice.points[0].data.x).format("MMM DD, YYYY")}
+                  {
+                    //@ts-ignore
+                    moment(slice.points[0].data.x.split("_")[0]).format(
+                      "MMM DD, YYYY"
+                    )
+                  }
                 </div>
               </div>
             </div>
