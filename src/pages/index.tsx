@@ -14,7 +14,7 @@ const Home: NextPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    router.push("/bond");
+    router.push("/dashboard");
   }, []);
 
   return <div></div>;
