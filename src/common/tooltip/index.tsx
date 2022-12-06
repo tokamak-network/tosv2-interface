@@ -20,6 +20,7 @@ const BasicTooltip: React.FC<tooltipProps> = (props) => {
   return (
     <Tooltip
       display={label?.length === 0 ? "none" : "flex"}
+      placement={"top"}
       label={label}
       bg={colorMode === "dark" ? "#1f2128" : "#fff"}
       borderRadius={"3px"}
