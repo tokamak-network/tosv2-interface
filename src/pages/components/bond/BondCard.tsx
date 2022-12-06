@@ -38,6 +38,8 @@ function BondCard(props: { data: BondCardProps }) {
   const { data } = props;
   const { openModal } = useModal("bond_bond_modal", data);
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
+  const [smallerThan1024] = useMediaQuery("(max-width: 1023px)");
+  const [smallerThan950] = useMediaQuery("(max-width: 950px)");
   const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
@@ -61,7 +63,7 @@ function BondCard(props: { data: BondCardProps }) {
   return (
     <Flex
       flexDir={"column"}
-      w={smallerThan1040 ? "100%" : "31.9%"}
+      w={smallerThan1024 ? "100%" : "31.9%"}
       h={"290px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}

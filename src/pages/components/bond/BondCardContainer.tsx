@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorMode } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import TabButton from "common/button/TabButton";
 import { useState } from "react";
@@ -10,10 +10,10 @@ import StakeCheckbox from "./StakeCheckbox";
 function BondCardContainer() {
   const [tab, setTab] = useState<0 | 1>(0);
   const { account } = useWeb3React();
-
+  const {colorMode} = useColorMode()
   return (
     <Flex mt={"55px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
-      <Text fontSize={22} fontWeight={"bold"} color={"white.200"} mb={"34px"}>
+      <Text fontSize={22} fontWeight={"bold"} color={colorMode === 'dark'? "white.200":'gray.800'} mb={"34px"}>
         Bond List
       </Text>
       {/* <TabButton

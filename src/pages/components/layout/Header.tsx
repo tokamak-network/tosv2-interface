@@ -13,6 +13,7 @@ import Image from "next/image";
 import MOON_ICON from "assets/icons/moon.svg";
 import SUN_ICON from "assets/icons/sun.svg";
 import BUGER_ICON from "assets/icons/icon_buger.svg";
+import BURGER_ICON_DARK from 'assets/icons/icon_buger_dark.svg';
 import useMediaView from "hooks/useMediaView";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sidebarState } from "atom//header";
@@ -27,10 +28,26 @@ import NetworkIcon from "./components/NetworkIcon";
 
 function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
+  const { colorMode } = useColorMode();
 
   return (
-    <Flex cursor={"pointer"} onClick={() => setIsOpen(true)} ml={"12px"}>
-      <Image src={BUGER_ICON} alt={"burger_icon"}></Image>
+    <Flex
+      cursor={"pointer"}
+      onClick={() => setIsOpen(true)}
+      border="1px solid"
+      justifyContent={"center"}
+      alignItems="center"
+      borderColor={colorMode === "dark" ? "#313442" : "#e8edf2"}
+      borderRadius="8px"
+      h="48px"
+      w="48px"
+    >
+      <Image
+        src={colorMode === 'dark'? BURGER_ICON_DARK:BUGER_ICON}
+        alt={"burger_icon"}
+        height="32px"
+        width="32px"
+      ></Image>
     </Flex>
   );
 }
@@ -70,9 +87,10 @@ function Header(props: HeaderProps) {
       w={"100%"}
       // maxW={"1136px"}
       justifyContent={["space-between", "space-between", "end"]}
-      pr={["10px", "11px", "35px"]}
-      pt={"24px"}
+      pr={["10px", "35px", "35px"]}
+      pl={["12px", "35px", "0px"]}
       h={"96px"}
+      alignItems="center"
       borderBottom={colorMode === "light" ? "1px solid #e8edf2" : ""}
       bg={colorMode === "light" ? "white.100" : "black.100"}
       position={"sticky"}
@@ -118,7 +136,7 @@ function Header(props: HeaderProps) {
           )}
         </Flex>
 
-        {/* <Flex
+        <Flex
           ml={"20px"}
           w={"48px"}
           h={"48px"}
@@ -134,7 +152,7 @@ function Header(props: HeaderProps) {
             src={colorMode === "light" ? SUN_ICON : MOON_ICON}
             alt={"MOON_ICON"}
           ></Image>
-        </Flex> */}
+        </Flex>
       </Flex>
     </Flex>
   );

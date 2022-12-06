@@ -83,7 +83,8 @@ function BondModal() {
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData?.index;
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const [smallerThan1024] = useMediaQuery("(max-width: 1023px)");
+  const [smallerThan759] = useMediaQuery("(max-width: 759px)");
 
   const { youWillGet, endTime, stosReward, originalTosAmount } =
     useBondModalInputData(marketId);
@@ -242,7 +243,7 @@ function BondModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan1024 ? "350px" : "43.75em"}
+        minW={smallerThan759 ? "350px" : "700px"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
@@ -405,7 +406,7 @@ function BondModal() {
                     </Flex>
                     <BalanceInput
                       w={"100%"}
-                      h={"39px"}
+                      h={45}
                       pageKey={"Bond_screen"}
                       recoilKey={"bond_modal"}
                       atomKey={"bond_modal_period"}
