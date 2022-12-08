@@ -46,6 +46,7 @@ function useStakeList() {
             );
             const LTOSWei = stakedInfo.ltos.toString();
             const principalWei = stakedInfo.deposit.toString();
+
             const principal = `${convertNumber({
               amount: principalWei,
               localeString: true,

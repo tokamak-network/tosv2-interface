@@ -105,7 +105,7 @@ function useStosReward(
       .finally(() => {
         setLoading(false);
       });
-  }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod]);
+  }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod, setLoading]);
 
   useEffect(() => {
     //endTime
