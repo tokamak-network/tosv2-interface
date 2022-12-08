@@ -1,12 +1,12 @@
-import calculateCompound from "@/components/calculateCompound";
-import commafy from "@/components/commafy";
-import { convertNumber, convertToWei } from "@/components/number";
+import calculateCompound from "@/utils/calculateCompound";
+import commafy from "@/utils/commafy";
+import { convertNumber, convertToWei } from "@/utils/number";
 import {
   convertTimeStamp,
   getDuration,
   getNowTimeStamp,
   getTimeZone,
-} from "@/components/time";
+} from "@/utils/time";
 import { modalBottomLoadingState } from "atom/global/modal";
 import { BigNumber } from "ethers";
 import useLockTOS from "hooks/contract/useLockTOS";

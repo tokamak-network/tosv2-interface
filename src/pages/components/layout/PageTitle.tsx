@@ -9,11 +9,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import useStakeV2 from "hooks/contract/useStakeV2";
-import {
-  convertTimeStamp,
-  getNowTimeStamp,
-  getTimeZone,
-} from "@/components/time";
+import { convertTimeStamp, getNowTimeStamp, getTimeZone } from "@/utils/time";
 import useRebaseTime from "hooks/useRebaseTime";
 import { useBlockNumber } from "hooks/useBlockNumber";
 

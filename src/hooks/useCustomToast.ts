@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil";
 import { Contract } from "@ethersproject/contracts";
 import CustomToast from "common/toast/CustomToast";
 import { ToastType } from "types/toast";
-import idGenerator from "@/components/idGenerator";
+import idGenerator from "@/utils/idGenerator";
 import { PageKey } from "types";
 
 type ToastPayload = {

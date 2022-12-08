@@ -1,4 +1,4 @@
-import { convertNumber, convertToWei } from "@/components/number";
+import { convertNumber, convertToWei } from "@/utils/number";
 import { BigNumber, ethers } from "ethers";
 import useStosReward from "hooks/stake/useStosReward";
 import useCallContract from "hooks/useCallContract";
@@ -8,7 +8,7 @@ import JSBI from "jsbi";
 import constant from "constant";
 import { useRecoilState } from "recoil";
 import { modalBottomLoadingState } from "atom/global/modal";
-import { getTimeZone } from "@/components/time";
+import { getTimeZone } from "@/utils/time";
 
 type UseUnstake = {
   youWillGet: string | undefined;

@@ -15,8 +15,8 @@ import SmallCard from "./SmallCard";
 import useCardData from "hooks/dashboard/useCardData";
 import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";
 import { useQuery } from "@apollo/client";
-import commafy from "@/components/commafy";
-import { convertNumber } from "@/components/number";
+import commafy from "@/utils/commafy";
+import { convertNumber } from "@/utils/number";
 
 const SmallCardContainer = () => {
   const [cardList, setCardList] = useState<
