@@ -101,14 +101,8 @@ function UpdateModal() {
   const { stakeId } = useStakeId();
   const modalContractData = useModalContract();
 
-  const {
-    currentEndTime,
-    newEndTime,
-    leftWeeks,
-    leftDays,
-    leftTime,
-    newStosBalance,
-  } = useUpdateModalData();
+  const { newEndTime, leftWeeks, leftDays, leftTime, locktosPrincipal } =
+    useUpdateModalData();
 
   const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
@@ -303,6 +297,7 @@ function UpdateModal() {
                 flexDir={"column"}
                 mb={"29px"}
               >
+                <Flex>lockTosPrincipal : {locktosPrincipal}</Flex>
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={12}
