@@ -1,11 +1,11 @@
-import commafy from "@/components/commafy";
-import { convertNumber } from "@/components/number";
+import commafy from "@/utils/commafy";
+import { convertNumber } from "@/utils/number";
 import {
   convertTimeStamp,
   getModalTimeleft,
   getNowTimeStamp,
   getTimeZone,
-} from "@/components/time";
+} from "@/utils/time";
 import { stosLoadingState } from "atom/global/modal";
 import constant from "constant";
 import Decimal from "decimal.js";

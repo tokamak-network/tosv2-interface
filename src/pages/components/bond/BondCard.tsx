@@ -1,8 +1,4 @@
-import {
-  convertTimeStamp,
-  getDuration,
-  getNowTimeStamp,
-} from "@/components/time";
+import { convertTimeStamp, getDuration, getNowTimeStamp } from "@/utils/time";
 import { Flex, Text, useMediaQuery, useColorMode } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { selectedTxState } from "atom/global/tx";

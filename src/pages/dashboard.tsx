@@ -13,7 +13,7 @@ const DashBoard = () => {
     >
       <PageLayout></PageLayout>
       <SmallCardContainer></SmallCardContainer>
-      {/* <GraphContainer></GraphContainer> */}
+      <GraphContainer></GraphContainer>
     </Flex>
   );
 };

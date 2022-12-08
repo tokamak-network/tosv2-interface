@@ -1,6 +1,6 @@
-import commafy from "@/components/commafy";
-import { convertNumber, convertToWei } from "@/components/number";
-import { convertTimeStamp, getNowTimeStamp } from "@/components/time";
+import commafy from "@/utils/commafy";
+import { convertNumber, convertToWei } from "@/utils/number";
+import { convertTimeStamp, getNowTimeStamp } from "@/utils/time";
 import constant from "constant";
 import { BigNumber } from "ethers";
 import useStakeId from "hooks/contract/useStakeId";

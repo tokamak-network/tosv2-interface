@@ -34,7 +34,7 @@ import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import { BondCardProps } from "types/bond";
-import { convertToWei } from "@/components/number";
+import { convertToWei } from "@/utils/number";
 import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useStakeV2 from "hooks/contract/useStakeV2";
@@ -56,7 +56,7 @@ import constant from "constant";
 import BottomContent from "../common/modal/BottomContent";
 import EndTime from "../common/modal/EndTime";
 import InputPeriod from "common/input/InputPeriod";
-import { convertWithDigits } from "@/components/convertWithDigits";
+import { convertWithDigits } from "@/utils/convertWithDigits";
 
 function StakeModal() {
   const theme = useTheme();

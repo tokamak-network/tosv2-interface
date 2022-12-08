@@ -10,6 +10,8 @@ const GET_DASHBOARD = gql`
       runway
       tosPrice
       tosSupply
+      sTosSupply
+      lTosSupply
       totalValueStaked
       treasuryBalance
       updatedAt

@@ -8,7 +8,7 @@ import BondCard from "./BondCard";
 import commafy from "utils/commafy";
 import usePrice from "hooks/usePrice";
 import useCallContract from "hooks/useCallContract";
-import { convertNumber } from "@/components/number";
+import { convertNumber } from "@/utils/number";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
