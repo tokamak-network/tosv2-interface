@@ -1,4 +1,4 @@
-import { Select, useColorMode } from "@chakra-ui/react";
+import { Select, useColorMode,useMediaQuery } from "@chakra-ui/react";
 import { stake_filter_sort, T_SortValues } from "atom/stake/filter";
 import { useRecoilState } from "recoil";
 
@@ -6,11 +6,13 @@ function StakeSortSelect() {
   const { colorMode } = useColorMode();
   const [sortValue, setSortValue] =
     useRecoilState<T_SortValues>(stake_filter_sort);
+    const [smallerThan726] = useMediaQuery("(max-width: 726px)");
 
   return (
     <Select
-      w={["170px", "195px", "178px"]}
+      w={smallerThan726? '100%':'173px'}
       h={"45px"}
+      mt={smallerThan726? '24px':''}
       bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
       borderWidth={1}
       _hover={{ borderColor: colorMode === "light" ? "#c6cbd9" : "#535353" }}

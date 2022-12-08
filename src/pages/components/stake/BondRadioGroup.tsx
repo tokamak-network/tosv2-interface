@@ -5,6 +5,7 @@ import {
   Stack,
   Text,
   useColorMode,
+  useMediaQuery
 } from "@chakra-ui/react";
 import { stake_filter_radio } from "atom/stake/filter";
 import { useState } from "react";
@@ -14,9 +15,10 @@ function StakeRadioGroup() {
   const [stakeRadioValue, setStakeRadioValue] =
     useRecoilState(stake_filter_radio);
   const { colorMode } = useColorMode();
+  const [smallerThan726] = useMediaQuery("(max-width: 726px)");
 
   return (
-    <Flex fontSize={14} color={colorMode === "dark" ? "gray.100" : "#535362"}>
+    <Flex fontSize={14} color={colorMode === "dark" ? "gray.100" : "#535362"} >
       <RadioGroup
         onChange={(value: "All" | "Bond" | "Stake") =>
           setStakeRadioValue(value)

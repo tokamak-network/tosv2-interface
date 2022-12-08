@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text,useMediaQuery } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import SubmitButton from "common/button/SubmitButton";
 import TabButton from "common/button/TabButton";
@@ -16,12 +16,13 @@ function StakeCardContainer() {
   const { stakeCards, hasList } = useStakeList();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
+  const [smallerThan726] = useMediaQuery("(max-width: 726px)");
 
   return (
     <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
       <Flex
         justifyContent={"space-between"}
-        mt={"60px"}
+        mt={"12px"}
         mb={"27px"}
         alignItems="center"
       >
@@ -47,8 +48,9 @@ function StakeCardContainer() {
           >
             <StakeCheckbox></StakeCheckbox>
             <Flex
-              w={["100%", "400px", "500px"]}
-              columnGap={["6px", "6px", "30px"]}
+            flexDir={smallerThan726? 'column':'row'}
+              w={smallerThan726? '100%':'458px'}
+              columnGap={["6px", "30px", "30px"]}
               justifyContent={"flex-end"}
               mt={["", "", ""]}
             >

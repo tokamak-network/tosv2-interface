@@ -12,6 +12,8 @@ import { useRecoilValue } from "recoil";
 function StakeTitle() {
   const [radioValue, setRadioValue] = useState<"All" | "Bond" | "Stake">("All");
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
+
+  const [smallerThan726] = useMediaQuery("(max-width: 726px)");
   const { openModal } = useModal("stake_stake_modal");
   const { colorMode } = useColorMode();
   const { userLTOSBalance, userSTOSBalance, userTOSBalance } = useUserBalance();
@@ -23,7 +25,7 @@ function StakeTitle() {
       // h={"31px"}
       textAlign={"center"}
       lineHeight={"31px"}
-      flexDir={smallerThan1040 ? "column" : "row"}
+      flexDir={smallerThan726 ? "column" : "row"}
       justifyContent={"space-between"}
       w={"100%"}
     >
@@ -51,10 +53,10 @@ function StakeTitle() {
       <Flex fontSize={14}>
         <SubmitButton
           name="Stake"
-          w={smallerThan1040 ? "100%" : ""}
+          w={smallerThan726 ? "100%" : ""}
           style={
             smallerThan1040
-              ? { fontSize: 14, marginTop: "20px", marginBottom: "30px" }
+              ? { fontSize: 14, marginTop:smallerThan726? "20px":'', marginBottom: smallerThan726? "30px":'' }
               : { fontSize: 14 }
           }
           onClick={openModal}
