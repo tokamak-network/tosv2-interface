@@ -23,6 +23,18 @@ function BondCardSection() {
   });
   const { priceData } = usePrice();
 
+  // const { BondDepositoryProxy_CONTRACT } = useCallContract();
+
+  // useEffect(() => {
+  //   async function test() {
+  //     if (BondDepositoryProxy_CONTRACT) {
+  //       const test = await BondDepositoryProxy_CONTRACT.getBonds();
+  //       console.log(test);
+  //     }
+  //   }
+  //   test();
+  // }, [BondDepositoryProxy_CONTRACT]);
+
   useEffect(() => {
     if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {
       const bonds = data.getBondList;

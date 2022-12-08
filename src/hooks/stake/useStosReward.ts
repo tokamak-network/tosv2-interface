@@ -63,9 +63,9 @@ function useStosReward(
       if (typeof inputTosAmount === "number" && isNaN(inputTosAmount)) {
         return setStosRewards("-");
       }
-      if (inputTosAmount === 0) {
-        return setStosRewards("0.00");
-      }
+      // if (inputTosAmount === 0) {
+      //   return setStosRewards("0.00");
+      // }
       if (LockTOS_CONTRACT && inputTosAmount && inputPeriod) {
         const weekPeriod = inputPeriod + 1 || 1;
 
@@ -105,7 +105,7 @@ function useStosReward(
       .finally(() => {
         setLoading(false);
       });
-  }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod]);
+  }, [LockTOS_CONTRACT, inputTosAmount, inputPeriod, rebasePeriod, setLoading]);
 
   useEffect(() => {
     //endTime
