@@ -7,6 +7,7 @@ import PageLayout from "pages/components/layout/PageLayout";
 import { BondTopCardProps } from "types/bond";
 import BondTip from "pages/components/bond/BondTip";
 import TopCardContainer from "./components/common/card/TopCardContainer";
+import NewBondModal from "./components/bond/NewBondModal";
 
 const Bond = () => {
   const theme = useTheme();
@@ -22,6 +23,7 @@ const Bond = () => {
       <TopCardContainer pageKey={"Bond_screen"}></TopCardContainer>
       <BondCardContainer></BondCardContainer>
       <BondModal></BondModal>
+      <NewBondModal></NewBondModal>
     </Flex>
   );
 };

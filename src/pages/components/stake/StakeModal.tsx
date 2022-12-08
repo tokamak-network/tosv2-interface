@@ -30,7 +30,6 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
-import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import { BondCardProps } from "types/bond";
@@ -63,7 +62,6 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
-  const { bondModalData } = useBondModal();
   const { inputValue, setValue, setResetValue } = useInput(
     "Stake_screen",
     "stake_modal"

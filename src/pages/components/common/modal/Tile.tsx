@@ -16,7 +16,7 @@ function Tile(props: {
   title: string;
   content: string | undefined;
   symbol?: string;
-  tooltip: string;
+  tooltip?: string;
 }) {
   const { title, content, symbol, tooltip } = props;
   const { colorMode } = useColorMode();
@@ -42,7 +42,7 @@ function Tile(props: {
         >
           {title}
         </Text>
-        <BasicTooltip label={tooltip} />
+        {tooltip && <BasicTooltip label={tooltip} />}
       </Flex>
 
       <Flex
