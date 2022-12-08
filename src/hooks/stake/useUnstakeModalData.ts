@@ -1,4 +1,4 @@
-import { convertNumber, convertToWei } from "@/components/number";
+import { convertNumber, convertToWei } from "@/utils/number";
 import { BigNumber } from "ethers";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import useCallContract from "hooks/useCallContract";

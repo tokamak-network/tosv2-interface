@@ -1,6 +1,6 @@
-import commafy from "@/components/commafy";
-import { convertNumber } from "@/components/number";
-import { convertTimeStamp, isTimeOver } from "@/components/time";
+import commafy from "@/utils/commafy";
+import { convertNumber } from "@/utils/number";
+import { convertTimeStamp, isTimeOver } from "@/utils/time";
 import { useWeb3React } from "@web3-react/core";
 import {
   stake_filter_radio,

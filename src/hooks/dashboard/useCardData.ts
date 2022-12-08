@@ -3,7 +3,7 @@ import {
   GET_DASHBOARD_CARD,
 } from "graphql/dashboard/getDashboard";
 import { useQuery, ApolloError } from "@apollo/client";
-import commafy from "@/components/commafy";
+import commafy from "@/utils/commafy";
 
 type UseCardData = {
   data:

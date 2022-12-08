@@ -1,5 +1,5 @@
-import { convertNumber } from "@/components/number";
-import { convertTimeStamp } from "@/components/time";
+import { convertNumber } from "@/utils/number";
+import { convertTimeStamp } from "@/utils/time";
 import { BigNumber } from "ethers";
 import useCallContract from "hooks/useCallContract";
 import { useEffect, useState } from "react";

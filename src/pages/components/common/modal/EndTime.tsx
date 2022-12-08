@@ -1,4 +1,4 @@
-import { getTimeZone } from "@/components/time";
+import { getTimeZone } from "@/utils/time";
 import { Flex, Text } from "@chakra-ui/react";
 
 function EndTime(props: { time: string }) {

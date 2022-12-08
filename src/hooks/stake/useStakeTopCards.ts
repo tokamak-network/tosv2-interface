@@ -1,4 +1,4 @@
-import commafy from "@/components/commafy";
+import commafy from "@/utils/commafy";
 import { useQuery } from "@apollo/client";
 import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";
 import useStakeV2 from "hooks/contract/useStakeV2";
