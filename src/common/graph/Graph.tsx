@@ -308,10 +308,20 @@ function Graph(props: {
                       >
                         {" "}
                         {title === "Runway"
-                          ? ` ${Number(point.data.y).toLocaleString(undefined, {
+                          ? `${Number(point.data.y).toLocaleString(undefined, {
                               minimumFractionDigits: 0,
                               maximumFractionDigits: 0,
                             })} Days`
+                          : title === "Total sTOS"
+                          ? `${Number(point.data.y).toLocaleString(undefined, {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
+                            })} sTOS`
+                          : title === "Total LTOS"
+                          ? `${Number(point.data.y).toLocaleString(undefined, {
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
+                            })} LTOS`
                           : `$
                       ${Number(point.data.y).toLocaleString(undefined, {
                         minimumFractionDigits: 0,

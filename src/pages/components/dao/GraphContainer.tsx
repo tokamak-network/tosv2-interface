@@ -38,7 +38,7 @@ function GraphContainer() {
           title="Total LTOS"
           amount={`${commafy(
             ltosGraphData[0].data[ltosGraphData[0].data.length - 1].y
-          )} sTOS`}
+          )} LTOS`}
           tooltipTitle="Total number of LTOS owned by users."
         />
       )}
