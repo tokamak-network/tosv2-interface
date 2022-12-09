@@ -7,7 +7,7 @@ import IBottomContent from "pages/components/common/modal/IBottomContent";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IBottomContentProps } from "types/common/modal";
 
-function StakeModal_BottomContent() {
+function ManageModal_BottomContent() {
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const { inputValue, setResetValue, setValue } = useInput(
@@ -83,4 +83,4 @@ function StakeModal_BottomContent() {
   );
 }
 
-export default StakeModal_BottomContent;
+export default ManageModal_BottomContent;

@@ -89,14 +89,21 @@ function useUpdateModalData() {
   //new
   useEffect(() => {
     async function fetchUpdateModalData() {
-      if (StakingV2Proxy_CONTRACT && totalTosAmount) {
-        const totalTosAmountBN = convertToWei(totalTosAmount.toString());
+      if (
+        StakingV2Proxy_CONTRACT &&
+        modalContractData?.ltosBalance &&
+        inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")
+      ) {
+        const newTosAmount = convertToWei(
+          inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")
+        );
         const ltosAmountBN =
-          await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
-            totalTosAmountBN
-          );
+          await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(newTosAmount);
         const ltosAmount = convertNumber({ amount: ltosAmountBN });
-        setNewLtosBalance(ltosAmount || "-");
+        const newLtosAmount =
+          Number(modalContractData?.ltosBalance.replaceAll(",", "")) +
+          Number(ltosAmount?.replaceAll(",", ""));
+        setNewLtosBalance(newLtosAmount || "-");
       }
     }
     fetchUpdateModalData()
@@ -108,13 +115,10 @@ function useUpdateModalData() {
         return setBottomLoading(false);
       });
   }, [
-    stakeId,
     StakingV2Proxy_CONTRACT,
     inputValue,
-    stosReward,
     modalContractData,
     setBottomLoading,
-    totalTosAmount,
   ]);
 
   //test
