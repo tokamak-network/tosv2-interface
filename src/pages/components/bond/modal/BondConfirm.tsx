@@ -20,10 +20,10 @@ import SubmitButton from "common/button/SubmitButton";
 const BondConfirm = (props: {
   isOpenConfirm: boolean;
   setIsOpenConfirm: any;
-  setConfirmed: any;
+  callBond: any;
 }) => {
   const theme = useTheme();
-  const { isOpenConfirm, setIsOpenConfirm, setConfirmed } = props;
+  const { isOpenConfirm, setIsOpenConfirm, callBond } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -56,7 +56,7 @@ const BondConfirm = (props: {
                 fontSize={"1.250em"}
                 fontWeight={"bold"}
                 fontFamily={theme.fonts.titil}
-                color={colorMode === "light" ? "gray.250" : "white.100"}
+                color={colorMode === "light" ? "gray.100" : "white.100"}
                 textAlign={"center"}
               >
                 Warning
@@ -84,7 +84,7 @@ const BondConfirm = (props: {
             pl={"25px"}
             pr={"6px"}
             fontSize={13}
-            color={colorMode === "light" ? "gray.250" : "white.100"}
+            color={colorMode === "light" ? "gray.100" : "white.100"}
           >
             <Flex w={"100%"} flexDir={"column"}>
               <Flex
@@ -113,7 +113,7 @@ const BondConfirm = (props: {
                   //   mt={"21px"}
                   mb={"20px"}
                   flexDir={"column"}
-                  color={colorMode === "dark" ? "white.200" : "gray.700"}
+                  color={colorMode === "dark" ? "gray.100" : "gray.700"}
                   //   color={"#e23738"}
                 >
                   <Text>
@@ -155,7 +155,7 @@ const BondConfirm = (props: {
                     them for LTOS. You can continue bonding,
                   </Text>
                   <Text>
-                    if you would like to purchase TOS without impacting the
+                    if you would like to purchase LTOS without impacting the
                     price.
                   </Text>
                 </Flex>
@@ -174,7 +174,7 @@ const BondConfirm = (props: {
             justifyContent="center"
             mb={"24px"}
           >
-            <SubmitButton name="Confirm"></SubmitButton>
+            <SubmitButton name="Confirm" onClick={callBond}></SubmitButton>
           </Box>
         </ModalBody>
       </ModalContent>

@@ -69,7 +69,6 @@ import BondConfirm from "./modal/BondConfirm";
 function BondModal() {
   const theme = useTheme();
   const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
-  const [isConfirmed, setConfirmed] = useState<boolean>(false);
 
   const { colorMode } = useColorMode();
   const { inputValue, setValue, setResetValue } = useInput(
@@ -158,12 +157,8 @@ function BondModal() {
 
   const callBond = useCallback(async () => {
     try {
-      if (isConfirmed === false) {
-        return;
-      }
       if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
         const inputAmount = inputValue.bond_modal_balance;
-
         const periodWeeks = inputValue.bond_modal_period + 1;
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
@@ -202,7 +197,6 @@ function BondModal() {
     fiveDaysLockup,
     setTx,
     closeThisModal,
-    isConfirmed,
   ]);
 
   useEffect(() => {
@@ -519,8 +513,8 @@ function BondModal() {
                 mt={"21px"}
                 mb={"24px"}
                 flexDir={"column"}
-                color={colorMode === "dark" ? "white.200" : "gray.700"}
-                // color={"#e23738"}
+                // color={colorMode === "dark" ? "white.200" : "gray.700"}
+                color={"#e23738"}
               >
                 <Text>
                   Currently, it is cheaper to purchase TOS from Uniswap V3 (
@@ -530,7 +524,7 @@ function BondModal() {
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
-                    color={"blue.100"}
+                    color={"white.200"}
                   >
                     WTON
                   </Link>
@@ -541,7 +535,7 @@ function BondModal() {
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
-                    color={"blue.100"}
+                    color={"white.200"}
                   >
                     ETH
                   </Link>
@@ -552,7 +546,7 @@ function BondModal() {
                   <Link
                     isExternal={true}
                     href={"https://tosv2.tokamak.network/stake"}
-                    color={"blue.100"}
+                    color={"white.200"}
                     textDecoration={"underline"}
                   >
                     stake
@@ -560,7 +554,8 @@ function BondModal() {
                   them for LTOS. You can continue bonding,
                 </Text>
                 <Text>
-                  if you would like to purchase TOS without impacting the price.
+                  if you would like to purchase LTOS without impacting the
+                  price.
                 </Text>
               </Flex>
             )}
@@ -570,7 +565,7 @@ function BondModal() {
       <BondConfirm
         isOpenConfirm={isOpenConfirm}
         setIsOpenConfirm={setIsOpenConfirm}
-        setConfirmed={setConfirmed}
+        callBond={callBond}
       ></BondConfirm>
     </Modal>
   );
