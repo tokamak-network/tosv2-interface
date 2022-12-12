@@ -1,3 +1,4 @@
+import { convertNumber } from "@/utils/number";
 import { BigNumber } from "ethers";
 import useStakeId from "hooks/contract/useStakeId";
 import useCallContract from "hooks/useCallContract";
@@ -19,10 +20,13 @@ function useLocksInfo() {
       if (connectId && LockTOS_CONTRACT) {
         const locksInfo = await LockTOS_CONTRACT.locksInfo(connectId);
         const amountBN = locksInfo.amount;
-        const endTime = locksInfo.endTime;
+        const endTime = locksInfo.end.toString();
+        const amount = convertNumber({ amount: amountBN }) || "0";
 
-          setLocksInfo({
-            amount:
+        setLocksInfo({
+          amount: Number(amount.replaceAll(",", "")),
+          amountBN,
+          endTime: Number(endTime),
         });
       }
     }

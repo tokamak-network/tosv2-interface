@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import useStosReward from "./useStosReward";
 import constant from "constant/index";
+import useStos from "./useStos";
 
 function useUpdateModalData() {
   const [newLtosBalance, setNewLtosBalance] = useState<string>("-");
@@ -49,6 +50,8 @@ function useUpdateModalData() {
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
   );
+
+  const { stosBalance } = useStos();
 
   //current
   useEffect(() => {
@@ -103,7 +106,7 @@ function useUpdateModalData() {
         const newLtosAmount =
           Number(modalContractData?.ltosBalance.replaceAll(",", "")) +
           Number(ltosAmount?.replaceAll(",", ""));
-        setNewLtosBalance(newLtosAmount || "-");
+        setNewLtosBalance(commafy(newLtosAmount) || "-");
       }
     }
     fetchUpdateModalData()
