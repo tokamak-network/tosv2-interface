@@ -519,13 +519,14 @@ function BondModal() {
                 mt={"21px"}
                 mb={"24px"}
                 flexDir={"column"}
-                // color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                color={"#e23738"}
+                color={colorMode === "dark" ? "white.200" : "gray.700"}
+                // color={"#e23738"}
               >
                 <Text>
                   Currently, it is cheaper to purchase TOS from Uniswap V3 (
                   <Link
                     isExternal={true}
+                    textDecoration={"underline"}
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
@@ -533,9 +534,10 @@ function BondModal() {
                   >
                     WTON
                   </Link>
-                  ,
+                  ,{" "}
                   <Link
                     isExternal={true}
+                    textDecoration={"underline"}
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
@@ -551,6 +553,7 @@ function BondModal() {
                     isExternal={true}
                     href={"https://tosv2.tokamak.network/stake"}
                     color={"blue.100"}
+                    textDecoration={"underline"}
                   >
                     stake
                   </Link>{" "}

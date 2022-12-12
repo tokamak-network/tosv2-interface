@@ -38,13 +38,13 @@ const BondConfirm = (props: {
         bg={colorMode === "light" ? "white.100" : "black.200"}
         maxW="500px"
         p={0}
-        boxShadow={"none"}
         // h={"568px"}
       >
         <ModalBody
           p={0}
           className={"modalOverlay"}
           bg={colorMode === "light" ? "white.100" : "black.200"}
+          boxShadow={"none"}
         >
           <Box pt={"1.250em"} pb={"1.250em"}>
             <Flex
@@ -113,7 +113,7 @@ const BondConfirm = (props: {
                   //   mt={"21px"}
                   mb={"20px"}
                   flexDir={"column"}
-                  color={colorMode === "dark" ? "white.100" : "gray.700"}
+                  color={colorMode === "dark" ? "white.200" : "gray.700"}
                   //   color={"#e23738"}
                 >
                   <Text>
@@ -124,6 +124,7 @@ const BondConfirm = (props: {
                         "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                       }
                       color={"blue.100"}
+                      textDecoration={"underline"}
                     >
                       WTON
                     </Link>
@@ -134,6 +135,7 @@ const BondConfirm = (props: {
                         "https://app.uniswap.org/#/swap?inputCurrency=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                       }
                       color={"blue.100"}
+                      textDecoration={"underline"}
                     >
                       {" "}
                       ETH
@@ -146,6 +148,7 @@ const BondConfirm = (props: {
                       isExternal={true}
                       href={"https://tosv2.tokamak.network/stake"}
                       color={"blue.100"}
+                      textDecoration={"underline"}
                     >
                       stake
                     </Link>{" "}
@@ -171,7 +174,7 @@ const BondConfirm = (props: {
             justifyContent="center"
             mb={"24px"}
           >
-            <SubmitButton name="Bond"></SubmitButton>
+            <SubmitButton name="Confirm"></SubmitButton>
           </Box>
         </ModalBody>
       </ModalContent>
