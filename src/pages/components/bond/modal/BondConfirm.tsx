@@ -132,7 +132,7 @@ const BondConfirm = (props: {
                     <Link
                       isExternal={true}
                       href={
-                        "https://app.uniswap.org/#/swap?inputCurrency=0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
+                        "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                       }
                       color={"blue.100"}
                       textDecoration={"underline"}
