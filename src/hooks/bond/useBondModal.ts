@@ -113,7 +113,9 @@ function useBondModal() {
           bondPrice: `$${commafy(bondPrice)}`,
           marketPrice: `$${marketPrice}`,
           discount: `${commafy(discount)}%`,
-          minBond: `${convertedMinBond}`,
+          minBond: `${
+            Number(convertedMinBond) < 0 ? "0.000000" : convertedMinBond
+          }`,
           maxBond: `${commafy(maxBond)}`,
           ltosIndex: `${commafy(ltosIndex)}`,
         });
