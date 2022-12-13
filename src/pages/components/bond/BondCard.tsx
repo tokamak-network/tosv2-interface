@@ -45,13 +45,12 @@ function BondCard(props: { data: BondCardProps }) {
   const capacityIsZero = Number(data?.bondCapacity.replaceAll("%", "")) <= 0;
   const discountIsMinus = Number(data?.discountRate.replaceAll("%", "")) < 0;
 
-  const [isOpen, setIsOpen] = useState(timeDiff >= 0 && !capacityIsZero);
+  const [isOpen, setIsOpen] = useState(timeDiff >= 0 || !capacityIsZero);
   const bondIsDisabled = timeDiff < 0;
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
-  const bondButtonIsDisabled =
-    bondIsDisabled || capacityIsZero || discountIsMinus;
+  const bondButtonIsDisabled = bondIsDisabled || capacityIsZero;
 
   //vierport ref 1134px
   return (

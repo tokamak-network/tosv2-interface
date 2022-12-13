@@ -17,8 +17,9 @@ function Tile(props: {
   content: string | undefined;
   symbol?: string;
   tooltip: string;
+  isWarning?: boolean;
 }) {
-  const { title, content, symbol, tooltip } = props;
+  const { title, content, symbol, tooltip, isWarning } = props;
   const { colorMode } = useColorMode();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { isModalLoading } = useModal();
@@ -57,7 +58,13 @@ function Tile(props: {
         ) : (
           <>
             <Text
-              color={colorMode === "dark" ? "white.100" : "gray.800"}
+              color={
+                isWarning
+                  ? "red.100"
+                  : colorMode === "dark"
+                  ? "white.100"
+                  : "gray.800"
+              }
               fontSize={18}
               mr={2}
             >
