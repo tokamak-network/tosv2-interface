@@ -41,11 +41,6 @@ function useStos() {
   //interestAfterEnd = locksinfo.amount*(1+rebasePerEpoch)^(increaseWeek*21)
   const interestAfterEnd = useMemo(() => {
     if (locksInfo?.amount && rebasePerEpoch && increaseWeeks) {
-      console.log("locksInfo.amount");
-      console.log(locksInfo.amount);
-      console.log(rebasePerEpoch);
-      console.log(increaseWeeks);
-
       return locksInfo.amount * (1 + rebasePerEpoch) ** (increaseWeeks * 21);
     }
   }, [locksInfo?.amount, rebasePerEpoch, increaseWeeks]);
