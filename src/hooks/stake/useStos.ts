@@ -78,28 +78,26 @@ function useStos() {
     }
   }, [increaseTos, rebasePerEpoch, additionalRebaseNumber, interestAfterEnd]);
 
-  console.log("***start***");
+  // console.log("blockTimeStamp");
+  // console.log(blockTimeStamp);
 
-  console.log("blockTimeStamp");
-  console.log(blockTimeStamp);
+  // console.log("rebasePerEpoch");
+  // console.log(rebasePerEpoch);
 
-  console.log("rebasePerEpoch");
-  console.log(rebasePerEpoch);
+  // console.log("lockInfo");
+  // console.log(locksInfo);
 
-  console.log("lockInfo");
-  console.log(locksInfo);
+  // console.log("lockupWeeksUpdated");
+  // console.log(lockupWeeksUpdated);
 
-  console.log("lockupWeeksUpdated");
-  console.log(lockupWeeksUpdated);
+  // console.log("interestAfterEnd");
+  // console.log(interestAfterEnd);
 
-  console.log("interestAfterEnd");
-  console.log(interestAfterEnd);
+  // console.log("additionalRebaseNumber");
+  // console.log(additionalRebaseNumber);
 
-  console.log("additionalRebaseNumber");
-  console.log(additionalRebaseNumber);
-
-  console.log("ltosPrincipalUpdated");
-  console.log(ltosPrincipalUpdated);
+  // console.log("ltosPrincipalUpdated");
+  // console.log(ltosPrincipalUpdated);
 
   const newBalanceStos = useMemo(() => {
     if (
@@ -110,8 +108,43 @@ function useStos() {
     }
   }, [ltosPrincipalUpdated, lockupWeeksUpdated]);
 
-  console.log("newBalanceStos");
-  console.log(newBalanceStos);
+  // console.log("***start***");
+  // console.log({
+  //   blockTimeStamp,
+  //   rebasePerEpoch,
+  //   locksInfo,
+  //   lockupWeeksUpdated,
+  //   interestAfterEnd,
+  //   additionalRebaseNumber,
+  //   ltosPrincipalUpdated,
+  //   newBalanceStos,
+  // });
+
+  useEffect(() => {
+    console.log("***start***");
+    console.log({
+      blockTimeStamp,
+      rebasePerEpoch,
+      locksInfo,
+      lockupWeeksUpdated,
+      interestAfterEnd,
+      additionalRebaseNumber,
+      ltosPrincipalUpdated,
+      newBalanceStos,
+    });
+  }, [
+    blockTimeStamp,
+    rebasePerEpoch,
+    locksInfo,
+    lockupWeeksUpdated,
+    interestAfterEnd,
+    additionalRebaseNumber,
+    ltosPrincipalUpdated,
+    newBalanceStos,
+  ]);
+
+  // console.log("newBalanceStos");
+  // console.log(newBalanceStos);
 
   return { stosBalance };
 }
