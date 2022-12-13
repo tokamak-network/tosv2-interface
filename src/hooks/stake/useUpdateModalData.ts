@@ -28,7 +28,6 @@ function useUpdateModalData() {
   const [leftWeeks, setLeftWeeks] = useState<number>(1);
   const [leftDays, setLeftDays] = useState<string>("-");
   const [leftTime, setLeftTime] = useState<string>("-");
-  const [locktosPrincipal, setLocktosPrincipal] = useState<string>("-");
 
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId, connectId } = useStakeId();
@@ -50,8 +49,6 @@ function useUpdateModalData() {
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
   );
-
-  const { stosBalance } = useStos();
 
   //current
   useEffect(() => {
@@ -124,20 +121,6 @@ function useUpdateModalData() {
     setBottomLoading,
   ]);
 
-  //test
-  useEffect(() => {
-    async function fetchLockTosData() {
-      if (LockTOS_CONTRACT && connectId) {
-        const locksInfo = await LockTOS_CONTRACT.locksInfo(connectId);
-        const amountBN = locksInfo.amount;
-        const amount = convertNumber({ amount: amountBN });
-        setLocktosPrincipal(amount ?? "-");
-      }
-    }
-
-    fetchLockTosData();
-  }, [LockTOS_CONTRACT, connectId]);
-
   return {
     currentEndTime,
     newEndTime,
@@ -147,7 +130,6 @@ function useUpdateModalData() {
     newStosBalance: stosReward,
     newLtosBalance,
     totalTosAmount,
-    locktosPrincipal,
   };
 }
 

@@ -41,12 +41,14 @@ function useModalContract(): UseModalContract | undefined {
           convertNumber({
             amount: ltosBalanceBN.toString(),
             localeString: true,
-          }) || "0";
+            round: false,
+          }) || "-";
         const stosBalance =
           convertNumber({
             amount: stosBalanceBN.toString(),
             localeString: true,
-          }) || "0";
+            round: false,
+          }) || "-";
         const currentEndTime = convertTimeStamp(
           stakeInfo.endTime,
           "YYYY. MM.DD. HH:mm"
@@ -55,7 +57,8 @@ function useModalContract(): UseModalContract | undefined {
           convertNumber({
             amount: currentTosAmountBN.toString(),
             localeString: true,
-          }) || "0";
+            round: false,
+          }) || "-";
         const currentEndTimeStamp = Number(stakeInfo.endTime.toString());
 
         setModalContractData({
