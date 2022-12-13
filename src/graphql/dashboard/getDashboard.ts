@@ -25,6 +25,7 @@ const GET_DASHBOARD_CARD = gql`
       tosPrice
       backingPerTos
       ltosPrice
+      mintingRate
       ltosIndex
       chainId
     }

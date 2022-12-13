@@ -38,7 +38,7 @@ const SmallCardContainer = () => {
 
   useEffect(() => {
     if (data) {
-      const { tosPrice, backingPerTos, ltosPrice, ltosIndex } =
+      const { tosPrice, backingPerTos, mintingRate, ltosIndex } =
         data.getDashboardCard[0];
 
       const {
@@ -51,10 +51,10 @@ const SmallCardContainer = () => {
       const tosPriceChangePercent =
         (Number(commafy(tosPrice - exTosPrice)) / Number(commafy(exTosPrice))) *
         100;
-      const ltosPriceChangePercent =
-        (Number(commafy(ltosPrice - exLtosPrice)) /
-          Number(commafy(exLtosPrice))) *
-        100;
+      // const ltosPriceChangePercent =
+      //   (Number(commafy(ltosPrice - exLtosPrice)) /
+      //     Number(commafy(exLtosPrice))) *
+      //   100;
       const ltosIndexChangePercent =
         (Number(commafy(ltosIndex - exLtosIndex)) /
           Number(commafy(exLtosIndex))) *
@@ -77,18 +77,17 @@ const SmallCardContainer = () => {
         {
           price: backingPerTosNum as string,
           priceUnit: "ETH",
-          title: "Backing per TOS",
+          title: "Backing Per TOS",
           tooltip: true,
           tooltipMessage: "Amount of treasury asset backed per 1 TOS in ETH",
         },
         {
-          price: commafy(ltosPrice) as string,
-          priceUnit: "$",
-          priceChangePercent: ltosPriceChangePercent,
-          title: "LTOS Price",
+          price: commafy(mintingRate) as string,
+          priceUnit: "TOS",
+          title: "Minting Rate Per ETH",
           tooltip: true,
           tooltipMessage:
-            "The price of 1 LTOS when they are converted to TOS using LTOS index: LTOS Price = TOS Price x LTOS index",
+            "Minting rate per ETH determines how many TOS gets minted for every 1 ETH that gets bonded",
         },
         {
           price: commafy(ltosIndex, 7) as string,
