@@ -72,15 +72,14 @@ import InputPeriod from "common/input/InputPeriod";
 import GradientSpinner from "../common/GradientSpinner";
 import useModalContract from "hooks/contract/useModalContract";
 import Notice from "../global/Notice";
-import StakeModal_BottomContent from "./modal/StakeModal_BottomContent";
+import ManageModal_BottomContent from "./modal/ManageModal_BottomContent";
 
 function UpdateModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { selectedModalData, selectedModal, closeModal, isModalLoading } =
-    useModal<{
-      ltosAmount: string | undefined;
-    }>();
+  const { selectedModal, closeModal, isModalLoading } = useModal<{
+    ltosAmount: string | undefined;
+  }>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue, setValue } = useInput(
@@ -99,18 +98,8 @@ function UpdateModal() {
     undefined
   );
   const { stakeId } = useStakeId();
-  const modalContractData = useModalContract();
+  const { newEndTime, leftWeeks, leftDays, leftTime } = useUpdateModalData();
 
-  const {
-    currentEndTime,
-    newEndTime,
-    leftWeeks,
-    leftDays,
-    leftTime,
-    newStosBalance,
-  } = useUpdateModalData();
-
-  const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();
   const {
@@ -437,7 +426,7 @@ function UpdateModal() {
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
-              <StakeModal_BottomContent />
+              <ManageModal_BottomContent />
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (

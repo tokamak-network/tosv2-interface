@@ -20,6 +20,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import useStosReward from "./useStosReward";
 import constant from "constant/index";
+import useStos from "./useStos";
 
 function useUpdateModalData() {
   const [newLtosBalance, setNewLtosBalance] = useState<string>("-");
@@ -27,6 +28,7 @@ function useUpdateModalData() {
   const [leftWeeks, setLeftWeeks] = useState<number>(1);
   const [leftDays, setLeftDays] = useState<string>("-");
   const [leftTime, setLeftTime] = useState<string>("-");
+
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId, connectId } = useStakeId();
   const modalContractData = useModalContract();
@@ -87,14 +89,21 @@ function useUpdateModalData() {
   //new
   useEffect(() => {
     async function fetchUpdateModalData() {
-      if (StakingV2Proxy_CONTRACT && totalTosAmount) {
-        const totalTosAmountBN = convertToWei(totalTosAmount.toString());
+      if (
+        StakingV2Proxy_CONTRACT &&
+        modalContractData?.ltosBalance &&
+        inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")
+      ) {
+        const newTosAmount = convertToWei(
+          inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")
+        );
         const ltosAmountBN =
-          await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
-            totalTosAmountBN
-          );
+          await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(newTosAmount);
         const ltosAmount = convertNumber({ amount: ltosAmountBN });
-        setNewLtosBalance(ltosAmount || "-");
+        const newLtosAmount =
+          Number(modalContractData?.ltosBalance.replaceAll(",", "")) +
+          Number(ltosAmount?.replaceAll(",", ""));
+        setNewLtosBalance(commafy(newLtosAmount) || "-");
       }
     }
     fetchUpdateModalData()
@@ -106,13 +115,10 @@ function useUpdateModalData() {
         return setBottomLoading(false);
       });
   }, [
-    stakeId,
     StakingV2Proxy_CONTRACT,
     inputValue,
-    stosReward,
     modalContractData,
     setBottomLoading,
-    totalTosAmount,
   ]);
 
   return {

@@ -1,13 +1,15 @@
+import commafy from "@/utils/commafy";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { modalBottomLoadingState, stosLoadingState } from "atom/global/modal";
 import useModalContract from "hooks/contract/useModalContract";
+import useStos from "hooks/stake/useStos";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useInput from "hooks/useInput";
 import IBottomContent from "pages/components/common/modal/IBottomContent";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IBottomContentProps } from "types/common/modal";
 
-function StakeModal_BottomContent() {
+function ManageModal_BottomContent() {
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const { inputValue, setResetValue, setValue } = useInput(
@@ -21,15 +23,16 @@ function StakeModal_BottomContent() {
     leftWeeks,
     leftDays,
     leftTime,
-    newStosBalance,
     newLtosBalance,
     totalTosAmount,
   } = useUpdateModalData();
+  const {} = useStos();
   const modalContractData = useModalContract();
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
   );
   const stosLoading = useRecoilValue(stosLoadingState);
+  const { newBalanceStos } = useStos();
 
   const contentList: IBottomContentProps[] = [
     {
@@ -51,7 +54,9 @@ function StakeModal_BottomContent() {
       title: "New Balance",
       content: bottomLoading ? "......" : `${newLtosBalance} LTOS`,
 
-      secondContent: stosLoading ? "......" : `${newStosBalance} sTOS`,
+      secondContent: stosLoading
+        ? "......"
+        : `${newBalanceStos ? commafy(newBalanceStos) : "-"} sTOS`,
       tooltip: "Amount of LTOS and sTOS after the update.",
       secondTooltip: `Currently worth ${totalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
@@ -83,4 +88,4 @@ function StakeModal_BottomContent() {
   );
 }
 
-export default StakeModal_BottomContent;
+export default ManageModal_BottomContent;
