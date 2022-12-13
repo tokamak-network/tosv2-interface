@@ -32,7 +32,6 @@ function useStos() {
   const lockupWeeksUpdated = useMemo(() => {
     if (locksInfo?.endTime && blockTimeStamp && increaseWeeks) {
       const timeDiff = locksInfo.endTime - blockTimeStamp;
-
       return timeDiff / 604800 + increaseWeeks;
     }
   }, [locksInfo?.endTime, blockTimeStamp, increaseWeeks]);
@@ -57,7 +56,7 @@ function useStos() {
   const additionalRebaseNumber = useMemo(() => {
     if (locksInfo?.endTime && blockTimeStamp && increaseWeeks) {
       return Math.floor(
-        (locksInfo?.endTime - blockTimeStamp + 604800 * increaseWeeks) / 28800
+        (locksInfo.endTime - blockTimeStamp + 604800 * increaseWeeks) / 28800
       );
     }
   }, [locksInfo?.endTime, blockTimeStamp, increaseWeeks]);
@@ -79,17 +78,28 @@ function useStos() {
     }
   }, [increaseTos, rebasePerEpoch, additionalRebaseNumber, interestAfterEnd]);
 
-  // console.log("totalWeeksLockedAfterUpdate");
-  // console.log(lockupWeeksUpdated);
+  console.log("***start***");
 
-  // console.log("interestAfterEnd");
-  // console.log(interestAfterEnd);
+  console.log("blockTimeStamp");
+  console.log(blockTimeStamp);
 
-  // console.log("additionalRebaseNumber");
-  // console.log(additionalRebaseNumber);
+  console.log("rebasePerEpoch");
+  console.log(rebasePerEpoch);
 
-  // console.log("ltosPrincipalUpdated");
-  // console.log(ltosPrincipalUpdated);
+  console.log("lockInfo");
+  console.log(locksInfo);
+
+  console.log("lockupWeeksUpdated");
+  console.log(lockupWeeksUpdated);
+
+  console.log("interestAfterEnd");
+  console.log(interestAfterEnd);
+
+  console.log("additionalRebaseNumber");
+  console.log(additionalRebaseNumber);
+
+  console.log("ltosPrincipalUpdated");
+  console.log(ltosPrincipalUpdated);
 
   const newBalanceStos = useMemo(() => {
     if (
@@ -101,7 +111,7 @@ function useStos() {
   }, [ltosPrincipalUpdated, lockupWeeksUpdated]);
 
   console.log("newBalanceStos");
-  console.log(newBalanceStos ?? null);
+  console.log(newBalanceStos);
 
   return { stosBalance };
 }
