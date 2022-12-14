@@ -64,9 +64,12 @@ import Tile from "../common/modal/Tile";
 import BottomContent from "../common/modal/BottomContent";
 import InputPeriod from "common/input/InputPeriod";
 import useStosReward from "hooks/stake/useStosReward";
+import BondConfirm from "./modal/BondConfirm";
 
 function BondModal() {
   const theme = useTheme();
+  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+
   const { colorMode } = useColorMode();
   const { inputValue, setValue, setResetValue } = useInput(
     "Bond_screen",
@@ -156,7 +159,6 @@ function BondModal() {
     try {
       if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
         const inputAmount = inputValue.bond_modal_balance;
-
         const periodWeeks = inputValue.bond_modal_period + 1;
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
@@ -231,6 +233,9 @@ function BondModal() {
       setMaxValue(mValue);
     }
   }, [bondModalData, userETHBalance]);
+
+  const capacityIsZero =
+    Number(propData?.discountRate?.replaceAll("%", "")) <= 0;
 
   return (
     <Modal
@@ -310,6 +315,7 @@ function BondModal() {
                         title={"Discount"}
                         content={`${propData?.discountRate}`}
                         tooltip={"Discount for bonding."}
+                        isWarning={capacityIsZero}
                       />
                     </GridItem>
                     <GridItem>
@@ -489,33 +495,78 @@ function BondModal() {
                 })}
               </Flex>
             </Flex>
-            <Flex justifyContent={"center"} mb={"40px"}>
+            <Flex justifyContent={"center"} mb={capacityIsZero ? "" : "40px"}>
               <SubmitButton
                 w={smallerThan1024 ? 310 : 460}
                 h={42}
                 name="Bond"
-                onClick={callBond}
+                // onClick={callBond}
+                onClick={() => setIsOpenConfirm(true)}
                 isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
             </Flex>
-            {/* <Flex
-              fontSize={11}
-              color={"#64646f"}
-              textAlign="center"
-              w={"100%"}
-              mb={"24px"}
-            >
-              <Text
+            {capacityIsZero && (
+              <Flex
+                fontSize={11}
+                textAlign="center"
                 w={"100%"}
-                color={colorMode === "dark" ? "gray.200" : "gray.700"}
+                mt={"21px"}
+                mb={"24px"}
+                flexDir={"column"}
+                // color={colorMode === "dark" ? "white.200" : "gray.700"}
+                color={"#e23738"}
               >
-                If this is First time bonding, Please approve Tonstarter to use
-                your DAI for bonding.
-              </Text>
-            </Flex> */}
+                <Text>
+                  Currently, it is cheaper to purchase TOS from Uniswap V3 (
+                  <Link
+                    isExternal={true}
+                    textDecoration={"underline"}
+                    href={
+                      "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
+                    }
+                    color={"white.200"}
+                  >
+                    WTON
+                  </Link>
+                  ,{" "}
+                  <Link
+                    isExternal={true}
+                    textDecoration={"underline"}
+                    href={
+                      "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
+                    }
+                    color={"white.200"}
+                  >
+                    ETH
+                  </Link>
+                  )
+                </Text>
+                <Text>
+                  and{" "}
+                  <Link
+                    isExternal={true}
+                    href={"https://tosv2.tokamak.network/stake"}
+                    color={"white.200"}
+                    textDecoration={"underline"}
+                  >
+                    stake
+                  </Link>{" "}
+                  them for LTOS. You can continue bonding,
+                </Text>
+                <Text>
+                  if you would like to purchase LTOS without impacting the
+                  price.
+                </Text>
+              </Flex>
+            )}
           </Flex>
         </ModalBody>
       </ModalContent>
+      <BondConfirm
+        isOpenConfirm={isOpenConfirm}
+        setIsOpenConfirm={setIsOpenConfirm}
+        callBond={callBond}
+      ></BondConfirm>
     </Modal>
   );
 }

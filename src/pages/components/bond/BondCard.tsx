@@ -54,8 +54,7 @@ function BondCard(props: { data: BondCardProps }) {
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
-  const bondButtonIsDisabled =
-    bondIsDisabled || capacityIsZero || discountIsMinus;
+  const bondButtonIsDisabled = bondIsDisabled || capacityIsZero;
 
   //vierport ref 1134px
   return (
