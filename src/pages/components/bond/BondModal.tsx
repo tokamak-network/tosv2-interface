@@ -187,8 +187,10 @@ function BondModal() {
         return closeThisModal();
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       // return errToast();
+    } finally {
+      setIsOpenConfirm(false);
     }
   }, [
     inputValue,
@@ -501,7 +503,9 @@ function BondModal() {
                 h={42}
                 name="Bond"
                 // onClick={callBond}
-                onClick={() => setIsOpenConfirm(true)}
+                onClick={() =>
+                  capacityIsZero ? setIsOpenConfirm(true) : callBond()
+                }
                 isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
             </Flex>
