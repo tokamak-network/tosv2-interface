@@ -55,6 +55,8 @@ import useCustomToast from "hooks/useCustomToast";
 import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 import useStosReward from "hooks/stake/useStosReward";
 import InputPeriod from "common/input/InputPeriod";
+import useStos from "hooks/stake/useStos";
+import useStosRelock from "hooks/stake/useStosRelock";
 
 function BottomContent(props: {
   title: string;
@@ -228,14 +230,11 @@ function UpdateModalAfterEndTime() {
     undefined
   );
 
+  const { newBalanceStos } = useStosRelock();
+
   const contentList = [
     {
       title: "You Give",
-      // content: `${
-      //   addTos
-      //     ? inputValue.stake_relockModal_tos_balance || "-"
-      //     : inputValue.stake_relockModal_ltos_balance || "-"
-      //   } ${addTos ? "TOS" : "LTOS"}`,
       content: addTos
         ? {
             ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
@@ -299,7 +298,9 @@ function UpdateModalAfterEndTime() {
           inputValue.stake_relockModal_tos_balance?.length > 0) &&
         ltosAmount
       ) {
-        const ltosValue = Number(ltosAmount?.replaceAll(",", ""));
+        const ltosValue = Number(
+          ltosAmount?.replaceAll(",", "").replaceAll(" ", "")
+        );
         const ltosBN = convertToWei(ltosValue.toString());
         console.log(
           "resetStakeGetStosAfterLock(uint256,uint256,uint256, uint256)"

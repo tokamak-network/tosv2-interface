@@ -3,6 +3,7 @@ import { useBlockNumber } from "hooks/useBlockNumber";
 import useInput from "hooks/useInput";
 import { useEffect, useMemo, useState } from "react";
 import useLocksInfo from "./useLocksInfo";
+import useStosReward from "./useStosReward";
 import useUpdateModalData from "./useUpdateModalData";
 
 /* 
