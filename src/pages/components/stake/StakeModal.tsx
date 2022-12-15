@@ -57,6 +57,8 @@ import BottomContent from "../common/modal/BottomContent";
 import EndTime from "../common/modal/EndTime";
 import InputPeriod from "common/input/InputPeriod";
 import { convertWithDigits } from "@/utils/convertWithDigits";
+import useStosStake from "hooks/stake/useStosStake";
+import commafy from "@/utils/commafy";
 
 function StakeModal() {
   const theme = useTheme();
@@ -86,11 +88,11 @@ function StakeModal() {
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const { stosReward, newEndTime, leftDays, leftWeeks, leftHourAndMin } =
-    useStosReward(
-      Number(inputValue.stake_modal_balance),
-      inputValue.stake_modal_period
-    );
+  const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
+    Number(inputValue.stake_modal_balance),
+    inputValue.stake_modal_period
+  );
+  const { newBalanceStos } = useStosStake();
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
   const [bottomLoading, setBottomLoading] = useRecoilState(
@@ -148,7 +150,7 @@ function StakeModal() {
           title: "You Will Get",
           content: {
             ltos: bottomLoading ? "..." : ltos,
-            stos: stosLoading ? "..." : stosReward,
+            stos: stosLoading ? "..." : commafy(newBalanceStos),
           },
           tooltip: true,
           tooltipMessage:

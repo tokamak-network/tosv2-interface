@@ -12,15 +12,14 @@ This is a new script to estimate sTOS
 ref link : https://docs.google.com/spreadsheets/d/1_ihg1mG6FeV1DPr4qfnKYJ8dhW2fHPmpiSD8euWbfVU/edit#gid=0
 */
 
-function useStosStake(addTos: boolean) {
+function useStosStake() {
   const { inputValue } = useInput("Stake_screen", "stake_modal");
   const { newBalance, newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(false);
 
-  const increaseTos = addTos
-    ? Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")) +
-      Number(newBalance.tos)
-    : Number(newBalance.tos);
+  const increaseTos = Number(
+    inputValue?.stake_modal_balance?.replaceAll(",", "")
+  );
 
   const { leftDays, leftHourAndMin } = useStosReward(
     0,
