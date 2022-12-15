@@ -254,12 +254,12 @@ function UpdateModalAfterEndTime() {
       content: addTos
         ? {
             ltos: newBalance.ltos,
-            stos: newBalance.stos,
+            stos: commafy(newBalanceStos),
             tos: undefined,
           }
         : {
             ltos: inputValue.stake_relockModal_ltos_balance,
-            stos: newBalance.stos,
+            stos: commafy(newBalanceStos),
             tos: newBalance.tos,
           },
       tooltip: true,

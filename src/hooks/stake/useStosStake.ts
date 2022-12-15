@@ -12,8 +12,8 @@ This is a new script to estimate sTOS
 ref link : https://docs.google.com/spreadsheets/d/1_ihg1mG6FeV1DPr4qfnKYJ8dhW2fHPmpiSD8euWbfVU/edit#gid=0
 */
 
-function useStosRelock(addTos: boolean) {
-  const { inputValue } = useInput("Stake_screen", "relock_modal");
+function useStosStake(addTos: boolean) {
+  const { inputValue } = useInput("Stake_screen", "stake_modal");
   const { newBalance, newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(false);
 
@@ -24,10 +24,10 @@ function useStosRelock(addTos: boolean) {
 
   const { leftDays, leftHourAndMin } = useStosReward(
     0,
-    inputValue.stake_relockModal_period
+    inputValue.stake_modal_period
   );
 
-  const increaseWeeks = Number(inputValue.stake_relockModal_period);
+  const increaseWeeks = Number(inputValue.stake_modal_period);
   const increaseWeeksDecimal = useMemo(() => {
     if (
       leftDays !== undefined &&
@@ -99,4 +99,4 @@ function useStosRelock(addTos: boolean) {
   return { newBalanceStos };
 }
 
-export default useStosRelock;
+export default useStosStake;
