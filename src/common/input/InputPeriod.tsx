@@ -66,6 +66,7 @@ const InputPeriod = (props: InputProp) => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const [weeksUnit, setWeeksUnit] = useState<"Week" | "Weeks">("Weeks");
+  const [weekHighlight, setWeekHighlight] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
@@ -80,10 +81,17 @@ const InputPeriod = (props: InputProp) => {
     if (event.target.value.includes(" ")) {
       return;
     }
+    if (Number(event.target.value) === 0) {
+      setWeeksUnit("Weeks");
+      setWeekHighlight(false);
+    }
     if (Number(event.target.value) > 1) {
       setWeeksUnit("Weeks");
-    } else {
+      setWeekHighlight(true);
+    }
+    if (Number(event.target.value) === 1) {
       setWeeksUnit("Week");
+      setWeekHighlight(true);
     }
     return setValue({
       ...inputValue,
@@ -114,7 +122,7 @@ const InputPeriod = (props: InputProp) => {
           borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
           fontSize={14}
           color={
-            weeksUnit === "Week"
+            weekHighlight === false
               ? "#64646f"
               : colorMode === "light"
               ? "gray.800"
@@ -158,7 +166,7 @@ const InputPeriod = (props: InputProp) => {
             leftTime && (
               <>
                 <Text
-                  color={weeksUnit === "Week" || isDisabled ? "#64646F" : ""}
+                  color={weekHighlight === false || isDisabled ? "#64646F" : ""}
                 >
                   {weeksUnit}
                 </Text>
@@ -166,7 +174,7 @@ const InputPeriod = (props: InputProp) => {
                   fontSize={12}
                   ml={"9px"}
                   mr={"3px"}
-                  color={weeksUnit === "Weeks" ? "#8b8b93" : ""}
+                  color={weekHighlight ? "#8b8b93" : ""}
                 >
                   {leftDays} {Number(leftDays) === 1 ? "Day" : "Days"}{" "}
                   {leftTime}

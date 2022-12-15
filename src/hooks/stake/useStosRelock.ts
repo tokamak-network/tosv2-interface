@@ -14,13 +14,13 @@ ref link : https://docs.google.com/spreadsheets/d/1_ihg1mG6FeV1DPr4qfnKYJ8dhW2fH
 
 function useStosRelock(addTos: boolean) {
   const { inputValue } = useInput("Stake_screen", "relock_modal");
-  const { newBalance, newEndTime, inputTosAmount, tosValue } =
-    useUpdateModalAfterEndTime(false);
+  const { newEndTime, inputTosAmount, tosValue } =
+    useUpdateModalAfterEndTime(addTos);
 
   const increaseTos = addTos
     ? Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")) +
-      Number(newBalance.tos)
-    : Number(newBalance.tos);
+      Number(tosValue.replaceAll(",", ""))
+    : Number(tosValue.replaceAll(",", ""));
 
   const { leftDays, leftHourAndMin } = useStosReward(
     0,
