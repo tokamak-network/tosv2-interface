@@ -87,8 +87,8 @@ function useStakeTopCards() {
       }
     };
     fetchData().catch((e) => {
-      console.log("**useStakeTopCards err**");
-      console.log(e);
+      // console.log("**useStakeTopCards err**");
+      // console.log(e);
     });
   }, [StakingV2Proxy_CONTRACT, priceData, data]);
 

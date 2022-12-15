@@ -230,7 +230,7 @@ function UpdateModalAfterEndTime() {
     undefined
   );
 
-  const { newBalanceStos } = useStosRelock();
+  const { newBalanceStos } = useStosRelock(addTos);
 
   const contentList = [
     {

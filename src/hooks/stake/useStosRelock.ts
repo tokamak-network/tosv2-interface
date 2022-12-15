@@ -12,17 +12,18 @@ This is a new script to estimate sTOS
 ref link : https://docs.google.com/spreadsheets/d/1_ihg1mG6FeV1DPr4qfnKYJ8dhW2fHPmpiSD8euWbfVU/edit#gid=0
 */
 
-function useStosRelock() {
+function useStosRelock(addTos: boolean) {
   const { inputValue } = useInput("Stake_screen", "relock_modal");
   const { newBalance, newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(false);
 
-  const increaseTos =
-    Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")) +
-    Number(newBalance.tos);
+  const increaseTos = addTos
+    ? Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")) +
+      Number(newBalance.tos)
+    : Number(newBalance.tos);
 
   const { leftDays, leftHourAndMin } = useStosReward(
-    inputValue.stake_relockModal_ltos_balance,
+    0,
     inputValue.stake_relockModal_period
   );
 
@@ -52,10 +53,10 @@ function useStosRelock() {
   const { blockTimeStamp } = useBlockNumber();
 
   const rebaseNumber = useMemo(() => {
-    if (increaseWeeks !== undefined) {
-      return Math.floor(increaseWeeks * 21);
+    if (increaseWeeksDecimal !== undefined) {
+      return Math.floor(increaseWeeksDecimal * 21);
     }
-  }, [increaseWeeks]);
+  }, [increaseWeeksDecimal]);
 
   //B14
   //B5*(1+B4)^B13+B12
@@ -77,10 +78,7 @@ function useStosRelock() {
 
   useEffect(() => {
     console.log("***useStosRelock***");
-    console.log(
-      Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")),
-      Number(newBalance.tos)
-    );
+    console.log(increaseTos);
 
     console.log({
       blockTimeStamp,
@@ -101,6 +99,7 @@ function useStosRelock() {
     inputValue,
     increaseWeeksDecimal,
     newBalance,
+    increaseTos,
   ]);
 
   return { newBalanceStos };
