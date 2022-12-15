@@ -11,16 +11,12 @@ import moment from "moment";
 import { useEffect, useMemo, useState } from "react";
 import useStosReward from "./useStosReward";
 
-type UseUpdateMAfterEndTime = {
-  newEndTime: string;
-  inputTosAmount: string;
-  tosValue: string;
-  tosBalance: string;
-};
-
-function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
+function useUpdateModalAfterEndTime(addTos: boolean) {
   const [tosValue, setTosValue] = useState<string>("-");
   const [tosBalance, setTosBalance] = useState<string>("-");
+  const [allLtosToTosBalance, setAllLtosToTosBalance] = useState<
+    number | undefined
+  >(undefined);
 
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
@@ -54,6 +50,7 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
           localeString: true,
           round: false,
         });
+        setAllLtosToTosBalance(Number(ltosPrincipalAmount.replaceAll(",", "")));
         return setTosBalance(tosAmount ?? "-");
       }
     }
@@ -145,6 +142,7 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
     inputTosAmount: commafy(inputTosAmount),
     tosValue,
     tosBalance,
+    allLtosToTosBalance,
   };
 }
 
