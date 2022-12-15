@@ -2,7 +2,6 @@ import commafy from "@/utils/commafy";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { modalBottomLoadingState, stosLoadingState } from "atom/global/modal";
 import useModalContract from "hooks/contract/useModalContract";
-import useStos from "hooks/stake/useStos";
 import useStosRelock from "hooks/stake/useStosRelock";
 import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
