@@ -65,7 +65,14 @@ function useCallGraph() {
               .format("YYYY-MM-DD HH:mm:ss");
             sTOSdata.push({
               x: `${formattedDate}_${indexNum}`,
-              y: 0,
+              y:
+                i === 1
+                  ? 1923717.69
+                  : i === 2
+                  ? 1925785.03
+                  : i === 3
+                  ? 1905532.72
+                  : 1907581.51,
               dataIndex: indexNum,
             });
           }
