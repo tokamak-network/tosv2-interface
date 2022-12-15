@@ -54,9 +54,10 @@ function ManageModal_BottomContent() {
       title: "New Balance",
       content: bottomLoading ? "......" : `${newLtosBalance} LTOS`,
 
-      secondContent: stosLoading
-        ? "......"
-        : `${newBalanceStos ? commafy(newBalanceStos) : "-"} sTOS`,
+      secondContent: `Will be updated later`,
+      // stosLoading
+      // ? "......"
+      // : `${newBalanceStos ? commafy(newBalanceStos) : "-"} sTOS`,
       tooltip: "Amount of LTOS and sTOS after the update.",
       secondTooltip: `Currently worth ${totalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
