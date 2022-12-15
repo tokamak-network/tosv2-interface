@@ -10,6 +10,7 @@ function IBottomContent(props: IBottomContentProps) {
     content,
     tooltip,
     secondContent,
+    thirdContent,
     secondTooltip,
     thirdTooltip,
   } = props;
@@ -62,6 +63,20 @@ function IBottomContent(props: IBottomContentProps) {
                 </Text>
               )}
               {thirdTooltip && <BasicTooltip label={thirdTooltip} />}
+              {thirdContent && (
+                <Text color={"#64646f"} mx={"5px"}>
+                  /
+                </Text>
+              )}
+              {thirdContent && (
+                <Text
+                  color={colorMode === "dark" ? "white.200" : "gray.800"}
+                  fontWeight={600}
+                  mr={"6px"}
+                >
+                  {thirdContent}
+                </Text>
+              )}
             </Flex>
           </Flex>
         )}
