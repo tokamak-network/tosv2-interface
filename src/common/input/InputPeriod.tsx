@@ -168,7 +168,8 @@ const InputPeriod = (props: InputProp) => {
                   mr={"3px"}
                   color={weeksUnit === "Weeks" ? "#8b8b93" : ""}
                 >
-                  {leftDays} Days {leftTime}
+                  {leftDays} {Number(leftDays) === 1 ? "Day" : "Days"}{" "}
+                  {leftTime}
                 </Text>
               </>
             )}
@@ -184,9 +185,12 @@ const InputPeriod = (props: InputProp) => {
             fontSize={14}
             fontWeight={600}
             isDisabled={isDisabled}
-            onClick={() =>
-              maxValue && setValue({ ...inputValue, [atomKey]: maxValue })
-            }
+            onClick={() => {
+              if (inputValue[atomKey] === maxValue) {
+                return;
+              }
+              maxValue && setValue({ ...inputValue, [atomKey]: maxValue });
+            }}
           >
             Max
           </Button>

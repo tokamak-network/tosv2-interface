@@ -10,6 +10,8 @@ const GET_DASHBOARD = gql`
       runway
       tosPrice
       tosSupply
+      sTosSupply
+      lTosSupply
       totalValueStaked
       treasuryBalance
       updatedAt
@@ -23,6 +25,7 @@ const GET_DASHBOARD_CARD = gql`
       tosPrice
       backingPerTos
       ltosPrice
+      mintingRate
       ltosIndex
       chainId
     }

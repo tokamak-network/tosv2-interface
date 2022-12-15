@@ -8,7 +8,7 @@ import BondCard from "./BondCard";
 import commafy from "utils/commafy";
 import usePrice from "hooks/usePrice";
 import useCallContract from "hooks/useCallContract";
-import { convertNumber } from "@/components/number";
+import { convertNumber } from "@/utils/number";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
@@ -22,6 +22,18 @@ function BondCardSection() {
     pollInterval: 10000,
   });
   const { priceData } = usePrice();
+
+  // const { BondDepositoryProxy_CONTRACT } = useCallContract();
+
+  // useEffect(() => {
+  //   async function test() {
+  //     if (BondDepositoryProxy_CONTRACT) {
+  //       const test = await BondDepositoryProxy_CONTRACT.getBonds();
+  //       console.log(test);
+  //     }
+  //   }
+  //   test();
+  // }, [BondDepositoryProxy_CONTRACT]);
 
   useEffect(() => {
     if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {

@@ -1,4 +1,4 @@
-import { convertNumber } from "@/components/number";
+import { convertNumber } from "@/utils/number";
 import useCallContract from "hooks/useCallContract";
 import { useEffect, useState } from "react";
 

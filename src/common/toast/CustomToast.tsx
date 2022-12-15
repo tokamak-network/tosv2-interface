@@ -3,7 +3,7 @@ import Image from "next/image";
 import INFO_ICON from "assets/icons/info-icon.svg";
 import CLOSE_ICON from "assets/icons/close-small-toast.svg";
 import { useCallback, useRef, useState } from "react";
-import idGenerator from "@/components/idGenerator";
+import idGenerator from "@/utils/idGenerator";
 import { ToastType } from "types/toast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { txInfoState, txInfo as txInfos } from "atom/global/tx";

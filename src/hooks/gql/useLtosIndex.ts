@@ -1,4 +1,4 @@
-import commafy from "@/components/commafy";
+import commafy from "@/utils/commafy";
 import { useQuery } from "@apollo/client";
 import { useWeb3React } from "@web3-react/core";
 import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";

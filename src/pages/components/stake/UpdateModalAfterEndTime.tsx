@@ -34,9 +34,9 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import useCallContract from "hooks/useCallContract";
 import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
-import commafy from "@/components/commafy";
+import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
-import { convertToWei } from "@/components/number";
+import { convertToWei } from "@/utils/number";
 import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useStakeV2 from "hooks/contract/useStakeV2";
@@ -396,7 +396,13 @@ function UpdateModalAfterEndTime() {
         stake_relockModal_tos_balance: userTOSBalance.replaceAll(",", ""),
       });
     }
-  }, [ltosAmount, userTOSBalance, setValue]);
+    if (addTos && ltosAmount) {
+      setValue({
+        ...inputValue,
+        stake_relockModal_ltos_balance: ltosAmount.replaceAll(",", ""),
+      });
+    }
+  }, [ltosAmount, userTOSBalance, setValue, addTos]);
 
   return (
     <Modal

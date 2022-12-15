@@ -1,4 +1,4 @@
-import { convertNumber } from "@/components/number";
+import { convertNumber } from "@/utils/number";
 import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
 import CONTRACT_ADDRESS from "services/addresses/contract";

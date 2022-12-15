@@ -1,10 +1,10 @@
-import { convertNumber } from "@/components/number";
+import { convertNumber } from "@/utils/number";
 import {
   convertTimeStamp,
   getNowTimeStamp,
   getTimeLeft,
   isTimeOver,
-} from "@/components/time";
+} from "@/utils/time";
 import { useQuery } from "@apollo/client";
 import { useWeb3React } from "@web3-react/core";
 import { bond_filter_sort } from "atom/bond/filter";

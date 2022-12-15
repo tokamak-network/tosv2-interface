@@ -48,9 +48,9 @@ import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
-import commafy from "@/components/commafy";
+import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
-import { convertToWei } from "@/components/number";
+import { convertToWei } from "@/utils/number";
 import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useStakeV2 from "hooks/contract/useStakeV2";
@@ -72,124 +72,14 @@ import InputPeriod from "common/input/InputPeriod";
 import GradientSpinner from "../common/GradientSpinner";
 import useModalContract from "hooks/contract/useModalContract";
 import Notice from "../global/Notice";
-
-function BottomContent(props: {
-  title: string;
-  content: string | { ltos: string; stos: string };
-  tooltip?: boolean;
-  tooltipMessage?: string;
-  secondTooltip?: string;
-  thirdTooltip?: string;
-}) {
-  const {
-    title,
-    content,
-    tooltip,
-    tooltipMessage,
-    secondTooltip,
-    thirdTooltip,
-  } = props;
-  const { colorMode } = useColorMode();
-  const { isModalLoading } = useModal();
-
-  const ContentComponent = useMemo(() => {
-    switch (title) {
-      case "Current Balance":
-        return (
-          <Flex>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr="6px"
-            >
-              {typeof content !== "string" && content.ltos} LTOS
-            </Text>
-            <BasicTooltip label={secondTooltip} />
-            <Text color={"#64646f"} mx={"5px"}>
-              /
-            </Text>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr={"6px"}
-            >
-              {typeof content !== "string" && content.stos} sTOS
-            </Text>
-            <BasicTooltip label={thirdTooltip} />
-          </Flex>
-        );
-      case "New Balance":
-        return (
-          <Flex>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr="6px"
-            >
-              {typeof content !== "string" && content.ltos} LTOS
-            </Text>
-            <BasicTooltip label={secondTooltip} />
-            <Text color={"#64646f"} mx={"5px"}>
-              /
-            </Text>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr={"6px"}
-            >
-              {typeof content !== "string" && content.stos}
-            </Text>
-            {/* <BasicTooltip label={thirdTooltip} /> */}
-          </Flex>
-        );
-      default:
-        return (
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-          >
-            {content as string}
-          </Text>
-        );
-    }
-  }, [title, content, colorMode, secondTooltip, thirdTooltip]);
-
-  return (
-    <Flex>
-      <Flex
-        w={"100%"}
-        justifyContent={"space-between"}
-        fontSize={14}
-        mt={"9px"}
-      >
-        <Flex>
-          <Text
-            color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-            mr={"6px"}
-          >
-            {title}
-          </Text>
-          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
-        </Flex>
-        {isModalLoading ? (
-          <Flex w={"100px"} h={"21px"}>
-            <GradientSpinner></GradientSpinner>
-          </Flex>
-        ) : (
-          ContentComponent
-        )}
-      </Flex>
-    </Flex>
-  );
-}
+import ManageModal_BottomContent from "./modal/ManageModal_BottomContent";
 
 function UpdateModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { selectedModalData, selectedModal, closeModal, isModalLoading } =
-    useModal<{
-      ltosAmount: string | undefined;
-    }>();
+  const { selectedModal, closeModal, isModalLoading } = useModal<{
+    ltosAmount: string | undefined;
+  }>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue, setValue } = useInput(
@@ -208,19 +98,8 @@ function UpdateModal() {
     undefined
   );
   const { stakeId } = useStakeId();
-  const modalContractData = useModalContract();
+  const { newEndTime, leftWeeks, leftDays, leftTime } = useUpdateModalData();
 
-  const {
-    currentBalance,
-    newBalance,
-    currentEndTime,
-    newEndTime,
-    leftWeeks,
-    leftDays,
-    leftTime,
-    newTosAmount,
-  } = useUpdateModalData(newBalanceType);
-  const ltosAmount = selectedModalData?.ltosAmount;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { setTx } = useCustomToast();
   const {
@@ -236,52 +115,6 @@ function UpdateModal() {
     modalBottomLoadingState
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
-
-  const contentList = [
-    {
-      title: "You Give",
-      content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
-      tooltip: false,
-      tooltipMessage: "",
-    },
-    {
-      title: "Current Balance",
-      content: currentBalance,
-      tooltip: true,
-      tooltipMessage: "Amount of LTOS and sTOS before the update.",
-      secondTooltip: `Currently worth ${
-        modalContractData?.currentTosAmount || "-"
-      } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-      thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 0:00 (UTC+0).",
-    },
-    {
-      title: "New Balance",
-      content: {
-        ltos: bottomLoading ? "......" : newBalance.ltos,
-        stos: stosLoading ? "......" : "Will be updated later",
-      },
-      tooltip: true,
-      tooltipMessage: "Amount of LTOS and sTOS after the update.",
-      secondTooltip: `Currently worth ${newTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-      thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-    },
-    {
-      title: "Current End Time",
-      content: currentEndTime,
-      tooltip: true,
-      tooltipMessage:
-        "Lock-Up period end time before the update before the update.",
-    },
-    {
-      title: "New End Time",
-      content: newEndTime,
-      tooltip: true,
-      tooltipMessage:
-        "Lock-Up period end time after the update before the update.",
-    },
-  ];
 
   const callApprove = useCallback(async () => {
     try {
@@ -593,26 +426,7 @@ function UpdateModal() {
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
-              <Flex
-                flexDir={"column"}
-                columnGap={"9px"}
-                mb={"30px"}
-                px={smallerThan1024 ? "20px" : "50px"}
-              >
-                {contentList.map((content, index) => {
-                  return (
-                    <BottomContent
-                      title={content.title}
-                      content={content.content}
-                      key={content.title + index}
-                      tooltip={content.tooltip}
-                      tooltipMessage={content.tooltipMessage}
-                      secondTooltip={content.secondTooltip}
-                      thirdTooltip={content.thirdTooltip}
-                    ></BottomContent>
-                  );
-                })}
-              </Flex>
+              <ManageModal_BottomContent />
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
@@ -669,7 +483,7 @@ function UpdateModal() {
           </Flex>
         </ModalBody>
       </ModalContent>
-      <Notice></Notice>
+      {/* <Notice></Notice> */}
     </Modal>
   );
 }

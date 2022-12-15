@@ -43,9 +43,9 @@ import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
-import commafy from "@/components/commafy";
+import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
-import { convertToWei } from "@/components/number";
+import { convertToWei } from "@/utils/number";
 import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useInput from "hooks/useInput";
@@ -406,7 +406,7 @@ function BondModal() {
                           setState={setFiveDaysLockup}
                         ></CustomCheckBox>
                         <Text ml={"9px"} mr="6px">
-                          5 days Lock-Up
+                          5 Days Lock-Up
                         </Text>
                         <BasicTooltip label="No sTOS is given for 5 day lock-up option" />
                       </Flex>
@@ -439,7 +439,7 @@ function BondModal() {
                       setState={setFiveDaysLockup}
                     ></CustomCheckBox>
                     <Text ml={"6px"} mr="3px">
-                      5 days Lock-Up
+                      5 Days Lock-Up
                     </Text>
                     <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
                     <InputPeriod

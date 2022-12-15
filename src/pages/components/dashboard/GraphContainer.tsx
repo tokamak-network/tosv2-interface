@@ -14,23 +14,33 @@ function GraphContainer() {
     },
   });
 
-  const [filteredValue, setFilteredValue] = useState("1 Week");
+  const [filteredValue, setFilteredValue] = useState<string>("1 Week");
   const [marketCapDatas, setMarketCapDatas] = useState<any[]>([]);
   const [totalStakedDatas, setTotalStakedDatas] = useState<any[]>([]);
   const [runwayDatas, setRunwayDatas] = useState<any[]>([]);
   const [treasuryBalanceDatas, setTreasuryBalanceDatas] = useState<any[]>([]);
   const [selectedDates, setSelectedDates] = useState<number>(7);
+
   useEffect(() => {
     if (data) {
       const graphData = getGraphData();
 
+      let indexNum = -1;
+      let indexNum2 = -1;
+      let indexNum3 = -1;
+      let indexNum4 = -1;
+
       const marketCap = graphData.map((arrayData: any, index: number) => {
+        indexNum += 1;
         return {
-          x: moment(arrayData.createdAt).format("YYYY-MM-DD HH:mm:ss"),
+          x: `${moment(arrayData.createdAt).format(
+            "YYYY-MM-DD HH:mm:ss"
+          )}_${indexNum}`,
           y:
             arrayData.marketCap === "-Infinity"
               ? 0
               : Number(arrayData.marketCap),
+          dataIndex: indexNum,
         };
       });
 
@@ -38,12 +48,16 @@ function GraphContainer() {
         const difference = selectedDates - marketCap.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum += 1;
+
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           marketCap.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum}`,
             y: 0,
+            dataIndex: indexNum,
           });
         }
       }
@@ -59,14 +73,17 @@ function GraphContainer() {
       setMarketCapDatas(marketCapData);
 
       const totalStaked = graphData.map((arrayData: any, index: number) => {
+        indexNum2 += 1;
+
         return {
-          x: moment(new Date(arrayData.createdAt)).format(
+          x: `${moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
-          ),
+          )}_${indexNum2}`,
           y:
             arrayData.totalValueStaked === "-Infinity"
               ? 0
               : Number(arrayData.totalValueStaked) || 0,
+          dataIndex: indexNum2,
         };
       });
 
@@ -74,12 +91,15 @@ function GraphContainer() {
         const difference = selectedDates - totalStaked.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum2 += 1;
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           totalStaked.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum2}`,
             y: 0,
+            dataIndex: indexNum2,
           });
         }
       }
@@ -93,14 +113,17 @@ function GraphContainer() {
       setTotalStakedDatas(totalStakedData);
 
       const runway = graphData.map((arrayData: any, index: number) => {
+        indexNum3 += 1;
+
         return {
-          x: moment(new Date(arrayData.createdAt)).format(
+          x: `${moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
-          ),
+          )}_${indexNum3}`,
           y:
             arrayData.runway === "-Infinity"
               ? 0
               : Number(arrayData.runway) || 0,
+          dataIndex: indexNum3,
         };
       });
 
@@ -108,12 +131,16 @@ function GraphContainer() {
         const difference = selectedDates - runway.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum3 += 1;
+
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           runway.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum3}`,
             y: 0,
+            dataIndex: indexNum3,
           });
         }
       }
@@ -129,14 +156,16 @@ function GraphContainer() {
       setRunwayDatas(runwayData);
 
       const treasuryBalance = graphData.map((arrayData: any, index: number) => {
+        indexNum4 += 1;
         return {
-          x: moment(new Date(arrayData.createdAt)).format(
+          x: `${moment(new Date(arrayData.createdAt)).format(
             "YYYY-MM-DD HH:mm:ss"
-          ),
+          )}_${indexNum4}`,
           y:
             arrayData.treasuryBalance === "-Infinity"
               ? 0
               : Number(arrayData.treasuryBalance) || 0,
+          dataIndex: indexNum4,
         };
       });
 
@@ -144,12 +173,16 @@ function GraphContainer() {
         const difference = selectedDates - treasuryBalance.length;
 
         for (let i = 1; i <= difference; i++) {
+          indexNum4 += 1;
+
           const date =
-            moment(graphData[graphData.length - 1].createdAt).unix() - 3600 * i;
+            moment(graphData[graphData.length - 1].createdAt).unix() -
+            86400 * i;
           const formattedDate = moment.unix(date).format("YYYY-MM-DD HH:mm:ss");
           treasuryBalance.push({
-            x: formattedDate,
+            x: `${formattedDate}_${indexNum4}`,
             y: 0,
+            dataIndex: indexNum4,
           });
         }
       }
@@ -164,20 +197,58 @@ function GraphContainer() {
 
       setTreasuryBalanceDatas(treasuryData);
     }
-  }, [filteredValue, data]);
+  }, [filteredValue, data, selectedDates]);
 
   const getGraphData = () => {
     switch (filteredValue) {
       case "1 Week":
-        return data.getDashboard.slice(0, 7);
+        const slicedData = data.getDashboard.slice(0, 8);
+        const filteredData = slicedData.filter((data: any, index: number) => {
+          if (index !== 1) {
+            return data;
+          }
+        });
+        return filteredData;
       case "1 Month":
-        return data.getDashboard.slice(0, 30);
+        const slicedDataMonth = data.getDashboard.slice(0, 31);
+        const filteredDataMonth = slicedDataMonth.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredDataMonth;
       case "3 Months":
-        return data.getDashboard.slice(0, 90);
+        const slicedData3Month = data.getDashboard.slice(0, 91);
+        const filteredData3Month = slicedData3Month.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredData3Month;
       case "6 Months":
-        return data.getDashboard.slice(0, 183);
+        const slicedData6Month = data.getDashboard.slice(0, 184);
+        const filteredData6Month = slicedData6Month.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredData6Month;
       case "1 Year":
-        return data.getDashboard.slice(0, 366);
+        const slicedDataYear = data.getDashboard.slice(0, 367);
+        const filteredDataYear = slicedDataYear.filter(
+          (data: any, index: number) => {
+            if (index !== 1) {
+              return data;
+            }
+          }
+        );
+        return filteredDataYear;
       default:
         return data;
     }
