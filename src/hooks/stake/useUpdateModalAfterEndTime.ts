@@ -17,6 +17,9 @@ function useUpdateModalAfterEndTime(addTos: boolean) {
   const [allLtosToTosBalance, setAllLtosToTosBalance] = useState<
     number | undefined
   >(undefined);
+  const [allLtosBalance, setAllLtosBalance] = useState<string | undefined>(
+    undefined
+  );
 
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
@@ -106,6 +109,7 @@ function useUpdateModalAfterEndTime(addTos: boolean) {
             convertNumber({
               amount: totalAmount.toString(),
               localeString: true,
+              round: false,
             }) || "-";
           const tosValueBN =
             await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
@@ -115,12 +119,14 @@ function useUpdateModalAfterEndTime(addTos: boolean) {
             convertNumber({
               amount: tosValueBN.toString(),
               localeString: true,
+              round: false,
             }) || "-";
 
           setTosValue(tos);
           setInputTosAmount(
             Number(inputValue.stake_relockModal_tos_balance.replaceAll(",", ""))
           );
+          setAllLtosBalance(ltos);
 
           return;
         }
@@ -143,6 +149,7 @@ function useUpdateModalAfterEndTime(addTos: boolean) {
     tosValue,
     tosBalance,
     allLtosToTosBalance,
+    allLtosBalance,
   };
 }
 

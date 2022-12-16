@@ -20,7 +20,7 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
     "relock_modal"
   );
 
-  const { newEndTime, tosValue, tosBalance } =
+  const { newEndTime, tosValue, tosBalance, allLtosBalance } =
     useUpdateModalAfterEndTime(addTos);
   const { newBalanceStos } = useStosRelock(addTos);
 
@@ -46,7 +46,9 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
     {
       title: "You Will Get",
       content: `${
-        commafy(inputValue.stake_relockModal_ltos_balance) ?? "-"
+        addTos
+          ? allLtosBalance
+          : commafy(inputValue.stake_relockModal_ltos_balance)
       } LTOS`,
       secondContent: `${commafy(newBalanceStos)} sTOS`,
       thirdContent: addTos ? undefined : `${tosBalance} TOS`,
