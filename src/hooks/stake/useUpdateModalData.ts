@@ -37,7 +37,7 @@ function useUpdateModalData() {
 
   const totalTosAmount =
     Number(modalContractData?.currentTosAmount?.replaceAll(",", "")) +
-    Number(inputValue.stake_updateModal_tos_balance?.replaceAll(",", ""));
+    Number(inputValue.stake_updateModal_tos_balance);
 
   const { stosReward, newEndTime } = useStosReward(
     totalTosAmount,
