@@ -21,7 +21,7 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
     "relock_modal"
   );
 
-  const { newEndTime, inputTosAmount, tosValue, tosBalance } =
+  const { newEndTime, tosValue, tosBalance } =
     useUpdateModalAfterEndTime(addTos);
   const { newBalanceStos } = useStosRelock(addTos);
 
