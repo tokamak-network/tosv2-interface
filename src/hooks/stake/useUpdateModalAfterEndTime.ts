@@ -95,19 +95,19 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
             await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
               totalAmount
             );
-          const tosValue =
+          const tos =
             convertNumber({
               amount: tosValueBN.toString(),
               localeString: true,
             }) || "-";
 
-          setTosValue(tosValue);
+          setTosValue(tos);
           setInputTosAmount(
             Number(inputValue.stake_relockModal_tos_balance.replaceAll(",", ""))
           );
 
           return setNewBalance({
-            tos: "0",
+            tos,
             ltos,
             stos: stosReward,
           });

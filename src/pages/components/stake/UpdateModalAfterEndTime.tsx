@@ -55,6 +55,9 @@ import useCustomToast from "hooks/useCustomToast";
 import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 import useStosReward from "hooks/stake/useStosReward";
 import InputPeriod from "common/input/InputPeriod";
+import useStos from "hooks/stake/useStos";
+import useStosRelock from "hooks/stake/useStosRelock";
+import RelockModal_BottomContent from "./modal/RelockModal_BottomContent";
 
 function BottomContent(props: {
   title: string;
@@ -228,55 +231,52 @@ function UpdateModalAfterEndTime() {
     undefined
   );
 
-  const contentList = [
-    {
-      title: "You Give",
-      // content: `${
-      //   addTos
-      //     ? inputValue.stake_relockModal_tos_balance || "-"
-      //     : inputValue.stake_relockModal_ltos_balance || "-"
-      //   } ${addTos ? "TOS" : "LTOS"}`,
-      content: addTos
-        ? {
-            ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
-            tos: inputValue.stake_relockModal_tos_balance ?? "-",
-          }
-        : {
-            ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
-          },
-      tooltip: true,
-      tooltipMessage: "Amount of LTOS and TOS used for staking.",
-      secondTooltip: `Currently worth ${
-        tosValue || "-"
-      } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-    },
-    {
-      title: "You Will Get",
-      content: addTos
-        ? {
-            ltos: newBalance.ltos,
-            stos: newBalance.stos,
-            tos: undefined,
-          }
-        : {
-            ltos: inputValue.stake_relockModal_ltos_balance,
-            stos: newBalance.stos,
-            tos: newBalance.tos,
-          },
-      tooltip: true,
-      tooltipMessage:
-        "Amount of LTOS, sTOS, and TOS you will get after the update. ",
-      secondTooltip: `Currently worth ${tosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-      thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-    },
-    {
-      title: "New End Time",
-      content: newEndTime,
-      tooltip: true,
-      tooltipMessage: "LTOS can be unstaked after this time.",
-    },
-  ];
+  // const { newBalanceStos } = useStosRelock(addTos);
+
+  // const contentList = [
+  //   {
+  //     title: "You Give",
+  //     content: addTos
+  //       ? {
+  //           ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
+  //           tos: inputValue.stake_relockModal_tos_balance ?? "-",
+  //         }
+  //       : {
+  //           ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
+  //         },
+  //     tooltip: true,
+  //     tooltipMessage: "Amount of LTOS and TOS used for staking.",
+  //     secondTooltip: `Currently worth ${
+  //       tosValue || "-"
+  //     } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+  //   },
+  //   {
+  //     title: "You Will Get",
+  //     content: addTos
+  //       ? {
+  //           ltos: newBalance.ltos,
+  //           stos: commafy(newBalanceStos),
+  //           tos: undefined,
+  //         }
+  //       : {
+  //           ltos: inputValue.stake_relockModal_ltos_balance,
+  //           stos: commafy(newBalanceStos),
+  //           tos: newBalance.tos,
+  //         },
+  //     tooltip: true,
+  //     tooltipMessage:
+  //       "Amount of LTOS, sTOS, and TOS you will get after the update. ",
+  //     secondTooltip: `Currently worth ${tosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+  //     thirdTooltip:
+  //       "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+  //   },
+  //   {
+  //     title: "New End Time",
+  //     content: newEndTime,
+  //     tooltip: true,
+  //     tooltipMessage: "LTOS can be unstaked after this time.",
+  //   },
+  // ];
 
   const closeThisModal = useCallback(() => {
     setResetValue();
@@ -299,7 +299,9 @@ function UpdateModalAfterEndTime() {
           inputValue.stake_relockModal_tos_balance?.length > 0) &&
         ltosAmount
       ) {
-        const ltosValue = Number(ltosAmount?.replaceAll(",", ""));
+        const ltosValue = Number(
+          ltosAmount?.replaceAll(",", "").replaceAll(" ", "")
+        );
         const ltosBN = convertToWei(ltosValue.toString());
         console.log(
           "resetStakeGetStosAfterLock(uint256,uint256,uint256, uint256)"
@@ -634,7 +636,7 @@ function UpdateModalAfterEndTime() {
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
-              <Flex
+              {/* <Flex
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
@@ -653,7 +655,8 @@ function UpdateModalAfterEndTime() {
                     ></BottomContent>
                   );
                 })}
-              </Flex>
+              </Flex> */}
+              <RelockModal_BottomContent addTos={addTos} />
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
