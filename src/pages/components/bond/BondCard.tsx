@@ -51,6 +51,7 @@ function BondCard(props: { data: BondCardProps }) {
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
   const bondButtonIsDisabled = bondIsDisabled || capacityIsZero;
+  const isClosed = bondIsDisabled || capacityIsZero;
 
   //vierport ref 1134px
   return (
@@ -83,12 +84,12 @@ function BondCard(props: { data: BondCardProps }) {
         </Flex>
         <Flex
           fontSize={12}
-          color={isOpen ? "#5eea8d" : "red.100"}
+          color={isClosed ? "red.100" : "#5eea8d"}
           textAlign={"center"}
           alignItems="center"
           justifyContent={"center"}
         >
-          <Text>{isOpen ? "Open" : "Closed"}</Text>
+          <Text>{isClosed ? "Closed" : "Open"}</Text>
         </Flex>
       </Flex>
       <Flex flexDir={"column"} rowGap={"9px"}>
