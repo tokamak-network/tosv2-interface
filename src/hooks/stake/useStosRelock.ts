@@ -71,13 +71,6 @@ function useStosRelock(addTos: boolean) {
     }
   }, [ltosPrincipalUpdated, increaseWeeksDecimal]);
 
-  console.log("****");
-
-  console.log(increaseTos);
-
-  console.log(ltosPrincipalUpdated);
-  console.log(increaseWeeksDecimal);
-
   // useEffect(() => {
   //   console.log("***useStosRelock***");
   //   console.log(increaseTos);

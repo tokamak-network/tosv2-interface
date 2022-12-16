@@ -54,7 +54,7 @@ function ManageModal_BottomContent() {
       title: "New Balance",
       content: bottomLoading ? "......" : `${newLtosBalance} LTOS`,
 
-      secondContent: `Will be updated later`,
+      secondContent: `${commafy(newBalanceStos)} sTOS`,
       // stosLoading
       // ? "......"
       // : `${newBalanceStos ? commafy(newBalanceStos) : "-"} sTOS`,

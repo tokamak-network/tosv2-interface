@@ -483,7 +483,7 @@ function UpdateModal() {
           </Flex>
         </ModalBody>
       </ModalContent>
-      <Notice></Notice>
+      {/* <Notice></Notice> */}
     </Modal>
   );
 }

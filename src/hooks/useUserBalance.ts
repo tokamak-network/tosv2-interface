@@ -86,8 +86,8 @@ const useUserBalance = () => {
         setUserLTOSBalance(convertedLTOS || "-");
         setUserSTOSBalance(convertedSTOS || "-");
       } catch (e) {
-        console.log("*****fetch balance err*****");
-        console.log(e);
+        // console.log("*****fetch balance err*****");
+        // console.log(e);
       }
     }
     if (account) {
