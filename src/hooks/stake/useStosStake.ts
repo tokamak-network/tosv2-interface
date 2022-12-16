@@ -14,7 +14,7 @@ ref link : https://docs.google.com/spreadsheets/d/1_ihg1mG6FeV1DPr4qfnKYJ8dhW2fH
 
 function useStosStake() {
   const { inputValue } = useInput("Stake_screen", "stake_modal");
-  const { newBalance, newEndTime, inputTosAmount, tosValue } =
+  const { newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(false);
 
   const increaseTos = Number(

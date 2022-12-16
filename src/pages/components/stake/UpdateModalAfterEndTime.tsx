@@ -208,7 +208,7 @@ function UpdateModalAfterEndTime() {
   const { userTOSBalance, userLTOSBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-  const { newBalance, newEndTime, inputTosAmount, tosValue } =
+  const { newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(addTos);
   const { leftDays, leftHourAndMin } = useStosReward(
     inputValue.stake_relockModal_ltos_balance,
