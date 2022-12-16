@@ -6,7 +6,7 @@ const constant = {
   LOCKTOS_maxWeeks: 156,
   LOCKTOS_epochUnit: 604800,
   modalMaxWeeks: 155,
-  reasePerEpoch: 0,
+  rebasePerEpoch: 0.00008704505,
   rebasePeriod: 60 * 60 * 8, //8Hours
   mainnetGasPrice: "6849315",
   //https://www.notion.so/onther/11-3-TOSv2-phase-1-open-check-ef653dca90584edf8d7c25e767cfff3f
