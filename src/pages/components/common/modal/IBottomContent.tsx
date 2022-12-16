@@ -13,6 +13,7 @@ function IBottomContent(props: IBottomContentProps) {
     thirdContent,
     secondTooltip,
     thirdTooltip,
+    fourthTooltip,
   } = props;
   const { colorMode } = useColorMode();
   const { isModalLoading } = useModal();
@@ -77,6 +78,7 @@ function IBottomContent(props: IBottomContentProps) {
                   {thirdContent}
                 </Text>
               )}
+              {fourthTooltip && <BasicTooltip label={fourthTooltip} />}
             </Flex>
           </Flex>
         )}
