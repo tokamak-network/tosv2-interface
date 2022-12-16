@@ -227,7 +227,7 @@ function UpdateModal() {
         stake_updateModal_tos_balance: tosBalance,
       });
     }
-  }, [userTOSBalance, setValue]);
+  }, [userTOSBalance, setValue, selectedModal]);
 
   useEffect(() => {
     setStosLoading(true);

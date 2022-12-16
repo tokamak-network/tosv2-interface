@@ -404,7 +404,7 @@ function UpdateModalAfterEndTime() {
         stake_relockModal_ltos_balance: ltosAmount.replaceAll(",", ""),
       });
     }
-  }, [ltosAmount, userTOSBalance, setValue, addTos]);
+  }, [ltosAmount, userTOSBalance, setValue, addTos, selectedModal]);
 
   return (
     <Modal
