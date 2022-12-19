@@ -53,8 +53,21 @@ function useUpdateModalAfterEndTime(addTos: boolean) {
           localeString: true,
           round: false,
         });
-        setAllLtosToTosBalance(Number(ltosPrincipalAmount.replaceAll(",", "")));
-        return setTosBalance(tosAmount ?? "-");
+        setTosBalance(tosAmount ?? "-");
+
+        const originalLtosAmount = convertToWei(ltosPrincipalAmount.toString());
+        const originalLtosToTosAmountBN =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
+            originalLtosAmount
+          );
+        const originalLtosToTosAmount = convertNumber({
+          amount: originalLtosToTosAmountBN.toString(),
+          localeString: true,
+          round: false,
+        });
+        setAllLtosToTosBalance(
+          Number(originalLtosToTosAmount?.replaceAll(",", ""))
+        );
       }
     }
     fetchTosBalance();
