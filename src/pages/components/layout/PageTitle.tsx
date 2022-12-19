@@ -67,6 +67,19 @@ const PageTitle = () => {
             <UpdatedOn></UpdatedOn>
           </Flex>
         );
+      case "Intro":
+        return (
+          <Flex
+            flexDir={isMobile ? "column" : "row"}
+            fontSize={12}
+            w={"100%"}
+            justifyContent={"space-between"}
+            h={isMobile ? "66px" : ""}
+          >
+            <Flex></Flex>
+            <UpdatedOn></UpdatedOn>
+          </Flex>
+        );
       default:
         return (
           <Flex
