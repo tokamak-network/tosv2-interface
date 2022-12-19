@@ -90,9 +90,6 @@ function useUpdateModalData() {
         modalContractData?.ltosBalance &&
         inputValue.stake_updateModal_tos_balance !== undefined
       ) {
-        console.log("inputValue.stake_updateModal_tos_balance");
-        console.log(inputValue.stake_updateModal_tos_balance);
-
         const newTosAmount = convertToWei(
           inputValue.stake_updateModal_tos_balance.replaceAll(",", "")
         );

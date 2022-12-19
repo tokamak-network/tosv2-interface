@@ -260,7 +260,7 @@ function StakeModal() {
         stake_modal_balance: String(userTOSBalance.replaceAll(",", "")),
       });
     }
-  }, [userTOSBalance, setValue]);
+  }, [userTOSBalance, setValue, selectedModal]);
 
   useEffect(() => {
     setStosLoading(true);

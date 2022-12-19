@@ -20,8 +20,13 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
     "relock_modal"
   );
 
-  const { newEndTime, tosValue, tosBalance, allLtosBalance } =
-    useUpdateModalAfterEndTime(addTos);
+  const {
+    newEndTime,
+    tosValue,
+    tosBalance,
+    allLtosBalance,
+    allLtosToTosBalance,
+  } = useUpdateModalAfterEndTime(addTos);
   const { newBalanceStos } = useStosRelock(addTos);
 
   const [bottomLoading, setBottomLoading] = useRecoilState(
