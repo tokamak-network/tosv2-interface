@@ -283,7 +283,7 @@ function StakeModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan1024 ? "350px" : "43.75em"}
+        minW={["350px", "43.75em", "43.75em"]}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>

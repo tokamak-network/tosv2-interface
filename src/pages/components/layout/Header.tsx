@@ -58,7 +58,7 @@ function Header(props: HeaderProps) {
   const [walletState, setWalletState] = useState<string>("");
   const { onOpen } = useDisclosure();
 
-  const { pcView } = useMediaView();
+  const { pcView, tableView, mobileView } = useMediaView();
   const text = useColorModeValue("dark", "light");
   const { activate, active, account } = useWeb3React();
   const txPending = useRecoilValue(selectedTxState);
@@ -70,7 +70,8 @@ function Header(props: HeaderProps) {
       w={"100%"}
       // maxW={"1136px"}
       justifyContent={["space-between", "space-between", "end"]}
-      pr={["10px", "11px", "35px"]}
+      pl={tableView ? "23px" : ""}
+      pr={mobileView ? "10px" : "35px"}
       pt={"24px"}
       h={"96px"}
       borderBottom={colorMode === "light" ? "1px solid #e8edf2" : ""}
@@ -78,6 +79,7 @@ function Header(props: HeaderProps) {
       position={"sticky"}
       top={0}
       zIndex={1}
+      alignItems={"center"}
     >
       {!pcView && <BurgerButton></BurgerButton>}
       <Flex>
