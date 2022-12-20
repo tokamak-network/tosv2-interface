@@ -1,33 +1,23 @@
-import useStakeV2 from "hooks/contract/useStakeV2";
+import constant from "constant";
+import useStosReward from "hooks/stake/useStosReward";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import useInput from "hooks/useInput";
 import { useEffect, useMemo, useState } from "react";
-import useLocksInfo from "./useLocksInfo";
-import useStosReward from "./useStosReward";
-import useUpdateModalAfterEndTime from "./useUpdateModalAfterEndTime";
-import useUpdateModalData from "./useUpdateModalData";
-import constant from "constant";
 
 /* 
 This is a new script to estimate sTOS 
 ref link : https://docs.google.com/spreadsheets/d/1_ihg1mG6FeV1DPr4qfnKYJ8dhW2fHPmpiSD8euWbfVU/edit#gid=0
 */
 
-function useStosStake() {
-  const { inputValue } = useInput("Stake_screen", "stake_modal");
-  const { newEndTime, inputTosAmount, tosValue } =
-    useUpdateModalAfterEndTime(false);
-
-  const increaseTos = Number(
-    inputValue?.stake_modal_balance?.replaceAll(",", "")
-  );
+function useStosBond(increaseTos: number) {
+  const { inputValue } = useInput("Bond_screen", "bond_modal");
 
   const { leftDays, leftHourAndMin } = useStosReward(
-    0,
-    inputValue.stake_modal_period
+    increaseTos,
+    inputValue.bond_modal_period
   );
 
-  const increaseWeeks = Number(inputValue.stake_modal_period);
+  const increaseWeeks = Number(inputValue.bond_modal_period);
   const increaseWeeksDecimal = useMemo(() => {
     if (
       leftDays !== undefined &&
@@ -99,4 +89,4 @@ function useStosStake() {
   return { newBalanceStos };
 }
 
-export default useStosStake;
+export default useStosBond;
