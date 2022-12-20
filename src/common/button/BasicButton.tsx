@@ -8,7 +8,9 @@ type ButtonIconNames = "Question" | undefined;
 
 type BasicButtonProp = {
   name: string;
-  w?: number | string;
+  w?: number | string | string[];
+  maxW?: number | string | number[] | string[];
+  minW?: number | string | number[] | string[];
   h?: number | string;
   isDisabled?: boolean;
   style?: any;
@@ -18,12 +20,25 @@ type BasicButtonProp = {
 };
 
 const BasicButton: React.FC<BasicButtonProp> = (props) => {
-  const { name, w, h, isDisabled, style, onClick, tooltip, isLoading } = props;
+  const {
+    name,
+    w,
+    maxW,
+    minW,
+    h,
+    isDisabled,
+    style,
+    onClick,
+    tooltip,
+    isLoading,
+  } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   return (
     <Button
       w={w || 150}
+      maxW={maxW || w}
+      minW={minW || w}
       h={h || 33}
       isDisabled={isDisabled}
       _hover={isDisabled ? {} : { borderColor: "blue.100", color: "blue.100" }}
