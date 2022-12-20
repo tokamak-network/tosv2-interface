@@ -214,8 +214,21 @@ function Graph(props: {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}`;
+            }
+            if (title === "Total sTOS" || title === "Total LTOS") {
+              if (Number(value) > 999999) {
+                return `${(Number(value) / 1000000).toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}M`;
+              } else {
+                return `${Number(value).toLocaleString(undefined, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })}`;
+              }
             } else {
-              if (Number(value) > 1000000) {
+              if (Number(value) > 999999) {
                 return `$${(Number(value) / 1000000).toLocaleString(undefined, {
                   minimumFractionDigits: 1,
                   maximumFractionDigits: 1,
