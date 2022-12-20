@@ -59,6 +59,7 @@ import InputPeriod from "common/input/InputPeriod";
 import { convertWithDigits } from "@/utils/convertWithDigits";
 import useStosStake from "hooks/stake/useStosStake";
 import commafy from "@/utils/commafy";
+import { MobileView } from "react-device-detect";
 
 function StakeModal() {
   const theme = useTheme();
@@ -87,6 +88,8 @@ function StakeModal() {
   const [isApproving, setIsApproving] = useState<boolean>(false);
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
+  const [smallerThan700] = useMediaQuery("(max-width: 700px)");
 
   const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
     Number(inputValue.stake_modal_balance),
@@ -285,7 +288,7 @@ function StakeModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={["350px", "43.75em", "43.75em"]}
+        minW={smallerThan700 ? "350px" : "700px"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
