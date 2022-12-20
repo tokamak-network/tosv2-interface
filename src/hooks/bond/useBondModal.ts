@@ -56,9 +56,6 @@ function useBondModal() {
 
   useEffect(() => {
     async function fetchAsyncData() {
-      console.log("propData");
-      console.log(propData, apiData, priceData, BondDepositoryProxy_CONTRACT);
-
       if (propData && apiData && priceData && BondDepositoryProxy_CONTRACT) {
         const marketData = await BondDepositoryProxy_CONTRACT.viewMarket(
           propData.index
