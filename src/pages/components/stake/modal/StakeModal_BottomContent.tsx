@@ -9,12 +9,12 @@ import IBottomContent from "pages/components/common/modal/IBottomContent";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IBottomContentProps } from "types/common/modal";
 
-function ManageModal_BottomContent() {
+function StakeModal_BottomContent() {
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const { inputValue, setResetValue, setValue } = useInput(
     "Stake_screen",
-    "update_modal"
+    "stake_modal"
   );
 
   const {
@@ -54,10 +54,9 @@ function ManageModal_BottomContent() {
       title: "New Balance",
       content: bottomLoading ? "......" : `${newLtosBalance} LTOS`,
 
-      secondContent: `${commafy(newBalanceStos)} sTOS`,
-      // stosLoading
-      // ? "......"
-      // : `${newBalanceStos ? commafy(newBalanceStos) : "-"} sTOS`,
+      secondContent: stosLoading
+        ? "......"
+        : `${newBalanceStos ? commafy(newBalanceStos) : "-"} sTOS`,
       tooltip: "Amount of LTOS and sTOS after the update.",
       secondTooltip: `Currently worth ${totalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
       thirdTooltip:
@@ -89,4 +88,4 @@ function ManageModal_BottomContent() {
   );
 }
 
-export default ManageModal_BottomContent;
+export default StakeModal_BottomContent;

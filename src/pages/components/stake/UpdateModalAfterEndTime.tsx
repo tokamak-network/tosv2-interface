@@ -55,134 +55,8 @@ import useCustomToast from "hooks/useCustomToast";
 import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 import useStosReward from "hooks/stake/useStosReward";
 import InputPeriod from "common/input/InputPeriod";
-
-function BottomContent(props: {
-  title: string;
-  content: any;
-  tooltip?: boolean;
-  tooltipMessage?: string;
-  secondTooltip?: string;
-  thirdTooltip?: string;
-}) {
-  const {
-    title,
-    content,
-    tooltip,
-    tooltipMessage,
-    secondTooltip,
-    thirdTooltip,
-  } = props;
-  const { colorMode } = useColorMode();
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
-
-  const ContentComponent = useMemo(() => {
-    switch (title) {
-      case "You Will Get":
-        return (
-          <Flex
-            w={smallerThan1024 ? "146px" : "100%"}
-            flexWrap="wrap"
-            justifyContent={"flex-end"}
-          >
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr="6px"
-            >
-              {(typeof content !== "string" && content.ltos) || "-"} LTOS
-            </Text>
-            <BasicTooltip label={secondTooltip} />
-            <Text color={"#64646f"} mx={"5px"}>
-              /
-            </Text>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr={"6px"}
-            >
-              {typeof content !== "string" && content.stos} sTOS
-            </Text>
-            <BasicTooltip label={thirdTooltip} />
-            {typeof content !== "string" && content.tos && (
-              <>
-                {" "}
-                <Text color={"#64646f"} mx={"5px"}>
-                  /
-                </Text>
-                <Text
-                  color={colorMode === "dark" ? "white.200" : "gray.800"}
-                  fontWeight={600}
-                >
-                  {content.tos || "-"} TOS
-                </Text>
-              </>
-            )}
-          </Flex>
-        );
-
-      case "You Give":
-        return (
-          <Flex>
-            <Text
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontWeight={600}
-              mr="6px"
-            >
-              {(typeof content !== "string" && content.ltos) || "-"} LTOS
-            </Text>
-            <BasicTooltip label={secondTooltip} />
-            {typeof content !== "string" && content.tos && (
-              <>
-                {" "}
-                <Text color={"#64646f"} mx={"5px"}>
-                  /
-                </Text>
-                <Text
-                  color={colorMode === "dark" ? "white.200" : "gray.800"}
-                  fontWeight={600}
-                >
-                  {content.tos || "-"} TOS
-                </Text>
-              </>
-            )}
-          </Flex>
-        );
-      default:
-        return (
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            fontWeight={600}
-          >
-            {content as string}
-          </Text>
-        );
-    }
-  }, [title, content, colorMode, secondTooltip, thirdTooltip, smallerThan1024]);
-
-  return (
-    <Flex>
-      <Flex
-        w={"100%"}
-        alignItems="center"
-        justifyContent={"space-between"}
-        fontSize={14}
-        mt={"9px"}
-      >
-        <Flex>
-          <Text
-            color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-            mr={"6px"}
-            minW={title === "You Will Get" ? "83px" : ""}
-          >
-            {title}
-          </Text>
-          {tooltip ? <BasicTooltip label={tooltipMessage} /> : <></>}
-        </Flex>
-        {ContentComponent}
-      </Flex>
-    </Flex>
-  );
-}
+import useStos from "hooks/stake/useStos";
+import RelockModal_BottomContent from "./modal/RelockModal_BottomContent";
 
 function UpdateModalAfterEndTime() {
   const theme = useTheme();
@@ -205,7 +79,7 @@ function UpdateModalAfterEndTime() {
   const { userTOSBalance, userLTOSBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-  const { newBalance, newEndTime, inputTosAmount, tosValue } =
+  const { newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(addTos);
   const { leftDays, leftHourAndMin } = useStosReward(
     inputValue.stake_relockModal_ltos_balance,
@@ -228,55 +102,52 @@ function UpdateModalAfterEndTime() {
     undefined
   );
 
-  const contentList = [
-    {
-      title: "You Give",
-      // content: `${
-      //   addTos
-      //     ? inputValue.stake_relockModal_tos_balance || "-"
-      //     : inputValue.stake_relockModal_ltos_balance || "-"
-      //   } ${addTos ? "TOS" : "LTOS"}`,
-      content: addTos
-        ? {
-            ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
-            tos: inputValue.stake_relockModal_tos_balance ?? "-",
-          }
-        : {
-            ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
-          },
-      tooltip: true,
-      tooltipMessage: "Amount of LTOS and TOS used for staking.",
-      secondTooltip: `Currently worth ${
-        tosValue || "-"
-      } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-    },
-    {
-      title: "You Will Get",
-      content: addTos
-        ? {
-            ltos: newBalance.ltos,
-            stos: newBalance.stos,
-            tos: undefined,
-          }
-        : {
-            ltos: inputValue.stake_relockModal_ltos_balance,
-            stos: newBalance.stos,
-            tos: newBalance.tos,
-          },
-      tooltip: true,
-      tooltipMessage:
-        "Amount of LTOS, sTOS, and TOS you will get after the update. ",
-      secondTooltip: `Currently worth ${tosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-      thirdTooltip:
-        "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-    },
-    {
-      title: "New End Time",
-      content: newEndTime,
-      tooltip: true,
-      tooltipMessage: "LTOS can be unstaked after this time.",
-    },
-  ];
+  // const { newBalanceStos } = useStosRelock(addTos);
+
+  // const contentList = [
+  //   {
+  //     title: "You Give",
+  //     content: addTos
+  //       ? {
+  //           ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
+  //           tos: inputValue.stake_relockModal_tos_balance ?? "-",
+  //         }
+  //       : {
+  //           ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
+  //         },
+  //     tooltip: true,
+  //     tooltipMessage: "Amount of LTOS and TOS used for staking.",
+  //     secondTooltip: `Currently worth ${
+  //       tosValue || "-"
+  //     } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+  //   },
+  //   {
+  //     title: "You Will Get",
+  //     content: addTos
+  //       ? {
+  //           ltos: newBalance.ltos,
+  //           stos: commafy(newBalanceStos),
+  //           tos: undefined,
+  //         }
+  //       : {
+  //           ltos: inputValue.stake_relockModal_ltos_balance,
+  //           stos: commafy(newBalanceStos),
+  //           tos: newBalance.tos,
+  //         },
+  //     tooltip: true,
+  //     tooltipMessage:
+  //       "Amount of LTOS, sTOS, and TOS you will get after the update. ",
+  //     secondTooltip: `Currently worth ${tosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+  //     thirdTooltip:
+  //       "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+  //   },
+  //   {
+  //     title: "New End Time",
+  //     content: newEndTime,
+  //     tooltip: true,
+  //     tooltipMessage: "LTOS can be unstaked after this time.",
+  //   },
+  // ];
 
   const closeThisModal = useCallback(() => {
     setResetValue();
@@ -299,7 +170,9 @@ function UpdateModalAfterEndTime() {
           inputValue.stake_relockModal_tos_balance?.length > 0) &&
         ltosAmount
       ) {
-        const ltosValue = Number(ltosAmount?.replaceAll(",", ""));
+        const ltosValue = Number(
+          ltosAmount?.replaceAll(",", "").replaceAll(" ", "")
+        );
         const ltosBN = convertToWei(ltosValue.toString());
         console.log(
           "resetStakeGetStosAfterLock(uint256,uint256,uint256, uint256)"
@@ -402,7 +275,7 @@ function UpdateModalAfterEndTime() {
         stake_relockModal_ltos_balance: ltosAmount.replaceAll(",", ""),
       });
     }
-  }, [ltosAmount, userTOSBalance, setValue, addTos]);
+  }, [ltosAmount, userTOSBalance, setValue, addTos, selectedModal]);
 
   return (
     <Modal
@@ -634,7 +507,7 @@ function UpdateModalAfterEndTime() {
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
-              <Flex
+              {/* <Flex
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
@@ -653,7 +526,8 @@ function UpdateModalAfterEndTime() {
                     ></BottomContent>
                   );
                 })}
-              </Flex>
+              </Flex> */}
+              <RelockModal_BottomContent addTos={addTos} />
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (

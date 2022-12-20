@@ -6,32 +6,21 @@ import { BigNumber } from "ethers";
 import useStakeId from "hooks/contract/useStakeId";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
+import useModal from "hooks/useModal";
 import moment from "moment";
 import { useEffect, useMemo, useState } from "react";
 import useStosReward from "./useStosReward";
 
-type Balance = {
-  tos: string;
-  ltos: string;
-  stos: string;
-};
-
-type UseUpdateMAfterEndTime = {
-  newBalance: Balance;
-  newEndTime: string;
-  inputTosAmount: string;
-  tosValue: string;
-};
-
-const defaultBalanceValue = {
-  tos: "0",
-  stos: "0",
-  ltos: "0",
-};
-
-function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
-  const [newBalance, setNewBalance] = useState<Balance>(defaultBalanceValue);
+function useUpdateModalAfterEndTime(addTos: boolean) {
   const [tosValue, setTosValue] = useState<string>("-");
+  const [tosBalance, setTosBalance] = useState<string>("-");
+  const [allLtosToTosBalance, setAllLtosToTosBalance] = useState<
+    number | undefined
+  >(undefined);
+  const [allLtosBalance, setAllLtosBalance] = useState<string | undefined>(
+    undefined
+  );
+
   const { StakingV2Proxy_CONTRACT, LockTOS_CONTRACT } = useCallContract();
   const { stakeId } = useStakeId();
   const { inputValue } = useInput("Stake_screen", "relock_modal");
@@ -40,6 +29,53 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
     inputTosAmount,
     inputValue.stake_relockModal_period
   );
+  const { selectedModalData, selectedModal } = useModal<{
+    stakeId: string;
+    ltosAmount: string;
+  }>();
+
+  useEffect(() => {
+    async function fetchTosBalance() {
+      if (
+        selectedModalData?.ltosAmount &&
+        inputValue?.stake_relockModal_ltos_balance &&
+        StakingV2Proxy_CONTRACT
+      ) {
+        const ltosPrincipalAmount = selectedModalData.ltosAmount;
+        const giveLtosAmount =
+          Number(ltosPrincipalAmount.replaceAll(",", "")) -
+          Number(inputValue.stake_relockModal_ltos_balance.replaceAll(",", ""));
+        const ltosAmount = convertToWei(giveLtosAmount.toString());
+        const possibleTOSAmountBN =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(ltosAmount);
+        const tosAmount = convertNumber({
+          amount: possibleTOSAmountBN.toString(),
+          localeString: true,
+          round: false,
+        });
+        setTosBalance(tosAmount ?? "-");
+
+        const originalLtosAmount = convertToWei(ltosPrincipalAmount.toString());
+        const originalLtosToTosAmountBN =
+          await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
+            originalLtosAmount
+          );
+        const originalLtosToTosAmount = convertNumber({
+          amount: originalLtosToTosAmountBN.toString(),
+          localeString: true,
+          round: false,
+        });
+        setAllLtosToTosBalance(
+          Number(originalLtosToTosAmount?.replaceAll(",", ""))
+        );
+      }
+    }
+    fetchTosBalance();
+  }, [
+    selectedModalData?.ltosAmount,
+    inputValue?.stake_relockModal_ltos_balance,
+    StakingV2Proxy_CONTRACT,
+  ]);
 
   //new
   useEffect(() => {
@@ -66,11 +102,7 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
           setTosValue(tos);
           setInputTosAmount(Number(tos.replaceAll(",", "")));
 
-          return setNewBalance({
-            tos,
-            ltos: "-",
-            stos: stosReward,
-          });
+          return;
         }
 
         //case2
@@ -90,27 +122,26 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
             convertNumber({
               amount: totalAmount.toString(),
               localeString: true,
+              round: false,
             }) || "-";
           const tosValueBN =
             await StakingV2Proxy_CONTRACT.getLtosToTosPossibleIndex(
               totalAmount
             );
-          const tosValue =
+          const tos =
             convertNumber({
               amount: tosValueBN.toString(),
               localeString: true,
+              round: false,
             }) || "-";
 
-          setTosValue(tosValue);
+          setTosValue(tos);
           setInputTosAmount(
             Number(inputValue.stake_relockModal_tos_balance.replaceAll(",", ""))
           );
+          setAllLtosBalance(ltos);
 
-          return setNewBalance({
-            tos: "0",
-            ltos,
-            stos: stosReward,
-          });
+          return;
         }
       }
     }
@@ -126,10 +157,12 @@ function useUpdateModalAfterEndTime(addTos: boolean): UseUpdateMAfterEndTime {
   }, [stakeId, StakingV2Proxy_CONTRACT, inputValue, stosReward, addTos]);
 
   return {
-    newBalance,
     newEndTime,
     inputTosAmount: commafy(inputTosAmount),
     tosValue,
+    tosBalance,
+    allLtosToTosBalance,
+    allLtosBalance,
   };
 }
 

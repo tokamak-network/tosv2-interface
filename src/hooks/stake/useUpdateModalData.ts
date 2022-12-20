@@ -37,7 +37,7 @@ function useUpdateModalData() {
 
   const totalTosAmount =
     Number(modalContractData?.currentTosAmount?.replaceAll(",", "")) +
-    Number(inputValue.stake_updateModal_tos_balance?.replaceAll(",", ""));
+    Number(inputValue.stake_updateModal_tos_balance);
 
   const { stosReward, newEndTime } = useStosReward(
     totalTosAmount,
@@ -45,10 +45,6 @@ function useUpdateModalData() {
   );
 
   const { epochUnit } = useLockTOS();
-
-  const [bottomLoading, setBottomLoading] = useRecoilState(
-    modalBottomLoadingState
-  );
 
   //current
   useEffect(() => {
@@ -92,34 +88,26 @@ function useUpdateModalData() {
       if (
         StakingV2Proxy_CONTRACT &&
         modalContractData?.ltosBalance &&
-        inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")
+        inputValue.stake_updateModal_tos_balance !== undefined
       ) {
         const newTosAmount = convertToWei(
-          inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")
+          inputValue.stake_updateModal_tos_balance.replaceAll(",", "")
         );
         const ltosAmountBN =
           await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(newTosAmount);
         const ltosAmount = convertNumber({ amount: ltosAmountBN });
+
         const newLtosAmount =
           Number(modalContractData?.ltosBalance.replaceAll(",", "")) +
           Number(ltosAmount?.replaceAll(",", ""));
-        setNewLtosBalance(commafy(newLtosAmount) || "-");
+        setNewLtosBalance(commafy(newLtosAmount));
       }
     }
-    fetchUpdateModalData()
-      .catch((e) => {
-        // console.log("**useUpdateModalData2 err**");
-        // console.log(e);
-      })
-      .finally(() => {
-        return setBottomLoading(false);
-      });
-  }, [
-    StakingV2Proxy_CONTRACT,
-    inputValue,
-    modalContractData,
-    setBottomLoading,
-  ]);
+    fetchUpdateModalData().catch((e) => {
+      console.log("**useUpdateModalData2 err**");
+      console.log(e);
+    });
+  }, [StakingV2Proxy_CONTRACT, inputValue, modalContractData]);
 
   return {
     currentEndTime,

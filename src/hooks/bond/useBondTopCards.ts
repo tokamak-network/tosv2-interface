@@ -56,8 +56,8 @@ function useBondTopCards() {
       }
     };
     fetchData().catch((e) => {
-      console.log("**useStakeTopCards err**");
-      console.log(e);
+      // console.log("**useStakeTopCards err**");
+      // console.log(e);
     });
   }, [data]);
 

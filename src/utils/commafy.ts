@@ -1,6 +1,6 @@
-function commafy(num: number | string, decilamPoint?: number) {
+function commafy(num: number | string | undefined, decilamPoint?: number) {
   if (num === undefined) {
-    return num;
+    return "-";
   }
   if (num === 0 || num === "0") {
     if (decilamPoint) {
@@ -15,8 +15,8 @@ function commafy(num: number | string, decilamPoint?: number) {
   if (str[1] && str[1].length >= 2) {
     str[1] = str[1].slice(0, decilamPoint || 2);
   }
-  if (str[1] === undefined && decilamPoint) {
-    str[1] = `${"0".repeat(decilamPoint)}`;
+  if (str[1] === undefined) {
+    str[1] = `${"0".repeat(decilamPoint ?? 2)}`;
   }
   return str.join(".").replaceAll(" ", "");
 }
