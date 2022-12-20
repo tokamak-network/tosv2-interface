@@ -9,6 +9,8 @@ import constant from "constant";
 import { useRecoilState } from "recoil";
 import { modalBottomLoadingState } from "atom/global/modal";
 import { getTimeZone } from "@/utils/time";
+import useStosBond from "./useStosBond";
+import commafy from "@/utils/commafy";
 
 type UseUnstake = {
   youWillGet: string | undefined;
@@ -32,10 +34,11 @@ function useBondModalInputData(marketId: number): UseUnstake {
   } = useCallContract();
 
   const { inputValue } = useInput("Bond_screen", "bond_modal");
-  const { stosReward, newEndTime } = useStosReward(
+  const { newEndTime } = useStosReward(
     Number(inputTosAmount),
     inputValue?.bond_modal_period
   );
+  const { newBalanceStos } = useStosBond(Number(inputTosAmount));
   const { rebasePeriod } = constant;
 
   const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
@@ -147,7 +150,12 @@ function useBondModalInputData(marketId: number): UseUnstake {
     });
   }, [newEndTime]);
 
-  return { youWillGet, endTime, stosReward, originalTosAmount };
+  return {
+    youWillGet,
+    endTime,
+    stosReward: commafy(newBalanceStos),
+    originalTosAmount,
+  };
 }
 
 export default useBondModalInputData;

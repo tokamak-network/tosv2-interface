@@ -1,8 +1,10 @@
+import constant from "constant";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import useInput from "hooks/useInput";
 import { useEffect, useMemo, useState } from "react";
 import useLocksInfo from "./useLocksInfo";
+import useStosReward from "./useStosReward";
 import useUpdateModalData from "./useUpdateModalData";
 
 /* 
@@ -12,15 +14,13 @@ ref link : https://docs.google.com/spreadsheets/d/1_ihg1mG6FeV1DPr4qfnKYJ8dhW2fH
 
 function useStos() {
   const { inputValue } = useInput("Stake_screen", "update_modal");
-  const increaseTos = Number(
-    inputValue.stake_updateModal_tos_balance?.replaceAll(",", "")
-  );
+  const increaseTos = Number(inputValue.stake_updateModal_tos_balance);
 
   const { leftWeeks } = useUpdateModalData();
 
   const increaseWeeks = Number(inputValue.stake_updateModal_period) - leftWeeks;
 
-  const { rebasePerEpoch } = useStakeV2();
+  const { rebasePerEpoch } = constant;
 
   //make a hook to get locksInfo
   const { locksInfo } = useLocksInfo();
