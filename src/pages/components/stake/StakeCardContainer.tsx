@@ -11,11 +11,13 @@ import StakeRadioGroup from "./BondRadioGroup";
 import MsgComponent from "./MsgComponent";
 import StakeCardSection from "./StakeCardSection";
 import StakeTitle from "./StakeTitle";
+import useMediaView from "hooks/useMediaView";
 
 function StakeCardContainer() {
   const { stakeCards, hasList } = useStakeList();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
+  const { bp700px } = useMediaView();
 
   return (
     <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
@@ -40,7 +42,7 @@ function StakeCardContainer() {
       ) : hasList ? (
         <>
           <Flex
-            flexDir={["column", "row", "row"]}
+            flexDir={bp700px ? "column" : "row"}
             justifyContent={"space-between"}
             mb={"27px"}
             alignItems="center"

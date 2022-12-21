@@ -9,11 +9,13 @@ import {
   Text,
   useColorMode,
   useFocusOnPointerDown,
+  useMediaQuery,
   useTheme,
 } from "@chakra-ui/react";
 import { inputBalanceState, inputState } from "atom/global/input";
 import { selectedModalState } from "atom/global/modal";
 import useInput from "hooks/useInput";
+import useMediaView from "hooks/useMediaView";
 import { max } from "moment";
 import React, {
   SetStateAction,
@@ -185,6 +187,7 @@ function BalanceInput(props: NumberInputProp) {
   const { inputValue, value, setValue } = useInput(pageKey!, recoilKey);
   const selectedModal = useRecoilValue(selectedModalState);
   const inputRef = useRef<HTMLInputElement>();
+  const [smallerThan700] = useMediaQuery("(max-width: 700px)");
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = event.target.value;
@@ -281,6 +284,7 @@ function BalanceInput(props: NumberInputProp) {
             pos={"absolute"}
             textAlign={"center"}
             lineHeight={"45px"}
+            h={"100%"}
             fontSize={14}
             left={leftProperty}
             color={

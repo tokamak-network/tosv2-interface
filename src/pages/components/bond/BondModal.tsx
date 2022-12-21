@@ -87,6 +87,7 @@ function BondModal() {
   const propData = selectedModalData as BondCardProps;
   const marketId = propData?.index;
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const [smallerThan700] = useMediaQuery("(max-width: 700px)");
 
   const { youWillGet, endTime, stosReward, originalTosAmount } =
     useBondModalInputData(marketId);
@@ -249,7 +250,7 @@ function BondModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan1024 ? "350px" : "43.75em"}
+        minW={smallerThan700 ? "350px" : "700px"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
@@ -285,16 +286,16 @@ function BondModal() {
               <Flex
                 w={"100%"}
                 flexDir={"column"}
-                px={smallerThan1024 ? "20px" : "120px"}
+                px={smallerThan700 ? "20px" : "120px"}
                 mb={"29px"}
               >
                 <Flex mb={"9px"} w={"100%"} justifyContent="center">
                   <Grid
                     templateColumns={
-                      smallerThan1024 ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
+                      smallerThan700 ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
                     }
                     templateRows={
-                      smallerThan1024 ? "repeat(3, 1fr)" : "repeat(2, 1fr)"
+                      smallerThan700 ? "repeat(3, 1fr)" : "repeat(2, 1fr)"
                     }
                   >
                     <GridItem>
@@ -381,90 +382,46 @@ function BondModal() {
                   <Text>Your Balance</Text>
                   <Text>{userETHBalance} ETH</Text>
                 </Flex>
-                {smallerThan1024 ? (
-                  <Flex flexDir={"column"} justifyContent="center" w="100%">
-                    <Flex
-                      justifyContent={"space-between"}
-                      fontSize={12}
-                      pr="6px"
-                      mb="10px"
-                      mt="22px"
-                    >
-                      {" "}
-                      <Text
-                        mr={"24px"}
-                        color={colorMode === "light" ? "gray.800" : "white.200"}
-                      >
-                        Lock-Up Period
-                      </Text>
-                      <Flex>
-                        <CustomCheckBox
-                          pageKey="Bond_screen"
-                          value={""}
-                          valueKey={"Bond_Modal"}
-                          state={fiveDaysLockup}
-                          setState={setFiveDaysLockup}
-                        ></CustomCheckBox>
-                        <Text ml={"9px"} mr="6px">
-                          5 Days Lock-Up
-                        </Text>
-                        <BasicTooltip label="No sTOS is given for 5 day lock-up option" />
-                      </Flex>
-                    </Flex>
-                    <BalanceInput
-                      w={"100%"}
-                      h={"39px"}
-                      pageKey={"Bond_screen"}
-                      recoilKey={"bond_modal"}
-                      atomKey={"bond_modal_period"}
-                      placeHolder={"1 Weeks"}
-                      style={{ marginLeft: "auto" }}
-                      isDisabled={fiveDaysLockup}
-                      rightUnit={"ETH"}
-                    ></BalanceInput>
-                  </Flex>
-                ) : (
-                  <Flex fontSize={12} alignItems="center" mt="10px">
-                    <Text
-                      mr={"6px"}
-                      color={colorMode === "light" ? "gray.800" : "white.200"}
-                    >
-                      Lock-Up Period
-                    </Text>
-                    <CustomCheckBox
-                      pageKey="Bond_screen"
-                      value={""}
-                      valueKey={"Bond_Modal"}
-                      state={fiveDaysLockup}
-                      setState={setFiveDaysLockup}
-                    ></CustomCheckBox>
-                    <Text ml={"6px"} mr="3px">
-                      5 Days Lock-Up
-                    </Text>
-                    <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
-                    <InputPeriod
-                      w={"220px"}
-                      h={"39px"}
-                      pageKey={"Bond_screen"}
-                      recoilKey={"bond_modal"}
-                      atomKey={"bond_modal_period"}
-                      placeHolder={"1 Weeks"}
-                      style={{ marginLeft: "auto" }}
-                      isDisabled={fiveDaysLockup}
-                      isDisabledText={"5 Days"}
-                      rightUnit={"Weeks"}
-                      maxValue={LOCKTOS_maxWeeks}
-                      minValue={1}
-                      isError={inputPeriodOver}
-                      errorMsg={errMsg.periodExceed}
-                      leftTime={leftHourAndMin}
-                      leftDays={leftDays}
-                      endTime={
-                        fiveDaysLockup || inputPeriodOver ? undefined : endTime
-                      }
-                    ></InputPeriod>
-                  </Flex>
-                )}
+                <Flex fontSize={12} alignItems="center" mt="10px">
+                  <Text
+                    mr={"6px"}
+                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                  >
+                    Lock-Up Period
+                  </Text>
+                  <CustomCheckBox
+                    pageKey="Bond_screen"
+                    value={""}
+                    valueKey={"Bond_Modal"}
+                    state={fiveDaysLockup}
+                    setState={setFiveDaysLockup}
+                  ></CustomCheckBox>
+                  <Text ml={"6px"} mr="3px">
+                    5 Days Lock-Up
+                  </Text>
+                  <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+                  <InputPeriod
+                    w={"220px"}
+                    h={"39px"}
+                    pageKey={"Bond_screen"}
+                    recoilKey={"bond_modal"}
+                    atomKey={"bond_modal_period"}
+                    placeHolder={"1 Weeks"}
+                    style={{ marginLeft: "auto" }}
+                    isDisabled={fiveDaysLockup}
+                    isDisabledText={"5 Days"}
+                    rightUnit={"Weeks"}
+                    maxValue={LOCKTOS_maxWeeks}
+                    minValue={1}
+                    isError={inputPeriodOver}
+                    errorMsg={errMsg.periodExceed}
+                    leftTime={leftHourAndMin}
+                    leftDays={leftDays}
+                    endTime={
+                      fiveDaysLockup || inputPeriodOver ? undefined : endTime
+                    }
+                  ></InputPeriod>
+                </Flex>
               </Flex>
               <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
