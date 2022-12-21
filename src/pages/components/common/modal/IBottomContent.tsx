@@ -15,6 +15,7 @@ function IBottomContent(props: IBottomContentProps) {
     secondTooltip,
     thirdTooltip,
     fourthTooltip,
+    contentFontSize,
   } = props;
   const { colorMode } = useColorMode();
   const { isModalLoading } = useModal();
@@ -45,6 +46,7 @@ function IBottomContent(props: IBottomContentProps) {
             <Flex
               flexDir={bp700px ? "column" : "row"}
               alignItems={bp700px ? "end" : "center"}
+              fontSize={contentFontSize}
             >
               <Flex>
                 <Text

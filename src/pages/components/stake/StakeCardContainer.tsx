@@ -17,7 +17,7 @@ function StakeCardContainer() {
   const { stakeCards, hasList } = useStakeList();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
-  const { bp700px } = useMediaView();
+  const { bp700px, bp500px } = useMediaView();
 
   return (
     <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
@@ -51,8 +51,10 @@ function StakeCardContainer() {
             <Flex
               w={["100%", "400px", "500px"]}
               columnGap={["6px", "6px", "30px"]}
-              justifyContent={"flex-end"}
+              justifyContent={bp500px ? "flex-start" : "flex-end"}
               mt={["", "", ""]}
+              flexDir={bp500px ? "column" : "row"}
+              rowGap={bp500px ? "24px" : 0}
             >
               <StakeRadioGroup></StakeRadioGroup>
               <StakeSortSelect></StakeSortSelect>

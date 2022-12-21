@@ -64,6 +64,7 @@ import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
 import ArrowImg from "assets/icons/arrow-right2.svg";
+import ArrowDownImg from "assets/icons/arrow-Down.svg";
 import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
 import useUpdateModalConditon from "hooks/stake/useUpdateModalCondition";
@@ -73,6 +74,7 @@ import GradientSpinner from "../common/GradientSpinner";
 import useModalContract from "hooks/contract/useModalContract";
 import Notice from "../global/Notice";
 import ManageModal_BottomContent from "./modal/ManageModal_BottomContent";
+import useMediaView from "hooks/useMediaView";
 
 function UpdateModal() {
   const theme = useTheme();
@@ -100,7 +102,8 @@ function UpdateModal() {
   const { stakeId } = useStakeId();
   const { newEndTime, leftWeeks, leftDays, leftTime } = useUpdateModalData();
 
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const { bp700px } = useMediaView();
+
   const { setTx } = useCustomToast();
   const {
     inputOver,
@@ -247,7 +250,8 @@ function UpdateModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan1024 ? "350px" : "43.75em"}
+        minW={bp700px ? "350px" : "700px"}
+        maxW={bp700px ? "350px" : "700px"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
@@ -288,7 +292,7 @@ function UpdateModal() {
               {/* Content Area*/}
               <Flex
                 w={"100%"}
-                px={smallerThan1024 ? "20px" : "120px"}
+                px={bp700px ? "20px" : "120px"}
                 flexDir={"column"}
                 mb={"29px"}
               >
@@ -346,76 +350,79 @@ function UpdateModal() {
                   New Lock-Up Period
                 </Text>
                 <Flex
+                  w={bp700px ? "100%" : ""}
+                  justifyContent={bp700px ? "space-between" : ""}
                   fontSize={12}
-                  alignItems={smallerThan1024 ? "" : "center"}
-                  flexDir={smallerThan1024 ? "column" : "row"}
+                  alignItems={bp700px ? "" : "center"}
+                  flexDir={bp700px ? "column" : "row"}
                 >
                   <Flex
-                    w={smallerThan1024 ? "100%" : ""}
-                    justifyContent={smallerThan1024 ? "space-between" : ""}
+                    w={bp700px ? "100%" : "204px"}
+                    h={"39px"}
+                    border={"1px solid #313442"}
+                    borderRadius={8}
+                    alignItems={"center"}
+                    pl={"15px"}
+                    fontSize={14}
+                    color={"#64646f"}
                   >
-                    <Flex
-                      w={"204px"}
-                      h={"39px"}
-                      border={"1px solid #313442"}
-                      borderRadius={8}
-                      alignItems={"center"}
-                      pl={"15px"}
-                      fontSize={14}
-                      color={"#64646f"}
-                    >
-                      <Text>
-                        {leftWeeks} {leftWeeks < 2 ? "Week" : "Weeks"}
-                      </Text>
-                      <Text fontSize={12} ml={"9px"} mr={"3px"}>
-                        {leftDays} Days {leftTime}
-                      </Text>
-                      <BasicTooltip
-                        label={
-                          "This is the current Lock-Up period. The new Lock-Up period has to be equal or greater than this."
-                        }
-                      />
-                    </Flex>
-                    <Flex mx={"14px"}>
-                      <Image src={ArrowImg} alt={"ArrowImg"}></Image>
-                    </Flex>
-                    <InputPeriod
-                      w={"220px"}
-                      h={"39px"}
-                      atomKey={"stake_updateModal_period"}
-                      // placeHolder={"1 Weeks"}
-                      pageKey={"Stake_screen"}
-                      recoilKey={"update_modal"}
-                      // style={{ marginLeft: "auto" }}
-                      maxValue={constant.modalMaxWeeks}
-                      isError={bothConditionsErr || inputPeriodOver}
-                      isDisabled={leftWeeks === constant.modalMaxWeeks}
-                      isDisabledText={constant.modalMaxWeeks}
-                      errorMsg={
-                        bothConditionsErr
-                          ? undefined
-                          : Number(inputValue.stake_updateModal_period) > 155
-                          ? errMsg.periodExceedThanMaximum
-                          : errMsg.managePeriodExceed
+                    <Text>
+                      {leftWeeks} {leftWeeks < 2 ? "Week" : "Weeks"}
+                    </Text>
+                    <Text fontSize={12} ml={"9px"} mr={"3px"}>
+                      {leftDays} Days {leftTime}
+                    </Text>
+                    <BasicTooltip
+                      label={
+                        "This is the current Lock-Up period. The new Lock-Up period has to be equal or greater than this."
                       }
-                      minValue={leftWeeks}
-                      leftDays={leftDays}
-                      leftTime={leftTime}
-                      endTime={
-                        bothConditionsErr ||
-                        Number(inputValue.stake_updateModal_period) <
-                          leftWeeks ||
-                        inputValue?.stake_updateModal_period?.length === 0 ||
-                        Number(inputValue.stake_updateModal_period) > 155
-                          ? undefined
-                          : newEndTime
-                      }
-                      isManageModal={true}
-                    ></InputPeriod>
+                    />
                   </Flex>
+                  <Flex
+                    mx={"14px"}
+                    my={bp700px ? "9px" : ""}
+                    justifyContent={bp700px ? "center" : ""}
+                  >
+                    <Image
+                      src={bp700px ? ArrowDownImg : ArrowImg}
+                      alt={"ArrowImg"}
+                    ></Image>
+                  </Flex>
+                  <InputPeriod
+                    w={bp700px ? "100%" : "220px"}
+                    h={"39px"}
+                    atomKey={"stake_updateModal_period"}
+                    // placeHolder={"1 Weeks"}
+                    pageKey={"Stake_screen"}
+                    recoilKey={"update_modal"}
+                    // style={{ marginLeft: "auto" }}
+                    maxValue={constant.modalMaxWeeks}
+                    isError={bothConditionsErr || inputPeriodOver}
+                    isDisabled={leftWeeks === constant.modalMaxWeeks}
+                    isDisabledText={constant.modalMaxWeeks}
+                    errorMsg={
+                      bothConditionsErr
+                        ? undefined
+                        : Number(inputValue.stake_updateModal_period) > 155
+                        ? errMsg.periodExceedThanMaximum
+                        : errMsg.managePeriodExceed
+                    }
+                    minValue={leftWeeks}
+                    leftDays={leftDays}
+                    leftTime={leftTime}
+                    endTime={
+                      bothConditionsErr ||
+                      Number(inputValue.stake_updateModal_period) < leftWeeks ||
+                      inputValue?.stake_updateModal_period?.length === 0 ||
+                      Number(inputValue.stake_updateModal_period) > 155
+                        ? undefined
+                        : newEndTime
+                    }
+                    isManageModal={true}
+                  ></InputPeriod>
                 </Flex>
               </Flex>
-              <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
+              <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"update_modal"}
@@ -431,7 +438,7 @@ function UpdateModal() {
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
                 <SubmitButton
-                  w={smallerThan1024 ? 310 : 460}
+                  w={bp700px ? 310 : 460}
                   h={42}
                   name="Update"
                   isDisabled={btnDisabled || isModalLoading}
@@ -439,7 +446,7 @@ function UpdateModal() {
                 ></SubmitButton>
               ) : (
                 <SubmitButton
-                  w={smallerThan1024 ? 310 : 460}
+                  w={bp700px ? 310 : 460}
                   h={42}
                   isDisabled={
                     bothConditionsErr === true ||

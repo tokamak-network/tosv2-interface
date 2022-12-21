@@ -11,7 +11,6 @@ import StakeCard from "./StakeCard";
 import StakeScreenBottom from "./StakeScreenBottom";
 
 function StakeCardSection() {
-  const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const { stakeCards } = useStakeList();
 
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
@@ -23,8 +22,8 @@ function StakeCardSection() {
       <Flex
         // columns={3} gridRowGap={"24px"} columnGap={"25px"}
         columnGap={"2%"}
-        rowGap={"20px"}
-        justifyContent={isSmallerThan750 ? "center" : ""}
+        rowGap={["", "25px", "25px"]}
+        justifyContent={["center", "space-between", ""]}
         flexWrap={"wrap"}
       >
         {currentPageList.length > 0 ? (

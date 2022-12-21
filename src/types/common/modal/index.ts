@@ -7,4 +7,5 @@ export type IBottomContentProps = {
   secondTooltip?: string;
   thirdTooltip?: string;
   fourthTooltip?: string;
+  contentFontSize?: number;
 };

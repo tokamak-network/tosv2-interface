@@ -14,6 +14,7 @@ import Image from "next/image";
 import moment from "moment";
 import BasicTooltip from "common/tooltip";
 import { useEffect, useRef, useState } from "react";
+import useMediaView from "hooks/useMediaView";
 
 function Graph(props: {
   data: any[];
@@ -86,10 +87,11 @@ function Graph(props: {
 
   return (
     <Flex
-      w={"100%"}
-      minWidth={"336px"}
+      w={["100%", "476px", "556px"]}
+      // minWidth={"336px"}
       // maxWidth={smallerThan1024? "556px":'476px'}
-      maxWidth={"556px"}
+
+      // maxWidth={"556px"}
       h={"350px"}
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       borderRadius={14}
