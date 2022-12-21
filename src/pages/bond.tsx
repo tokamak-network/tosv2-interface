@@ -7,15 +7,18 @@ import PageLayout from "pages/components/layout/PageLayout";
 import { BondTopCardProps } from "types/bond";
 import BondTip from "pages/components/bond/BondTip";
 import TopCardContainer from "./components/common/card/TopCardContainer";
+import useMediaView from "hooks/useMediaView";
 
 const Bond = () => {
   const theme = useTheme();
   const { colorMode } = useColorMode();
+  const { bp500px } = useMediaView();
 
   return (
     <Flex
       {...theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode)}
       bg={colorMode === "light" ? "#fafbfc" : "black.100"}
+      mt={bp500px ? "42px" : "66px"}
     >
       <PageLayout></PageLayout>
       <BondTip />

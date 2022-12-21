@@ -3,6 +3,7 @@ import BasicTooltip from "common/tooltip";
 import useModal from "hooks/useModal";
 import { IBottomContentProps } from "types/common/modal";
 import GradientSpinner from "../GradientSpinner";
+import useMediaView from "hooks/useMediaView";
 
 function IBottomContent(props: IBottomContentProps) {
   const {
@@ -14,9 +15,11 @@ function IBottomContent(props: IBottomContentProps) {
     secondTooltip,
     thirdTooltip,
     fourthTooltip,
+    contentFontSize,
   } = props;
   const { colorMode } = useColorMode();
   const { isModalLoading } = useModal();
+  const { bp700px } = useMediaView();
   return (
     <Flex>
       <Flex
@@ -25,7 +28,7 @@ function IBottomContent(props: IBottomContentProps) {
         fontSize={14}
         mt={"9px"}
       >
-        <Flex justifyContent={"flex-start"}>
+        <Flex justifyContent={"flex-start"} alignItems={"center"}>
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
             mr={"6px"}
@@ -40,45 +43,56 @@ function IBottomContent(props: IBottomContentProps) {
           </Flex>
         ) : (
           <Flex justifyContent={"flex-end"}>
-            <Flex>
-              <Text
-                color={colorMode === "dark" ? "white.200" : "gray.800"}
-                fontWeight={600}
-                mr="6px"
-              >
-                {content}
-              </Text>
-              {secondTooltip && <BasicTooltip label={secondTooltip} />}
-              {secondContent && (
-                <Text color={"#64646f"} mx={"5px"}>
-                  /
-                </Text>
-              )}
-              {secondContent && (
+            <Flex
+              flexDir={bp700px ? "column" : "row"}
+              alignItems={bp700px ? "end" : "center"}
+              fontSize={contentFontSize}
+            >
+              <Flex>
                 <Text
                   color={colorMode === "dark" ? "white.200" : "gray.800"}
                   fontWeight={600}
-                  mr={"6px"}
+                  mr="6px"
                 >
-                  {secondContent}
+                  {content}
                 </Text>
-              )}
-              {thirdTooltip && <BasicTooltip label={thirdTooltip} />}
-              {thirdContent && (
-                <Text color={"#64646f"} mx={"5px"}>
-                  /
-                </Text>
-              )}
-              {thirdContent && (
-                <Text
-                  color={colorMode === "dark" ? "white.200" : "gray.800"}
-                  fontWeight={600}
-                  mr={"6px"}
-                >
-                  {thirdContent}
-                </Text>
-              )}
-              {fourthTooltip && <BasicTooltip label={fourthTooltip} />}
+                {secondTooltip && <BasicTooltip label={secondTooltip} />}
+              </Flex>
+              <Flex>
+                {secondContent && (
+                  <Text color={"#64646f"} mx={"5px"}>
+                    /
+                  </Text>
+                )}
+
+                {secondContent && (
+                  <Text
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
+                    fontWeight={600}
+                    mr={"6px"}
+                  >
+                    {secondContent}
+                  </Text>
+                )}
+                {thirdTooltip && <BasicTooltip label={thirdTooltip} />}
+              </Flex>
+              <Flex>
+                {thirdContent && (
+                  <Text color={"#64646f"} mx={"5px"}>
+                    /
+                  </Text>
+                )}
+                {thirdContent && (
+                  <Text
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
+                    fontWeight={600}
+                    mr={"6px"}
+                  >
+                    {thirdContent}
+                  </Text>
+                )}
+                {fourthTooltip && <BasicTooltip label={fourthTooltip} />}
+              </Flex>
             </Flex>
           </Flex>
         )}

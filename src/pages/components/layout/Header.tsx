@@ -29,7 +29,17 @@ function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
 
   return (
-    <Flex cursor={"pointer"} onClick={() => setIsOpen(true)} ml={"12px"}>
+    <Flex
+      cursor={"pointer"}
+      justifyContent={"center"}
+      alignItems={"center"}
+      onClick={() => setIsOpen(true)}
+      w={"48px"}
+      h={"48px"}
+      borderWidth={1}
+      borderColor={"#313442"}
+      borderRadius={"8px"}
+    >
       <Image src={BUGER_ICON} alt={"burger_icon"}></Image>
     </Flex>
   );
@@ -58,7 +68,7 @@ function Header(props: HeaderProps) {
   const [walletState, setWalletState] = useState<string>("");
   const { onOpen } = useDisclosure();
 
-  const { pcView } = useMediaView();
+  const { pcView, tableView, mobileView, bp500px } = useMediaView();
   const text = useColorModeValue("dark", "light");
   const { activate, active, account } = useWeb3React();
   const txPending = useRecoilValue(selectedTxState);
@@ -70,7 +80,8 @@ function Header(props: HeaderProps) {
       w={"100%"}
       // maxW={"1136px"}
       justifyContent={["space-between", "space-between", "end"]}
-      pr={["10px", "11px", "35px"]}
+      pl={bp500px ? "12px" : tableView ? "23px" : ""}
+      pr={bp500px ? "10px" : "35px"}
       pt={"24px"}
       h={"96px"}
       borderBottom={colorMode === "light" ? "1px solid #e8edf2" : ""}
@@ -78,10 +89,11 @@ function Header(props: HeaderProps) {
       position={"sticky"}
       top={0}
       zIndex={1}
+      alignItems={"center"}
     >
       {!pcView && <BurgerButton></BurgerButton>}
       <Flex>
-        <NetworkIcon />
+        {!bp500px && <NetworkIcon />}
         <Flex
           w={account ? "157px" : "211px"}
           h={"48px"}

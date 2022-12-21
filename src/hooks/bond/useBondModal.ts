@@ -57,7 +57,7 @@ function useBondModal() {
   useEffect(() => {
     async function fetchAsyncData() {
       if (propData && apiData && priceData && BondDepositoryProxy_CONTRACT) {
-        const marketData = await BondDepositoryProxy_CONTRACT?.viewMarket(
+        const marketData = await BondDepositoryProxy_CONTRACT.viewMarket(
           propData.index
         );
 
@@ -83,6 +83,7 @@ function useBondModal() {
         const _tosPrice = bondInfo[4];
         const bondPrice =
           (1 / Number(_tosPrice.toString())) * 1e18 * priceData.ethPrice;
+
         const marketPrice = commafy(apiData.getDashboard[0].tosPrice);
 
         const discount =
@@ -124,8 +125,8 @@ function useBondModal() {
     try {
       fetchAsyncData();
     } catch (e) {
-      // console.log("**useBondModal err**");
-      // console.log(e);
+      console.log("**useBondModal err**");
+      console.log(e);
     }
   }, [
     propData,

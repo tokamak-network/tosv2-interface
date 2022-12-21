@@ -14,6 +14,7 @@ import Image from "next/image";
 import moment from "moment";
 import BasicTooltip from "common/tooltip";
 import { useEffect, useRef, useState } from "react";
+import useMediaView from "hooks/useMediaView";
 
 function Graph(props: {
   data: any[];
@@ -86,10 +87,11 @@ function Graph(props: {
 
   return (
     <Flex
-      w={"100%"}
-      minWidth={"336px"}
+      w={["100%", "476px", "556px"]}
+      // minWidth={"336px"}
       // maxWidth={smallerThan1024? "556px":'476px'}
-      maxWidth={"556px"}
+
+      // maxWidth={"556px"}
       h={"350px"}
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       borderRadius={14}
@@ -214,11 +216,24 @@ function Graph(props: {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
                   })}`;
-            } else {
-              if (Number(value) > 1000000) {
-                return `$${(Number(value) / 1000000).toLocaleString(undefined, {
+            }
+            if (title === "Total sTOS" || title === "Total LTOS") {
+              if (Number(value) > 999999) {
+                return `${(Number(value) / 1000000).toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}M`;
+              } else {
+                return `${Number(value).toLocaleString(undefined, {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
+                })}`;
+              }
+            } else {
+              if (Number(value) > 999999) {
+                return `$${(Number(value) / 1000000).toLocaleString(undefined, {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
                 })}M`;
               } else {
                 return `$${Number(value).toLocaleString(undefined, {

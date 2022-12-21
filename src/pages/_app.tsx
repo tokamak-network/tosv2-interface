@@ -54,7 +54,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   px={["12px", "24px", "0px"]}
                 >
                   <Flex
-                    maxW={["100%", "100%", "1136px"]}
+                    maxW={["100%", "976px", "1136px"]}
                     flexDir={"column"}
                     justifyContent="center"
                     w={"100%"}

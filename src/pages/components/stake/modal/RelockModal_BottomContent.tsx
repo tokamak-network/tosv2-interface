@@ -6,6 +6,7 @@ import useStosRelock from "hooks/stake/useStosRelock";
 import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useInput from "hooks/useInput";
+import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import IBottomContent from "pages/components/common/modal/IBottomContent";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -13,7 +14,7 @@ import { IBottomContentProps } from "types/common/modal";
 
 function RelockModal_BottomContent(props: { addTos: boolean }) {
   const { addTos } = props;
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const { bp700px } = useMediaView();
 
   const { inputValue, setResetValue, setValue } = useInput(
     "Stake_screen",
@@ -77,7 +78,7 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
       flexDir={"column"}
       columnGap={"9px"}
       mb={"30px"}
-      px={smallerThan1024 ? "20px" : "50px"}
+      px={bp700px ? "20px" : "50px"}
     >
       {contentList.map((content) => (
         <IBottomContent {...content} key={content.title}></IBottomContent>

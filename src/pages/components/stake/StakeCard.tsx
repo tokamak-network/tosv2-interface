@@ -105,9 +105,8 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   return (
     <Flex
       flexDir={"column"}
-      w={smallerThan1040 ? "100%" : "31.9%"}
-      h={smallerThan1040 ? "" : "273px"}
-      minW={["336px", "310px", "362px"]}
+      w={["100%", "310px", "362px"]}
+      h={["260px", "297px", "289px"]}
       bg={colorMode === "light" ? "white.100" : "#1f2128"}
       borderWidth={1}
       borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
@@ -202,9 +201,12 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             </Text> */}
           </Flex>
         )}
-        <Flex justifyContent={"space-between"} w={"100%"}>
+        <Flex justifyContent={"center"} w={"100%"} columnGap={"24px"}>
           <BasicButton
             name={buttonName}
+            w={["100%", "41%", "41%"]}
+            minW={["", "125px", "150px"]}
+            maxW={["", "125px", "150px"]}
             h={"33px"}
             onClick={
               stakedType === "LTOS Staking"
@@ -215,18 +217,19 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             }
             isDisabled={cardData.isWithoutLockup && !isOver}
             isLoading={txPending}
-            style={smallerThan1040 ? { width: "100%" } : {}}
             tooltip={
               "You can increase sTOS by using “Manage” function. This costs less gas than using the “Stake” function."
             }
           ></BasicButton>
           <BasicButton
+            w={["100%", "41%", "41%"]}
+            minW={["144px", "125px", "150px"]}
+            maxW={["", "125px", "150px"]}
             isDisabled={unstakeDisabled || txPending}
             isLoading={txPending}
             name={"Unstake"}
             h={"33px"}
             onClick={openUnstakeModal}
-            style={smallerThan1040 ? { width: "100%" } : {}}
           ></BasicButton>
         </Flex>
       </Flex>
