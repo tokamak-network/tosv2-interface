@@ -28,7 +28,7 @@ function IBottomContent(props: IBottomContentProps) {
         fontSize={14}
         mt={"9px"}
       >
-        <Flex justifyContent={"flex-start"}>
+        <Flex justifyContent={"flex-start"} alignItems={"center"}>
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
             mr={"6px"}
@@ -57,13 +57,14 @@ function IBottomContent(props: IBottomContentProps) {
                   {content}
                 </Text>
                 {secondTooltip && <BasicTooltip label={secondTooltip} />}
+              </Flex>
+              <Flex>
                 {secondContent && (
                   <Text color={"#64646f"} mx={"5px"}>
                     /
                   </Text>
                 )}
-              </Flex>
-              <Flex>
+
                 {secondContent && (
                   <Text
                     color={colorMode === "dark" ? "white.200" : "gray.800"}

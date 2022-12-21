@@ -58,7 +58,7 @@ function Header(props: HeaderProps) {
   const [walletState, setWalletState] = useState<string>("");
   const { onOpen } = useDisclosure();
 
-  const { pcView, tableView, mobileView } = useMediaView();
+  const { pcView, tableView, mobileView, bp500px } = useMediaView();
   const text = useColorModeValue("dark", "light");
   const { activate, active, account } = useWeb3React();
   const txPending = useRecoilValue(selectedTxState);
@@ -83,7 +83,7 @@ function Header(props: HeaderProps) {
     >
       {!pcView && <BurgerButton></BurgerButton>}
       <Flex>
-        <NetworkIcon />
+        {!bp500px && <NetworkIcon />}
         <Flex
           w={account ? "157px" : "211px"}
           h={"48px"}

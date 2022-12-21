@@ -17,13 +17,18 @@ function StakeCardContainer() {
   const { stakeCards, hasList } = useStakeList();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
-  const { bp700px, bp500px } = useMediaView();
+  const { bp700px, bp500px, customMaxView } = useMediaView(1024);
 
   return (
-    <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
+    <Flex
+      mt={customMaxView ? "36px" : "56px"}
+      w={"100%"}
+      justifyContent={"center"}
+      flexDir={"column"}
+    >
       <Flex
         justifyContent={"space-between"}
-        mt={"60px"}
+        // mt={bp500px ? "36px" : "60px"}
         mb={"27px"}
         alignItems="center"
       >
