@@ -28,7 +28,7 @@ function Footer() {
             <Text>© 2022 </Text>
             <Text mx={1} color={"blue.200"}>
               {" "}
-              Onther
+              Tokamak Network
             </Text>
             <Text>PTE.LTD</Text>
           </Flex>
