@@ -61,6 +61,7 @@ import useStosStake from "hooks/stake/useStosStake";
 import commafy from "@/utils/commafy";
 import { MobileView } from "react-device-detect";
 import StakeModal_BottomContent from "./modal/StakeModal_BottomContent";
+import useMediaView from "hooks/useMediaView";
 
 function StakeModal() {
   const theme = useTheme();
@@ -90,7 +91,7 @@ function StakeModal() {
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
-  const [smallerThan700] = useMediaQuery("(max-width: 700px)");
+  const { bp700px } = useMediaView();
 
   const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
     Number(inputValue.stake_modal_balance),
@@ -287,10 +288,9 @@ function StakeModal() {
         className="modalOverlay"
       />
       <ModalContent
-        // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan700 ? "350px" : "700px"}
-        maxW={smallerThan700 ? "350px" : "700px"}
+        minW={bp700px ? "350px" : "700px"}
+        maxW={bp700px ? "350px" : "700px"}
 
         // h="704px"
       >
@@ -319,15 +319,15 @@ function StakeModal() {
               {/* Content Area*/}
               <Flex
                 w={"100%"}
-                px={smallerThan700 ? "20px" : "120px"}
+                px={bp700px ? "20px" : "120px"}
                 flexDir={"column"}
                 mb={"29px"}
               >
                 <Flex
                   w={"100%"}
-                  justifyContent={smallerThan700 ? "center" : "space-between"}
-                  mb={smallerThan700 ? "15px" : "9px"}
-                  flexDir={smallerThan700 ? "column" : "row"}
+                  justifyContent={bp700px ? "center" : "space-between"}
+                  mb={bp700px ? "15px" : "9px"}
+                  flexDir={bp700px ? "column" : "row"}
                   alignItems={"center"}
                 >
                   <Tile
@@ -376,16 +376,16 @@ function StakeModal() {
                 <Flex flexDir={"column"}>
                   <Flex
                     // templateColumns={
-                    //   smallerThan700 ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
+                    //   bp700px ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
                     // }
-                    flexDir={smallerThan700 ? "column" : "row"}
+                    flexDir={bp700px ? "column" : "row"}
                     fontSize={12}
                     alignItems="center"
                   >
                     <Flex
                       justifyContent={"space-between"}
-                      w={smallerThan700 ? "100%" : ""}
-                      mb={smallerThan700 ? "10px" : ""}
+                      w={bp700px ? "100%" : ""}
+                      mb={bp700px ? "10px" : ""}
                     >
                       <Text
                         mr={"24px"}
@@ -405,7 +405,7 @@ function StakeModal() {
                       </Flex>
                     </Flex>
                     <InputPeriod
-                      w={smallerThan700 ? "310px" : "220px"}
+                      w={bp700px ? "310px" : "220px"}
                       h={"39px"}
                       pageKey={"Stake_screen"}
                       recoilKey={"stake_modal"}
@@ -430,7 +430,7 @@ function StakeModal() {
                   </Flex>
                 </Flex>
               </Flex>
-              <Flex px={smallerThan700 ? "30px" : "43px"} mb={"30px"}>
+              <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"stake_modal"}
