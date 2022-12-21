@@ -395,7 +395,7 @@ function UpdateModalAfterEndTime() {
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
-                  mb={"12px"}
+                  mb={bp700px && addTos === false ? "23px" : "12px"}
                   w={"100%"}
                   px="6px"
                 >

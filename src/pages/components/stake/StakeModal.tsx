@@ -366,7 +366,7 @@ function StakeModal() {
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
-                  mb={"12px"}
+                  mb={bp700px ? "22px" : "12px"}
                   px="6px"
                 >
                   <Text>Your Balance</Text>
@@ -378,6 +378,7 @@ function StakeModal() {
                     // templateColumns={
                     //   bp700px ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
                     // }
+
                     flexDir={bp700px ? "column" : "row"}
                     fontSize={12}
                     alignItems="center"

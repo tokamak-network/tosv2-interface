@@ -12,6 +12,7 @@ import useStakeV2 from "hooks/contract/useStakeV2";
 import { convertTimeStamp, getNowTimeStamp, getTimeZone } from "@/utils/time";
 import useRebaseTime from "hooks/useRebaseTime";
 import { useBlockNumber } from "hooks/useBlockNumber";
+import useMediaView from "hooks/useMediaView";
 
 const UpdatedOn = () => {
   const { colorMode } = useColorMode();
@@ -41,6 +42,7 @@ const PageTitle = () => {
   const [width] = useWindowDimensions();
   const isMobile = width < 510;
   const { colorMode } = useColorMode();
+  const { bp500px } = useMediaView();
 
   const PathComponent = useMemo(() => {
     switch (pathName) {
