@@ -37,7 +37,6 @@ function WalletIconLayOut(props: any) {
         alt={"WALLET_ICON"}
       ></Image>
       <Text
-        w={"127px"}
         color={
           account
             ? colorMode === "light"
