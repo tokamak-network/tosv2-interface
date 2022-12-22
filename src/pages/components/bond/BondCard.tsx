@@ -4,6 +4,7 @@ import { useWeb3React } from "@web3-react/core";
 import { selectedTxState } from "atom/global/tx";
 import BasicButton from "common/button/BasicButton";
 import TokenSymbol from "common/token/TokenSymol";
+import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
 import { useState } from "react";
@@ -33,10 +34,10 @@ function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
   const { data } = props;
   const { openModal } = useModal("bond_bond_modal", data);
-  const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
-  const [smallerThan726] = useMediaQuery("(max-width: 726px)");
+  const {} = useMediaView();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
+  const { bp700px } = useMediaView();
 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const countDown = getDuration(timeDiff);
@@ -57,7 +58,7 @@ function BondCard(props: { data: BondCardProps }) {
   return (
     <Flex
       flexDir={"column"}
-      w={smallerThan1040 ? "100%" : "31.9%"}
+      w={["100%", "310px", "362px"]}
       h={"290px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
@@ -115,6 +116,7 @@ function BondCard(props: { data: BondCardProps }) {
         ></ContentComponent>
         <BasicButton
           name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
+          w={["100%", "270px", "150px"]}
           h={"33px"}
           style={{ alignSelf: "center", marginTop: "9px" }}
           isDisabled={bondButtonIsDisabled}
