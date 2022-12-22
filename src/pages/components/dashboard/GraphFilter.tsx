@@ -49,6 +49,7 @@ function GraphFilter(props: FilterProps) {
           justifyContent={"space-between"}
           columnGap={"6px"}
           overflow={"auto"}
+          className={"scroll-hidden"}
         >
           {filterList.map(
             (list: { name: string; w: number; d: number }, index: number) => {
