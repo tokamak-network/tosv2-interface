@@ -372,11 +372,13 @@ function UpdateModal() {
                     <Text fontSize={12} ml={"9px"} mr={"3px"}>
                       {leftDays} Days {leftTime}
                     </Text>
-                    <BasicTooltip
-                      label={
-                        "This is the current Lock-Up period. The new Lock-Up period has to be equal or greater than this."
-                      }
-                    />
+                    <Flex ml={bp700px ? "auto" : ""} mr={bp700px ? "8px" : ""}>
+                      <BasicTooltip
+                        label={
+                          "This is the current Lock-Up period. The new Lock-Up period has to be equal or greater than this."
+                        }
+                      />
+                    </Flex>
                   </Flex>
                   <Flex
                     mx={"14px"}
