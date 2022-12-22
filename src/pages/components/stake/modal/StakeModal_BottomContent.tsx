@@ -48,7 +48,7 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
     ? [
         {
           title: "You Give",
-          content: `${inputValue.stake_modal_balance || "-"} TOS`,
+          content: `${commafy(inputValue.stake_modal_balance)} TOS`,
         },
         {
           title: "You Will Get",
