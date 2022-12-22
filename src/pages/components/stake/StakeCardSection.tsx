@@ -23,7 +23,7 @@ function StakeCardSection() {
         // columns={3} gridRowGap={"24px"} columnGap={"25px"}
         columnGap={"2%"}
         rowGap={["", "25px", "25px"]}
-        justifyContent={["center", "space-between", ""]}
+        justifyContent={["center", "flex-start", "flex-start"]}
         flexWrap={"wrap"}
       >
         {currentPageList.length > 0 ? (
