@@ -435,6 +435,7 @@ function BondModal() {
                 flexDir={"column"}
                 // color={colorMode === "dark" ? "white.200" : "gray.700"}
                 color={"#e23738"}
+                px={bp700px ? "20px" : 0}
               >
                 <Text>
                   Currently, it is cheaper to purchase TOS from Uniswap V3 (
