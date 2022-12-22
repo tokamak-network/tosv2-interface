@@ -281,18 +281,11 @@ function StakeModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay
-        // bg={"rgba( 255, 255, 255, 0.25 )"}
-        // boxShadow={"0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"}
-        // backdropFilter={"blur(4px)"}
-        className="modalOverlay"
-      />
+      <ModalOverlay className="modalOverlay" />
       <ModalContent
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
-
-        // h="704px"
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>

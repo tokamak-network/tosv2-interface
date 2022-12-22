@@ -2,6 +2,10 @@ function commafy(num: number | string | undefined, decilamPoint?: number) {
   if (num === undefined) {
     return "-";
   }
+  //@ts-ignore
+  if (isNaN(num)) {
+    return "-";
+  }
   if (num === 0 || num === "0") {
     if (decilamPoint) {
       return `0.${"0".repeat(decilamPoint)}`;
