@@ -69,6 +69,23 @@ const PageTitle = () => {
             <UpdatedOn></UpdatedOn>
           </Flex>
         );
+      case "DAO":
+        return (
+          <Flex
+            flexDir={isMobile ? "column" : "row"}
+            fontSize={12}
+            w={"100%"}
+            justifyContent={"space-between"}
+            h={isMobile ? "66px" : ""}
+          >
+            <Flex>
+              <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>
+              <Text ml={"3px"}>Home</Text>
+              <Text mx={"7px"}>{">"}</Text>
+              <Text color={"blue.200"}>{pathName}</Text>
+            </Flex>
+          </Flex>
+        );
       default:
         return (
           <Flex
@@ -118,7 +135,7 @@ const PageTitle = () => {
         >
           {pathName}
         </Text>
-        <AdditionalInfo></AdditionalInfo>
+        {pathName !== "DAO" && <AdditionalInfo></AdditionalInfo>}
       </Flex>
       {PathComponent}
     </Flex>
