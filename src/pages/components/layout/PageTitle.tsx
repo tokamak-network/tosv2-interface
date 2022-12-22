@@ -37,10 +37,31 @@ const UpdatedOn = () => {
   );
 };
 
+const AdditionalInfo = () => {
+  const { pathName } = usePathName();
+  const rebaseTime = useRebaseTime(":");
+  const { bp500px } = useMediaView();
+
+  switch (pathName) {
+    default:
+      return (
+        <Flex
+          fontSize={12}
+          alignItems="center"
+          mt={bp500px ? "30px" : ""}
+          mb={bp500px ? "12px" : ""}
+        >
+          <Text mr={"5px"} color={"#2775ff"}>
+            {rebaseTime}
+          </Text>
+          <Text color={"#9a9aaf"}>to next rebase</Text>
+        </Flex>
+      );
+  }
+};
+
 const PageTitle = () => {
   const { pathName } = usePathName();
-  const [width] = useWindowDimensions();
-  const isMobile = width < 510;
   const { colorMode } = useColorMode();
   const { bp500px } = useMediaView();
 
@@ -49,11 +70,11 @@ const PageTitle = () => {
       case "Bond":
         return (
           <Flex
-            flexDir={isMobile ? "column" : "row"}
+            flexDir={bp500px ? "column" : "row"}
             fontSize={12}
             w={"100%"}
             justifyContent={"space-between"}
-            h={isMobile ? "66px" : ""}
+            h={bp500px ? "66px" : ""}
           >
             <Flex>
               <Image
@@ -66,17 +87,18 @@ const PageTitle = () => {
               <Text mx={"7px"}>{">"}</Text>
               <Text color={"blue.200"}>Bond List</Text>
             </Flex>
+            {bp500px ? <AdditionalInfo></AdditionalInfo> : null}
             <UpdatedOn></UpdatedOn>
           </Flex>
         );
       case "DAO":
         return (
           <Flex
-            flexDir={isMobile ? "column" : "row"}
+            flexDir={bp500px ? "column" : "row"}
             fontSize={12}
             w={"100%"}
             justifyContent={"space-between"}
-            h={isMobile ? "66px" : ""}
+            h={bp500px ? "66px" : ""}
           >
             <Flex>
               <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>
@@ -89,11 +111,11 @@ const PageTitle = () => {
       default:
         return (
           <Flex
-            flexDir={isMobile ? "column" : "row"}
+            flexDir={bp500px ? "column" : "row"}
             fontSize={12}
             w={"100%"}
             justifyContent={"space-between"}
-            h={isMobile ? "66px" : ""}
+            h={bp500px ? "66px" : ""}
           >
             <Flex>
               <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>
@@ -101,31 +123,19 @@ const PageTitle = () => {
               <Text mx={"7px"}>{">"}</Text>
               <Text color={"blue.200"}>{pathName}</Text>
             </Flex>
+            {bp500px ? <AdditionalInfo></AdditionalInfo> : null}
             <UpdatedOn></UpdatedOn>
           </Flex>
         );
     }
-  }, [pathName, isMobile, colorMode]);
-
-  const rebaseTime = useRebaseTime(":");
-
-  const AdditionalInfo = () => {
-    switch (pathName) {
-      default:
-        return (
-          <Flex fontSize={12} alignItems="center">
-            <Text mr={"5px"} color={"#2775ff"}>
-              {rebaseTime}
-            </Text>
-            <Text color={"#9a9aaf"}>to next rebase</Text>
-          </Flex>
-        );
-    }
-  };
+  }, [pathName, colorMode, bp500px]);
 
   return (
-    <Flex flexDir={"column"} mb={isMobile ? "12px" : "36px"} w={"100%"}>
-      <Flex justifyContent={"space-between"}>
+    <Flex flexDir={"column"} mb={bp500px ? "42px" : "36px"} w={"100%"}>
+      <Flex
+        // flexDir={bp500px ? "column" : "row"}
+        justifyContent={"space-between"}
+      >
         <Text
           fontSize={28}
           h={"39px"}
@@ -135,7 +145,9 @@ const PageTitle = () => {
         >
           {pathName}
         </Text>
-        {pathName !== "DAO" && <AdditionalInfo></AdditionalInfo>}
+        {bp500px === false && pathName !== "DAO" && (
+          <AdditionalInfo></AdditionalInfo>
+        )}
       </Flex>
       {PathComponent}
     </Flex>
