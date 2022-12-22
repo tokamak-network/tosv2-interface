@@ -101,8 +101,9 @@ function Header(props: HeaderProps) {
           borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
           borderRadius={8}
           ml={"20px"}
-          pl={txPending ? "9px" : "20px"}
-          pr={txPending ? "0px" : "20px"}
+          pl={txPending ? "9px" : 0}
+          pr={txPending ? "0px" : 0}
+          justifyContent={"center"}
           cursor={"pointer"}
           fontSize={16}
           onMouseEnter={() => setIsHover(true)}
