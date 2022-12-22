@@ -19,7 +19,7 @@ type UseUnstake = {
   originalTosAmount: string;
 };
 
-function useBondModalInputData(marketId: number): UseUnstake {
+function useBondModalInputData(marketId: number | undefined): UseUnstake {
   const [youWillGet, setYouWillGet] = useState<string | undefined>(undefined);
   const [endTime, setEndTime] = useState<string | undefined>(undefined);
   const [inputTosAmount, setInputTosAmount] = useState<string | undefined>(
@@ -48,7 +48,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
       if (
         inputValue?.bond_modal_balance === "" ||
         inputValue?.bond_modal_balance === undefined ||
-        inputValue?.bond_modal_balance.length === 0
+        inputValue?.bond_modal_balance.length === 0 ||
+        marketId === undefined
       ) {
         return setInputTosAmount(undefined);
       }
@@ -56,7 +57,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
         StakingV2Proxy_CONTRACT &&
         BondDepositoryProxy_CONTRACT &&
         LockTOS_CONTRACT &&
-        inputValue?.bond_modal_balance
+        inputValue?.bond_modal_balance &&
+        marketId
       ) {
         const ethAmount = inputValue.bond_modal_balance;
         const ethAmountWei = convertToWei(ethAmount);
@@ -100,7 +102,8 @@ function useBondModalInputData(marketId: number): UseUnstake {
       if (
         StakingV2Proxy_CONTRACT &&
         BondDepositoryProxy_CONTRACT &&
-        inputValue?.bond_modal_balance
+        inputValue?.bond_modal_balance &&
+        marketId
       ) {
         const ethAmount = inputValue.bond_modal_balance;
         const ethAmountWei = convertToWei(ethAmount);

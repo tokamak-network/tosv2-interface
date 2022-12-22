@@ -65,6 +65,7 @@ import BottomContent from "../common/modal/BottomContent";
 import InputPeriod from "common/input/InputPeriod";
 import useStosReward from "hooks/stake/useStosReward";
 import BondConfirm from "./modal/BondConfirm";
+import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 
 function BondModal() {
   const theme = useTheme();
@@ -453,6 +454,10 @@ function BondModal() {
                   );
                 })}
               </Flex>
+              {/* <BondModal_BottomContent
+                fiveDaysLockup={fiveDaysLockup}
+                fiveDaysLockupEndTime={fiveDaysLockupEndTime}
+              /> */}
             </Flex>
             <Flex justifyContent={"center"} mb={capacityIsZero ? "" : "40px"}>
               <SubmitButton

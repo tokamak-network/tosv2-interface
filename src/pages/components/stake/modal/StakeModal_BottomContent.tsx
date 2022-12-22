@@ -1,18 +1,19 @@
 import commafy from "@/utils/commafy";
-import { Flex, useMediaQuery } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { modalBottomLoadingState, stosLoadingState } from "atom/global/modal";
 import useModalContract from "hooks/contract/useModalContract";
 import useStakeModaldata from "hooks/stake/useStakeModalData";
 import useStosStake from "hooks/stake/useStosStake";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useInput from "hooks/useInput";
+import useMediaView from "hooks/useMediaView";
 import IBottomContent from "pages/components/common/modal/IBottomContent";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IBottomContentProps } from "types/common/modal";
 
 function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
   const { fiveDaysLockup } = props;
-  const [smallerThan700] = useMediaQuery("(max-width: 700px)");
+  const { bp700px } = useMediaView();
 
   const { inputValue, setResetValue, setValue } = useInput(
     "Stake_screen",
@@ -98,7 +99,7 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
       flexDir={"column"}
       columnGap={"9px"}
       mb={"30px"}
-      px={smallerThan700 ? "20px" : "50px"}
+      px={bp700px ? "20px" : "50px"}
     >
       {contentList.map((content) => (
         <IBottomContent {...content} key={content.title}></IBottomContent>
