@@ -22,6 +22,7 @@ import TermsOfUse from "./components/global/TermsOfUse";
 import Notice from "./components/global/Notice";
 import "css/gradient.css";
 import "css/modalOverlay.css";
+import "css/scrollbar.css";
 import CustomToast from "common/toast/CustomToast";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -54,7 +55,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   px={["12px", "24px", "0px"]}
                 >
                   <Flex
-                    maxW={["100%", "100%", "1136px"]}
+                    maxW={["100%", "976px", "1136px"]}
                     flexDir={"column"}
                     justifyContent="center"
                     w={"100%"}

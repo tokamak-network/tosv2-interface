@@ -42,6 +42,7 @@ import useCustomToast from "hooks/useCustomToast";
 import { StakeCardProps } from "types/stake";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import useRebaseTime from "hooks/useRebaseTime";
+import useMediaView from "hooks/useMediaView";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -83,7 +84,8 @@ function UnstakeModal() {
   );
   const { simpleStakingId } = useUser();
   const { setTx } = useCustomToast();
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
+  const { bp700px } = useMediaView();
 
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
@@ -159,7 +161,8 @@ function UnstakeModal() {
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan1024 ? "350px" : "43.75em"}
+        minW={bp700px ? "350px" : "700px"}
+        maxW={bp700px ? "350px" : "700px"}
         // h="704px"
       >
         <ModalBody px={0} pt={"30px"} pb={"40px"}>
@@ -191,30 +194,22 @@ function UnstakeModal() {
               <Flex
                 w={"100%"}
                 flexDir={"column"}
-                px={smallerThan1024 ? "20px" : "120px"}
-                mb={smallerThan1024 ? "9px" : "30px"}
+                px={bp700px ? "20px" : "120px"}
+                mb={bp700px ? "9px" : "30px"}
               >
                 <Flex
                   w={"100%"}
-                  justifyContent={smallerThan1024 ? "center" : "space-between"}
-                  mb={smallerThan1024 ? "15px" : "9px"}
-                  flexDir={smallerThan1024 ? "column" : "row"}
+                  justifyContent={bp700px ? "center" : "space-between"}
+                  mb={bp700px ? "15px" : "9px"}
+                  flexDir={bp700px ? "column" : "row"}
+                  alignItems={"center"}
                 >
-                  {smallerThan1024 ? (
-                    <Flex mb={"9px"} justifyContent="center" w={"100%"}>
-                      <Tile
-                        title={"Next Rebase"}
-                        content={rebaseTime}
-                        tooltip="Time left until LTOS index is increased."
-                      />
-                    </Flex>
-                  ) : (
-                    <Tile
-                      title={"Next Rebase"}
-                      content={rebaseTime}
-                      tooltip="Time left until LTOS index is increased."
-                    />
-                  )}
+                  <Tile
+                    title={"Next Rebase"}
+                    content={rebaseTime}
+                    tooltip="Time left until LTOS index is increased."
+                  />
+
                   <Tile
                     title={"LTOS Index"}
                     content={ltosIndex}
@@ -242,6 +237,7 @@ function UnstakeModal() {
                       h={"17px"}
                       justifyContent={"space-between"}
                       px={"6px"}
+                      mb={bp700px ? "24px" : ""}
                     >
                       <Text>Your Balance</Text>
                       <Text>{unstakeData?.maxValue || "0"} LTOS</Text>
@@ -254,7 +250,7 @@ function UnstakeModal() {
               <Flex
                 flexDir={"column"}
                 rowGap={"9px"}
-                px={smallerThan1024 ? "20px" : "50px"}
+                px={bp700px ? "20px" : "50px"}
               >
                 {contentList.map((content, index) => {
                   return (
@@ -269,7 +265,7 @@ function UnstakeModal() {
             </Flex>
             <Flex flexDir={"column"} alignItems={"center"} rowGap={"15px"}>
               <SubmitButton
-                w={smallerThan1024 ? 310 : 460}
+                w={bp700px ? 310 : 460}
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}

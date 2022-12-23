@@ -10,6 +10,7 @@ import {
   useColorMode,
   Tooltip,
   useMediaQuery,
+  Grid,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -56,9 +57,11 @@ import constant from "constant";
 import BottomContent from "../common/modal/BottomContent";
 import EndTime from "../common/modal/EndTime";
 import InputPeriod from "common/input/InputPeriod";
-import { convertWithDigits } from "@/utils/convertWithDigits";
 import useStosStake from "hooks/stake/useStosStake";
 import commafy from "@/utils/commafy";
+import { MobileView } from "react-device-detect";
+import StakeModal_BottomContent from "./modal/StakeModal_BottomContent";
+import useMediaView from "hooks/useMediaView";
 
 function StakeModal() {
   const theme = useTheme();
@@ -87,6 +90,8 @@ function StakeModal() {
   const [isApproving, setIsApproving] = useState<boolean>(false);
 
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
+  const { bp700px } = useMediaView();
 
   const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
     Number(inputValue.stake_modal_balance),
@@ -155,7 +160,7 @@ function StakeModal() {
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-          secondTooltip: `${convertWithDigits(
+          secondTooltip: `${commafy(
             inputValue.stake_modal_balance
           )} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
           thirdTooltip:
@@ -276,17 +281,11 @@ function StakeModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay
-        // bg={"rgba( 255, 255, 255, 0.25 )"}
-        // boxShadow={"0 8px 32px 0 rgba( 31, 38, 135, 0.37 )"}
-        // backdropFilter={"blur(4px)"}
-        className="modalOverlay"
-      />
+      <ModalOverlay className="modalOverlay" />
       <ModalContent
-        // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan1024 ? "350px" : "43.75em"}
-        // h="704px"
+        minW={bp700px ? "350px" : "700px"}
+        maxW={bp700px ? "350px" : "700px"}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>
@@ -313,31 +312,22 @@ function StakeModal() {
               {/* Content Area*/}
               <Flex
                 w={"100%"}
-                px={smallerThan1024 ? "20px" : "120px"}
+                px={bp700px ? "20px" : "120px"}
                 flexDir={"column"}
                 mb={"29px"}
               >
                 <Flex
                   w={"100%"}
-                  justifyContent={smallerThan1024 ? "center" : "space-between"}
-                  mb={smallerThan1024 ? "15px" : "9px"}
-                  flexDir={smallerThan1024 ? "column" : "row"}
+                  justifyContent={bp700px ? "center" : "space-between"}
+                  mb={bp700px ? "15px" : "9px"}
+                  flexDir={bp700px ? "column" : "row"}
+                  alignItems={"center"}
                 >
-                  {smallerThan1024 ? (
-                    <Flex mb={"9px"} justifyContent="center" w={"100%"}>
-                      <Tile
-                        title={"Next Rebase"}
-                        content={rebaseTime}
-                        tooltip="Time left until LTOS index is increased."
-                      />
-                    </Flex>
-                  ) : (
-                    <Tile
-                      title={"Next Rebase"}
-                      content={rebaseTime}
-                      tooltip="Time left until LTOS index is increased."
-                    />
-                  )}
+                  <Tile
+                    title={"Next Rebase"}
+                    content={rebaseTime}
+                    tooltip="Time left until LTOS index is increased."
+                  />
 
                   <Tile
                     title={"LTOS Index"}
@@ -369,20 +359,27 @@ function StakeModal() {
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
-                  mb={"12px"}
+                  mb={bp700px ? "22px" : "12px"}
                   px="6px"
                 >
                   <Text>Your Balance</Text>
                   <Text>{userTOSBalance || "-"} TOS</Text>
                 </Flex>
-                {smallerThan1024 ? (
-                  <Flex flexDir={"column"} justifyContent="center" w="100%">
+
+                <Flex flexDir={"column"}>
+                  <Flex
+                    // templateColumns={
+                    //   bp700px ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
+                    // }
+
+                    flexDir={bp700px ? "column" : "row"}
+                    fontSize={12}
+                    alignItems="center"
+                  >
                     <Flex
                       justifyContent={"space-between"}
-                      fontSize={12}
-                      pr="6px"
-                      mb="10px"
-                      mt="22px"
+                      w={bp700px ? "100%" : ""}
+                      mb={bp700px ? "10px" : ""}
                     >
                       <Text
                         mr={"24px"}
@@ -390,7 +387,7 @@ function StakeModal() {
                       >
                         Lock-Up Period
                       </Text>
-                      <Flex>
+                      <Flex alignSelf={"flex-end"}>
                         <CustomCheckBox
                           pageKey="Bond_screen"
                           value={""}
@@ -401,8 +398,8 @@ function StakeModal() {
                         <Text ml={"9px"}>No Lock-Up</Text>
                       </Flex>
                     </Flex>
-                    <TextInput
-                      w={"100%"}
+                    <InputPeriod
+                      w={bp700px ? "310px" : "220px"}
                       h={"39px"}
                       pageKey={"Stake_screen"}
                       recoilKey={"stake_modal"}
@@ -411,55 +408,23 @@ function StakeModal() {
                       style={{ marginLeft: "auto" }}
                       isDisabled={fiveDaysLockup}
                       maxValue={modalMaxWeeks}
-                      isError={true}
+                      isError={inputPeriodOver}
                       errorMsg={errMsg.stakePeriodExceed}
-                    ></TextInput>
+                      leftDays={fiveDaysLockup ? undefined : leftDays}
+                      leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
+                      endTime={
+                        fiveDaysLockup ||
+                        inputPeriodOver ||
+                        inputOver ||
+                        zeroInputBalance
+                          ? undefined
+                          : newEndTime
+                      }
+                    ></InputPeriod>
                   </Flex>
-                ) : (
-                  <Flex flexDir={"column"}>
-                    <Flex fontSize={12} alignItems="center">
-                      <Text
-                        mr={"24px"}
-                        color={colorMode === "light" ? "gray.800" : "white.200"}
-                      >
-                        Lock-Up Period
-                      </Text>
-                      <CustomCheckBox
-                        pageKey="Bond_screen"
-                        value={""}
-                        valueKey={"Bond_Modal"}
-                        state={fiveDaysLockup}
-                        setState={setFiveDaysLockup}
-                      ></CustomCheckBox>
-                      <Text ml={"9px"}>No Lock-Up</Text>
-                      <InputPeriod
-                        w={"220px"}
-                        h={"39px"}
-                        pageKey={"Stake_screen"}
-                        recoilKey={"stake_modal"}
-                        atomKey={"stake_modal_period"}
-                        placeHolder={"1 Weeks"}
-                        style={{ marginLeft: "auto" }}
-                        isDisabled={fiveDaysLockup}
-                        maxValue={modalMaxWeeks}
-                        isError={inputPeriodOver}
-                        errorMsg={errMsg.stakePeriodExceed}
-                        leftDays={fiveDaysLockup ? undefined : leftDays}
-                        leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
-                        endTime={
-                          fiveDaysLockup ||
-                          inputPeriodOver ||
-                          inputOver ||
-                          zeroInputBalance
-                            ? undefined
-                            : newEndTime
-                        }
-                      ></InputPeriod>
-                    </Flex>
-                  </Flex>
-                )}
+                </Flex>
               </Flex>
-              <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
+              <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey={"Stake_screen"}
                   subKey={"stake_modal"}
@@ -469,26 +434,7 @@ function StakeModal() {
                 ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
-              <Flex
-                flexDir={"column"}
-                columnGap={"9px"}
-                mb={"30px"}
-                px={smallerThan1024 ? "20px" : "50px"}
-              >
-                {contentList.map((content, index) => {
-                  return (
-                    <BottomContent
-                      title={content.title}
-                      content={content.content}
-                      key={content.title + index}
-                      tooltip={content.tooltip}
-                      tooltipMessage={content.tooltipMessage}
-                      secondTooltip={content.secondTooltip}
-                      thirdTooltip={content.thirdTooltip}
-                    ></BottomContent>
-                  );
-                })}
-              </Flex>
+              <StakeModal_BottomContent fiveDaysLockup={fiveDaysLockup} />
             </Flex>
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (

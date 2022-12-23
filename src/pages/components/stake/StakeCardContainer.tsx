@@ -11,17 +11,24 @@ import StakeRadioGroup from "./BondRadioGroup";
 import MsgComponent from "./MsgComponent";
 import StakeCardSection from "./StakeCardSection";
 import StakeTitle from "./StakeTitle";
+import useMediaView from "hooks/useMediaView";
 
 function StakeCardContainer() {
   const { stakeCards, hasList } = useStakeList();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
+  const { bp700px, bp500px, customMaxView } = useMediaView(1024);
 
   return (
-    <Flex mt={"48px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
+    <Flex
+      mt={customMaxView ? "36px" : "56px"}
+      w={"100%"}
+      justifyContent={"center"}
+      flexDir={"column"}
+    >
       <Flex
         justifyContent={"space-between"}
-        mt={"60px"}
+        // mt={bp500px ? "36px" : "60px"}
         mb={"27px"}
         alignItems="center"
       >
@@ -40,7 +47,7 @@ function StakeCardContainer() {
       ) : hasList ? (
         <>
           <Flex
-            flexDir={["column", "row", "row"]}
+            flexDir={bp700px ? "column" : "row"}
             justifyContent={"space-between"}
             mb={"27px"}
             alignItems="center"
@@ -49,8 +56,10 @@ function StakeCardContainer() {
             <Flex
               w={["100%", "400px", "500px"]}
               columnGap={["6px", "6px", "30px"]}
-              justifyContent={"flex-end"}
+              justifyContent={bp500px ? "flex-start" : "flex-end"}
               mt={["", "", ""]}
+              flexDir={bp500px ? "column" : "row"}
+              rowGap={bp500px ? "24px" : 0}
             >
               <StakeRadioGroup></StakeRadioGroup>
               <StakeSortSelect></StakeSortSelect>

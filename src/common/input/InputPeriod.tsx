@@ -14,6 +14,7 @@ import {
 import { inputBalanceState, inputState } from "atom/global/input";
 import { selectedModalState } from "atom/global/modal";
 import useInput from "hooks/useInput";
+import useMediaView from "hooks/useMediaView";
 import { max } from "moment";
 import React, { SetStateAction, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -68,6 +69,7 @@ const InputPeriod = (props: InputProp) => {
   const [weeksUnit, setWeeksUnit] = useState<"Week" | "Weeks">("Weeks");
   const [weekHighlight, setWeekHighlight] = useState<boolean>(false);
   const [isFocus, setIsFocus] = useState<boolean>(false);
+  const { bp700px } = useMediaView();
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,14 +84,20 @@ const InputPeriod = (props: InputProp) => {
       return;
     }
     if (Number(event.target.value) === 0) {
+      console.log("-1-");
+
       setWeeksUnit("Weeks");
       setWeekHighlight(false);
     }
     if (Number(event.target.value) > 1) {
+      console.log("-2-");
+
       setWeeksUnit("Weeks");
       setWeekHighlight(true);
     }
     if (Number(event.target.value) === 1) {
+      console.log("-3-");
+
       setWeeksUnit("Week");
       setWeekHighlight(true);
     }
@@ -222,7 +230,7 @@ const InputPeriod = (props: InputProp) => {
           pos={"absolute"}
           top={"48px"}
           w={w || 270}
-          justifyContent={"center"}
+          justifyContent={bp700px ? "flex-start" : "center"}
         >
           <Text>End Time : {endTime}</Text>
         </Flex>

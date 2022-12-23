@@ -1,15 +1,18 @@
 import { Select, useColorMode } from "@chakra-ui/react";
 import { stake_filter_sort, T_SortValues } from "atom/stake/filter";
+import useMediaView from "hooks/useMediaView";
 import { useRecoilState } from "recoil";
 
 function StakeSortSelect() {
   const { colorMode } = useColorMode();
   const [sortValue, setSortValue] =
     useRecoilState<T_SortValues>(stake_filter_sort);
+  const { mobileView, bp500px } = useMediaView();
 
   return (
     <Select
-      w={["170px", "195px", "178px"]}
+      minW={["170px", "173px", "173px"]}
+      ml={bp500px ? "" : "30px"}
       h={"45px"}
       bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
       borderWidth={1}

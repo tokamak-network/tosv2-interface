@@ -57,6 +57,7 @@ import useStosReward from "hooks/stake/useStosReward";
 import InputPeriod from "common/input/InputPeriod";
 import useStos from "hooks/stake/useStos";
 import RelockModal_BottomContent from "./modal/RelockModal_BottomContent";
+import useMediaView from "hooks/useMediaView";
 
 function UpdateModalAfterEndTime() {
   const theme = useTheme();
@@ -72,7 +73,7 @@ function UpdateModalAfterEndTime() {
     "Stake_screen",
     "relock_modal"
   );
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const { bp700px } = useMediaView();
 
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
@@ -285,10 +286,9 @@ function UpdateModalAfterEndTime() {
     >
       <ModalOverlay className="modalOverlay" />
       <ModalContent
-        // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
-        minW={smallerThan1024 ? "350px" : "43.75em"}
-        // h="704px"
+        minW={bp700px ? "350px" : "700px"}
+        maxW={bp700px ? "350px" : "700px"}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>
@@ -328,113 +328,74 @@ function UpdateModalAfterEndTime() {
               {/* Content Area*/}
               <Flex
                 w={"100%"}
-                px={smallerThan1024 ? "20px" : "120px"}
+                px={bp700px ? "20px" : "120px"}
                 flexDir={"column"}
                 mb={"29px"}
               >
-                {smallerThan1024 ? (
-                  <Flex flexDir={"column"}>
-                    <Flex w={"100%"} justifyContent={"flex-end"} mb="9px">
+                <Flex
+                  mb={"9px"}
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
+                  flexDir={"column"}
+                  rowGap={"9px"}
+                >
+                  <Flex w={"100%"} justifyContent={"space-between"}>
+                    <Text
+                      fontSize={12}
+                      color={colorMode === "light" ? "gray.800" : "white.200"}
+                    >
+                      Relock LTOS
+                    </Text>
+                    <Flex alignItems={"center"}>
                       <CustomCheckBox
                         state={addTos}
                         setState={setAddTos}
                       ></CustomCheckBox>
                       <Text
                         ml={"14px"}
-                        w={"51px"}
                         fontSize={12}
                         mr="6px"
                         color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                       >
-                        Add TOS
+                        Lock additional TOS
                       </Text>
                       <BasicTooltip
                         label={
-                          "f you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
+                          "If you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
                         }
                       />
                     </Flex>
-                    <Flex mb="9px">
-                      <BalanceInput
-                        w={"100%"}
-                        h={45}
-                        placeHolder={"Enter an amount of LTOS"}
-                        atomKey={"stake_relockModal_ltos_balance"}
-                        pageKey={"Stake_screen"}
-                        recoilKey={"relock_modal"}
-                        isDisabled={addTos}
-                        rightUnit={"LTOS"}
-                        maxValue={Number(ltosAmount?.replaceAll(",", ""))}
-                      ></BalanceInput>
-                    </Flex>
                   </Flex>
-                ) : (
-                  <Flex
-                    mb={"9px"}
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    flexDir={"column"}
-                    rowGap={"9px"}
-                  >
-                    <Flex w={"100%"} justifyContent={"space-between"}>
-                      <Text
-                        fontSize={12}
-                        color={colorMode === "light" ? "gray.800" : "white.200"}
-                      >
-                        Relock LTOS
-                      </Text>
-                      <Flex alignItems={"center"}>
-                        <CustomCheckBox
-                          state={addTos}
-                          setState={setAddTos}
-                        ></CustomCheckBox>
-                        <Text
-                          ml={"14px"}
-                          fontSize={12}
-                          mr="6px"
-                          color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                        >
-                          Lock additional TOS
-                        </Text>
-                        <BasicTooltip
-                          label={
-                            "If you want more sTOS, you can lock TOS in addition to restaking your LTOS. "
-                          }
-                        />
-                      </Flex>
-                    </Flex>
-                    <Flex>
-                      <BalanceInput
-                        w={"460px"}
-                        h={45}
-                        placeHolder={"Enter an amount of LTOS"}
-                        atomKey={"stake_relockModal_ltos_balance"}
-                        pageKey={"Stake_screen"}
-                        recoilKey={"relock_modal"}
-                        isDisabled={addTos}
-                        maxValue={Number(
-                          ltosAmount?.replaceAll(",", "").replaceAll(" ", "")
-                        )}
-                        isError={
-                          addTos === false && (zeroInputBalance || inputOver)
-                        }
-                        errorMsg={
-                          zeroInputBalance
-                            ? errMsg.bondZeroInput
-                            : errMsg.balanceExceed
-                        }
-                        rightUnit={"LTOS"}
-                      ></BalanceInput>
-                    </Flex>
+                  <Flex w={"100%"}>
+                    <BalanceInput
+                      w={bp700px ? "100%" : "460px"}
+                      h={45}
+                      placeHolder={"Enter an amount of LTOS"}
+                      atomKey={"stake_relockModal_ltos_balance"}
+                      pageKey={"Stake_screen"}
+                      recoilKey={"relock_modal"}
+                      isDisabled={addTos}
+                      maxValue={Number(
+                        ltosAmount?.replaceAll(",", "").replaceAll(" ", "")
+                      )}
+                      isError={
+                        addTos === false && (zeroInputBalance || inputOver)
+                      }
+                      errorMsg={
+                        zeroInputBalance
+                          ? errMsg.bondZeroInput
+                          : errMsg.balanceExceed
+                      }
+                      rightUnit={"LTOS"}
+                    ></BalanceInput>
                   </Flex>
-                )}
-
+                </Flex>
                 <Flex
                   fontSize={12}
                   color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
                   h={"17px"}
                   justifyContent={"space-between"}
-                  mb={"12px"}
+                  mb={bp700px && addTos === false ? "23px" : "12px"}
                   w={"100%"}
                   px="6px"
                 >
@@ -473,21 +434,29 @@ function UpdateModalAfterEndTime() {
                     </Flex>
                   </Flex>
                 )}
-                <Flex fontSize={12} alignItems="center">
+                <Flex
+                  fontSize={12}
+                  alignItems={bp700px ? "" : "center"}
+                  justifyContent={bp700px ? "" : "space-between"}
+                  w={bp700px ? "100%" : ""}
+                  mb={bp700px ? "10px" : ""}
+                  flexDir={bp700px ? "column" : "row"}
+                >
                   <Text
                     mr={"24px"}
+                    mb={bp700px ? "10px" : ""}
                     color={colorMode === "light" ? "gray.800" : "white.200"}
                   >
                     New Lock-Up Period
                   </Text>
                   <InputPeriod
-                    w={"220px"}
+                    w={bp700px ? "100%" : "220px"}
                     h={"39px"}
                     pageKey={"Stake_screen"}
                     recoilKey={"relock_modal"}
                     atomKey={"stake_relockModal_period"}
                     placeHolder={"1 Weeks"}
-                    style={{ marginLeft: "auto" }}
+                    style={bp700px ? {} : { marginLeft: "auto" }}
                     maxValue={modalMaxWeeks}
                     isError={inputPeriodOver}
                     errorMsg={errMsg.stakePeriodExceed}
@@ -498,7 +467,7 @@ function UpdateModalAfterEndTime() {
                   ></InputPeriod>
                 </Flex>
               </Flex>
-              <Flex px={smallerThan1024 ? "30px" : "43px"} mb={"30px"}>
+              <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
                 <StakeGraph
                   pageKey="Stake_screen"
                   periodKey="stake_relockModal_period"
@@ -511,7 +480,7 @@ function UpdateModalAfterEndTime() {
                 flexDir={"column"}
                 columnGap={"9px"}
                 mb={"30px"}
-                px={smallerThan1024 ? "20px" : "50px"}
+                px={bp700px ? "20px" : "50px"}
               >
                 {contentList?.map((content, index) => {
                   return (
@@ -532,7 +501,7 @@ function UpdateModalAfterEndTime() {
             <Flex justifyContent={"center"} mb={"21px"}>
               {isAllowance ? (
                 <SubmitButton
-                  w={smallerThan1024 ? 310 : 460}
+                  w={bp700px ? 310 : 460}
                   h={42}
                   name="Update"
                   isDisabled={btnDisabled}
@@ -540,7 +509,7 @@ function UpdateModalAfterEndTime() {
                 ></SubmitButton>
               ) : (
                 <SubmitButton
-                  w={smallerThan1024 ? 310 : 460}
+                  w={bp700px ? 310 : 460}
                   h={42}
                   name="Approve"
                   onClick={callApprove}
@@ -554,7 +523,7 @@ function UpdateModalAfterEndTime() {
               textAlign="center"
               w={"100%"}
               mb={"24px"}
-              px={smallerThan1024 ? "20px" : "50px"}
+              px={bp700px ? "20px" : "50px"}
             >
               <Text
                 w={"100%"}

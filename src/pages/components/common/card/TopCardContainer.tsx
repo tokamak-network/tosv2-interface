@@ -39,7 +39,8 @@ function MobileTopCard(props: { cardList: StakeTopCardProps[] }) {
               {title}
             </Text>
             <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
-              {priceUnit} {price}
+              {priceUnit === "$" ? priceUnit : null} {price}{" "}
+              {priceUnit !== "$" ? priceUnit : null}
             </Text>
           </Flex>
         );
@@ -72,7 +73,7 @@ function TopCardContainer(props: { pageKey: PageKey }) {
       ) : (
         <Flex justifyContent={"space-between"} columnGap={"24px"}>
           {cardList?.map((cardData, index) => {
-            const { title, price, priceUnit,tooltip } = cardData;
+            const { title, price, priceUnit, tooltip } = cardData;
 
             return (
               <TopCard

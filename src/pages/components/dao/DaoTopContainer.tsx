@@ -13,13 +13,14 @@ import SubmitButton from "common/button/SubmitButton";
 import Image from "next/image";
 import ResourcesIcon from "assets/icons/resources_icon.png";
 import useModal from "hooks/useModal";
+import useMediaView from "hooks/useMediaView";
 
 function DaoTopContainer() {
   const { colorMode } = useColorMode();
-  const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
   const theme = useTheme();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  const { bp500px } = useMediaView();
   const { openModal } = useModal("stake_stake_modal");
   const sendToStake = () => {
     router.push("/stake");
@@ -28,13 +29,12 @@ function DaoTopContainer() {
 
   return (
     <Flex
-      display={isOpen ? "Flex" : "none"}
       w={"100%"}
       mb={smallerThan1024 ? "30px" : "60px"}
       flexDir={"column"}
       justifyContent={"center"}
       alignItems="center"
-      px="102px"
+      px={bp500px ? 0 : "46px"}
     >
       <Text
         fontSize={"22px"}

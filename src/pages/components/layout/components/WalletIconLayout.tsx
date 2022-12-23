@@ -13,14 +13,14 @@ function WalletIconLayOut(props: any) {
   const { account } = useWeb3React();
   const { colorMode } = useColorMode();
   const [isHover, setIsHover] = useState<boolean>(false);
-  
+
   return (
     <Flex
       w={"100%"}
       alignItems={"center"}
-      justifyContent={"space-between"}
+      justifyContent={"center"}
+      columnGap={"20px"}
       {...props}
-    
     >
       <Image
         src={
@@ -37,8 +37,6 @@ function WalletIconLayOut(props: any) {
         alt={"WALLET_ICON"}
       ></Image>
       <Text
-       ml='10px'
-        w={"127px"}
         color={
           account
             ? colorMode === "light"

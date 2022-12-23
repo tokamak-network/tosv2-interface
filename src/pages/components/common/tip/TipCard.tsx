@@ -27,8 +27,10 @@ function TipCard(props: { msg: string[] }) {
       </Flex>
       <Flex
         mt={"-5px"}
-        height={"30px"}
-        w={"30px"}
+        minH={"30px"}
+        maxH={"30px"}
+        minW={"30px"}
+        maxW={"30px"}
         _hover={{ cursor: "pointer" }}
         onClick={() => setIsOpen(false)}
       >

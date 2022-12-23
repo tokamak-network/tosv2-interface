@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <path style="fill:none" d="M0 0h16v16H0z" transform="rotate(90 8 8)"/>
+    <path data-name="패스 1016" d="m8.037.75 4.047 4.05-4.047 4.043" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" transform="rotate(90 5.75 7)"/>
+    <path data-name="선 43" transform="rotate(90 2.977 4.977)" style="stroke:#2775ff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px;fill:none" d="M0 0h11.22"/>
+</svg>

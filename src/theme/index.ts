@@ -31,8 +31,8 @@ const colors = {
     900: "#e8edf2",
     1000: "#7e7e8f",
     1100: "#70707c",
-    1200: '#e2e2ea',
-    1300: '#f5f5fa'
+    1200: "#e2e2ea",
+    1300: "#f5f5fa",
   },
   black: {
     100: "#0f0f12",
@@ -51,7 +51,6 @@ const PAGE_LAYOUT_STYLE = {
     flexDir: "column",
     w: "100%",
     // backgroundColor: props.colorMode === "light" ? "#e23738" : "#257eee",
-    pt: "66px",
   }),
 };
 

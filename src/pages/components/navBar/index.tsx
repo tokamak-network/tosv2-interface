@@ -58,11 +58,12 @@ import TELEGRAM_W_ICON from "assets/icons/telegram-w.svg";
 
 import Line from "common/line/Line";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useMediaView from "hooks/useMediaView";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sidebarSelectedState, sidebarState } from "atom//header";
+import useModal from "hooks/useModal";
 
 const iconList = [
   {
@@ -466,9 +467,17 @@ function MobileSideBar() {
 }
 
 const NavBar = () => {
+  const { selectedModal } = useModal();
   const [isExpended, setIsExpended] = useState<boolean>(true);
   const { pcView } = useMediaView();
   const { colorMode } = useColorMode();
+
+  useEffect(() => {
+    if (selectedModal !== undefined) {
+      setIsExpended(false);
+    }
+  }, [selectedModal]);
+
   if (!pcView) {
     return <MobileSideBar />;
   }

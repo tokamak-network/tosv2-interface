@@ -5,6 +5,7 @@ import useModalContract from "hooks/contract/useModalContract";
 import useStos from "hooks/stake/useStos";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useInput from "hooks/useInput";
+import useMediaView from "hooks/useMediaView";
 import IBottomContent from "pages/components/common/modal/IBottomContent";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IBottomContentProps } from "types/common/modal";
@@ -33,6 +34,7 @@ function ManageModal_BottomContent() {
   );
   const stosLoading = useRecoilValue(stosLoadingState);
   const { newBalanceStos } = useStos();
+  const { bp700px } = useMediaView();
 
   const contentList: IBottomContentProps[] = [
     {
@@ -67,11 +69,13 @@ function ManageModal_BottomContent() {
       title: "Current End Time",
       content: currentEndTime,
       tooltip: "Lock-Up period end time before the update before the update.",
+      contentFontSize: bp700px ? 12 : 14,
     },
     {
       title: "New End Time",
       content: newEndTime,
       tooltip: "Lock-Up period end time after the update before the update.",
+      contentFontSize: bp700px ? 12 : 14,
     },
   ];
 
