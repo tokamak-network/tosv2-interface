@@ -18,7 +18,7 @@
     "@nivo/core": "^0.72.0",
     "@nivo/line": "^0.72.0",
     "decimal.js": "^10.3.1",
-    "framer-motion": "^6.3.16",
+    "framer-motion": "^6.5.1",
     "graphql": "^16.5.0",
     "jsbi": "^4.3.0",
     "moment": "^2.29.4",
