@@ -53,6 +53,20 @@ import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { introTextHover, introTextHoverSelectedState } from "atom/intro";
 
+const randomNums = () => {
+  let nums = [5, 6, 7, 8, 9, 10, 11];
+  let ranNums = [];
+  let i = nums.length;
+  let j = 0;
+
+  while (i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    ranNums.push(nums[j]);
+    nums.splice(j, 1);
+  }
+  return ranNums;
+};
+
 function LightPoint() {
   const selectText = useRecoilValue(introTextHoverSelectedState);
 
@@ -266,6 +280,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
   }) => {
     const { src, duration, opacity, clockDirection, initialRotate, style } =
       props;
+
     const rotateAngle = clockDirection ? 360 : -360;
     return (
       <motion.div
@@ -274,6 +289,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
         }}
         transition={{
           repeat: Infinity,
+          ease: "linear",
           duration: duration ?? Math.floor(Math.random() * 25) + 4,
         }}
         style={{ position: "absolute", opacity: opacity ?? 1, ...style }}
@@ -285,6 +301,9 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
   };
 
   const { selectedTab1 } = props;
+
+  const randomNumsArr = randomNums();
+  const secondRandomNumsArr = randomNums();
 
   return (
     <Flex
@@ -301,6 +320,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             selectedTab1
               ? {}
               : {
+                  x: -150,
                   opacity: 0,
                 }
           }
@@ -338,8 +358,12 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             return (
               <MotionWapper
                 src={imgSrc}
-                duration={index > 4 ? 4 : index > 5 ? 5 : 6}
                 key={`${index}_bgline`}
+                duration={
+                  index < 6
+                    ? randomNumsArr[index]
+                    : secondRandomNumsArr[index - 6]
+                }
               ></MotionWapper>
             );
           })}
@@ -388,7 +412,15 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             bigLine13,
           ].map((imgSrc: any, index: number) => {
             return (
-              <MotionWapper src={imgSrc} key={`${index}_bgline`}></MotionWapper>
+              <MotionWapper
+                src={imgSrc}
+                key={`${index}_bgline`}
+                duration={
+                  index < 6
+                    ? randomNumsArr[index]
+                    : secondRandomNumsArr[index - 6]
+                }
+              ></MotionWapper>
             );
           })}
         </motion.div>
@@ -445,7 +477,15 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
                 src={imgSrc}
                 clockDirection={true}
                 key={`${index}_bgline`}
-                duration={selectedTab1 ? undefined : 2}
+                duration={
+                  selectedTab1
+                    ? index < 6
+                      ? randomNumsArr[index]
+                      : secondRandomNumsArr[index - 6]
+                    : index < 6
+                    ? randomNumsArr[index] - 3
+                    : secondRandomNumsArr[index - 6] - 3
+                }
               ></MotionWapper>
             );
           })}
