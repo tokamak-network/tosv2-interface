@@ -92,6 +92,8 @@ const PageTitle = () => {
           </Flex>
         );
       case "DAO":
+        return null;
+      case "Intro":
         return (
           <Flex
             flexDir={bp500px ? "column" : "row"}
@@ -100,12 +102,8 @@ const PageTitle = () => {
             justifyContent={"space-between"}
             h={bp500px ? "66px" : ""}
           >
-            <Flex>
-              <Image src={HOME_ICON} alt={"HOME_ICON"}></Image>
-              <Text ml={"3px"}>Home</Text>
-              <Text mx={"7px"}>{">"}</Text>
-              <Text color={"blue.200"}>{pathName}</Text>
-            </Flex>
+            <Flex></Flex>
+            <UpdatedOn></UpdatedOn>
           </Flex>
         );
       default:

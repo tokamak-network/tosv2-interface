@@ -5,7 +5,7 @@ export type TokenTypes = "ETH" | "TON" | "WTON" | "TOS";
 
 export type TopCardList = BondTopCardProps[] | StakeTopCardProps[];
 
-export type Pages = "Dashboard" | "Bond" | "Stake" | 'DAO';
+export type Pages = "Intro" | "Dashboard" | "Bond" | "Stake" | "DAO";
 export type PageKey = "Stake_screen" | "Bond_screen";
 
 export type CheckBoxValueType = {
