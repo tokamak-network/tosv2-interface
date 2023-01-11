@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="998.269" height="998.269" viewBox="0 0 998.269 998.269">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.892" y1="0.396" x2="0.265" y2="0.851" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#2775ff"/>
+      <stop offset="1" stop-color="#2775ff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="패스_1031" x="377.994" y="11.798" width="565.998" height="610.644" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-color="#2775ff"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="d-bb-line-02" transform="translate(0 0)" opacity="0.5">
+    <ellipse id="Guide" cx="354.29" cy="354.29" rx="354.29" ry="354.29" transform="translate(455.466 998.269) rotate(-130)" fill="none"/>
+    <path id="패스_1058" data-name="패스 1058" d="M575.12,39.564c-26.027,50.355-64.1,92.8-111.135,125.827a353.282,353.282,0,0,1-203.237,64.115c-97.6,0-193.7-42.035-260.2-113.546L0,116.467A357.265,357.265,0,0,0,260.77,230.1a353.8,353.8,0,0,0,204.364-64.462A355.659,355.659,0,0,0,577.429,37.025c6.065-11.8,10.133-24.5,14.889-37.025-4.8,12.635-8.707,23.076-14.855,34.967" transform="matrix(-0.643, -0.766, 0.766, -0.643, 763.228, 617.943)" fill="url(#linear-gradient)"/>
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#패스_1031)">
+      <path id="패스_1031-2" data-name="패스 1031" d="M575.12,39.564c-26.027,50.355-64.1,92.8-111.135,125.827a353.282,353.282,0,0,1-203.237,64.115c-97.6,0-193.7-42.035-260.2-113.546L0,116.467A357.265,357.265,0,0,0,260.77,230.1a353.8,353.8,0,0,0,204.364-64.462A355.659,355.659,0,0,0,577.429,37.025c6.065-11.8,10.133-24.5,14.889-37.025-4.8,12.635-8.707,23.076-14.855,34.967" transform="translate(763.23 617.94) rotate(-130)" fill="url(#linear-gradient)"/>
+    </g>
+    <path id="패스_1062" data-name="패스 1062" d="M9.286.008c5.123-.06,9.273.236,9.268.662s-4.162.82-9.286.88S-.005,1.314,0,.888,4.162.068,9.286.008Z" transform="matrix(-0.966, 0.259, -0.259, -0.966, 419.183, 153.342)" fill="#e0feff" style="mix-blend-mode: overlay;isolation: isolate"/>
+    <path id="패스_1061" data-name="패스 1061" d="M9.286.008c5.123-.06,9.273.236,9.268.662s-4.162.82-9.286.88S-.005,1.314,0,.888,4.162.068,9.286.008Z" transform="matrix(-0.966, 0.259, -0.259, -0.966, 419.182, 153.341)" fill="#e0feff" style="mix-blend-mode: overlay;isolation: isolate"/>
+  </g>
+</svg>

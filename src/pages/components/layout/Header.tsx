@@ -118,7 +118,7 @@ function Header(props: HeaderProps) {
           )}
         </Flex>
 
-        {/* <Flex
+        <Flex
           ml={"20px"}
           w={"48px"}
           h={"48px"}
@@ -134,7 +134,7 @@ function Header(props: HeaderProps) {
             src={colorMode === "light" ? SUN_ICON : MOON_ICON}
             alt={"MOON_ICON"}
           ></Image>
-        </Flex> */}
+        </Flex>
       </Flex>
     </Flex>
   );

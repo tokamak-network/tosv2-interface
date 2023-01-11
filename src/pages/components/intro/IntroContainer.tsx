@@ -1,14 +1,17 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
+import IntroCircle from "./IntroCircle";
 import IntroText from "./IntroText";
 
 function IntroContainer() {
   const [selectedTab1, setSelectedTab1] = useState<boolean>(true);
+
   const tabButtonStyle = {
     borderBottomWidth: 3,
     borderBottomColor: "white.200",
     paddingBottom: 1,
   };
+
   return (
     <Flex
       w={"100%"}
@@ -42,6 +45,7 @@ function IntroContainer() {
         </Text>
       </Box>
       <IntroText selectedTab1={selectedTab1}></IntroText>
+      <IntroCircle selectedTab1={selectedTab1}></IntroCircle>
     </Flex>
   );
 }
