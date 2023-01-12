@@ -140,9 +140,17 @@ function TosContentContainer() {
           </Flex>
           <Text h={"22px"} lineHeight={1.71} fontSize={14}>
             receive airdrops from projects, and participate in IDO
-            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
-              + more
-            </Link>
+            {selectText === 1 && (
+              <Link
+                pos={"absolute"}
+                href={""}
+                isExternal={true}
+                color={"blue.200"}
+                ml={"11px"}
+              >
+                + more
+              </Link>
+            )}
           </Text>
         </Box>
         <Box
@@ -162,6 +170,19 @@ function TosContentContainer() {
             </Text>
             , that earns compound interest in TOS based on LTOS index every 8
             hours
+            <Text>
+              {selectText === 2 && (
+                <Link
+                  pos={"absolute"}
+                  href={""}
+                  isExternal={true}
+                  color={"blue.200"}
+                  ml={"11px"}
+                >
+                  + more
+                </Link>
+              )}
+            </Text>
           </Flex>
         </Box>
         <Box
@@ -193,9 +214,19 @@ function TosContentContainer() {
             <Text color={"#ec8c56"} ml={"5px"}>
               bonding
             </Text>
-            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
-              + more
-            </Link>
+            <Text>
+              {selectText === 3 && (
+                <Link
+                  pos={"absolute"}
+                  href={""}
+                  isExternal={true}
+                  color={"blue.200"}
+                  ml={"11px"}
+                >
+                  + more
+                </Link>
+              )}
+            </Text>
           </Flex>
         </Box>
       </Flex>
