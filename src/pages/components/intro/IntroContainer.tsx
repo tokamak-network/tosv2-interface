@@ -19,6 +19,7 @@ function IntroContainer() {
       mt={"15px"}
       justifyContent={"center"}
       alignItems={"center"}
+      mb={"100px"}
     >
       <Box fontSize={21} display={"flex"} columnGap={"21px"}>
         <Text

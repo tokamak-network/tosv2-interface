@@ -174,7 +174,13 @@ function TosContentContainer() {
           onMouseOver={() => setSelectText(3)}
           onMouseLeave={() => setSelectText(undefined)}
         >
-          <Flex h={"22px"} lineHeight={1.71} fontSize={14}>
+          <Flex
+            h={"22px"}
+            lineHeight={1.71}
+            fontSize={14}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
             - used to create Uniswap LP token that can be locked to get
             <Text color={"#ec8c56"} ml={"5px"}>
               dTOS

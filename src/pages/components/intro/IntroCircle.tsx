@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useAnimationControls } from "framer-motion";
 
 //background lines
 import bgLine1 from "assets/circles/dark/background/d-bb-line-01.svg";
@@ -269,106 +269,116 @@ function LightPointText(props: { selectedTab1: boolean }) {
   );
 }
 
-function TabOneCircle(props: { selectedTab1: boolean }) {
-  const MotionWapper = (props: {
-    src: any;
-    duration?: number;
-    opacity?: number;
-    clockDirection?: boolean;
-    initialRotate?: number;
-    style?: {};
-  }) => {
-    const { src, duration, opacity, clockDirection, initialRotate, style } =
-      props;
+const MotionWapper = (props: {
+  src: any;
+  duration?: number;
+  opacity?: number;
+  clockDirection?: boolean;
+  initialRotate?: number;
+  style?: {};
+}) => {
+  const { src, duration, opacity, clockDirection, initialRotate, style } =
+    props;
 
-    const rotateAngle = clockDirection ? 360 : -360;
-    return (
-      <motion.div
-        animate={{
-          rotate: initialRotate ? rotateAngle + initialRotate : rotateAngle,
-        }}
-        transition={{
-          repeat: Infinity,
-          ease: "linear",
-          duration: duration ?? Math.floor(Math.random() * 25) + 4,
-        }}
-        style={{ position: "absolute", opacity: opacity ?? 1, ...style }}
-        initial={{ rotate: initialRotate }}
-      >
-        <Image src={src} alt={"bgLine"}></Image>
-      </motion.div>
-    );
-  };
+  const rotateAngle = clockDirection ? 360 : -360;
+  return (
+    <motion.div
+      animate={{
+        rotate: initialRotate ? rotateAngle + initialRotate : rotateAngle,
+      }}
+      transition={{
+        repeat: Infinity,
+        ease: "linear",
+        duration: duration ?? Math.floor(Math.random() * 25) + 4,
+      }}
+      style={{ position: "absolute", opacity: opacity ?? 1, ...style }}
+      initial={{ rotate: initialRotate }}
+    >
+      <Image src={src} alt={"bgLine"}></Image>
+    </motion.div>
+  );
+};
 
+function BackgroundLines(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
 
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
 
   return (
-    <Flex
-      w={"700px"}
-      h={"700px"}
-      pos="relative"
-      mt={"100px"}
-      alignItems={"center"}
-      justifyContent={"center"}
-    >
-      <Flex pos={"absolute"}>
-        <motion.div
-          animate={
-            selectedTab1
-              ? {}
-              : {
-                  x: -150,
-                  opacity: 0,
-                }
-          }
-          transition={
-            selectedTab1
-              ? {}
-              : {
-                  duration: 4,
-                }
-          }
-          style={{
-            position: "relative",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "800px",
-            height: "800px",
-            opacity: 0.5,
-          }}
-        >
-          {[
-            bgLine1,
-            bgLine2,
-            bgLine3,
-            bgLine4,
-            bgLine5,
-            bgLine6,
-            bgBLine1,
-            bgBLine2,
-            bgBLine3,
-            bgBLine4,
-            bgBLine5,
-            bgBLine6,
-          ].map((imgSrc: any, index: number) => {
-            return (
-              <MotionWapper
-                src={imgSrc}
-                key={`${index}_bgline`}
-                duration={
-                  index < 6
-                    ? randomNumsArr[index]
-                    : secondRandomNumsArr[index - 6]
-                }
-              ></MotionWapper>
-            );
-          })}
-        </motion.div>
-      </Flex>
+    <Flex pos={"absolute"}>
+      <motion.div
+        animate={
+          selectedTab1
+            ? {}
+            : {
+                x: -150,
+                opacity: 0,
+              }
+        }
+        transition={
+          selectedTab1
+            ? {}
+            : {
+                duration: 4,
+              }
+        }
+        style={{
+          position: "relative",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "800px",
+          height: "800px",
+          opacity: 0.5,
+        }}
+      >
+        {[
+          bgLine1,
+          bgLine2,
+          bgLine3,
+          bgLine4,
+          bgLine5,
+          bgLine6,
+          bgBLine1,
+          bgBLine2,
+          bgBLine3,
+          bgBLine4,
+          bgBLine5,
+          bgBLine6,
+        ].map((imgSrc: any, index: number) => {
+          return (
+            <MotionWapper
+              src={imgSrc}
+              key={`${index}_bgline`}
+              duration={
+                index < 6
+                  ? randomNumsArr[index]
+                  : secondRandomNumsArr[index - 6]
+              }
+            ></MotionWapper>
+          );
+        })}
+      </motion.div>
+    </Flex>
+  );
+}
+
+function TabOneCircle(props: { selectedTab1: boolean }) {
+  const { selectedTab1 } = props;
+  const randomNumsArr = randomNums();
+  const secondRandomNumsArr = randomNums();
+
+  return (
+    // <Flex
+    //   w={"700px"}
+    //   h={"700px"}
+    //   pos="relative"
+    //   mt={"100px"}
+    //   alignItems={"center"}
+    //   justifyContent={"center"}
+    // >
+    <>
       <Flex pos={"absolute"}>
         <motion.div
           animate={
@@ -522,13 +532,26 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
           </Text>
         </Flex>
       </motion.div>
-    </Flex>
+      {/* </Flex> */}
+    </>
   );
 }
 
 function IntroCircle(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
-  return <TabOneCircle selectedTab1={selectedTab1} />;
+  return (
+    <Flex
+      w={"700px"}
+      h={"700px"}
+      pos="relative"
+      mt={"100px"}
+      alignItems={"center"}
+      justifyContent={"center"}
+    >
+      <TabOneCircle selectedTab1={selectedTab1} />
+      <BackgroundLines selectedTab1={selectedTab1} />
+    </Flex>
+  );
 }
 
 export default IntroCircle;
