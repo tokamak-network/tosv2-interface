@@ -48,7 +48,7 @@ import smallLine13 from "assets/circles/dark/small/ds-line-13.svg";
 import lightPoint from "assets/circles/light-point.png";
 
 import Image from "next/image";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, position } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { introTextHover, introTextHoverSelectedState } from "atom/intro";
@@ -72,9 +72,8 @@ function LightPoint() {
 
   return (
     <>
-      <Box
-        pos={"absolute"}
-        style={
+      <motion.div
+        animate={
           selectText === 1 || selectText === 2
             ? {
                 width: "100px",
@@ -89,13 +88,13 @@ function LightPoint() {
                 left: "-100px",
               }
         }
-        zIndex={100}
+        transition={{ duration: 1 }}
+        style={{ position: "absolute", zIndex: 100 }}
       >
         <Image src={lightPoint} alt={"light-point"}></Image>
-      </Box>
-      <Box
-        pos={"absolute"}
-        style={
+      </motion.div>
+      <motion.div
+        animate={
           selectText === 3
             ? {
                 width: "100px",
@@ -110,13 +109,13 @@ function LightPoint() {
                 left: "60px",
               }
         }
-        zIndex={100}
+        transition={{ duration: 1 }}
+        style={{ position: "absolute", zIndex: 100 }}
       >
         <Image src={lightPoint} alt={"light-point"}></Image>
-      </Box>
-      <Box
-        pos={"absolute"}
-        style={
+      </motion.div>
+      <motion.div
+        animate={
           selectText === 3
             ? {
                 width: "100px",
@@ -131,13 +130,13 @@ function LightPoint() {
                 left: "60px",
               }
         }
-        zIndex={100}
+        transition={{ duration: 1 }}
+        style={{ position: "absolute", zIndex: 100 }}
       >
         <Image src={lightPoint} alt={"light-point"}></Image>
-      </Box>
-      <Box
-        pos={"absolute"}
-        style={
+      </motion.div>
+      <motion.div
+        animate={
           selectText === 1
             ? {
                 width: "100px",
@@ -152,10 +151,11 @@ function LightPoint() {
                 left: "-100px",
               }
         }
-        zIndex={100}
+        transition={{ duration: 1 }}
+        style={{ position: "absolute", zIndex: 100 }}
       >
         <Image src={lightPoint} alt={"light-point"}></Image>
-      </Box>
+      </motion.div>
     </>
   );
 }
@@ -544,7 +544,7 @@ function IntroCircle(props: { selectedTab1: boolean }) {
       w={"700px"}
       h={"700px"}
       pos="relative"
-      mt={"100px"}
+      mt={"120px"}
       alignItems={"center"}
       justifyContent={"center"}
     >
