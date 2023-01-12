@@ -177,7 +177,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         selectedTab1
           ? {}
           : {
-              duration: 10,
+              duration: 5,
             }
       }
     >
@@ -320,7 +320,7 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
           selectedTab1
             ? {}
             : {
-                duration: 4,
+                duration: 2,
               }
         }
         style={{
@@ -393,7 +393,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             selectedTab1
               ? {}
               : {
-                  duration: 4,
+                  duration: 2,
                 }
           }
           style={{
@@ -450,7 +450,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             selectedTab1
               ? {}
               : {
-                  duration: 4,
+                  duration: 2,
                 }
           }
           style={{
@@ -513,7 +513,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
           selectedTab1
             ? {}
             : {
-                duration: 4,
+                duration: 2,
               }
         }
       >
