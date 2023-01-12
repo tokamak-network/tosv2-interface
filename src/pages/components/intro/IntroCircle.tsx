@@ -53,6 +53,8 @@ import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { introTextHover, introTextHoverSelectedState } from "atom/intro";
 
+let isAlreadyMoved = false;
+
 const randomNums = () => {
   let nums = [5, 6, 7, 8, 9, 10, 11];
   let ranNums = [];
@@ -310,19 +312,20 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
       <motion.div
         animate={
           selectedTab1
-            ? {}
+            ? isAlreadyMoved
+              ? {
+                  x: 150,
+                  opacity: 0.5,
+                }
+              : {}
             : {
                 x: -150,
                 opacity: 0,
               }
         }
-        transition={
-          selectedTab1
-            ? {}
-            : {
-                duration: 2,
-              }
-        }
+        transition={{
+          duration: 2,
+        }}
         style={{
           position: "relative",
           display: "flex",
@@ -369,6 +372,16 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
 
+  useEffect(() => {
+    if (selectedTab1 === false) {
+      isAlreadyMoved = true;
+    }
+    isAlreadyMoved = false;
+  }, [selectedTab1]);
+
+  console.log("isAlreadyMoved");
+  console.log(isAlreadyMoved);
+
   return (
     // <Flex
     //   w={"700px"}
@@ -383,18 +396,24 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
         <motion.div
           animate={
             selectedTab1
-              ? {}
+              ? isAlreadyMoved
+                ? {
+                    opacity: 1,
+                    x: 150,
+                  }
+                : {}
               : {
                   opacity: 0.4,
                   x: -150,
                 }
           }
           transition={
-            selectedTab1
-              ? {}
-              : {
-                  duration: 2,
-                }
+            // selectedTab1
+            //   ? {}
+            //   : {
+            //       duration: 2,
+            //     }
+            { duration: 2 }
           }
           style={{
             position: "relative",
@@ -439,20 +458,22 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
         <motion.div
           animate={
             selectedTab1
-              ? {}
+              ? isAlreadyMoved
+                ? {
+                    x: -150,
+                    y: 250,
+                    opacity: 0.5,
+                  }
+                : {}
               : {
                   x: 150,
                   y: -250,
                   opacity: 1,
                 }
           }
-          transition={
-            selectedTab1
-              ? {}
-              : {
-                  duration: 2,
-                }
-          }
+          transition={{
+            duration: selectedTab1 && isAlreadyMoved ? 1 : 2,
+          }}
           style={{
             position: "relative",
             display: "flex",
@@ -504,18 +525,16 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
       <motion.div
         animate={
           selectedTab1
-            ? {}
+            ? isAlreadyMoved
+              ? { x: 150 }
+              : {}
             : {
                 x: -150,
               }
         }
-        transition={
-          selectedTab1
-            ? {}
-            : {
-                duration: 2,
-              }
-        }
+        transition={{
+          duration: 2,
+        }}
       >
         <Flex
           pos={"relative"}
