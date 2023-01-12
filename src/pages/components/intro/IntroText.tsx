@@ -208,7 +208,12 @@ function TosContentContainer() {
             </Text>
             ,
           </Flex>
-          <Flex h={"22px"} lineHeight={1.71} fontSize={14}>
+          <Flex
+            h={"22px"}
+            lineHeight={1.71}
+            fontSize={14}
+            justifyContent={"center"}
+          >
             a non transferrable discount token that greatly reduces the price
             for
             <Text color={"#ec8c56"} ml={"5px"}>

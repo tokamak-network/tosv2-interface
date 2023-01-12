@@ -379,9 +379,6 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
     isAlreadyMoved = false;
   }, [selectedTab1]);
 
-  console.log("isAlreadyMoved");
-  console.log(isAlreadyMoved);
-
   return (
     // <Flex
     //   w={"700px"}
