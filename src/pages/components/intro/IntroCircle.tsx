@@ -243,6 +243,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         >
           dTOS
         </Text>
+        <Text>(Coming soon)</Text>
         <Text>High discount rate</Text>
         <Text>for bonding</Text>
       </Box>
@@ -517,6 +518,27 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
               ></MotionWapper>
             );
           })}
+          <motion.div
+            style={{ position: "absolute", opacity: 0 }}
+            animate={
+              selectedTab1
+                ? {}
+                : {
+                    opacity: 1,
+                  }
+            }
+            transition={
+              selectedTab1
+                ? {}
+                : {
+                    duration: 5,
+                  }
+            }
+          >
+            <Text fontSize={28} fontWeight={"bold"} color={"white.100"}>
+              TOS
+            </Text>
+          </motion.div>
         </motion.div>
       </Flex>
       <motion.div

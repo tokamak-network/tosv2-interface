@@ -98,7 +98,16 @@ function TosContentContainer() {
           TOS is the native token in TONStarter ecosystem
         </Text>
         <Text h={"22px"} lineHeight={1.71} fontSize={14} color={"gray.100"}>
-          - You can get TOS using Swap or from staking TON
+          - You can get TOS using{" "}
+          <Link
+            isExternal={true}
+            href={"https://swap.tokamak.network/"}
+            color={"white.100"}
+            textDecoration={"underline"}
+          >
+            Swap
+          </Link>{" "}
+          or from staking TON
         </Text>
         <Text h={"22px"} lineHeight={1.71} fontSize={14} color={"gray.100"}>
           - TOS is designed to facilitate TON⇄TONStarter ecosystem growth
