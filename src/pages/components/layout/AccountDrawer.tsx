@@ -80,7 +80,6 @@ function AccountDrawer(props: HeaderProps) {
               fontSize={16}
               bg={colorMode === "dark" ? "#07070c" : "transparent"}
               h={"48px"}
-              pl={"15px"}
               borderRadius={8}
               border={
                 colorMode === "dark" ? "1px solid #313442" : "1px solid #e8edf2"

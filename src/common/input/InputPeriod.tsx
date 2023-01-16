@@ -84,14 +84,20 @@ const InputPeriod = (props: InputProp) => {
       return;
     }
     if (Number(event.target.value) === 0) {
+      console.log("-1-");
+
       setWeeksUnit("Weeks");
       setWeekHighlight(false);
     }
     if (Number(event.target.value) > 1) {
+      console.log("-2-");
+
       setWeeksUnit("Weeks");
       setWeekHighlight(true);
     }
     if (Number(event.target.value) === 1) {
+      console.log("-3-");
+
       setWeeksUnit("Week");
       setWeekHighlight(true);
     }

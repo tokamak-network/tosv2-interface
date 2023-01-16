@@ -55,11 +55,11 @@ function useStakeModaldata(): StakeModalBottomContents {
         setLtos("-");
         return setNewBalance("-");
       }
+
       if (
         BondDepositoryProxy_CONTRACT &&
         StakingV2Proxy_CONTRACT &&
         account &&
-        simpleStakingId &&
         inputAmount
       ) {
         const tosAmount = convertToWei(
@@ -67,7 +67,6 @@ function useStakeModaldata(): StakeModalBottomContents {
         );
         const LTOS_Index = await StakingV2Proxy_CONTRACT.possibleIndex();
         const LTOS_BN = BigNumber.from(tosAmount).div(LTOS_Index);
-
         //youWIllGet
         const youWillGetLTOS =
           await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(tosAmount);
@@ -79,9 +78,11 @@ function useStakeModaldata(): StakeModalBottomContents {
         setLtos(ltos);
 
         //currentBalance
-        const currentBalanceWei = await StakingV2Proxy_CONTRACT.remainedLtos(
-          simpleStakingId.toString()
-        );
+        const currentBalanceWei = simpleStakingId
+          ? await StakingV2Proxy_CONTRACT.remainedLtos(
+              simpleStakingId.toString()
+            )
+          : 0;
         const currentBalance =
           convertNumber({
             amount: currentBalanceWei.toString(),
