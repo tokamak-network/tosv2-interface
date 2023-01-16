@@ -164,10 +164,10 @@ function LightPoint() {
 
 function LightPointText(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
-  const selectText = useRecoilValue(introTextHoverSelectedState);
+  const [selectText, setSelectText] = useRecoilState(introTextHover);
   return (
     <motion.div
-      style={{ position: "relative", opacity: 0 }}
+      style={{ position: "relative", opacity: 0, zIndex: 10000 }}
       animate={
         selectedTab1
           ? {}
@@ -193,6 +193,9 @@ function LightPointText(props: { selectedTab1: boolean }) {
         pos="absolute"
         left={"-230px"}
         top={"-130px"}
+        onMouseEnter={() => setSelectText(2)}
+        onMouseLeave={() => setSelectText(undefined)}
+        cursor={"pointer"}
       >
         <Text
           color={selectText === 1 || selectText === 2 ? "#ec8c56" : "#64646f"}
@@ -213,6 +216,9 @@ function LightPointText(props: { selectedTab1: boolean }) {
         pos="absolute"
         left={"-320px"}
         top={"90px"}
+        onMouseEnter={() => setSelectText(1)}
+        onMouseLeave={() => setSelectText(undefined)}
+        cursor={"pointer"}
       >
         <Text
           color={selectText === 1 ? "#ec8c56" : "#64646f"}
@@ -235,6 +241,9 @@ function LightPointText(props: { selectedTab1: boolean }) {
         left={"150px"}
         top={"-130px"}
         w={"150px"}
+        onMouseEnter={() => setSelectText(3)}
+        onMouseLeave={() => setSelectText(undefined)}
+        cursor={"pointer"}
       >
         <Text
           color={selectText === 3 ? "#ec8c56" : "#64646f"}
@@ -257,6 +266,9 @@ function LightPointText(props: { selectedTab1: boolean }) {
         left={"150px"}
         top={"90px"}
         w={"200px"}
+        onMouseEnter={() => setSelectText(3)}
+        onMouseLeave={() => setSelectText(undefined)}
+        cursor={"pointer"}
       >
         <Text
           color={selectText === 3 ? "#ec8c56" : "#64646f"}
@@ -452,7 +464,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
           })}
         </motion.div>
       </Flex>
-      <Flex pos={"absolute"}>
+      <Flex pos={"absolute"} zIndex={10000}>
         <motion.div
           animate={
             selectedTab1
