@@ -167,7 +167,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
   const [selectText, setSelectText] = useRecoilState(introTextHover);
   return (
     <motion.div
-      style={{ position: "relative", opacity: 0, zIndex: 10000 }}
+      style={{ position: "relative", opacity: 0, zIndex: 5000 }}
       animate={
         selectedTab1
           ? {}
@@ -384,6 +384,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
+  const selectText = useRecoilValue(introTextHoverSelectedState);
 
   useEffect(() => {
     if (selectedTab1 === false) {
@@ -464,7 +465,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
           })}
         </motion.div>
       </Flex>
-      <Flex pos={"absolute"} zIndex={10000}>
+      <Flex pos={"absolute"} zIndex={5000}>
         <motion.div
           animate={
             selectedTab1
@@ -571,13 +572,23 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
           pos={"relative"}
           fontSize={28}
           fontWeight={"bold"}
-          color={"white.100"}
+          color={selectedTab1 ? "white.100" : "#64646f"}
           top={"-10px"}
         >
           <Text pos={"absolute"} left={"-350px"}>
             TON
           </Text>
-          <Text pos={"absolute"} left={"284px"}>
+          <Text
+            pos={"absolute"}
+            left={"284px"}
+            color={
+              selectText === 1
+                ? "white.100"
+                : selectedTab1
+                ? "white.100"
+                : "#64646f"
+            }
+          >
             TONStarter
           </Text>
         </Flex>

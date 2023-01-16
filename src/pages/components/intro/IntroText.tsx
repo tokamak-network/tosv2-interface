@@ -251,7 +251,7 @@ function TosContentContainer() {
 function IntroText(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
   return (
-    <Flex mt={"45px"} rowGap={"45px"} flexDir={"column"} zIndex={1000}>
+    <Flex mt={"45px"} rowGap={"45px"} flexDir={"column"} zIndex={10000}>
       {selectedTab1 ? (
         contents.map((content, index) => (
           <ContentContainer
