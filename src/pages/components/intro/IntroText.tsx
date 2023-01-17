@@ -1,5 +1,7 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { introTextHover } from "atom/intro";
+import useMediaView from "hooks/useMediaView";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useRecoilState } from "recoil";
 
 const contents: {
@@ -46,24 +48,20 @@ function ContentContainer(props: {
   content: { contentText: string; link?: string }[];
 }) {
   const { title, content } = props;
+  const [width] = useWindowDimensions();
   return (
     <Flex flexDir={"column"} textAlign={"center"}>
-      <Text
-        color={"white.200"}
-        fontSize={22}
-        fontWeight={"bold"}
-        h={"31px"}
-        mb={"12px"}
-      >
+      <Text color={"white.200"} fontSize={22} fontWeight={"bold"} mb={"12px"}>
         {title}
       </Text>
       {content.map((content, index) => (
         <Text
           key={index}
-          h={"22px"}
           lineHeight={1.71}
           fontSize={14}
           color={"gray.100"}
+          display={width < 400 ? "flex" : ""}
+          flexDir={width < 400 ? "column" : "row"}
         >
           - {content.contentText}
           {content.link && (
@@ -84,6 +82,7 @@ function ContentContainer(props: {
 
 function TosContentContainer() {
   const [selectText, setSelectText] = useRecoilState(introTextHover);
+  const { customMaxView } = useMediaView(400);
 
   return (
     <Flex flexDir={"column"} rowGap={"45px"}>
@@ -97,7 +96,7 @@ function TosContentContainer() {
         >
           TOS is the native token in TONStarter ecosystem
         </Text>
-        <Text h={"22px"} lineHeight={1.71} fontSize={14} color={"gray.100"}>
+        <Text lineHeight={1.71} fontSize={14} color={"gray.100"}>
           - You can get TOS using{" "}
           <Link
             isExternal={true}
@@ -109,7 +108,7 @@ function TosContentContainer() {
           </Link>{" "}
           or from staking TON
         </Text>
-        <Text h={"22px"} lineHeight={1.71} fontSize={14} color={"gray.100"}>
+        <Text lineHeight={1.71} fontSize={14} color={"gray.100"}>
           - TOS is designed to facilitate TON⇄TONStarter ecosystem growth
           <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
             + more
@@ -136,7 +135,7 @@ function TosContentContainer() {
           onMouseOver={() => setSelectText(1)}
           onMouseLeave={() => setSelectText(undefined)}
         >
-          <Flex h={"22px"} lineHeight={1.71} fontSize={14}>
+          <Flex lineHeight={1.71} fontSize={14}>
             - locked for sTOS and{" "}
             <Text color={"#ec8c56"} ml={"5px"}>
               LTOS
@@ -147,7 +146,7 @@ function TosContentContainer() {
             </Text>{" "}
             is used to participate in TONStarter governance,
           </Flex>
-          <Text h={"22px"} lineHeight={1.71} fontSize={14}>
+          <Text lineHeight={1.71} fontSize={14}>
             receive airdrops from projects, and participate in IDO
             {selectText === 1 && (
               <Link
@@ -172,7 +171,7 @@ function TosContentContainer() {
           onMouseOver={() => setSelectText(2)}
           onMouseLeave={() => setSelectText(undefined)}
         >
-          <Flex h={"22px"} lineHeight={1.71} fontSize={14} my={"6px"}>
+          <Flex lineHeight={1.71} fontSize={14} my={"6px"}>
             - staked for{" "}
             <Text color={"#ec8c56"} ml={"5px"}>
               LTOS
@@ -205,7 +204,6 @@ function TosContentContainer() {
           onMouseLeave={() => setSelectText(undefined)}
         >
           <Flex
-            h={"22px"}
             lineHeight={1.71}
             fontSize={14}
             alignItems={"center"}
@@ -217,12 +215,7 @@ function TosContentContainer() {
             </Text>
             ,
           </Flex>
-          <Flex
-            h={"22px"}
-            lineHeight={1.71}
-            fontSize={14}
-            justifyContent={"center"}
-          >
+          <Flex lineHeight={1.71} fontSize={14} justifyContent={"center"}>
             a non transferrable discount token that greatly reduces the price
             for
             <Text color={"#ec8c56"} ml={"5px"}>

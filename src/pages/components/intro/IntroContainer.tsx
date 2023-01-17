@@ -15,11 +15,13 @@ function IntroContainer() {
   return (
     <Flex
       w={"100%"}
+      h={"100%"}
       flexDir={"column"}
       mt={"15px"}
       justifyContent={"center"}
       alignItems={"center"}
       mb={"100px"}
+      pos="relative"
     >
       <Box fontSize={21} display={"flex"} columnGap={"21px"}>
         <Text

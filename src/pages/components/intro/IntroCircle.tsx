@@ -52,6 +52,8 @@ import { Box, Flex, Text, position } from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { introTextHover, introTextHoverSelectedState } from "atom/intro";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
+import useMediaView from "hooks/useMediaView";
 
 let isAlreadyMoved = false;
 
@@ -319,6 +321,11 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
 
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
+  const [width, height] = useWindowDimensions();
+
+  if (width < 1024) {
+    return null;
+  }
 
   return (
     <Flex pos={"absolute"}>
@@ -344,8 +351,8 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          width: "800px",
-          height: "800px",
+          width: "1000px",
+          height: "1000px",
           opacity: 0.5,
         }}
       >
@@ -385,6 +392,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
   const selectText = useRecoilValue(introTextHoverSelectedState);
+  const [width, height] = useWindowDimensions();
 
   useEffect(() => {
     if (selectedTab1 === false) {
@@ -431,9 +439,9 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "1000px",
-            height: "1000px",
             opacity: 1,
+            width: "100vh",
+            // width: `${width - 100}px`,
           }}
         >
           {[
@@ -490,8 +498,8 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "550px",
-            height: "550px",
+            width: "100vh",
+            // width: `${width - 100}px`,
             opacity: 0.5,
           }}
         >
@@ -570,17 +578,24 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
       >
         <Flex
           pos={"relative"}
-          fontSize={28}
+          fontSize={width > 500 ? 28 : 21}
           fontWeight={"bold"}
           color={selectedTab1 ? "white.100" : "#64646f"}
           top={"-10px"}
+          width={"100%"}
+          minW={"100%"}
+          justifyContent={"center"}
+          zIndex={100000}
         >
-          <Text pos={"absolute"} left={"-350px"}>
+          <Text
+            pos={"absolute"}
+            left={width > 900 ? "-330px" : width > 500 ? "-230px" : "-150px"}
+          >
             TON
           </Text>
           <Text
             pos={"absolute"}
-            left={"284px"}
+            left={width > 900 ? "270px" : width > 500 ? "100px" : "50px"}
             color={
               selectText === 1
                 ? "white.100"
@@ -600,11 +615,21 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
 
 function IntroCircle(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
+  const [width] = useWindowDimensions();
+
+  const height = useMemo(() => {
+    if (width > 1024) {
+      return "730px";
+    }
+    if (width > 500) {
+      return "400px";
+    }
+    return "350px";
+  }, [width]);
+
   return (
     <Flex
-      w={"700px"}
-      h={"700px"}
-      pos="relative"
+      h={height}
       mt={"120px"}
       alignItems={"center"}
       justifyContent={"center"}
