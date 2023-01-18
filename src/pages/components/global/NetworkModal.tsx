@@ -18,6 +18,7 @@ import TokenSymbol from "common/token/TokenSymol";
 import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 import { cp } from "fs";
+import { zIndexStyle } from "theme/styles";
 
 const networkList = [
   {
@@ -54,7 +55,13 @@ function NetworkModal() {
       onClose={() => closeModal()}
     >
       <ModalOverlay className={"modalOverlay"} />
-      <ModalContent w={"360px"} h={"223px"} borderRadius={16} p={0}>
+      <ModalContent
+        w={"360px"}
+        h={"223px"}
+        borderRadius={16}
+        p={0}
+        zIndex={zIndexStyle.TopOverHeader}
+      >
         <ModalBody
           minW={"360px"}
           minH={"223px"}

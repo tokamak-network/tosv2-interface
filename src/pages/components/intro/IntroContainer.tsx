@@ -1,10 +1,12 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useMemo, useState } from "react";
 import IntroCircle from "./IntroCircle";
 import IntroText from "./IntroText";
 
 function IntroContainer() {
   const [selectedTab1, setSelectedTab1] = useState<boolean>(true);
+  const [width] = useWindowDimensions();
 
   const tabButtonStyle = {
     borderBottomWidth: 3,
@@ -20,7 +22,7 @@ function IntroContainer() {
       mt={"15px"}
       justifyContent={"center"}
       alignItems={"center"}
-      mb={"100px"}
+      mb={width < 530 ? "20px" : "100px"}
       pos="relative"
     >
       <Box fontSize={21} display={"flex"} columnGap={"21px"}>

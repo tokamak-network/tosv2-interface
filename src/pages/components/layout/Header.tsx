@@ -24,6 +24,7 @@ import { selectedTxState } from "atom/global/tx";
 import { accountBar } from "atom/global/sidebar";
 import WalletIconLayOut from "./components/WalletIconLayout";
 import NetworkIcon from "./components/NetworkIcon";
+import { zIndexStyle } from "theme/styles";
 
 function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
@@ -88,7 +89,7 @@ function Header(props: HeaderProps) {
       bg={colorMode === "light" ? "white.100" : "black.100"}
       position={"sticky"}
       top={0}
-      zIndex={1}
+      zIndex={zIndexStyle.HeaderTop}
       alignItems={"center"}
     >
       {!pcView && <BurgerButton></BurgerButton>}

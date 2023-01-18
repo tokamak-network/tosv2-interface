@@ -1,8 +1,8 @@
 import { Box, Flex, Link, Text } from "@chakra-ui/react";
 import { introTextHover } from "atom/intro";
-import useMediaView from "hooks/useMediaView";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useRecoilState } from "recoil";
+import { zIndexStyle } from "theme/styles";
 
 const contents: {
   title: string;
@@ -82,21 +82,21 @@ function ContentContainer(props: {
 
 function TosContentContainer() {
   const [selectText, setSelectText] = useRecoilState(introTextHover);
-  const { customMaxView } = useMediaView(400);
+  const [width, height] = useWindowDimensions();
+  const isMobile = width < 650;
 
   return (
     <Flex flexDir={"column"} rowGap={"45px"}>
       <Flex flexDir={"column"} textAlign={"center"}>
-        <Text
-          color={"white.200"}
-          fontSize={22}
-          fontWeight={"bold"}
-          h={"31px"}
-          mb={"12px"}
-        >
+        <Text color={"white.200"} fontSize={22} fontWeight={"bold"} mb={"12px"}>
           TOS is the native token in TONStarter ecosystem
         </Text>
-        <Text lineHeight={1.71} fontSize={14} color={"gray.100"}>
+        <Text
+          lineHeight={1.71}
+          fontSize={14}
+          color={"gray.100"}
+          mb={isMobile ? "14px" : ""}
+        >
           - You can get TOS using{" "}
           <Link
             isExternal={true}
@@ -116,113 +116,34 @@ function TosContentContainer() {
         </Text>
       </Flex>
       <Flex flexDir={"column"} textAlign={"center"}>
-        <Text
-          color={"white.200"}
-          fontSize={22}
-          fontWeight={"bold"}
-          h={"31px"}
-          mb={"12px"}
-        >
+        <Text color={"white.200"} fontSize={22} fontWeight={"bold"} mb={"12px"}>
           TOS can be…
         </Text>
-        <Box
-          display={"flex"}
-          flexDir={"column"}
-          color={selectText === 1 ? "white.200" : "gray.100"}
-          _hover={{
-            cursor: "pointer",
-          }}
-          onMouseOver={() => setSelectText(1)}
-          onMouseLeave={() => setSelectText(undefined)}
-        >
-          <Flex lineHeight={1.71} fontSize={14}>
-            - locked for sTOS and{" "}
-            <Text color={"#ec8c56"} ml={"5px"}>
-              LTOS
-            </Text>
-            , where{" "}
-            <Text color={"#ec8c56"} mx={"5px"}>
-              sTOS
-            </Text>{" "}
-            is used to participate in TONStarter governance,
-          </Flex>
-          <Text lineHeight={1.71} fontSize={14}>
-            receive airdrops from projects, and participate in IDO
-            {selectText === 1 && (
-              <Link
-                pos={"absolute"}
-                href={""}
-                isExternal={true}
-                color={"blue.200"}
-                ml={"11px"}
-              >
-                + more
-              </Link>
-            )}
-          </Text>
-        </Box>
-        <Box
-          display={"flex"}
-          flexDir={"column"}
-          color={selectText === 2 ? "white.200" : "gray.100"}
-          _hover={{
-            cursor: "pointer",
-          }}
-          onMouseOver={() => setSelectText(2)}
-          onMouseLeave={() => setSelectText(undefined)}
-        >
-          <Flex lineHeight={1.71} fontSize={14} my={"6px"}>
-            - staked for{" "}
-            <Text color={"#ec8c56"} ml={"5px"}>
-              LTOS
-            </Text>
-            , that earns compound interest in TOS based on LTOS index every 8
-            hours
-            <Text>
-              {selectText === 2 && (
-                <Link
-                  pos={"absolute"}
-                  href={""}
-                  isExternal={true}
-                  color={"blue.200"}
-                  ml={"11px"}
-                >
-                  + more
-                </Link>
-              )}
-            </Text>
-          </Flex>
-        </Box>
-        <Box
-          display={"flex"}
-          flexDir={"column"}
-          color={selectText === 3 ? "white.200" : "gray.100"}
-          _hover={{
-            cursor: "pointer",
-          }}
-          onMouseOver={() => setSelectText(3)}
-          onMouseLeave={() => setSelectText(undefined)}
-        >
-          <Flex
-            lineHeight={1.71}
-            fontSize={14}
-            alignItems={"center"}
-            justifyContent={"center"}
+        {!isMobile ? (
+          <Box
+            display={"flex"}
+            flexDir={"column"}
+            color={selectText === 1 ? "white.200" : "gray.100"}
+            _hover={{
+              cursor: "pointer",
+            }}
+            onMouseOver={() => setSelectText(1)}
+            onMouseLeave={() => setSelectText(undefined)}
           >
-            - used to create Uniswap LP token that can be locked to get
-            <Text color={"#ec8c56"} ml={"5px"}>
-              dTOS
-            </Text>
-            ,
-          </Flex>
-          <Flex lineHeight={1.71} fontSize={14} justifyContent={"center"}>
-            a non transferrable discount token that greatly reduces the price
-            for
-            <Text color={"#ec8c56"} ml={"5px"}>
-              bonding
-            </Text>
-            <Text>
-              {selectText === 3 && (
+            <Flex lineHeight={1.71} fontSize={14}>
+              - locked for sTOS and{" "}
+              <Text color={"#ec8c56"} ml={"5px"}>
+                LTOS
+              </Text>
+              , where{" "}
+              <Text color={"#ec8c56"} mx={"5px"}>
+                sTOS
+              </Text>{" "}
+              is used to participate in TONStarter governance,
+            </Flex>
+            <Text lineHeight={1.71} fontSize={14}>
+              receive airdrops from projects, and participate in IDO
+              {selectText === 1 && (
                 <Link
                   pos={"absolute"}
                   href={""}
@@ -234,8 +155,131 @@ function TosContentContainer() {
                 </Link>
               )}
             </Text>
-          </Flex>
-        </Box>
+          </Box>
+        ) : (
+          <Box
+            display={"flex"}
+            flexDir={"column"}
+            color={"gray.100"}
+            mb={"12px"}
+          >
+            <Text lineHeight={1.71} fontSize={14}>
+              - locked for <span style={{ color: "#f1f1f1" }}>sTOS</span> and
+              <span style={{ color: "#f1f1f1" }}> LTOS</span>, where sTOS is
+              used to participate in TONStarter governance, receive airdrops
+              from projects, and participate in IDO
+            </Text>
+            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
+              + more
+            </Link>
+          </Box>
+        )}
+        {!isMobile ? (
+          <Box
+            display={"flex"}
+            flexDir={"column"}
+            color={selectText === 2 ? "white.200" : "gray.100"}
+            _hover={{
+              cursor: "pointer",
+            }}
+            onMouseOver={() => setSelectText(2)}
+            onMouseLeave={() => setSelectText(undefined)}
+          >
+            <Flex lineHeight={1.71} fontSize={14} my={"6px"}>
+              - staked for{" "}
+              <Text color={"#ec8c56"} ml={"5px"}>
+                LTOS
+              </Text>
+              , that earns compound interest in TOS based on LTOS index every 8
+              hours
+              <Text>
+                {selectText === 2 && (
+                  <Link
+                    pos={"absolute"}
+                    href={""}
+                    isExternal={true}
+                    color={"blue.200"}
+                    ml={"11px"}
+                  >
+                    + more
+                  </Link>
+                )}
+              </Text>
+            </Flex>
+          </Box>
+        ) : (
+          <Box
+            display={"flex"}
+            flexDir={"column"}
+            color={"gray.100"}
+            mb={"12px"}
+          >
+            <Text lineHeight={1.71} fontSize={14}>
+              - staked for <span style={{ color: "#f1f1f1" }}>LTOS</span>, that
+              earns compound interest in TOS based on LTOS index every 8 hours
+            </Text>
+            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
+              + more
+            </Link>
+          </Box>
+        )}
+        {!isMobile ? (
+          <Box
+            display={"flex"}
+            flexDir={"column"}
+            color={selectText === 3 ? "white.200" : "gray.100"}
+            _hover={{
+              cursor: "pointer",
+            }}
+            onMouseOver={() => setSelectText(3)}
+            onMouseLeave={() => setSelectText(undefined)}
+          >
+            <Flex
+              lineHeight={1.71}
+              fontSize={14}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              - used to create Uniswap LP token that can be locked to get
+              <Text color={"#ec8c56"} ml={"5px"}>
+                dTOS
+              </Text>
+              ,
+            </Flex>
+            <Flex lineHeight={1.71} fontSize={14} justifyContent={"center"}>
+              a non transferrable discount token that greatly reduces the price
+              for
+              <Text color={"#ec8c56"} ml={"5px"}>
+                bonding
+              </Text>
+              <Text>
+                {selectText === 3 && (
+                  <Link
+                    pos={"absolute"}
+                    href={""}
+                    isExternal={true}
+                    color={"blue.200"}
+                    ml={"11px"}
+                  >
+                    + more
+                  </Link>
+                )}
+              </Text>
+            </Flex>
+          </Box>
+        ) : (
+          <Box display={"flex"} flexDir={"column"} color={"gray.100"}>
+            <Text lineHeight={1.71} fontSize={14}>
+              - used to create Uniswap LP token that can be locked to get{" "}
+              <span style={{ color: "#f1f1f1" }}>dTOS</span>, a non
+              transferrable discount token that greatly reduces the price for
+              <span style={{ color: "#f1f1f1" }}> bonding</span>
+            </Text>
+            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
+              + more
+            </Link>
+          </Box>
+        )}
       </Flex>
     </Flex>
   );
@@ -244,7 +288,12 @@ function TosContentContainer() {
 function IntroText(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
   return (
-    <Flex mt={"45px"} rowGap={"45px"} flexDir={"column"} zIndex={10000}>
+    <Flex
+      mt={"45px"}
+      rowGap={"45px"}
+      flexDir={"column"}
+      zIndex={zIndexStyle.Page1}
+    >
       {selectedTab1 ? (
         contents.map((content, index) => (
           <ContentContainer

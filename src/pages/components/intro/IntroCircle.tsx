@@ -44,6 +44,9 @@ import smallLine11 from "assets/circles/dark/small/ds-line-11.svg";
 import smallLine12 from "assets/circles/dark/small/ds-line-12.svg";
 import smallLine13 from "assets/circles/dark/small/ds-line-13.svg";
 
+//mobile circle
+import MobileCircle from "assets/circles/dark-mg-intro-t-01.svg";
+
 //lights
 import lightPoint from "assets/circles/light-point.png";
 
@@ -73,12 +76,20 @@ const randomNums = () => {
 
 function LightPoint() {
   const selectText = useRecoilValue(introTextHoverSelectedState);
-
+  const [width, height] = useWindowDimensions();
+  const isMobile = width < 1024;
   return (
     <>
       <motion.div
         animate={
-          selectText === 1 || selectText === 2
+          isMobile
+            ? {
+                width: "100px",
+                height: "97px",
+                top: "-130px",
+                left: "-130px",
+              }
+            : selectText === 1 || selectText === 2
             ? {
                 width: "100px",
                 height: "97px",
@@ -99,7 +110,14 @@ function LightPoint() {
       </motion.div>
       <motion.div
         animate={
-          selectText === 3
+          isMobile
+            ? {
+                width: "100px",
+                height: "97px",
+                top: "-130px",
+                left: "30px",
+              }
+            : selectText === 3
             ? {
                 width: "100px",
                 height: "97px",
@@ -120,7 +138,14 @@ function LightPoint() {
       </motion.div>
       <motion.div
         animate={
-          selectText === 3
+          isMobile
+            ? {
+                width: "100px",
+                height: "97px",
+                top: "35px",
+                left: "30px",
+              }
+            : selectText === 3
             ? {
                 width: "100px",
                 height: "97px",
@@ -141,7 +166,14 @@ function LightPoint() {
       </motion.div>
       <motion.div
         animate={
-          selectText === 1
+          isMobile
+            ? {
+                width: "100px",
+                height: "97px",
+                top: "35px",
+                left: "-130px",
+              }
+            : selectText === 1
             ? {
                 width: "100px",
                 height: "97px",
@@ -167,6 +199,9 @@ function LightPoint() {
 function LightPointText(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
   const [selectText, setSelectText] = useRecoilState(introTextHover);
+  const [width, height] = useWindowDimensions();
+  const isMobile = width < 1024;
+
   return (
     <motion.div
       style={{ position: "relative", opacity: 0, zIndex: 5000 }}
@@ -186,102 +221,158 @@ function LightPointText(props: { selectedTab1: boolean }) {
       }
     >
       <LightPoint></LightPoint>
-      <Box
-        display={"flex"}
-        flexDir={"column"}
-        color={selectText === 1 || selectText === 2 ? "#8b8b93" : "#64646f"}
-        fontSize={14}
-        textAlign={"right"}
-        pos="absolute"
-        left={"-230px"}
-        top={"-130px"}
-        onMouseEnter={() => setSelectText(2)}
-        onMouseLeave={() => setSelectText(undefined)}
-        cursor={"pointer"}
-      >
-        <Text
-          color={selectText === 1 || selectText === 2 ? "#ec8c56" : "#64646f"}
-          fontSize={24}
-          fontWeight={"bold"}
+      {!isMobile ? (
+        <Box
+          display={"flex"}
+          flexDir={"column"}
+          color={selectText === 1 || selectText === 2 ? "#8b8b93" : "#64646f"}
+          fontSize={14}
+          textAlign={"right"}
+          pos="absolute"
+          left={"-230px"}
+          top={"-130px"}
+          onMouseEnter={() => setSelectText(2)}
+          onMouseLeave={() => setSelectText(undefined)}
+          cursor={"pointer"}
         >
-          LTOS
-        </Text>
-        <Text>Earn interest</Text>
-        <Text>in TOS</Text>
-      </Box>
-      <Box
-        display={"flex"}
-        flexDir={"column"}
-        color={selectText === 1 ? "#8b8b93" : "#64646f"}
-        fontSize={14}
-        textAlign={"right"}
-        pos="absolute"
-        left={"-320px"}
-        top={"90px"}
-        onMouseEnter={() => setSelectText(1)}
-        onMouseLeave={() => setSelectText(undefined)}
-        cursor={"pointer"}
-      >
-        <Text
-          color={selectText === 1 ? "#ec8c56" : "#64646f"}
-          fontSize={24}
+          <Text
+            color={selectText === 1 || selectText === 2 ? "#ec8c56" : "#64646f"}
+            fontSize={24}
+            fontWeight={"bold"}
+          >
+            LTOS
+          </Text>
+          <Text>Earn interest</Text>
+          <Text>in TOS</Text>
+        </Box>
+      ) : (
+        <Flex
+          color={"#ec8c56"}
+          fontSize={21}
           fontWeight={"bold"}
+          textAlign={"right"}
+          pos="absolute"
+          left={"-170px"}
+          top={"-130px"}
         >
-          sTOS
-        </Text>
-        <Text>Participate in governance </Text>
-        <Text>Earn airdrop </Text>
-        <Text>Participate in IDO</Text>
-      </Box>
-      <Box
-        display={"flex"}
-        flexDir={"column"}
-        color={selectText === 3 ? "#8b8b93" : "#64646f"}
-        fontSize={14}
-        textAlign={"left"}
-        pos="absolute"
-        left={"150px"}
-        top={"-130px"}
-        w={"150px"}
-        onMouseEnter={() => setSelectText(3)}
-        onMouseLeave={() => setSelectText(undefined)}
-        cursor={"pointer"}
-      >
-        <Text
-          color={selectText === 3 ? "#ec8c56" : "#64646f"}
-          fontSize={24}
+          <Text>LTOS</Text>
+        </Flex>
+      )}
+      {!isMobile ? (
+        <Box
+          display={"flex"}
+          flexDir={"column"}
+          color={selectText === 1 ? "#8b8b93" : "#64646f"}
+          fontSize={14}
+          textAlign={"right"}
+          pos="absolute"
+          left={"-320px"}
+          top={"90px"}
+          onMouseEnter={() => setSelectText(1)}
+          onMouseLeave={() => setSelectText(undefined)}
+          cursor={"pointer"}
+        >
+          <Text
+            color={selectText === 1 ? "#ec8c56" : "#64646f"}
+            fontSize={24}
+            fontWeight={"bold"}
+          >
+            sTOS
+          </Text>
+          <Text>Participate in governance </Text>
+          <Text>Earn airdrop </Text>
+          <Text>Participate in IDO</Text>
+        </Box>
+      ) : (
+        <Flex
+          color={"#ec8c56"}
+          fontSize={21}
           fontWeight={"bold"}
+          textAlign={"right"}
+          pos="absolute"
+          left={"-170px"}
+          top={"90px"}
         >
-          dTOS
-        </Text>
-        <Text>(Coming soon)</Text>
-        <Text>High discount rate</Text>
-        <Text>for bonding</Text>
-      </Box>
-      <Box
-        display={"flex"}
-        flexDir={"column"}
-        color={selectText === 3 ? "#8b8b93" : "#64646f"}
-        fontSize={14}
-        textAlign={"left"}
-        pos="absolute"
-        left={"150px"}
-        top={"90px"}
-        w={"200px"}
-        onMouseEnter={() => setSelectText(3)}
-        onMouseLeave={() => setSelectText(undefined)}
-        cursor={"pointer"}
-      >
-        <Text
-          color={selectText === 3 ? "#ec8c56" : "#64646f"}
-          fontSize={24}
+          <Text>sTOS</Text>
+        </Flex>
+      )}{" "}
+      {!isMobile ? (
+        <Box
+          display={"flex"}
+          flexDir={"column"}
+          color={selectText === 3 ? "#8b8b93" : "#64646f"}
+          fontSize={14}
+          textAlign={"left"}
+          pos="absolute"
+          left={"150px"}
+          top={"-130px"}
+          w={"150px"}
+          onMouseEnter={() => setSelectText(3)}
+          onMouseLeave={() => setSelectText(undefined)}
+          cursor={"pointer"}
+        >
+          <Text
+            color={selectText === 3 ? "#ec8c56" : "#64646f"}
+            fontSize={24}
+            fontWeight={"bold"}
+          >
+            dTOS
+          </Text>
+          <Text>(Coming soon)</Text>
+          <Text>High discount rate</Text>
+          <Text>for bonding</Text>
+        </Box>
+      ) : (
+        <Flex
+          color={"#ec8c56"}
+          fontSize={21}
           fontWeight={"bold"}
+          textAlign={"right"}
+          pos="absolute"
+          left={"120px"}
+          top={"-130px"}
         >
-          BOND
-        </Text>
-        <Text>Raise capital for</Text>
-        <Text>TONStarter Ecosystem</Text>
-      </Box>
+          <Text>dTOS</Text>
+        </Flex>
+      )}
+      {!isMobile ? (
+        <Box
+          display={"flex"}
+          flexDir={"column"}
+          color={selectText === 3 ? "#8b8b93" : "#64646f"}
+          fontSize={14}
+          textAlign={"left"}
+          pos="absolute"
+          left={"150px"}
+          top={"90px"}
+          w={"200px"}
+          onMouseEnter={() => setSelectText(3)}
+          onMouseLeave={() => setSelectText(undefined)}
+          cursor={"pointer"}
+        >
+          <Text
+            color={selectText === 3 ? "#ec8c56" : "#64646f"}
+            fontSize={24}
+            fontWeight={"bold"}
+          >
+            BOND
+          </Text>
+          <Text>Raise capital for</Text>
+          <Text>TONStarter Ecosystem</Text>
+        </Box>
+      ) : (
+        <Flex
+          color={"#ec8c56"}
+          fontSize={21}
+          fontWeight={"bold"}
+          textAlign={"right"}
+          pos="absolute"
+          left={"120px"}
+          top={"90px"}
+        >
+          <Text>BOND</Text>
+        </Flex>
+      )}
     </motion.div>
   );
 }
@@ -393,6 +484,8 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
   const secondRandomNumsArr = randomNums();
   const selectText = useRecoilValue(introTextHoverSelectedState);
   const [width, height] = useWindowDimensions();
+  const isMobile = width < 530;
+  const isMobileAnimation = width < 1024;
 
   useEffect(() => {
     if (selectedTab1 === false) {
@@ -414,7 +507,13 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
       <Flex pos={"absolute"}>
         <motion.div
           animate={
-            selectedTab1
+            isMobileAnimation
+              ? selectedTab1
+                ? {
+                    opacity: 1,
+                  }
+                : { opacity: 0 }
+              : selectedTab1
               ? isAlreadyMoved
                 ? {
                     opacity: 1,
@@ -426,14 +525,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
                   x: -150,
                 }
           }
-          transition={
-            // selectedTab1
-            //   ? {}
-            //   : {
-            //       duration: 2,
-            //     }
-            { duration: 2 }
-          }
+          transition={{ duration: 2 }}
           style={{
             position: "relative",
             display: "flex",
@@ -444,39 +536,49 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
             // width: `${width - 100}px`,
           }}
         >
-          {[
-            bigLine1,
-            bigLine2,
-            bigLine3,
-            bigLine4,
-            bigLine5,
-            bigLine6,
-            bigLine7,
-            bigLine8,
-            bigLine9,
-            bigLine10,
-            bigLine11,
-            bigLine12,
-            bigLine13,
-          ].map((imgSrc: any, index: number) => {
-            return (
-              <MotionWapper
-                src={imgSrc}
-                key={`${index}_bgline`}
-                duration={
-                  index < 6
-                    ? randomNumsArr[index]
-                    : secondRandomNumsArr[index - 6]
-                }
-              ></MotionWapper>
-            );
-          })}
+          {!isMobile ? (
+            [
+              bigLine1,
+              bigLine2,
+              bigLine3,
+              bigLine4,
+              bigLine5,
+              bigLine6,
+              bigLine7,
+              bigLine8,
+              bigLine9,
+              bigLine10,
+              bigLine11,
+              bigLine12,
+              bigLine13,
+            ].map((imgSrc: any, index: number) => {
+              return (
+                <MotionWapper
+                  src={imgSrc}
+                  key={`${index}_bgline`}
+                  duration={
+                    index < 6
+                      ? randomNumsArr[index]
+                      : secondRandomNumsArr[index - 6]
+                  }
+                ></MotionWapper>
+              );
+            })
+          ) : (
+            <MotionWapper src={MobileCircle} duration={8}></MotionWapper>
+          )}
         </motion.div>
       </Flex>
       <Flex pos={"absolute"} zIndex={5000}>
         <motion.div
           animate={
-            selectedTab1
+            isMobileAnimation
+              ? selectedTab1
+                ? {}
+                : {
+                    opacity: 1,
+                  }
+              : selectedTab1
               ? isAlreadyMoved
                 ? {
                     x: -150,
@@ -536,6 +638,15 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
                     ? randomNumsArr[index] - 3
                     : secondRandomNumsArr[index - 6] - 3
                 }
+                style={
+                  width < 530
+                    ? selectedTab1
+                      ? {
+                          width: "150px",
+                        }
+                      : {}
+                    : {}
+                }
               ></MotionWapper>
             );
           })}
@@ -564,7 +675,15 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
       </Flex>
       <motion.div
         animate={
-          selectedTab1
+          isMobileAnimation
+            ? selectedTab1
+              ? {
+                  opacity: 1,
+                }
+              : {
+                  opacity: 0,
+                }
+            : selectedTab1
             ? isAlreadyMoved
               ? { x: 150 }
               : {}
@@ -578,7 +697,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
       >
         <Flex
           pos={"relative"}
-          fontSize={width > 500 ? 28 : 21}
+          fontSize={width > 530 ? 28 : 21}
           fontWeight={"bold"}
           color={selectedTab1 ? "white.100" : "#64646f"}
           top={"-10px"}
@@ -589,13 +708,13 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
         >
           <Text
             pos={"absolute"}
-            left={width > 900 ? "-330px" : width > 500 ? "-230px" : "-150px"}
+            left={width > 900 ? "-330px" : width > 530 ? "-230px" : "-150px"}
           >
             TON
           </Text>
           <Text
             pos={"absolute"}
-            left={width > 900 ? "270px" : width > 500 ? "100px" : "50px"}
+            left={width > 900 ? "270px" : width > 530 ? "100px" : "50px"}
             color={
               selectText === 1
                 ? "white.100"
@@ -621,16 +740,16 @@ function IntroCircle(props: { selectedTab1: boolean }) {
     if (width > 1024) {
       return "730px";
     }
-    if (width > 500) {
+    if (width > 530) {
       return "400px";
     }
-    return "350px";
+    return "310px";
   }, [width]);
 
   return (
     <Flex
       h={height}
-      mt={"120px"}
+      mt={width < 530 ? "40px" : "120px"}
       alignItems={"center"}
       justifyContent={"center"}
     >

@@ -1,0 +1,15 @@
+export enum zIndexStyle {
+  TopOverHeader = 100000010,
+  HeaderTop = 100000001,
+  AlwaysTop = 100000000,
+  Page1 = 100,
+  Page2 = 99,
+  Page3,
+  Page4,
+  Page5,
+  Page6,
+  Page7,
+  Page8,
+  Page9,
+  Page10,
+}
