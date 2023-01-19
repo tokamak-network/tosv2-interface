@@ -642,7 +642,7 @@ function TabOneCircle(props: { selectedTab1: boolean }) {
                   width < 530
                     ? selectedTab1
                       ? {
-                          width: "150px",
+                          width: "200px",
                         }
                       : {}
                     : {}
