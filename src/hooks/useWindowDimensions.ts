@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+//@ts-ignore
 import { useWindowDimensions as useWindowNativeDimensions } from "react-native-web";
 
 // function getWindowDimensions() {
