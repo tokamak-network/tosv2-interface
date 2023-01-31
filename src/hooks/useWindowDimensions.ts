@@ -33,10 +33,6 @@ export function useWindowDimensions() {
 
   const { width, height } = useWindowNativeDimensions();
 
-  console.log("width");
-
-  console.log(width);
-
   // const handleWindowResize = () => {
   //   setWidth(window.innerWidth);
   //   setHeight(window.innerHeight);

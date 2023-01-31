@@ -64,6 +64,7 @@ import useMediaView from "hooks/useMediaView";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sidebarSelectedState, sidebarState } from "atom//header";
 import useModal from "hooks/useModal";
+import { zIndexStyle } from "theme/styles";
 
 const iconList = [
   {
@@ -234,7 +235,7 @@ const NavItem = (props: { isExpended: boolean }) => {
                       // bg={"red"}
                       top={-3}
                       style={{ transform: `rotate(180deg)` }}
-                      zIndex={10000}
+                      zIndex={zIndexStyle.TopOverHeader + 1}
                     >
                       <Image
                         src={
@@ -498,7 +499,7 @@ const NavBar = () => {
       h={"100%"}
       minH={"100vh"}
       top={0}
-      zIndex={10000}
+      zIndex={zIndexStyle.TopOverHeader + 1}
       // mr={isExpended ? "50%" : "100px"}
     >
       {/* menu button */}
