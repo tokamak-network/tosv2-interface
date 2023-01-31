@@ -478,12 +478,12 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
   );
 }
 
-function TabOneCircle(props: { selectedTab1: boolean }) {
-  const { selectedTab1 } = props;
+function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
+  const { selectedTab1, width } = props;
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
   const selectText = useRecoilValue(introTextHoverSelectedState);
-  const [width, height] = useWindowDimensions();
+  const [height] = useWindowDimensions();
   const isMobile = width < 530;
   const isMobileAnimation = width < 1024;
 
@@ -748,12 +748,15 @@ function IntroCircle(props: { selectedTab1: boolean }) {
 
   return (
     <Flex
+      // minW={"100vh"}
+      // maxW={"100vh"}
+      w={"350px"}
       h={height}
       mt={width < 530 ? "40px" : "120px"}
       alignItems={"center"}
       justifyContent={"center"}
     >
-      <TabOneCircle selectedTab1={selectedTab1} />
+      <TabOneCircle selectedTab1={selectedTab1} width={width} />
       <BackgroundLines selectedTab1={selectedTab1} />
     </Flex>
   );

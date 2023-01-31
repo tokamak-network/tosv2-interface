@@ -18,6 +18,7 @@ const HeadMeta: NextPage = () => {
           property="og:description"
           content="Functional upgrade to TONStarter ecosystem"
         />
+        {/* <meta name="viewport"></meta> */}
         <link rel="icon" href="/images/favicon.ico" />
       </Head>
     </div>
