@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-//@ts-ignore
 import { useWindowDimensions as useWindowNativeDimensions } from "react-native-web";
 
 // function getWindowDimensions() {
@@ -32,6 +31,10 @@ export function useWindowDimensions() {
   // const [height, setHeight] = useState(0);
 
   const { width, height } = useWindowNativeDimensions();
+
+  console.log("width");
+
+  console.log(width);
 
   // const handleWindowResize = () => {
   //   setWidth(window.innerWidth);
