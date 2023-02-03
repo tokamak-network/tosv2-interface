@@ -355,7 +355,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
             fontSize={24}
             fontWeight={"bold"}
           >
-            BOND
+            Bond
           </Text>
           <Text>Raise capital for</Text>
           <Text>TONStarter Ecosystem</Text>
