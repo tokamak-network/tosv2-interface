@@ -667,7 +667,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
                   }
             }
           >
-            <Text fontSize={28} fontWeight={"bold"} color={"white.100"}>
+            <Text fontSize={28} fontWeight={"bold"} color={"#64646f"}>
               TOS
             </Text>
           </motion.div>
