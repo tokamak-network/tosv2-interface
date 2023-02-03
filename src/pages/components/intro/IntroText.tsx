@@ -9,7 +9,7 @@ const contents: {
   content: { contentText: string; link?: string }[];
 }[] = [
   {
-    title: "Tokamak Network is ON-DEMAND ETHEREUM LAYER 2 PLATFORM",
+    title: "Tokamak Network is on-demand Ethereum layer 2 platform",
     content: [
       {
         contentText:
@@ -18,17 +18,17 @@ const contents: {
       {
         contentText:
           "Any projects can easily deploy on Tokamak Network and be connected to each other",
-        link: "go",
+        link: "https://tokamaknetwork.gitbook.io/home/01-basic/what-is-tokamak-network",
       },
     ],
   },
   {
-    title: "TONStarter is a launching platform for L2 Project",
+    title: "TONStarter is a decentralized launchpad platform open to everyone",
     content: [
       {
         contentText:
-          "This includes the right to invest in projects launched in TONStarter launchpad platform",
-        link: "go",
+          "You can also earn profits from the projects onboarded in TONStarter",
+        link: "https://medium.com/onther-tech/tonstarter-phase-3-starter-guide-en-kr-ab97bb9e50fc",
       },
     ],
   },
@@ -37,7 +37,7 @@ const contents: {
     content: [
       {
         contentText: "You can purchase it from CEX or DEX",
-        link: "go",
+        link: "https://tokamaknetwork.gitbook.io/home/02-service-guide/buy-ton#02.-buy-ton-from-dex",
       },
     ],
   },
@@ -110,7 +110,7 @@ function TosContentContainer() {
         </Text>
         <Text lineHeight={1.71} fontSize={14} color={"gray.100"}>
           - TOS is designed to facilitate TON⇄TONStarter ecosystem growth
-          <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
+          <Link href={"https://tokamaknetwork.gitbook.io/home/01-basic/service-summary"} isExternal={true} color={"blue.200"} ml={"11px"}>
             + more
           </Link>
         </Text>
@@ -146,7 +146,7 @@ function TosContentContainer() {
               {selectText === 1 && (
                 <Link
                   pos={"absolute"}
-                  href={""}
+                  href={"https://medium.com/p/56c12a5440e0"}
                   isExternal={true}
                   color={"blue.200"}
                   ml={"11px"}
@@ -169,7 +169,7 @@ function TosContentContainer() {
               used to participate in TONStarter governance, receive airdrops
               from projects, and participate in IDO
             </Text>
-            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
+            <Link href={"https://medium.com/p/56c12a5440e0"} isExternal={true} color={"blue.200"} ml={"11px"}>
               + more
             </Link>
           </Box>
@@ -218,7 +218,7 @@ function TosContentContainer() {
               - staked for <span style={{ color: "#f1f1f1" }}>LTOS</span>, that
               earns compound interest in TOS based on LTOS index every 8 hours
             </Text>
-            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
+            <Link href={"https://tokamaknetwork.gitbook.io/home/02-service-guide/tosv2/stake"} isExternal={true} color={"blue.200"} ml={"11px"}>
               + more
             </Link>
           </Box>
@@ -256,7 +256,7 @@ function TosContentContainer() {
                 {selectText === 3 && (
                   <Link
                     pos={"absolute"}
-                    href={""}
+                    href={"https://tokamaknetwork.gitbook.io/home/03-content/glossary"}
                     isExternal={true}
                     color={"blue.200"}
                     ml={"11px"}
@@ -275,7 +275,7 @@ function TosContentContainer() {
               transferrable discount token that greatly reduces the price for
               <span style={{ color: "#f1f1f1" }}> bonding</span>
             </Text>
-            <Link href={""} isExternal={true} color={"blue.200"} ml={"11px"}>
+            <Link href={"https://tokamaknetwork.gitbook.io/home/03-content/glossary"} isExternal={true} color={"blue.200"} ml={"11px"}>
               + more
             </Link>
           </Box>
