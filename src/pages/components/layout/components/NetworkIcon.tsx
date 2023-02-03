@@ -1,4 +1,4 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text , useColorMode} from "@chakra-ui/react";
 import Image from "next/image";
 import Tooltips_left_arrow from "assets/icons/Tooltips_left_arrow.svg";
 import useClient from "hooks/useClient";
@@ -10,14 +10,14 @@ function NetworkIcon() {
   const { isConnectedToChain, networkName } = useClient();
   const { openModal } = useModal("network_swtich");
   const { account } = useWeb3React();
-
+  const {colorMode} = useColorMode()
   if (account) {
     return (
       <Flex
         w={"48px"}
         h={"48px"}
-        bg={isConnectedToChain ? "#080808" : "#080808"}
-        border={isConnectedToChain ? "1px solid #313442" : "1px solid #313442"}
+        bg={colorMode === 'light' ? "#ffffff" : "#080808"}
+        border={colorMode==='light' ? "1px solid #e8edf2" : "1px solid #313442"}
         borderRadius={8}
         justifyContent={"center"}
         alignItems={"center"}
