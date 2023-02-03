@@ -33,7 +33,7 @@ const contents: {
     ],
   },
   {
-    title: "TON is the native token in Tokamak network ecosystem",
+    title: "TON is the native token in Tokamak Network ecosystem",
     content: [
       {
         contentText: "You can purchase it from CEX or DEX",
