@@ -196,7 +196,7 @@ function TosContentContainer() {
                 {selectText === 2 && (
                   <Link
                     pos={"absolute"}
-                    href={""}
+                    href={"https://tokamaknetwork.gitbook.io/home/02-service-guide/tosv2/stake"}
                     isExternal={true}
                     color={"blue.200"}
                     ml={"11px"}
