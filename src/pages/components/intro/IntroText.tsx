@@ -192,7 +192,7 @@ function TosContentContainer() {
               </Text>
               , that earns compound interest in TOS based on LTOS index every 8
               hours
-              <Text>
+              <Text w={'20px'}>
                 {selectText === 2 && (
                   <Link
                     pos={"absolute"}
@@ -220,7 +220,7 @@ function TosContentContainer() {
             </Text>
             <Link href={"https://tokamaknetwork.gitbook.io/home/02-service-guide/tosv2/stake"} isExternal={true} color={"blue.200"} ml={"11px"}>
               + more
-            </Link>
+              </Link>
           </Box>
         )}
         {!isMobile ? (
