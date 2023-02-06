@@ -23,19 +23,18 @@ function Footer() {
         pb={"25px"}
         rowGap={mobile ? "15px" : 0}
       >
-        <Flex h={"17px"} justifyContent={mobile ? "space-between" : ""}>
+        <Flex >
           <Flex>
-            <Text>© 2022 </Text>
-            <Text mx={1} color={"blue.200"}>
-              {" "}
+            <Text>© 2022</Text>
+            <span  style={{color:'#2775ff', marginLeft: '1px', marginRight: '1px' }} >
               Tokamak Network
-            </Text>
+            </span>
             <Text>PTE.LTD</Text>
           </Flex>
           <Flex>
             <Flex alignItems={"center"} h={"18px"}>
               <Box
-                mx={"15px"}
+                mx={mobile? '12px' : "15px"}
                 w={"4px"}
                 h={"4px"}
                 borderRadius={25}
