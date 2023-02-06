@@ -718,7 +718,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             left={width > 900 ? "270px" : width > 530 ? "100px" : "50px"}
             color={
               selectText === 1
-                ? "white.100"
+                ? ""
                 : selectedTab1
                 ? "white.100"
                 : "#64646f"
