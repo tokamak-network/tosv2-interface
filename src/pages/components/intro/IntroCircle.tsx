@@ -400,7 +400,7 @@ const MotionWapper = (props: {
         ease: "linear",
         duration: duration ?? Math.floor(Math.random() * 25) + 4,
       }}
-      style={{ position: "absolute", opacity: opacity ?? 1, ...style }}
+      style={{ position: "absolute", opacity: opacity ?? 1, ...style, outline: 'none' }}
       initial={{ rotate: initialRotate }}
     >
       <Image src={src} alt={"bgLine"}></Image>
