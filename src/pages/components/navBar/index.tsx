@@ -430,7 +430,7 @@ function MobileSideBar() {
         pt={33}
         alignItems="center"
         bg={colorMode === "light" ? "#ffffff" : "#1f2128"}
-        // zIndex={10}
+        zIndex={zIndexStyle.TopOverHeader+1}
       >
         <Flex
           flexDir={isExpended ? "row" : "column"}

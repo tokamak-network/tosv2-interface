@@ -57,6 +57,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { introTextHover, introTextHoverSelectedState } from "atom/intro";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import useMediaView from "hooks/useMediaView";
+import { zIndexStyle } from "theme/styles";
 
 let isAlreadyMoved = false;
 
@@ -569,7 +570,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           )}
         </motion.div>
       </Flex>
-      <Flex pos={"absolute"} zIndex={5000}>
+      <Flex pos={"absolute"} zIndex={zIndexStyle.AlwaysTopBelowHeader}>
         <motion.div
           animate={
             isMobileAnimation
@@ -704,7 +705,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           width={"100%"}
           minW={"100%"}
           justifyContent={"center"}
-          zIndex={100000}
+          zIndex={zIndexStyle.AlwaysTopBelowHeader}
         >
           <Text
             pos={"absolute"}
