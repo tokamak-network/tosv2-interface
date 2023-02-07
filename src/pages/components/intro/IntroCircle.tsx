@@ -622,9 +622,12 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             smallLine10,
             smallLine11,
             smallLine12,
-            // smallLine13,
+            smallLine13,
             ,
           ].map((imgSrc: any, index: number) => {
+            if(width < 530 && index < 2) {
+              return null
+            } 
             return (
               <MotionWapper
                 src={imgSrc}
