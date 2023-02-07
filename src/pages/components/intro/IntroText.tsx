@@ -185,14 +185,14 @@ function TosContentContainer() {
             onMouseOver={() => setSelectText(2)}
             onMouseLeave={() => setSelectText(undefined)}
           >
-            <Flex lineHeight={1.71} fontSize={14} my={"6px"}>
+            <Flex lineHeight={1.71} fontSize={14} my={"6px"} pr={'20px'}>
               - staked for{" "}
               <Text color={"#ec8c56"} ml={"5px"}>
                 LTOS
               </Text>
               , that earns compound interest in TOS based on LTOS index every 8
               hours
-              <Text w={'20px'}>
+              <Text>
                 {selectText === 2 && (
                   <Link
                     pos={"absolute"}
