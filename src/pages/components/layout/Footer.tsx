@@ -4,7 +4,7 @@ import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 function Footer() {
   const [width] = useWindowDimensions();
-  const mobile = width < 460;
+  const mobile = width < 500;
   const { colorMode } = useColorMode();
   const { openModal } = useModal("termsOfUse");
 
@@ -12,7 +12,7 @@ function Footer() {
     <Flex w={"100%"} mt={"auto"} pt={"24px"} flexDir="column">
       <Flex
         borderWidth={0.5}
-        mb={"25px"}
+        mb={mobile ? '18px' : "25px"}
         borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
       ></Flex>
       <Flex
@@ -23,16 +23,16 @@ function Footer() {
         pb={"25px"}
         rowGap={mobile ? "15px" : 0}
       >
-        <Flex >
-          <Flex>
+        <Flex flexDir={mobile ? 'column' : 'row'} alignItems={'center'}>
+          <Flex mb={mobile ? '3px' : ''}>
             <Text>© 2022</Text>
-            <span  style={{color:'#2775ff', marginLeft: '1px', marginRight: '1px' }} >
+            <span  style={{color:'#2775ff', marginLeft: '3px', marginRight: '3px' }} >
               Tokamak Network
             </span>
             <Text>PTE.LTD</Text>
           </Flex>
           <Flex>
-            <Flex alignItems={"center"} h={"18px"}>
+         {!mobile &&  <Flex alignItems={"center"} h={"18px"}>
               <Box
                 mx={mobile? '12px' : "15px"}
                 w={"4px"}
@@ -40,7 +40,7 @@ function Footer() {
                 borderRadius={25}
                 bgColor={"gray.700"}
               ></Box>
-            </Flex>
+            </Flex>}
             <Text color={"blue.200"}>hello</Text>
             <Text>@tokamak.network</Text>
           </Flex>
@@ -50,6 +50,7 @@ function Footer() {
           h={"17px"}
           justifyContent={mobile ? "center" : "flex-end"}
           onClick={() => openModal()}
+          mb={mobile ? '-5px' : ''}
         >
           <Text
             cursor={"pointer"}
