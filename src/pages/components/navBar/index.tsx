@@ -80,7 +80,7 @@ const iconList = [
   {
     icon: GITHUB_ICON,
     hoverIcon: GITHUB_HOVER_ICON,
-    href: "https://github.com/Onther-Tech",
+    href: "https://github.com/tokamak-network",
   },
   {
     icon: TELEGRAM_ICON,
