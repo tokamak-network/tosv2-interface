@@ -185,7 +185,7 @@ function TosContentContainer() {
             onMouseOver={() => setSelectText(2)}
             onMouseLeave={() => setSelectText(undefined)}
           >
-            <Flex lineHeight={1.71} fontSize={14} my={"6px"}>
+            <Flex lineHeight={1.71} fontSize={14} my={"6px"} pr={'6px'}>
               - staked for{" "}
               <Text color={"#ec8c56"} ml={"5px"}>
                 LTOS
