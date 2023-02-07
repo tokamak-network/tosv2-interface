@@ -645,7 +645,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
                       ? {
                           width: "200px",
                         }
-                      : {}
+                      : {border: 'none'}
                     : {}
                 }
               ></MotionWapper>
