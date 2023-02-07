@@ -292,7 +292,7 @@ function IntroText(props: { selectedTab1: boolean }) {
       mt={"45px"}
       rowGap={"45px"}
       flexDir={"column"}
-      zIndex={zIndexStyle.Page1}
+      zIndex={zIndexStyle.AlwaysTopBelowHeader+1}
     >
       {selectedTab1 ? (
         contents.map((content, index) => (
