@@ -241,9 +241,10 @@ function TosContentContainer() {
               justifyContent={"center"}
             >
               - used to create Uniswap LP token that can be locked to get
-              <Text color={"#ec8c56"} ml={"5px"}>
+              <Text color={"#ec8c56"} mx={"5px"}>
                 dTOS
               </Text>
+             (coming soon)
               ,
             </Flex>
             <Flex lineHeight={1.71} fontSize={14} justifyContent={"center"}>
@@ -271,7 +272,7 @@ function TosContentContainer() {
           <Box display={"flex"} flexDir={"column"} color={"gray.100"}>
             <Text lineHeight={1.71} fontSize={14}>
               - used to create Uniswap LP token that can be locked to get{" "}
-              <span style={{ color: "#f1f1f1" }}>dTOS</span>, a non
+              <span style={{ color: "#f1f1f1" }}>dTOS</span> (coming soon), a non
               transferrable discount token that greatly reduces the price for
               <span style={{ color: "#f1f1f1" }}> bonding</span>
             </Text>
