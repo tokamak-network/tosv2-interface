@@ -601,7 +601,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: "100vh",
+            width: "360px",
             // width: `${width - 100}px`,
             opacity: 0.5,
           }}
@@ -625,7 +625,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             smallLine13,
             ,
           ].map((imgSrc: any, index: number) => {
-            if(width < 530 && index < 2) {
+            if(width < 1040 && index < 2) {
               return null
             } 
             return (
@@ -759,6 +759,7 @@ function IntroCircle(props: { selectedTab1: boolean }) {
       mt={width < 530 ? "40px" : "120px"}
       alignItems={"center"}
       justifyContent={"center"}
+
     >
       <TabOneCircle selectedTab1={selectedTab1} width={width} />
       <BackgroundLines selectedTab1={selectedTab1} />

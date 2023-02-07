@@ -8,8 +8,10 @@ const Intro: NextPage = () => {
   const { colorMode } = useColorMode();
   const bgColor = colorMode === "light" ? "#fafbfc" : "black.100";
 
+
+
   return (
-    <Flex {...theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode)} bg={bgColor}>
+    <Flex {...theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode)} bg={bgColor} overflowX={'hidden'} overflowY={'hidden'}>
       <IntroContainer></IntroContainer>
     </Flex>
   );
