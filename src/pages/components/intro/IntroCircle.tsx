@@ -622,7 +622,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             smallLine10,
             smallLine11,
             smallLine12,
-            smallLine13,
+            // smallLine13,
             ,
           ].map((imgSrc: any, index: number) => {
             return (
