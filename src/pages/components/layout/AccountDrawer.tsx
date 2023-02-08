@@ -64,7 +64,7 @@ function AccountDrawer(props: HeaderProps) {
         setIsOpen(false);
       }}
     >
-      <DrawerOverlay zIndex={1001} className="modalOverlay" />
+      <DrawerOverlay zIndex={1001} className="modalOverlayDrawer"  bg={'none'}  />
       <DrawerContent
         bg={colorMode === "dark" ? "#1f2128" : "white.0"}
         px={"23px"}

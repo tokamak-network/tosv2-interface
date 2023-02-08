@@ -54,7 +54,7 @@ function NetworkModal() {
       isCentered
       onClose={() => closeModal()}
     >
-      <ModalOverlay className={"modalOverlay"} />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
       <ModalContent
         w={"360px"}
         h={"223px"}

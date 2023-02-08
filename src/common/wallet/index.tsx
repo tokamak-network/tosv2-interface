@@ -239,7 +239,7 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
     >
-      <ModalOverlay />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'} />
       {walletView === WALLET_VIEWS.ACCOUNT && account ? (
         <ModalContent bg={colorMode === "light" ? "white.100" : "#1f2128"}>
           <ModalHeader color={colorMode === "light" ? "gray.800" : "white.200"}>

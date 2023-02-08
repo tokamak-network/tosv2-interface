@@ -32,7 +32,7 @@ const BondConfirm = (props: {
       isCentered
       onClose={() => setIsOpenConfirm(false)}
     >
-      <ModalOverlay />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
       <ModalContent
         fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "black.200"}

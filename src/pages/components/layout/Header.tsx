@@ -90,7 +90,7 @@ function Header(props: HeaderProps) {
       bg={colorMode === "light" ? "white.100" : "black.100"}
       position={"sticky"}
       top={0}
-      zIndex={zIndexStyle.HeaderTop}
+      // zIndex={zIndexStyle.HeaderTop}
       alignItems={"center"}
     >
       {!pcView && <BurgerButton></BurgerButton>}

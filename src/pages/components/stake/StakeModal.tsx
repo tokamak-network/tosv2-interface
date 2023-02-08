@@ -281,7 +281,7 @@ function StakeModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlay" />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
       <ModalContent
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}

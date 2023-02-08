@@ -23,7 +23,7 @@ const Notice = () => {
 
   return (
     <Modal isOpen={isOpen} isCentered onClose={() => setIsOpen(false)}>
-      <ModalOverlay />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
       <ModalContent
         fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "black.200"}
