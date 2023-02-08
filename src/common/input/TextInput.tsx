@@ -135,7 +135,7 @@ const TextInput: React.FC<InputProp> = (props) => {
           <Button
             w={"30px"}
             h={"20px"}
-            color={"#64646f"}
+            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}
@@ -302,7 +302,7 @@ function BalanceInput(props: NumberInputProp) {
           <Button
             w={"30px"}
             h={"20px"}
-            color={"#64646f"}
+            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}

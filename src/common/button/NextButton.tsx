@@ -27,6 +27,7 @@ function NextButton(props: {
         color: colorMode === "dark" ? "#2c2c35" : "#c6cbd9",
         borderColor: colorMode === "dark" ? "#2c2c35" : "#e8edf2",
       }}
+      _active={{bg:'transparent'}}
       isDisabled={isDisabled}
       onClick={() => setCurrentPage(currentPage + 1)}
     >

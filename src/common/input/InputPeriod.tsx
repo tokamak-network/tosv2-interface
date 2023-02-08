@@ -174,7 +174,16 @@ const InputPeriod = (props: InputProp) => {
             leftTime && (
               <>
                 <Text
-                  color={weekHighlight === false || isDisabled ? "#64646F" : ""}
+                  // color={weekHighlight === false || isDisabled ? "#64646F" : ""}
+                  color={
+                    weekHighlight === false
+                      ? "#64646f"
+                      : colorMode === "light"
+                      ? "gray.800"
+                      : isDisabled
+                      ? "#64646f"
+                      : "#f1f1f1"
+                  }
                 >
                   {weeksUnit}
                 </Text>
@@ -182,7 +191,7 @@ const InputPeriod = (props: InputProp) => {
                   fontSize={12}
                   ml={"9px"}
                   mr={"3px"}
-                  color={weekHighlight ? "#8b8b93" : ""}
+                  color={weekHighlight ? colorMode ==='dark'? "#8b8b93" :'#7e7e8f': ""}
                 >
                   {leftDays} {Number(leftDays) === 1 ? "Day" : "Days"}{" "}
                   {leftTime}
@@ -195,7 +204,7 @@ const InputPeriod = (props: InputProp) => {
           <Button
             w={"30px"}
             h={"20px"}
-            color={"#64646f"}
+            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}
