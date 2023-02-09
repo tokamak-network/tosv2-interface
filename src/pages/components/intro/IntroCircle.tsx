@@ -51,7 +51,14 @@ import MobileCircle from "assets/circles/dark-mg-intro-t-01.svg";
 import lightPoint from "assets/circles/light-point.png";
 
 import Image from "next/image";
-import { Box, Flex, Text, position } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  position,
+  useTheme,
+  useColorMode,
+} from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { introTextHover, introTextHoverSelectedState } from "atom/intro";
@@ -79,6 +86,8 @@ function LightPoint() {
   const selectText = useRecoilValue(introTextHoverSelectedState);
   const [width, height] = useWindowDimensions();
   const isMobile = width < 1024;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
   return (
     <>
       <motion.div
@@ -202,6 +211,8 @@ function LightPointText(props: { selectedTab1: boolean }) {
   const [selectText, setSelectText] = useRecoilState(introTextHover);
   const [width, height] = useWindowDimensions();
   const isMobile = width < 1024;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   return (
     <motion.div
@@ -226,7 +237,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 1 || selectText === 2 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"right"}
           pos="absolute"
@@ -237,14 +248,24 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 1 || selectText === 2 ? "#ec8c56" : "#64646f"}
+            color={
+              selectText === 1 || selectText === 2
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             LTOS
           </Text>
-          <Text>Earn interest</Text>
-          <Text>in TOS</Text>
+          <Text opacity={selectText === 1 || selectText === 2 ? 1 : 0.5}>
+            Earn interest
+          </Text>
+          <Text opacity={selectText === 1 || selectText === 2 ? 1 : 0.5}>
+            in TOS
+          </Text>
         </Box>
       ) : (
         <Flex
@@ -263,7 +284,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 1 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"right"}
           pos="absolute"
@@ -274,15 +295,24 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 1 ? "#ec8c56" : "#64646f"}
+            color={
+              selectText === 1
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             sTOS
           </Text>
+          <Flex opacity={selectText === 1 ? 1 : 0.5} flexDir='column'>
           <Text>Participate in governance </Text>
           <Text>Earn airdrop </Text>
           <Text>Participate in IDO</Text>
+          </Flex>
+         
         </Box>
       ) : (
         <Flex
@@ -301,7 +331,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 3 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"left"}
           pos="absolute"
@@ -313,15 +343,23 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 3 ? "#ec8c56" : "#64646f"}
+           color={
+            selectText === 3
+              ? "#ec8c56"
+              : colorMode === "dark"
+              ? "#64646f"
+              : "#9a9aaf"
+          }
             fontSize={24}
             fontWeight={"bold"}
           >
             dTOS
           </Text>
+          <Flex opacity={selectText === 3? 1 : 0.5} flexDir='column'>
           <Text>(Coming soon)</Text>
           <Text>High discount rate</Text>
           <Text>for bonding</Text>
+          </Flex>
         </Box>
       ) : (
         <Flex
@@ -340,7 +378,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 3 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"left"}
           pos="absolute"
@@ -352,14 +390,23 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 3 ? "#ec8c56" : "#64646f"}
+            color={
+              selectText === 3
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             Bond
           </Text>
+          <Flex opacity={selectText === 3? 1 : 0.5} flexDir='column'>
+
           <Text>Raise capital for</Text>
           <Text>TONStarter Ecosystem</Text>
+          </Flex>
         </Box>
       ) : (
         <Flex
@@ -390,6 +437,8 @@ const MotionWapper = (props: {
     props;
 
   const rotateAngle = clockDirection ? 360 : -360;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
   return (
     <motion.div
       animate={{
@@ -414,6 +463,8 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
   const [width, height] = useWindowDimensions();
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   if (width < 1024) {
     return null;
@@ -487,6 +538,8 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
   const [height] = useWindowDimensions();
   const isMobile = width < 530;
   const isMobileAnimation = width < 1024;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (selectedTab1 === false) {
@@ -671,7 +724,11 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
                   }
             }
           >
-            <Text fontSize={28} fontWeight={"bold"} color={"#64646f"}>
+            <Text
+              fontSize={28}
+              fontWeight={"bold"}
+              color={colorMode === "dark" ? "white.100" : "gray.800"}
+            >
               TOS
             </Text>
           </motion.div>
@@ -703,7 +760,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           pos={"relative"}
           fontSize={width > 530 ? 28 : 21}
           fontWeight={"bold"}
-          color={selectedTab1 ? "white.100" : "#64646f"}
+          color={colorMode ==='dark'? selectedTab1 ? "white.100" : "#64646f": selectedTab1 ? "gray.800" : "gray.700"}
           top={"-10px"}
           width={"100%"}
           minW={"100%"}
@@ -720,11 +777,17 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             pos={"absolute"}
             left={width > 900 ? "270px" : width > 530 ? "100px" : "50px"}
             color={
-              selectText === 1
+              colorMode === "dark"
+                ? selectText === 1
+                  ? ""
+                  : selectedTab1
+                  ? "white.100"
+                  : "#64646f"
+                : selectText === 1
                 ? ""
                 : selectedTab1
-                ? "white.100"
-                : "#64646f"
+                ? "gray.800"
+                : "gray.700"
             }
           >
             TONStarter
@@ -739,6 +802,8 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
 function IntroCircle(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
   const [width] = useWindowDimensions();
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   const height = useMemo(() => {
     if (width > 1024) {

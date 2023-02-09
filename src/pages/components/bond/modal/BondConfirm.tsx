@@ -32,7 +32,7 @@ const BondConfirm = (props: {
       isCentered
       onClose={() => setIsOpenConfirm(false)}
     >
-      <ModalOverlay />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
       <ModalContent
         fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "black.200"}
@@ -123,7 +123,7 @@ const BondConfirm = (props: {
                       href={
                         "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                       }
-                      color={"blue.100"}
+                      color={colorMode ==='dark'? "white.200": "gray.800"}
                       textDecoration={"underline"}
                     >
                       WTON
@@ -134,7 +134,7 @@ const BondConfirm = (props: {
                       href={
                         "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                       }
-                      color={"blue.100"}
+                      color={colorMode ==='dark'? "white.200": "gray.800"}
                       textDecoration={"underline"}
                     >
                       {" "}
@@ -147,7 +147,7 @@ const BondConfirm = (props: {
                     <Link
                       isExternal={true}
                       href={"https://tosv2.tokamak.network/stake"}
-                      color={"blue.100"}
+                      color={colorMode ==='dark'? "white.200": "gray.800"}
                       textDecoration={"underline"}
                     >
                       stake

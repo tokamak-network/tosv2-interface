@@ -246,7 +246,7 @@ function UpdateModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlay" />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
@@ -359,7 +359,7 @@ function UpdateModal() {
                   <Flex
                     w={bp700px ? "100%" : "204px"}
                     h={"39px"}
-                    border={"1px solid #313442"}
+                    border={colorMode === 'dark'? "1px solid #313442":'1px solid #e8edf2'}
                     borderRadius={8}
                     alignItems={"center"}
                     pl={"15px"}

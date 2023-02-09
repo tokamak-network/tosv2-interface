@@ -239,7 +239,7 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
     >
-      <ModalOverlay />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'} />
       {walletView === WALLET_VIEWS.ACCOUNT && account ? (
         <ModalContent bg={colorMode === "light" ? "white.100" : "#1f2128"}>
           <ModalHeader color={colorMode === "light" ? "gray.800" : "white.200"}>
@@ -374,7 +374,7 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
           </ModalBody>
         </ModalContent>
       ) : (
-        <ModalContent bg={colorMode === "light" ? "white.100" : "#1f2128"}>
+        <ModalContent bg={colorMode === "light" ? "white.100" : "#121318"}>
           <ModalHeader color={colorMode === "light" ? "gray.800" : "white.200"}>
             Connect Wallet
           </ModalHeader>
@@ -394,7 +394,7 @@ export const WalletModal: FC<WalletProps> = ({ isOpen, onClose }) => {
               <Text
                 pt={3}
                 fontSize="sm"
-                color={colorMode === "dark" ? "#8b8b93" : "#07070c"}
+                color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
               >
                 New to Ethereum?{" "}
                 <Link isExternal href="https://ethereum.org/wallets/">

@@ -157,7 +157,7 @@ function UnstakeModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlay" />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
