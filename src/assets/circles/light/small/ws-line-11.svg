@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="264.612" height="265.972" viewBox="0 0 264.612 265.972">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1.08" y1="0.187" x2="0.233" y2="0.239" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#2775ff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#2775ff"/>
+    </linearGradient>
+    <filter id="원형" x="0" y="172.008" width="42.33" height="54.05" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur"/>
+      <feFlood flood-color="#257eee"/>
+      <feComposite operator="in" in2="blur"/>
+    </filter>
+    <filter id="원형-2" x="0" y="172.008" width="42.33" height="54.05" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur-2"/>
+      <feFlood flood-color="#257eee" result="color"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-2"/>
+      <feComposite operator="in" in="color"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <filter id="원형-3" x="6.264" y="179.161" width="31.536" height="42.495" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-3"/>
+      <feFlood flood-color="#257eee"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="원형-4" x="6.265" y="179.285" width="30.025" height="40.047" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-4"/>
+      <feFlood flood-color="#257eee"/>
+      <feComposite operator="in" in2="blur-4"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="ws-line-11" transform="translate(1.791 0)">
+    <ellipse id="Guide" cx="131.411" cy="131.411" rx="131.411" ry="131.411" transform="translate(0 0)" fill="none"/>
+    <path id="패스_1040" data-name="패스 1040" d="M250.25.383C237.894,60.767,182.61,104.16,120.877,104.16A130.761,130.761,0,0,1,1.711,26.96a.894.894,0,0,0-1.632.731,132.552,132.552,0,0,0,120.8,78.258c62.58,0,117.091-44.429,129.616-105.642.1-.483-.157-.347-.243.076" transform="translate(10.534 157.767)" fill="#2775ff"/>
+    <path id="패스_1038" data-name="패스 1038" d="M250.25.383C237.894,60.767,182.61,104.16,120.877,104.16A130.761,130.761,0,0,1,1.711,26.96a.894.894,0,0,0-1.632.731,132.552,132.552,0,0,0,120.8,78.258c62.58,0,117.091-44.429,129.616-105.642.1-.483-.157-.347-.243.076" transform="translate(10.534 157.767)" fill="url(#linear-gradient)" style="mix-blend-mode: overlay;isolation: isolate"/>
+    <path id="패스_1039" data-name="패스 1039" d="M.894,0A.893.893,0,0,0,.079,1.26c21.3,47.54,68.719,77.514,120.8,77.514.494,0,.494-.346,0-.346-51.375,0-98.151-31-119.166-77.9A.9.9,0,0,0,.894,0" transform="translate(10.534 184.198)" fill="#2775ff"/>
+    <path id="패스_1041" data-name="패스 1041" d="M.894,0A.893.893,0,0,0,.079,1.26c21.3,47.54,68.719,77.514,120.8,77.514.494,0,.494-.346,0-.346-51.375,0-98.151-31-119.166-77.9A.9.9,0,0,0,.894,0" transform="translate(10.534 184.198)" fill="rgba(39,117,255,0.75)" opacity="0.5"/>
+    <path id="패스_1043" data-name="패스 1043" d="M.894,0A.893.893,0,0,0,.079,1.26c21.3,47.54,68.719,77.514,120.8,77.514.494,0,.494-.346,0-.346-51.375,0-98.151-31-119.166-77.9A.9.9,0,0,0,.894,0" transform="translate(10.534 184.198)" fill="rgba(39,117,255,0.15)"/>
+    <path id="패스_1044" data-name="패스 1044" d="M.894,0A.893.893,0,0,0,.079,1.26c21.3,47.54,68.719,77.514,120.8,77.514.494,0,.494-.346,0-.346-51.375,0-98.151-31-119.166-77.9A.9.9,0,0,0,.894,0" transform="translate(10.534 184.198)" fill="#74c0ef" opacity="0.75" style="mix-blend-mode: overlay;isolation: isolate"/>
+    <g data-type="innerShadowGroup">
+      <g transform="matrix(1, 0, 0, 1, -1.79, 0)" filter="url(#원형)" style="mix-blend-mode: overlay;isolation: isolate">
+        <path id="원형-5" data-name="원형" d="M19.54,3.577c6.256,0,11.327-.8,11.327-1.789S25.8,0,19.54,0,0,2.634,0,3.622,13.285,3.577,19.54,3.577Z" transform="matrix(-0.45, -0.89, 0.89, -0.45, 26.37, 213.7)" fill="#fff"/>
+      </g>
+      <g transform="matrix(1, 0, 0, 1, -1.79, 0)" filter="url(#원형-2)" style="mix-blend-mode: overlay;isolation: isolate">
+        <path id="원형-6" data-name="원형" d="M19.54,3.577c6.256,0,11.327-.8,11.327-1.789S25.8,0,19.54,0,0,2.634,0,3.622,13.285,3.577,19.54,3.577Z" transform="matrix(-0.45, -0.89, 0.89, -0.45, 26.37, 213.7)" fill="#fff"/>
+      </g>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -1.79, 0)" filter="url(#원형-3)" style="mix-blend-mode: overlay;isolation: isolate">
+      <path id="원형-7" data-name="원형" d="M22.576,2.385c4.61,0,8.346-.534,8.346-1.192S27.185,0,22.576,0,0,1.9,0,2.554,17.966,2.385,22.576,2.385Z" transform="matrix(-0.48, -0.87, 0.87, -0.48, 28.3, 214.61)" fill="#e0feff" opacity="0.4"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, -1.79, 0)" filter="url(#원형-4)" style="mix-blend-mode: overlay;isolation: isolate">
+      <path id="원형-8" data-name="원형" d="M19.917,2.385c4.61,0,8.346-.534,8.346-1.192S24.526,0,19.917,0,0,1.55,0,2.209,15.307,2.385,19.917,2.385Z" transform="matrix(-0.48, -0.87, 0.87, -0.48, 27.01, 212.29)" fill="#e0feff" opacity="0.5"/>
+    </g>
+  </g>
+</svg>

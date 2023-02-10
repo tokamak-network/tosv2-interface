@@ -1,0 +1,63 @@
+<svg id="wb-line-12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="708.53" height="708.53" viewBox="0 0 708.53 708.53">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.832" y1="0.462" x2="0.069" y2="0.489" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#cb877a"/>
+      <stop offset="1" stop-color="#cb877a" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="0.905" y1="0.125" x2="0.047" y2="0.924" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#fff8c1" stop-opacity="0.749"/>
+      <stop offset="1" stop-color="#eb7253" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="타원_99" x="283.796" y="103.119" width="32.454" height="11.563" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur"/>
+      <feFlood flood-color="#fff8c1" flood-opacity="0.851"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="타원_99-2" x="283.796" y="103.119" width="32.454" height="11.563" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-2"/>
+      <feFlood flood-color="#eb7253" flood-opacity="0.749" result="color"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-2"/>
+      <feComposite operator="in" in="color"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <filter id="타원_105" x="283.794" y="103.118" width="32.454" height="11.563" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-3"/>
+      <feFlood flood-color="#fff8c1" flood-opacity="0.851"/>
+      <feComposite operator="in" in2="blur-3"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="타원_105-2" x="283.794" y="103.118" width="32.454" height="11.563" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-4"/>
+      <feFlood flood-color="#eb7253" flood-opacity="0.749" result="color-2"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-4"/>
+      <feComposite operator="in" in="color-2"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <circle id="Guide" cx="251.46" cy="251.46" r="251.46" transform="translate(323.271 708.53) rotate(-130)" fill="none"/>
+  <path id="패스_1031" data-name="패스 1031" d="M407.4,25.618a249.937,249.937,0,0,1-78.679,89.922,248.654,248.654,0,0,1-143.634,45.306c-69.275,0-137.5-27.788-184.694-78.543l-.39.36a253.572,253.572,0,0,0,185.084,80.649A251.113,251.113,0,0,0,330.133,117.56a252.432,252.432,0,0,0,79.7-91.281C414.14,17.906,417.027,8.891,420.4,0,417,8.968,411.761,17.178,407.4,25.618" transform="translate(541.708 438.59) rotate(-130)" fill="url(#linear-gradient)"/>
+  <path id="패스_1045" data-name="패스 1045" d="M407.4,25.618a249.937,249.937,0,0,1-78.679,89.922,248.654,248.654,0,0,1-143.634,45.306c-69.275,0-137.5-27.788-184.694-78.543l-.39.36a253.572,253.572,0,0,0,185.084,80.649A251.113,251.113,0,0,0,330.133,117.56a252.432,252.432,0,0,0,79.7-91.281C414.14,17.906,417.027,8.891,420.4,0,417,8.968,411.761,17.178,407.4,25.618" transform="translate(541.706 438.59) rotate(-130)" opacity="0.65" fill="url(#linear-gradient)"/>
+  <path id="패스_1046" data-name="패스 1046" d="M407.4,25.618a249.937,249.937,0,0,1-78.679,89.922,248.654,248.654,0,0,1-143.634,45.306c-69.275,0-137.5-27.788-184.694-78.543l-.39.36a253.572,253.572,0,0,0,185.084,80.649A251.113,251.113,0,0,0,330.133,117.56a252.432,252.432,0,0,0,79.7-91.281C414.14,17.906,417.027,8.891,420.4,0,417,8.968,411.761,17.178,407.4,25.618" transform="translate(541.706 438.59) rotate(-130)" fill="url(#linear-gradient)" style="mix-blend-mode: overlay;isolation: isolate"/>
+  <path id="패스_1035" data-name="패스 1035" d="M0,137.828a255.322,255.322,0,0,0,36.191,2.582,251.357,251.357,0,0,0,134.338-38.74A252.9,252.9,0,0,0,261.8.891a.616.616,0,0,0-1.1-.55,251.647,251.647,0,0,1-90.83,100.285c-39.966,25.221-85.928,39.332-133.416,39.332A260.264,260.264,0,0,1,0,137.828" transform="translate(463.076 310.208) rotate(-130)" fill="url(#linear-gradient-4)"/>
+  <g data-type="innerShadowGroup">
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#타원_99)">
+      <ellipse id="타원_99-3" data-name="타원 99" cx="14.794" cy="1.233" rx="14.794" ry="1.233" transform="translate(314.75 107.03) rotate(168)" fill="#fff8c1" opacity="0.4"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#타원_99-2)">
+      <ellipse id="타원_99-4" data-name="타원 99" cx="14.794" cy="1.233" rx="14.794" ry="1.233" transform="translate(314.75 107.03) rotate(168)" fill="#fff" opacity="0.4"/>
+    </g>
+  </g>
+  <g data-type="innerShadowGroup">
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#타원_105)" style="mix-blend-mode: overlay;isolation: isolate">
+      <ellipse id="타원_105-3" data-name="타원 105" cx="14.794" cy="1.233" rx="14.794" ry="1.233" transform="translate(314.75 107.03) rotate(168)" fill="#fff8c1" opacity="0.55"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#타원_105-2)" style="mix-blend-mode: overlay;isolation: isolate">
+      <ellipse id="타원_105-4" data-name="타원 105" cx="14.794" cy="1.233" rx="14.794" ry="1.233" transform="translate(314.75 107.03) rotate(168)" fill="#fff" opacity="0.55"/>
+    </g>
+  </g>
+</svg>

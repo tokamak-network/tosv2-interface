@@ -14,6 +14,19 @@ import bgBLine4 from "assets/circles/dark/background/d-bo-line-04.svg";
 import bgBLine5 from "assets/circles/dark/background/d-bo-line-05.svg";
 import bgBLine6 from "assets/circles/dark/background/d-bo-line-06.svg";
 
+import l_bgLine1 from "assets/circles/light/background/w-bb-line-01.svg";
+import l_bgLine2 from "assets/circles/light/background/w-bb-line-02.svg";
+import l_bgLine3 from "assets/circles/light/background/w-bb-line-03.svg";
+import l_bgLine4 from "assets/circles/light/background/w-bb-line-04.svg";
+import l_bgLine5 from "assets/circles/light/background/w-bb-line-05.svg";
+import l_bgLine6 from "assets/circles/light/background/w-bb-line-06.svg";
+import l_bgBLine1 from "assets/circles/light/background/w-bo-line-01.svg";
+import l_bgBLine2 from "assets/circles/light/background/w-bo-line-02.svg";
+import l_bgBLine3 from "assets/circles/light/background/w-bo-line-03.svg";
+import l_bgBLine4 from "assets/circles/light/background/w-bo-line-04.svg";
+import l_bgBLine5 from "assets/circles/light/background/w-bo-line-05.svg";
+import l_bgBLine6 from "assets/circles/light/background/w-bo-line-06.svg";
+
 //big lines
 import bigLine1 from "assets/circles/dark/big/db-line-01.svg";
 import bigLine2 from "assets/circles/dark/big/db-line-02.svg";
@@ -29,6 +42,20 @@ import bigLine11 from "assets/circles/dark/big/db-line-11.svg";
 import bigLine12 from "assets/circles/dark/big/db-line-12.svg";
 import bigLine13 from "assets/circles/dark/big/db-line-13.svg";
 
+import l_bigLine1 from "assets/circles/light/big/wb-line-01.svg";
+import l_bigLine2 from "assets/circles/light/big/wb-line-02.svg";
+import l_bigLine3 from "assets/circles/light/big/wb-line-03.svg";
+import l_bigLine4 from "assets/circles/light/big/wb-line-04.svg";
+import l_bigLine5 from "assets/circles/light/big/wb-line-05.svg";
+import l_bigLine6 from "assets/circles/light/big/wb-line-06.svg";
+import l_bigLine7 from "assets/circles/light/big/wb-line-07.svg";
+import l_bigLine8 from "assets/circles/light/big/wb-line-08.svg";
+import l_bigLine9 from "assets/circles/light/big/wb-line-09.svg";
+import l_bigLine10 from "assets/circles/light/big/wb-line-10.svg";
+import l_bigLine11 from "assets/circles/light/big/wb-line-11.svg";
+import l_bigLine12 from "assets/circles/light/big/wb-line-12.svg";
+import l_bigLine13 from "assets/circles/light/big/wb-line-13.svg";
+
 //small lines
 import smallLine1 from "assets/circles/dark/small/ds-line-01.svg";
 import smallLine2 from "assets/circles/dark/small/ds-line-02.svg";
@@ -43,6 +70,20 @@ import smallLine10 from "assets/circles/dark/small/ds-line-10.svg";
 import smallLine11 from "assets/circles/dark/small/ds-line-11.svg";
 import smallLine12 from "assets/circles/dark/small/ds-line-12.svg";
 import smallLine13 from "assets/circles/dark/small/ds-line-13.svg";
+
+import l_smallLine1 from "assets/circles/light/small/ws-line-01.svg";
+import l_smallLine2 from "assets/circles/light/small/ws-line-02.svg";
+import l_smallLine3 from "assets/circles/light/small/ws-line-03.svg";
+import l_smallLine4 from "assets/circles/light/small/ws-line-04.svg";
+import l_smallLine5 from "assets/circles/light/small/ws-line-05.svg";
+import l_smallLine6 from "assets/circles/light/small/ws-line-06.svg";
+import l_smallLine7 from "assets/circles/light/small/ws-line-07.svg";
+import l_smallLine8 from "assets/circles/light/small/ws-line-08.svg";
+import l_smallLine9 from "assets/circles/light/small/ws-line-09.svg";
+import l_smallLine10 from "assets/circles/light/small/ws-line-10.svg";
+import l_smallLine11 from "assets/circles/light/small/ws-line-11.svg";
+import l_smallLine12 from "assets/circles/light/small/ws-line-12.svg";
+import l_smallLine13 from "assets/circles/light/small/ws-line-13.svg";
 
 //mobile circle
 import MobileCircle from "assets/circles/dark-mg-intro-t-01.svg";
@@ -307,12 +348,11 @@ function LightPointText(props: { selectedTab1: boolean }) {
           >
             sTOS
           </Text>
-          <Flex opacity={selectText === 1 ? 1 : 0.5} flexDir='column'>
-          <Text>Participate in governance </Text>
-          <Text>Earn airdrop </Text>
-          <Text>Participate in IDO</Text>
+          <Flex opacity={selectText === 1 ? 1 : 0.5} flexDir="column">
+            <Text>Participate in governance </Text>
+            <Text>Earn airdrop </Text>
+            <Text>Participate in IDO</Text>
           </Flex>
-         
         </Box>
       ) : (
         <Flex
@@ -343,22 +383,22 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-           color={
-            selectText === 3
-              ? "#ec8c56"
-              : colorMode === "dark"
-              ? "#64646f"
-              : "#9a9aaf"
-          }
+            color={
+              selectText === 3
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             dTOS
           </Text>
-          <Flex opacity={selectText === 3? 1 : 0.5} flexDir='column'>
-          <Text>(Coming soon)</Text>
-          <Text>High discount rate</Text>
-          <Text>for bonding</Text>
+          <Flex opacity={selectText === 3 ? 1 : 0.5} flexDir="column">
+            <Text>(Coming soon)</Text>
+            <Text>High discount rate</Text>
+            <Text>for bonding</Text>
           </Flex>
         </Box>
       ) : (
@@ -402,10 +442,9 @@ function LightPointText(props: { selectedTab1: boolean }) {
           >
             Bond
           </Text>
-          <Flex opacity={selectText === 3? 1 : 0.5} flexDir='column'>
-
-          <Text>Raise capital for</Text>
-          <Text>TONStarter Ecosystem</Text>
+          <Flex opacity={selectText === 3 ? 1 : 0.5} flexDir="column">
+            <Text>Raise capital for</Text>
+            <Text>TONStarter Ecosystem</Text>
           </Flex>
         </Box>
       ) : (
@@ -449,7 +488,12 @@ const MotionWapper = (props: {
         ease: "linear",
         duration: duration ?? Math.floor(Math.random() * 25) + 4,
       }}
-      style={{ position: "absolute", opacity: opacity ?? 1, ...style, outline: 'none' }}
+      style={{
+        position: "absolute",
+        opacity: opacity ?? 1,
+        ...style,
+        outline: "none",
+      }}
       initial={{ rotate: initialRotate }}
     >
       <Image src={src} alt={"bgLine"}></Image>
@@ -465,6 +509,36 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
   const [width, height] = useWindowDimensions();
   const theme = useTheme();
   const { colorMode } = useColorMode();
+  const bgBLineArr =
+    colorMode === "dark"
+      ? [
+          bgLine1,
+          bgLine2,
+          bgLine3,
+          bgLine4,
+          bgLine5,
+          bgLine6,
+          bgBLine1,
+          bgBLine2,
+          bgBLine3,
+          bgBLine4,
+          bgBLine5,
+          bgBLine6,
+        ]
+      : [
+          l_bgLine1,
+          l_bgLine2,
+          l_bgLine3,
+          l_bgLine4,
+          l_bgLine5,
+          l_bgLine6,
+          l_bgBLine1,
+          l_bgBLine2,
+          l_bgBLine3,
+          l_bgBLine4,
+          l_bgBLine5,
+          l_bgBLine6,
+        ];
 
   if (width < 1024) {
     return null;
@@ -678,9 +752,9 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             smallLine13,
             ,
           ].map((imgSrc: any, index: number) => {
-            if(width < 1040 && index < 2) {
-              return null
-            } 
+            if (width < 1040 && index < 2) {
+              return null;
+            }
             return (
               <MotionWapper
                 src={imgSrc}
@@ -701,7 +775,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
                       ? {
                           width: "200px",
                         }
-                      : {border: 'none'}
+                      : { border: "none" }
                     : {}
                 }
               ></MotionWapper>
@@ -760,7 +834,15 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           pos={"relative"}
           fontSize={width > 530 ? 28 : 21}
           fontWeight={"bold"}
-          color={colorMode ==='dark'? selectedTab1 ? "white.100" : "#64646f": selectedTab1 ? "gray.800" : "gray.700"}
+          color={
+            colorMode === "dark"
+              ? selectedTab1
+                ? "white.100"
+                : "#64646f"
+              : selectedTab1
+              ? "gray.800"
+              : "gray.700"
+          }
           top={"-10px"}
           width={"100%"}
           minW={"100%"}
@@ -824,7 +906,6 @@ function IntroCircle(props: { selectedTab1: boolean }) {
       mt={width < 530 ? "40px" : "120px"}
       alignItems={"center"}
       justifyContent={"center"}
-
     >
       <TabOneCircle selectedTab1={selectedTab1} width={width} />
       <BackgroundLines selectedTab1={selectedTab1} />
