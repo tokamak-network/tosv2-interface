@@ -181,7 +181,7 @@ function BondCard(props: { data: BondCardProps }) {
           </Flex>
           <Flex fontSize={11}>
             <Text color={"white.200"}>4,581,532 /</Text>
-            <Text>&nbsp;5,000,000 {data.buyTokenType}</Text>
+            <Text>&nbsp;5,000,000 {data?.buyTokenType}</Text>
           </Flex>
         </Flex>
         <Progress
@@ -196,7 +196,7 @@ function BondCard(props: { data: BondCardProps }) {
           title={titleState}
           content={
             titleState === "Time Starts"
-              ? data.startDay
+              ? data?.startDay
               : titleState === "Time Left"
               ? timeLeft
               : data?.endDay
