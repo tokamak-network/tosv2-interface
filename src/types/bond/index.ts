@@ -12,8 +12,12 @@ export type BondCardProps = {
   bondingPrice: string;
   discountRate: string;
   totalSold: string;
+  startDay: string;
+  leftDay: string;
+  endDay: string;
   endTime: number;
-  tokenType: TokenTypes;
+  sellTokenType: TokenTypes;
+  buyTokenType: TokenTypes;
   index: number;
   tooltip?: string;
 };
@@ -52,3 +56,7 @@ export type BondModalInput = {
   bond_modal_period: number;
   bond_modal_balance: number | undefined;
 };
+
+export enum BondPool {
+  "TOS-ETH" = "TOS-ETH",
+}

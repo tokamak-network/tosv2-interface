@@ -9,6 +9,9 @@ import commafy from "utils/commafy";
 import usePrice from "hooks/usePrice";
 import useCallContract from "hooks/useCallContract";
 import { convertNumber } from "@/utils/number";
+import { getDummyServerBondData } from "test/bond/dummyBondData";
+import { isProduction } from "constants/production";
+import { convertTimeStamp } from "@/utils/time";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
@@ -21,56 +24,64 @@ function BondCardSection() {
     },
     pollInterval: 10000,
   });
-  const { priceData } = usePrice();
+  // const { priceData } = usePrice();
 
   // const { BondDepositoryProxy_CONTRACT } = useCallContract();
 
-  // useEffect(() => {
-  //   async function test() {
-  //     if (BondDepositoryProxy_CONTRACT) {
-  //       const test = await BondDepositoryProxy_CONTRACT.getBonds();
-  //       console.log(test);
-  //     }
-  //   }
-  //   test();
-  // }, [BondDepositoryProxy_CONTRACT]);
+  const priceData = {
+    ethPrice: 1524.33,
+    tosPrice: 1,
+  };
 
   useEffect(() => {
-    if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {
-      const bonds = data.getBondList;
+    // if (data && priceData && priceData?.tosPrice && priceData?.ethPrice)
+    if (priceData && priceData?.tosPrice && priceData?.ethPrice) {
+      // const bonds = data.getBondList;
       const { ethPrice, tosPrice } = priceData;
-      const dum: BondCardProps[] = bonds.map((bond: BondRawdata) => {
-        const {
-          capacity,
-          index,
-          tokenLogo,
-          totalSold,
-          endTime,
-          bondPrice: _tosPrice,
-        } = bond;
-        const bondPrice = (1 / _tosPrice) * 1e18 * ethPrice;
-        const convertedbondPrice = Number(
-          convertNumber({ amount: bondPrice.toString() })
-        );
-        const discount = ((tosPrice - convertedbondPrice) / tosPrice) * 100;
 
-        return {
-          bondCapacity: commafy(capacity),
-          bondingPrice: convertNumber({
-            amount: bondPrice.toString(),
-            localeString: true,
-            round: false,
-          }),
-          discountRate: `${commafy(discount)}%`,
-          tokenType: "ETH",
-          totalSold: `${commafy(totalSold)} TOS`,
-          endTime,
-          index,
-        };
-      });
-      setCardList(dum);
+      const dummyServerData = getDummyServerBondData();
+
+      const bondcardDatas: BondCardProps[] = dummyServerData.map(
+        (bond: BondRawdata) => {
+          const {
+            capacity,
+            index,
+            tokenLogo,
+            totalSold,
+            endTime,
+            bondPrice: _tosPrice,
+          } = bond;
+          const bondPrice = (1 / _tosPrice) * 1e18 * ethPrice;
+          const convertedbondPrice = Number(
+            convertNumber({ amount: bondPrice.toString() })
+          );
+          const discount = ((tosPrice - convertedbondPrice) / tosPrice) * 100;
+          const startDay = convertTimeStamp(1676272010);
+          const endDay = convertTimeStamp(endTime);
+
+          return {
+            bondCapacity: commafy(capacity),
+            bondingPrice: convertNumber({
+              amount: bondPrice.toString(),
+              localeString: true,
+              round: false,
+            }) as string,
+            discountRate: `${commafy(discount)}%`,
+            sellTokenType: "ETH",
+            buyTokenType: "TOS",
+            totalSold: `${commafy(totalSold)} TOS`,
+            endTime,
+            index,
+            startDay,
+            leftDay: "",
+            endDay,
+          };
+        }
+      );
+
+      setCardList(bondcardDatas);
     }
-  }, [data, priceData]);
+  }, []);
 
   return (
     <Flex
