@@ -9,6 +9,7 @@ import commafy from "utils/commafy";
 import usePrice from "hooks/usePrice";
 import useCallContract from "hooks/useCallContract";
 import { convertNumber } from "@/utils/number";
+import { log } from "console";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
@@ -68,6 +69,8 @@ function BondCardSection() {
           index,
         };
       });
+
+      console.log(dum);
       setCardList(dum);
     }
   }, [data, priceData]);
