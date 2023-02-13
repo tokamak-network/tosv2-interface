@@ -1,5 +1,6 @@
 import {
   Flex,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -22,6 +23,7 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import SubmitButton from "common/button/SubmitButton";
 import useMediaView from "hooks/useMediaView";
+import { TextInput } from "common/input/TextInput";
 
 function BondOpenConfirmModal() {
   const theme = useTheme();
@@ -31,7 +33,8 @@ function BondOpenConfirmModal() {
 
   return (
     <Modal
-      isOpen={selectedModal === "bond_openConfirm_modal"}
+      isOpen={true}
+      //   isOpen={selectedModal === "bond_openConfirm_modal"}
       isCentered
       onClose={() => closeModal()}
     >
@@ -51,9 +54,8 @@ function BondOpenConfirmModal() {
               fontWeight={600}
               ml="9px"
             >
-              ETH Bond
+              Are you sure?
             </Text>
-
             <Flex
               pos={"absolute"}
               right={"1.56em"}
@@ -68,8 +70,36 @@ function BondOpenConfirmModal() {
             w={"100%"}
             flexDir={"column"}
             px={bp700px ? "20px" : "120px"}
-            mb={"29px"}
-          ></Flex>
+            mb={"18px"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            textAlign={"center"}
+            rowGap={"12px"}
+            fontSize={14}
+            color={"#8b8b93"}
+          >
+            <Text>
+              Buying here is more expensive than <br /> Tokamak Network Swap or
+              other exchanges
+            </Text>
+            <Text>Type &quot;confirm&quot; to proceed anyway</Text>
+          </Flex>
+          {/* Button Area*/}
+          <Flex
+            flexDir={"column"}
+            rowGap={"30px"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Input
+              w={"460px"}
+              fontSize={14}
+              color={"#64646f"}
+              placeholder={"Type “confirm” here"}
+              textAlign={"center"}
+            ></Input>
+            <SubmitButton w={"460px"} name="Confirm"></SubmitButton>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>
