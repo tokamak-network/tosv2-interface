@@ -24,7 +24,7 @@ import "css/gradient.css";
 import "css/modalOverlay.css";
 import "css/scrollbar.css";
 import CustomToast from "common/toast/CustomToast";
-
+import SwapInterfaceModal from "common/swap/SwapInterfaceModal";
 function MyApp({ Component, pageProps }: AppProps) {
   test();
   const { onOpen, isOpen: isModalOpen, onClose } = useDisclosure();
@@ -68,6 +68,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                       walletopen={() => handleWalletModalOpen("wallet")}
                     ></AccountDrawer>
                     <NetworkModal />
+                    <SwapInterfaceModal/>
                     <TermsOfUse />
                     {/* Use when it does need to pop Notice Modal up */}
                     {/* <Notice /> */}

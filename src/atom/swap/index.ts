@@ -1,0 +1,42 @@
+import { atom, selector } from "recoil";
+
+const selectedToken0 = atom ({
+    key:'selectedToken0',
+    default:{
+        name: "",
+        address: "",
+        img: "",
+      }
+})
+
+const selectedToken1 = atom ({
+    key:'selectedToken1',
+    default:{
+        name: "",
+        address: "",
+        img: "",
+      }
+})
+
+
+const swapTX = atom({
+  key:'swapTX',
+  default: {
+    tx:false,
+    data: {
+      name:''
+    }
+  }
+})
+
+const slip = atom({
+  key:'slip',
+  default: '0'
+})
+
+const focus = atom ({
+  key:'focus',
+  default:'input1'
+})
+
+export {selectedToken0,selectedToken1,swapTX,slip,focus}
