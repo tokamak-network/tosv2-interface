@@ -615,6 +615,71 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
   const theme = useTheme();
   const { colorMode } = useColorMode();
 
+  const bigLineArr =
+    colorMode === "dark"
+      ? [
+          bigLine1,
+          bigLine2,
+          bigLine3,
+          bigLine4,
+          bigLine5,
+          bigLine6,
+          bigLine7,
+          bigLine8,
+          bigLine9,
+          bigLine10,
+          bigLine11,
+          bigLine12,
+          bigLine13,
+        ]
+      : [
+          l_bigLine1,
+          l_bigLine2,
+          l_bigLine3,
+          l_bigLine4,
+          l_bigLine5,
+          l_bigLine6,
+          l_bigLine7,
+          l_bigLine8,
+          l_bigLine9,
+          l_bigLine10,
+          l_bigLine11,
+          l_bigLine12,
+          l_bigLine13,
+        ];
+
+  const smallLineArr =
+    colorMode === "dark"
+      ? [
+          smallLine1,
+          smallLine2,
+          smallLine3,
+          smallLine4,
+          smallLine5,
+          smallLine6,
+          smallLine7,
+          smallLine8,
+          smallLine9,
+          smallLine10,
+          smallLine11,
+          smallLine12,
+          smallLine13,
+        ]
+      : [
+          l_smallLine1,
+          l_smallLine2,
+          l_smallLine3,
+          l_smallLine4,
+          l_smallLine5,
+          l_smallLine6,
+          l_smallLine7,
+          l_smallLine8,
+          l_smallLine9,
+          l_smallLine10,
+          l_smallLine11,
+          l_smallLine12,
+          l_smallLine13,
+        ];
   useEffect(() => {
     if (selectedTab1 === false) {
       isAlreadyMoved = true;
@@ -665,21 +730,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           }}
         >
           {!isMobile ? (
-            [
-              bigLine1,
-              bigLine2,
-              bigLine3,
-              bigLine4,
-              bigLine5,
-              bigLine6,
-              bigLine7,
-              bigLine8,
-              bigLine9,
-              bigLine10,
-              bigLine11,
-              bigLine12,
-              bigLine13,
-            ].map((imgSrc: any, index: number) => {
+            bigLineArr.map((imgSrc: any, index: number) => {
               return (
                 <MotionWapper
                   src={imgSrc}
@@ -736,22 +787,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           {selectedTab1 === false && (
             <LightPointText selectedTab1={selectedTab1}></LightPointText>
           )}
-          {[
-            smallLine1,
-            smallLine2,
-            smallLine3,
-            smallLine4,
-            smallLine5,
-            smallLine6,
-            smallLine7,
-            smallLine8,
-            smallLine9,
-            smallLine10,
-            smallLine11,
-            smallLine12,
-            smallLine13,
-            ,
-          ].map((imgSrc: any, index: number) => {
+          {smallLineArr.map((imgSrc: any, index: number) => {
             if (width < 1040 && index < 2) {
               return null;
             }
