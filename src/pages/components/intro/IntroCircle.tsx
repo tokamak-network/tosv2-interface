@@ -87,6 +87,7 @@ import l_smallLine13 from "assets/circles/light/small/ws-line-13.svg";
 
 //mobile circle
 import MobileCircle from "assets/circles/dark-mg-intro-t-01.svg";
+import l_MobileCircle from "assets/circles/bright-mg-intro-t-01.svg";
 
 //lights
 import lightPoint from "assets/circles/light-point.png";
@@ -744,7 +745,10 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
               );
             })
           ) : (
-            <MotionWapper src={MobileCircle} duration={8}></MotionWapper>
+            <MotionWapper
+              src={colorMode === "dark" ? MobileCircle : l_MobileCircle}
+              duration={8}
+            ></MotionWapper>
           )}
         </motion.div>
       </Flex>
