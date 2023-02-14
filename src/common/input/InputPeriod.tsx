@@ -167,7 +167,7 @@ const InputPeriod = (props: InputProp) => {
           textAlign={"center"}
           lineHeight={"39px"}
           fontSize={14}
-          color={"white.200"}
+          // color={"white.200"}
         >
           {(isDisabled === false || isManageModal === true) &&
             leftDays &&
@@ -191,7 +191,13 @@ const InputPeriod = (props: InputProp) => {
                   fontSize={12}
                   ml={"9px"}
                   mr={"3px"}
-                  color={weekHighlight ? colorMode ==='dark'? "#8b8b93" :'#7e7e8f': ""}
+                  color={
+                    weekHighlight
+                      ? colorMode === "dark"
+                        ? "#8b8b93"
+                        : "#7e7e8f"
+                      : ""
+                  }
                 >
                   {leftDays} {Number(leftDays) === 1 ? "Day" : "Days"}{" "}
                   {leftTime}
@@ -204,7 +210,7 @@ const InputPeriod = (props: InputProp) => {
           <Button
             w={"30px"}
             h={"20px"}
-            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
+            color={colorMode === "dark" ? "#64646f" : "#7e7e8f"}
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}
