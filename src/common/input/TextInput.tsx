@@ -109,7 +109,7 @@ const TextInput: React.FC<InputProp> = (props) => {
               ? "#64646f"
               : "#f1f1f1"
           }
-          _placeholder={{ color: "#64646f" }}
+          _placeholder={{ color: colorMode === "dark" ? "#64646f" : "#7e7e8f" }}
           placeholder={placeHolder}
           _hover={{
             borderColor: colorMode === "light" ? "#c6cbd9" : "#535353",
@@ -135,7 +135,7 @@ const TextInput: React.FC<InputProp> = (props) => {
           <Button
             w={"30px"}
             h={"20px"}
-            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
+            color={colorMode === "dark" ? "#64646f" : "#7e7e8f"}
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}
@@ -251,7 +251,6 @@ function BalanceInput(props: NumberInputProp) {
           borderColor={colorMode === "light" ? "#e8edf2" : "#313442"}
           fontSize={14}
           color={colorMode === "light" ? "gray.800" : "#f1f1f1"}
-          _placeholder={{ color: "#64646f" }}
           _hover={{
             borderColor: colorMode === "light" ? "#c6cbd9" : "#535353",
           }}
@@ -275,6 +274,9 @@ function BalanceInput(props: NumberInputProp) {
             onChange={onChange}
             fontSize={14}
             border={{}}
+            _placeholder={{
+              color: colorMode === "dark" ? "#64646f" : "#7e7e8f",
+            }}
             //@ts-ignore
             ref={inputRef}
           ></NumberInputField>
@@ -302,7 +304,7 @@ function BalanceInput(props: NumberInputProp) {
           <Button
             w={"30px"}
             h={"20px"}
-            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
+            color={colorMode === "dark" ? "#64646f" : "#7e7e8f"}
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}
