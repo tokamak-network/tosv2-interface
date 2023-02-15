@@ -13,7 +13,7 @@ import Image from "next/image";
 import MOON_ICON from "assets/icons/moon.svg";
 import SUN_ICON from "assets/icons/sun.svg";
 import BUGER_ICON from "assets/icons/icon_buger.svg";
-import BUGER_ICON_LIGHT from 'assets/icons/icon_buger_light.svg'
+import BUGER_ICON_LIGHT from "assets/icons/icon_buger_light.svg";
 import useMediaView from "hooks/useMediaView";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sidebarState } from "atom//header";
@@ -29,7 +29,7 @@ import { zIndexStyle } from "theme/styles";
 
 function BurgerButton() {
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
-  const {colorMode} = useColorMode()
+  const { colorMode } = useColorMode();
   return (
     <Flex
       cursor={"pointer"}
@@ -39,10 +39,13 @@ function BurgerButton() {
       w={"48px"}
       h={"48px"}
       borderWidth={1}
-      borderColor={colorMode === "dark"? "#313442":'#e8edf2'}
+      borderColor={colorMode === "dark" ? "#313442" : "#e8edf2"}
       borderRadius={"8px"}
     >
-      <Image src={colorMode === "dark"?BUGER_ICON:BUGER_ICON_LIGHT} alt={"burger_icon"}></Image>
+      <Image
+        src={colorMode === "dark" ? BUGER_ICON : BUGER_ICON_LIGHT}
+        alt={"burger_icon"}
+      ></Image>
     </Flex>
   );
 }
@@ -133,7 +136,7 @@ function Header(props: HeaderProps) {
           )}
         </Flex>
 
-        {/* <Flex
+        <Flex
           ml={"20px"}
           w={"48px"}
           h={"48px"}
@@ -149,7 +152,7 @@ function Header(props: HeaderProps) {
             src={colorMode === "light" ? SUN_ICON : MOON_ICON}
             alt={"MOON_ICON"}
           ></Image>
-        </Flex> */}
+        </Flex>
       </Flex>
     </Flex>
   );

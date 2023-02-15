@@ -33,7 +33,7 @@ function BondOpenConfirmModal() {
 
   return (
     <Modal
-      isOpen={true}
+      isOpen={false}
       //   isOpen={selectedModal === "bond_openConfirm_modal"}
       isCentered
       onClose={() => closeModal()}
