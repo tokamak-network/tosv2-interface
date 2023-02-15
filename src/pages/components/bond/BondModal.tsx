@@ -35,7 +35,7 @@ import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
@@ -67,6 +67,8 @@ import useStosReward from "hooks/stake/useStosReward";
 import BondConfirm from "./modal/BondConfirm";
 import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
+import { useModalStyle } from "hooks/style/useModalStyle";
 
 function BondModal() {
   const theme = useTheme();
@@ -77,7 +79,8 @@ function BondModal() {
     "Bond_screen",
     "bond_modal"
   );
-  const { selectedModalData, selectedModal, closeModal } = useModal();
+  const { selectedModalData, selectedModal, closeModal, modalSectionMtValue } =
+    useModal();
   const { bondModalData } = useBondModal();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
@@ -89,7 +92,7 @@ function BondModal() {
   const propData = selectedModalData as BondCardProps;
   const marketId = propData?.index;
 
-  const { bp700px } = useMediaView();
+  const { bp500px, bp700px } = useMediaView();
 
   const { youWillGet, endTime, stosReward, originalTosAmount } =
     useBondModalInputData(marketId);
@@ -210,11 +213,12 @@ function BondModal() {
       isCentered
       onClose={() => closeThisModal()}
     >
-      <ModalOverlay className="modalOverlayDrawer"  bg={'none'} />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
+        mt={modalSectionMtValue}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>
@@ -445,7 +449,7 @@ function BondModal() {
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
-                    color={colorMode ==='dark'? "white.200": "gray.800"}
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
                   >
                     WTON
                   </Link>
@@ -456,7 +460,7 @@ function BondModal() {
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
-                    color={colorMode ==='dark'? "white.200": "gray.800"}
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
                   >
                     ETH
                   </Link>
@@ -467,7 +471,7 @@ function BondModal() {
                   <Link
                     isExternal={true}
                     href={"https://tosv2.tokamak.network/stake"}
-                    color={colorMode ==='dark'? "white.200": "gray.800"}
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
                     textDecoration={"underline"}
                   >
                     stake

@@ -66,8 +66,13 @@ import useMediaView from "hooks/useMediaView";
 function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { selectedModalData, selectedModal, closeModal, isModalLoading } =
-    useModal<StakeCardProps>();
+  const {
+    selectedModalData,
+    selectedModal,
+    closeModal,
+    isModalLoading,
+    modalSectionMtValue,
+  } = useModal<StakeCardProps>();
   const { bondModalData } = useBondModal();
   const { inputValue, setValue, setResetValue } = useInput(
     "Stake_screen",
@@ -281,11 +286,12 @@ function StakeModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
+        mt={modalSectionMtValue}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>

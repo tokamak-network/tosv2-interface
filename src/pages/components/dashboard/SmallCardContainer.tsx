@@ -1,4 +1,4 @@
-import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, SimpleGrid, useColorMode } from "@chakra-ui/react";
 import useCallContract from "hooks/useCallContract";
 import useContract from "hooks/useContract";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
@@ -24,6 +24,7 @@ const SmallCardContainer = () => {
   >(undefined);
   const [width] = useWindowDimensions();
   const { Treasury_CONTRACT } = useCallContract();
+  const { colorMode } = useColorMode();
 
   const { loading, error, data } = useQuery(GET_DASHBOARD_CARD, {
     variables: {
@@ -108,7 +109,7 @@ const SmallCardContainer = () => {
       <Flex
         flexDir={"column"}
         borderWidth={1}
-        borderColor={"gray.300"}
+        borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
         borderRadius={14}
       >
         {cardList?.map((cardData: Dashboard_SmallCardType, index: number) => {

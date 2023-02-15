@@ -68,10 +68,11 @@ function UnstakeModal() {
   const selectedModal = useRecoilValue(selectedModalState);
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { closeModal, selectedModalData, isModalLoading } = useModal<{
-    hasInput: boolean;
-    stakedId: string;
-  }>();
+  const { closeModal, selectedModalData, isModalLoading, modalSectionMtValue } =
+    useModal<{
+      hasInput: boolean;
+      stakedId: string;
+    }>();
   const [hasInput, setHasInput] = useState<boolean>(false);
   const { userLTOSBalance } = useUserBalance();
   const { inputValue, setResetValue } = useInput(
@@ -157,13 +158,13 @@ function UnstakeModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
-        // h="704px"
+        mt={modalSectionMtValue}
       >
         <ModalBody px={0} pt={"30px"} pb={"40px"}>
           <Flex w="100%" flexDir={"column"}>

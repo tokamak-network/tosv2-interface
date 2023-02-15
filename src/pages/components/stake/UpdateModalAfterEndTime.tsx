@@ -63,7 +63,7 @@ function UpdateModalAfterEndTime() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
-  const { selectedModalData, selectedModal } = useModal<{
+  const { selectedModalData, selectedModal, modalSectionMtValue } = useModal<{
     stakeId: string;
     ltosAmount: string;
   }>();
@@ -289,6 +289,7 @@ function UpdateModalAfterEndTime() {
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
+        mt={modalSectionMtValue}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>

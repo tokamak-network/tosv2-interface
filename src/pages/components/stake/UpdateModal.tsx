@@ -79,9 +79,10 @@ import useMediaView from "hooks/useMediaView";
 function UpdateModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { selectedModal, closeModal, isModalLoading } = useModal<{
-    ltosAmount: string | undefined;
-  }>();
+  const { selectedModal, closeModal, isModalLoading, modalSectionMtValue } =
+    useModal<{
+      ltosAmount: string | undefined;
+    }>();
   const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue, setValue } = useInput(
@@ -246,13 +247,13 @@ function UpdateModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
-        // h="704px"
+        mt={modalSectionMtValue}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>
@@ -359,7 +360,11 @@ function UpdateModal() {
                   <Flex
                     w={bp700px ? "100%" : "204px"}
                     h={"39px"}
-                    border={colorMode === 'dark'? "1px solid #313442":'1px solid #e8edf2'}
+                    border={
+                      colorMode === "dark"
+                        ? "1px solid #313442"
+                        : "1px solid #e8edf2"
+                    }
                     borderRadius={8}
                     alignItems={"center"}
                     pl={"15px"}
