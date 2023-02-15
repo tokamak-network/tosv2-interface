@@ -136,6 +136,7 @@ function SwapInterfaceModal() {
     setSlippage('0')
     closeModal();
     setFocused("input1")
+    setExpected('0')
   }, [closeModal]);
 
   const swapExactInput = useCallback(async () => {   
