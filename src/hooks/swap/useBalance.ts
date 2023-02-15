@@ -22,18 +22,28 @@ const useBalance = () => {
     async function fetchBalance() {
       try {
 
-        if (token0.address.toLowerCase() === ZERO_ADDRESS) {
+        if (token0.address.toLowerCase() === ZERO_ADDRESS.toLowerCase() && token1.address.toLowerCase() !== ZERO_ADDRESS.toLowerCase()) {
           const eth0 = await library?.getBalance(account);
-
 
           const convertedEth = convertNumber({
             amount: eth0.toString(),
             localeString: false,
           });
           setToken0Balance(convertedEth || '0')
+          const contract1 = token1.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase() ? WTON_CONTRACT : Token1Contract
+          const balance1 = await contract1?.balanceOf(account)
+          const converted1 = token1.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase() ? convertNumber({
+            type: "ray",
+            amount: balance1.toString(),
+            localeString: false,
+          }) : convertNumber({
+            amount: balance1.toString(),
+            localeString: false,
+          });
+          setToken1Balance(converted1 || '0')
         }
 
-        else if (token1.address.toLowerCase() === ZERO_ADDRESS) {
+        else if (token1.address.toLowerCase() === ZERO_ADDRESS.toLowerCase() && token0.address.toLowerCase() !== ZERO_ADDRESS.toLowerCase()) {
           const eth1 = await library?.getBalance(account);
           const convertedEth = convertNumber({
             amount: eth1.toString(),
@@ -41,6 +51,17 @@ const useBalance = () => {
           });
 
           setToken1Balance(convertedEth || '0')
+          const contract0 = token0.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase() ? WTON_CONTRACT : Token0Contract
+          const balance0 = await contract0?.balanceOf(account)
+          const converted0 = token0.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase() ? convertNumber({
+            type: "ray",
+            amount: balance0.toString(),
+            localeString: false,
+          }) : convertNumber({
+            amount: balance0.toString(),
+            localeString: false,
+          });
+          setToken0Balance(converted0 || '0')
         }
 
         else {
@@ -68,9 +89,6 @@ const useBalance = () => {
           });
           setToken1Balance(converted1 || '0')
         }
-
-
-
       }
       catch (e) {
         // console.log("*****fetch balance err*****");
@@ -78,7 +96,7 @@ const useBalance = () => {
       }
     }
     fetchBalance()
-  }, [token0, token1, Token0Contract, Token1Contract,blockNumber])
+  }, [token0.address, token1.address, Token0Contract, Token1Contract])
 
 
   return { token0Balance, token1Balance }

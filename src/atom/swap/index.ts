@@ -39,4 +39,14 @@ const focus = atom ({
   default:'input1'
 })
 
-export {selectedToken0,selectedToken1,swapTX,slip,focus}
+const swapFromAmount = atom ({
+  key: 'swapFromAmount',
+  default: '0'
+})
+
+const swapToAmount = atom ({
+  key: 'swapToAmount',
+  default: '0'
+})
+
+export {selectedToken0,selectedToken1,swapTX,slip,focus,swapFromAmount,swapToAmount}

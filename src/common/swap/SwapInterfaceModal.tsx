@@ -24,7 +24,15 @@ import CLOSE_ICON from "assets/icons/close-modal.svg";
 import useTokenList from "hooks/swap/useTokenList";
 import { useRecoilValue, useRecoilState } from "recoil";
 import SelectToken from "./SelectToken";
-import { selectedToken0, selectedToken1, swapTX, slip, focus } from "atom/swap";
+import {
+  selectedToken0,
+  selectedToken1,
+  swapTX,
+  slip,
+  focus,
+  swapToAmount,
+  swapFromAmount,
+} from "atom/swap";
 import useBalance from "hooks/swap/useBalance";
 import swap from "assets/swap.png";
 import { useWeb3React } from "@web3-react/core";
@@ -34,12 +42,17 @@ import CONTRACT_ADDRESS from "services/addresses/contract";
 import useCallContract from "hooks/useCallContract";
 import useCheckApproved from "hooks/swap/useCheckApproved";
 import { useBlockNumber } from "hooks/useBlockNumber";
+import useExpectedOutput from "hooks/swap/useExpectedOutput";
+import useExpectedInput from "hooks/swap/useExpectedInput";
+import { getParams } from "@/utils/params";
 
 function SwapInterfaceModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const [token0, setToken0] = useRecoilState(selectedToken0);
   const [token1, setToken1] = useRecoilState(selectedToken1);
+  const [toAmount, setToAmount] = useRecoilState(swapToAmount);
+  const [fromAmount, setFromAmount] = useRecoilState(swapFromAmount);
   // const { tx, data } = useRecoilValue(swapTX);
   const [tx, setTX] = useRecoilState(swapTX);
   const slippage = useRecoilValue(slip);
@@ -52,10 +65,25 @@ function SwapInterfaceModal() {
     useModal();
   const tokenList = useTokenList();
   const { blockNumber } = useBlockNumber();
+  const {
+    formattedResult,
+    minimumAmountOutResult,
+    amountInResult,
+    formattedAmountOutResult,
+  } = useExpectedOutput();
 
+  const {
+    formattedResultI,
+    maximumAmountInResultI,
+    amountInResultI,
+    formattedAmountOutResultI,
+    amountOutResultI,
+    err,
+    minimumAmountOutResultI,
+  } = useExpectedInput();
   const [focused, setFocused] = useRecoilState(focus);
-  const [swapFromAmt, setSwapFromAmt] = useState<string>("0");
-  const [swapFromAmt2, setSwapFromAmt2] = useState<string>("0");
+  // const [swapFromAmt, setSwapFromAmt] = useState<string>("0");
+  // const [swapFromAmt2, setSwapFromAmt2] = useState<string>("0");
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
   const [expected, setExpected] = useState<string>("0");
   const [maxError, setMaxError] = useState<boolean>(false);
@@ -64,7 +92,12 @@ function SwapInterfaceModal() {
   const [minAmount, setMinAmount] = useState<string>("");
   const approved = useCheckApproved();
   const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
-  const { ERC20_CONTRACT: Token0Contract, WTON_CONTRACT } = useCallContract(
+  const {
+    ERC20_CONTRACT: Token0Contract,
+    WTON_CONTRACT,
+    SwapperV2Proxy_CONTRACT,
+    WETH_CONTRACT,
+  } = useCallContract(
     token0.address !== ZERO_ADDRESS ? token0.address : undefined
   );
 
@@ -75,10 +108,12 @@ function SwapInterfaceModal() {
   const switchTokens = () => {
     const newToken0 = token1;
     const newToken1 = token0;
-    const input1 = swapFromAmt;
-    const input2 = swapFromAmt2;
-    setSwapFromAmt(input2);
-    setSwapFromAmt2(input1);
+    const input1 = fromAmount;
+    const input2 = toAmount;
+    // setSwapFromAmt(input2);
+    // setSwapFromAmt2(input1);
+    setFromAmount(input2);
+    setToAmount(input1);
     setToken0(newToken0);
     Token0Contract;
     setToken1(newToken1);
@@ -97,6 +132,270 @@ function SwapInterfaceModal() {
     closeModal();
   }, [closeModal]);
 
+  const swapExactInput = useCallback(async () => {
+    const params = getParams(token0.address, token1.address);
+    if (library && account && params && SwapperV2Proxy_CONTRACT) {
+      const getExactInputParams = {
+        recipient: account,
+        path: params?.path,
+        amountIn: amountInResult,
+        amountOutMinimum: minimumAmountOutResult,
+        deadline: 0,
+      };
+
+      try {
+        const txxx =
+          token0.address !== ZERO_ADDRESS
+            ? await exactInput(
+                SwapperV2Proxy_CONTRACT,
+                getExactInputParams,
+                params.wrapEth,
+                params.outputUnwrapEth,
+                params.inputWrapWTON,
+                params.outputUnwrapTON
+              )
+            : await exactInputEth(
+                SwapperV2Proxy_CONTRACT,
+                getExactInputParams,
+                params.wrapEth,
+                params.outputUnwrapEth,
+                params.inputWrapWTON,
+                params.outputUnwrapTON,
+                {
+                  value: amountInResult,
+                }
+              );
+        if (txxx) {
+          await txxx.wait();
+          setTX({ tx: false, data: { name: "" } });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    } else if (
+      token0.address === WTON_ADDRESS ||
+      token0.address === TON_ADDRESS
+    ) {
+      let amountIn;
+      if (token0.address.toLowerCase() === WTON_ADDRESS.toLowerCase()) {
+        amountIn = ethers.utils.parseUnits(fromAmount, "27");
+      } else {
+        amountIn = ethers.utils.parseEther(fromAmount);
+      }
+      exactInputWtonTon(library, account, amountIn);
+    } else {
+      exactInputWethEth();
+    }
+  }, [
+    library,
+    account,
+    WTON_CONTRACT,
+    Token0Contract,
+    tx,
+    token0.address,
+    token1.address,
+    fromAmount,
+  ]);
+
+  const swapExactOutput = useCallback(async () => {
+    const params = getParams(token1.address, token0.address);
+   
+    
+    if (library && account && params && SwapperV2Proxy_CONTRACT) {
+      
+      const getExactOutputParams = {
+        recipient: account,
+        path: params?.path,
+        amountOut: amountOutResultI,
+        amountInMaximum: maximumAmountInResultI,
+        deadline: 0,
+      };     
+       
+      const inputWrapWTON =
+        token0.address.toLowerCase() === TON_ADDRESS.toLowerCase()
+          ? true
+          : false;
+      const outputUnwrapTON =
+        token1.address.toLowerCase() === TON_ADDRESS.toLowerCase()
+          ? true
+          : false;
+      const wrapEth =
+        token0.address.toLowerCase() === ZERO_ADDRESS.toLowerCase()
+          ? true
+          : false;
+      const outputUnwrapEth =
+        token1.address.toLowerCase() === ZERO_ADDRESS.toLowerCase()
+          ? true
+          : false;
+      try {
+        const txxx =
+          token0.address !== ZERO_ADDRESS
+            ? await exactOutput(
+                SwapperV2Proxy_CONTRACT,
+                getExactOutputParams,
+                wrapEth,
+                outputUnwrapEth,
+                inputWrapWTON,
+                outputUnwrapTON
+              )
+            : await exactOutputEth(
+                SwapperV2Proxy_CONTRACT,
+                getExactOutputParams,
+                wrapEth,
+                outputUnwrapEth,
+                inputWrapWTON,
+                outputUnwrapTON,
+                {
+                  value: maximumAmountInResultI,
+                }
+              );
+      } catch (e) {}
+    } else if (
+      token1.address === WTON_ADDRESS ||
+      token1.address === TON_ADDRESS
+    ) {
+      exactOutputWtonTon();
+    } else {
+      exactInputWethEth();
+    }
+  }, [
+    library,
+    account,
+    WTON_CONTRACT,
+    Token0Contract,
+    tx,
+    token0.address,
+    token1.address,
+    fromAmount,
+  ]);
+
+  const exactInput = async (
+    swapperV2: any,
+    exactInputParams: any,
+    wrapEth: boolean,
+    outputUnwrapEth: boolean,
+    inputWrapWTON: boolean,
+    outputUnwrapTON: boolean
+  ) => {
+    const receipt = await swapperV2.exactInput(
+      exactInputParams,
+      wrapEth,
+      outputUnwrapEth,
+      inputWrapWTON,
+      outputUnwrapTON
+    );
+    return receipt;
+  };
+  const exactInputEth = async (
+    swapperV2: any,
+    exactInputParams: any,
+    wrapEth: boolean,
+    outputUnwrapEth: boolean,
+    inputWrapWTON: boolean,
+    outputUnwrapTON: boolean,
+    value: any
+  ) => {
+    const receipt = await swapperV2.exactInput(
+      exactInputParams,
+      wrapEth,
+      outputUnwrapEth,
+      inputWrapWTON,
+      outputUnwrapTON,
+      value
+    );
+    return receipt;
+  };
+  const exactOutput = async (
+    swapperV2: any,
+    exactOutputParams: any,
+    wrapEth: boolean,
+    outputUnwrapEth: boolean,
+    inputWrapWTON: boolean,
+    outputUnwrapTON: boolean
+  ) => {
+    const receipt = await swapperV2.exactOutput(
+      exactOutputParams,
+      wrapEth,
+      outputUnwrapEth,
+      inputWrapWTON,
+      outputUnwrapTON
+    );
+    return receipt;
+  };
+
+  const exactOutputEth = async (
+    swapperV2: any,
+    exactOutputParams: any,
+    wrapEth: boolean,
+    outputUnwrapEth: boolean,
+    inputWrapWTON: boolean,
+    outputUnwrapTON: boolean,
+    value: any
+  ) => {
+    const receipt = await swapperV2.exactOutput(
+      exactOutputParams,
+      wrapEth,
+      outputUnwrapEth,
+      inputWrapWTON,
+      outputUnwrapTON,
+      value
+    );
+    return receipt;
+  };
+
+  const exactInputWtonTon = async (
+    library: any,
+    userAddress: string | null | undefined,
+    amount: any
+  ) => {
+    if (library && userAddress && SwapperV2Proxy_CONTRACT) {
+      //wton to ton
+      if (token0.address === WTON_ADDRESS) {
+        try {
+          const tx = await SwapperV2Proxy_CONTRACT.wtonToTon(amount);
+        } catch (err) {}
+      } else {
+        try {
+          const tx = await SwapperV2Proxy_CONTRACT.tonToWton(amount);
+        } catch (err) {}
+      }
+    }
+  };
+
+  const exactOutputWtonTon = async () => {
+    if (library && account && SwapperV2Proxy_CONTRACT) {
+      
+      if (token1.address === WTON_ADDRESS) {
+        
+        const amnt = ethers.utils.parseEther(toAmount);
+        try {
+          const tx = await SwapperV2Proxy_CONTRACT.tonToWton(amnt);
+        } catch (err) {}
+      } else {
+        const amnt = ethers.utils.parseUnits(toAmount, "27");
+        try {
+          const tx = await SwapperV2Proxy_CONTRACT.wtonToTon(amnt);
+        } catch (err) {}
+      }
+    }
+  };
+  const exactInputWethEth = async () => {
+    if (library && account && WETH_CONTRACT) {      
+      // const WETH = new Contract(WETH_ADDRESS, WETHABI, library);
+      const amountIn = ethers.utils.parseEther(fromAmount);
+
+      if (token0.address.toLowerCase() === ZERO_ADDRESS.toLowerCase()) {
+
+        try {
+          const txxxx = await WETH_CONTRACT.deposit({ value: amountIn });
+        } catch (err) {}
+      } else {
+        try {
+          const txxxx = await WETH_CONTRACT.withdraw(amountIn);
+        } catch (err) {}
+      }
+    }
+  };
   const approve = useCallback(async () => {
     if (library && account && WTON_CONTRACT && Token0Contract) {
       let contract;
@@ -113,8 +412,6 @@ function SwapInterfaceModal() {
         const receipt = await contract?.approve(SwapperV2Proxy, totalSupply);
         setTX({ tx: true, data: { name: "approve" } });
         if (receipt) {
-          console.log("ggg");
-
           await receipt.wait();
           setTX({ tx: false, data: { name: "approve" } });
         }
@@ -130,11 +427,68 @@ function SwapInterfaceModal() {
 
   useEffect(() => {
     if (tx.tx && !tx.data) {
-      setSwapFromAmt("0");
-      setSwapFromAmt2("0");
+      // setSwapFromAmt("0");
+      // setSwapFromAmt2("0");
+      setFromAmount("0");
+      setToAmount("0");
     }
   }, [tx, blockNumber]);
-  
+
+  useEffect(() => {
+    const getExpectedOut = async () => {
+      if (
+        token0.address &&
+        fromAmount !== "" &&
+        fromAmount !== "0" &&
+        formattedResult &&
+        minimumAmountOutResult &&
+        amountInResult &&
+        formattedAmountOutResult
+      ) {
+        setExpected(formattedResult);
+        focused === "input1"
+          ? setToAmount(formattedResult)
+          : setFromAmount(formattedResult);
+
+        setMinAmount(formattedAmountOutResult);
+      }
+    };
+
+    const getExpectedIn = async () => {
+      if (token0.address && toAmount !== "" && toAmount !== "0") {
+        // console.log('formattedResultI',formattedResultI);
+
+        if (err) {
+          setMaxError(true);
+        } else {
+          setMaxError(false);
+          setExpected(formattedResultI);
+          focused === "input2"
+            ? setFromAmount(formattedResultI)
+            : setToAmount(formattedResultI);
+        }
+      }
+    };
+    focused && focused === "input1" ? getExpectedOut() : getExpectedIn();
+  }, [
+    toAmount,
+    fromAmount,
+    token0.address,
+    token1.address,
+    slippage,
+    focused,
+    formattedResult,
+    minimumAmountOutResult,
+    amountInResult,
+    formattedAmountOutResult,
+    formattedResultI,
+    maximumAmountInResultI,
+    amountInResultI,
+    formattedAmountOutResultI,
+    amountOutResultI,
+    err,
+  ]);
+
   return (
     <Modal
       isOpen={selectedModal === "swap_interface_modal"}
@@ -192,7 +546,8 @@ function SwapInterfaceModal() {
                     fontWeight="bold"
                     onClick={() => {
                       setFocused("input1");
-                      setSwapFromAmt(token0Balance);
+                      // setSwapFromAmt(token0Balance);
+                      setFromAmount(token0Balance);
                     }}
                     _hover={{ cursor: "pointer" }}
                   >
@@ -220,6 +575,7 @@ function SwapInterfaceModal() {
                     border={"none"}
                     fontSize={"18px"}
                     borderRadius={"4px"}
+                    min={0}
                     borderColor={"transparent"}
                     _focus={{
                       borderColor: "transparent",
@@ -233,10 +589,11 @@ function SwapInterfaceModal() {
                     }}
                     onClick={() => setFocused("input1")}
                     // defaultValue={0}
-                    value={focused === "input1" ? swapFromAmt : expected}
+                    value={focused === "input1" ? fromAmount : expected}
                     onChange={(e) => {
                       const valueNum = e;
-                      setSwapFromAmt(valueNum);
+                      // setSwapFromAmt(valueNum);
+                      setFromAmount(valueNum);
                     }}
                   >
                     <NumberInputField
@@ -287,7 +644,7 @@ function SwapInterfaceModal() {
                   color={"#3d495d"}
                   fontSize="14px"
                 >
-                  Balance: {token1Balance}
+                  Balance: {formatNumberWithCommas(token1Balance)}
                 </Text>
                 <Flex
                   position={"relative"}
@@ -311,6 +668,7 @@ function SwapInterfaceModal() {
                     pl={"24px"}
                     border={"none"}
                     fontSize={"18px"}
+                    min={0}
                     borderRadius={"4px"}
                     borderColor={"transparent"}
                     _focus={{
@@ -324,11 +682,12 @@ function SwapInterfaceModal() {
                       borderColor: "transparent",
                     }}
                     defaultValue={0}
-                    value={focused === "input2" ? swapFromAmt2 : expected}
+                    value={focused === "input2" ? toAmount : expected}
                     onClick={() => setFocused("input2")}
                     onChange={(e) => {
                       const valueNum = e;
-                      setSwapFromAmt2(valueNum);
+                      // setSwapFromAmt2(valueNum);
+                      setToAmount(valueNum);
                     }}
                   >
                     <NumberInputField
@@ -378,7 +737,7 @@ function SwapInterfaceModal() {
                       token0.address === "" ||
                       tx.tx === true ||
                       !account ||
-                      allowed > Number(swapFromAmt) ||
+                      allowed > Number(fromAmount) ||
                       token0.address === ZERO_ADDRESS
                     }
                     onClick={() => approve()}
@@ -401,7 +760,7 @@ function SwapInterfaceModal() {
                   slippage={slippage}
                   minAmount={minAmount}
                   focused={focused}
-                  swapFromAmt2={swapFromAmt2}
+                  swapFromAmt2={toAmount}
                 />
                 <SettingsComponent />
                 <Button
@@ -431,32 +790,16 @@ function SwapInterfaceModal() {
                     Number(token0Balance) === 0 ||
                     maxError ||
                     token1.address === "" ||
-                    allowed < Number(swapFromAmt) ||
-                    (Number(swapFromAmt) === 0 && Number(swapFromAmt2) === 0) ||
+                    allowed < Number(fromAmount) ||
+                    (Number(fromAmount) === 0 && Number(toAmount) === 0) ||
                     token0.address === token1.address ||
-                    Number(swapFromAmt) > Number(token0Balance)
+                    Number(fromAmount) > Number(token0Balance)
                   }
-                  // onClick={
-                  //   focused === "input1"
-                  //     ? () =>
-                  //         swapExactInput(
-                  //           library,
-                  //           account,
-                  //           selectedToken0.address,
-                  //           selectedToken1.address,
-                  //           swapFromAmt,
-                  //           slippage
-                  //         )
-                  //     : () =>
-                  //         swapExactOutput(
-                  //           library,
-                  //           account,
-                  //           selectedToken1.address,
-                  //           selectedToken0.address,
-                  //           swapFromAmt2,
-                  //           slippage
-                  //         )
-                  // }
+                  onClick={
+                    focused === "input1"
+                      ? () => swapExactInput()
+                      : () => swapExactOutput()
+                  }
                 >
                   {tx.tx === true && !tx.data ? (
                     <CircularProgress
