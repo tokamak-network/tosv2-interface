@@ -127,7 +127,7 @@ const useExpectedOutput = () => {
         }
     }
         getExOutput()
-    },[library, account, token0.address, token1.address,fromAmountIn,blockNumber])
+    },[library, account, token0.address, token1.address,fromAmountIn,blockNumber, slippage])
 
     return {formattedResult,minimumAmountOutResult,amountInResult,formattedAmountOutResult }
 }

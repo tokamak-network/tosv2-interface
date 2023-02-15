@@ -153,7 +153,7 @@ const useExpectedInput = () => {
         }
         getExpectedInput()
 
-    }, [library, account, token0.address, token1.address, toAmountOut, blockNumber])
+    }, [library, account, token0.address, token1.address, toAmountOut, blockNumber, slippage])
     return { formattedResultI, maximumAmountInResultI, amountInResultI, formattedAmountOutResultI, amountOutResultI, err, minimumAmountOutResultI }
 }
 
