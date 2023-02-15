@@ -45,6 +45,7 @@ import { useBlockNumber } from "hooks/useBlockNumber";
 import useExpectedOutput from "hooks/swap/useExpectedOutput";
 import useExpectedInput from "hooks/swap/useExpectedInput";
 import { getParams } from "@/utils/params";
+import useCustomToast from "hooks/useCustomToast";
 
 function SwapInterfaceModal() {
   const theme = useTheme();
@@ -55,7 +56,8 @@ function SwapInterfaceModal() {
   const [fromAmount, setFromAmount] = useRecoilState(swapFromAmount);
   // const { tx, data } = useRecoilValue(swapTX);
   const [tx, setTX] = useRecoilState(swapTX);
-  const slippage = useRecoilValue(slip);
+  const { setTx } = useCustomToast();
+  const [slippage, setSlippage] = useRecoilState(slip);
   const { account, library } = useWeb3React();
   const { token0Balance, token1Balance } = useBalance();
   const { TON_ADDRESS, WTON_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
@@ -129,12 +131,16 @@ function SwapInterfaceModal() {
       address: "",
       img: "",
     });
+    setToAmount('0')
+    setFromAmount('0')
+    setSlippage('0')
     closeModal();
+    setFocused("input1")
   }, [closeModal]);
 
-  const swapExactInput = useCallback(async () => {
+  const swapExactInput = useCallback(async () => {   
     const params = getParams(token0.address, token1.address);
-    if (library && account && params && SwapperV2Proxy_CONTRACT) {
+    if (library && account && params && SwapperV2Proxy_CONTRACT) {            
       const getExactInputParams = {
         recipient: account,
         path: params?.path,
@@ -144,7 +150,7 @@ function SwapInterfaceModal() {
       };
 
       try {
-        const txxx =
+        const receipt =
           token0.address !== ZERO_ADDRESS
             ? await exactInput(
                 SwapperV2Proxy_CONTRACT,
@@ -165,10 +171,8 @@ function SwapInterfaceModal() {
                   value: amountInResult,
                 }
               );
-        if (txxx) {
-          await txxx.wait();
-          setTX({ tx: false, data: { name: "" } });
-        }
+              setTx(receipt);
+              closeThisModal();
       } catch (e) {
         console.log(e);
       }
@@ -195,22 +199,20 @@ function SwapInterfaceModal() {
     token0.address,
     token1.address,
     fromAmount,
+    toAmount
   ]);
 
-  const swapExactOutput = useCallback(async () => {
+  const swapExactOutput = useCallback(async () => {    
     const params = getParams(token1.address, token0.address);
-   
-    
     if (library && account && params && SwapperV2Proxy_CONTRACT) {
-      
       const getExactOutputParams = {
         recipient: account,
         path: params?.path,
         amountOut: amountOutResultI,
         amountInMaximum: maximumAmountInResultI,
         deadline: 0,
-      };     
-       
+      };
+
       const inputWrapWTON =
         token0.address.toLowerCase() === TON_ADDRESS.toLowerCase()
           ? true
@@ -228,7 +230,7 @@ function SwapInterfaceModal() {
           ? true
           : false;
       try {
-        const txxx =
+        const receipt =
           token0.address !== ZERO_ADDRESS
             ? await exactOutput(
                 SwapperV2Proxy_CONTRACT,
@@ -249,6 +251,8 @@ function SwapInterfaceModal() {
                   value: maximumAmountInResultI,
                 }
               );
+              setTx(receipt);
+              closeThisModal();
       } catch (e) {}
     } else if (
       token1.address === WTON_ADDRESS ||
@@ -286,6 +290,7 @@ function SwapInterfaceModal() {
     );
     return receipt;
   };
+
   const exactInputEth = async (
     swapperV2: any,
     exactInputParams: any,
@@ -305,6 +310,7 @@ function SwapInterfaceModal() {
     );
     return receipt;
   };
+
   const exactOutput = async (
     swapperV2: any,
     exactOutputParams: any,
@@ -352,11 +358,15 @@ function SwapInterfaceModal() {
       //wton to ton
       if (token0.address === WTON_ADDRESS) {
         try {
-          const tx = await SwapperV2Proxy_CONTRACT.wtonToTon(amount);
+          const receipt = await SwapperV2Proxy_CONTRACT.wtonToTon(amount);
+          setTx(receipt);
+          closeThisModal();
         } catch (err) {}
       } else {
         try {
-          const tx = await SwapperV2Proxy_CONTRACT.tonToWton(amount);
+          const receipt = await SwapperV2Proxy_CONTRACT.tonToWton(amount);
+          setTx(receipt);
+          closeThisModal();
         } catch (err) {}
       }
     }
@@ -364,34 +374,39 @@ function SwapInterfaceModal() {
 
   const exactOutputWtonTon = async () => {
     if (library && account && SwapperV2Proxy_CONTRACT) {
-      
       if (token1.address === WTON_ADDRESS) {
-        
         const amnt = ethers.utils.parseEther(toAmount);
         try {
-          const tx = await SwapperV2Proxy_CONTRACT.tonToWton(amnt);
+          const receipt = await SwapperV2Proxy_CONTRACT.tonToWton(amnt);
+          setTx(receipt);
+          closeThisModal();
         } catch (err) {}
       } else {
         const amnt = ethers.utils.parseUnits(toAmount, "27");
         try {
-          const tx = await SwapperV2Proxy_CONTRACT.wtonToTon(amnt);
+          const receipt = await SwapperV2Proxy_CONTRACT.wtonToTon(amnt);
+          setTx(receipt);
+          closeThisModal();
         } catch (err) {}
       }
     }
   };
   const exactInputWethEth = async () => {
-    if (library && account && WETH_CONTRACT) {      
+    if (library && account && WETH_CONTRACT) {
       // const WETH = new Contract(WETH_ADDRESS, WETHABI, library);
       const amountIn = ethers.utils.parseEther(fromAmount);
 
       if (token0.address.toLowerCase() === ZERO_ADDRESS.toLowerCase()) {
-
         try {
-          const txxxx = await WETH_CONTRACT.deposit({ value: amountIn });
+          const receipt = await WETH_CONTRACT.deposit({ value: amountIn });
+          setTx(receipt);
+          closeThisModal();
         } catch (err) {}
       } else {
         try {
-          const txxxx = await WETH_CONTRACT.withdraw(amountIn);
+          const receipt = await WETH_CONTRACT.withdraw(amountIn);
+          setTx(receipt);
+          closeThisModal();
         } catch (err) {}
       }
     }
@@ -411,6 +426,7 @@ function SwapInterfaceModal() {
         const totalSupply = await contract?.totalSupply();
         const receipt = await contract?.approve(SwapperV2Proxy, totalSupply);
         setTX({ tx: true, data: { name: "approve" } });
+        setTx(receipt);
         if (receipt) {
           await receipt.wait();
           setTX({ tx: false, data: { name: "approve" } });
@@ -742,7 +758,7 @@ function SwapInterfaceModal() {
                     }
                     onClick={() => approve()}
                   >
-                    {tx.tx === true && tx.data ? (
+                    {tx.tx === true && tx.data.name === "approve" ? (
                       <CircularProgress
                         isIndeterminate
                         size={4}
@@ -801,15 +817,7 @@ function SwapInterfaceModal() {
                       : () => swapExactOutput()
                   }
                 >
-                  {tx.tx === true && !tx.data ? (
-                    <CircularProgress
-                      isIndeterminate
-                      size={"32px"}
-                      zIndex={100}
-                      color="blue.500"
-                      pos="absolute"
-                    ></CircularProgress>
-                  ) : (
+                 
                     <Text>
                       {account
                         ? token0.address === "" || token1.address === ""
@@ -837,7 +845,7 @@ function SwapInterfaceModal() {
                           : "Swap"
                         : "Connect Wallet"}{" "}
                     </Text>
-                  )}
+               
                 </Button>
               </Flex>
             </Flex>

@@ -20,6 +20,12 @@ function SettingsComponent() {
     const [invalidInput, setInvalidInput] = useState<boolean>(false);
     const [slippageAmnt, setSlippageAmnt] = useState<string>("0");
 
+
+  useEffect(() => {
+    setSlippageAmnt(focused === "input1" ? "1" : "3");
+    setSlippage(focused === "input1" ? "1" : "3")
+  }, [focused]);
+
     return (
         <Flex
         border="1px solid #dfe4ee"

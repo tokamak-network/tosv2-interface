@@ -31,7 +31,7 @@ const swapTX = atom({
 
 const slip = atom({
   key:'slip',
-  default: '0'
+  default: '1'
 })
 
 const focus = atom ({

@@ -28,7 +28,7 @@ const useExpectedOutput = () => {
     const [formattedAmountOutResult, setFormattedAmountOutResult] = useState<any>()
 
     useEffect(() => {
-        async function getExOutput() {        
+        async function getExOutput() {                    
             let denominator;
             let numerator;
             const int = Number.isInteger(Number(slippage));
