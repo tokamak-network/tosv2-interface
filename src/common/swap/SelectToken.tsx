@@ -26,15 +26,18 @@ import { DEFAULT_NETWORK } from "constants/index";
 import Image from "next/image";
 import useCallContract from "hooks/useCallContract";
 import CONTRACT_ADDRESS from "services/addresses/contract";
-import { selectedToken0,selectedToken1 } from "atom/swap";
+import { selectedToken0, selectedToken1 } from "atom/swap";
+import ArrowDownImg from "assets/icons/arrow-Down.svg";
+import ArrowDownD from 'assets/icons/arrow-DownDark.svg'
+import ArrowDownL from 'assets/icons/arrow-DownLight.svg'
 
-function SelectToken(props: {tokenType: Number}) {
-  const {tokenType} = props;
+function SelectToken(props: { tokenType: Number }) {
+  const { tokenType } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const tokenList = useTokenList();
-  const [token0, setToken0] = useRecoilState(selectedToken0)
-  const [token1, setToken1] = useRecoilState(selectedToken1)
+  const [token0, setToken0] = useRecoilState(selectedToken0);
+  const [token1, setToken1] = useRecoilState(selectedToken1);
   const [validAddress, setValidAddress] = useState<boolean>(false);
   const [searchString, setSearchString] = useState<string>("");
   const { TON_CONTRACT, WTON_CONTRACT } = useCallContract();
@@ -84,13 +87,13 @@ function SelectToken(props: {tokenType: Number}) {
           );
 
       setTokensFromAPI(tokensOrdered);
-      setSelected(tokenType === 0?token0:token1 )
+      setSelected(tokenType === 0 ? token0 : token1);
     }
-  }, [tokenList,token0,token1]);
+  }, [tokenList, token0, token1]);
 
   const TokenComp = (props: { img: any; name: string; address: string }) => {
     const { img, name, address } = props;
-    const { TON_ADDRESS, WTON_ADDRESS } = CONTRACT_ADDRESS;    
+    const { TON_ADDRESS, WTON_ADDRESS } = CONTRACT_ADDRESS;
     const addToken = useCallback(async () => {
       if (TON_CONTRACT && WTON_CONTRACT && account) {
         if (address.toLocaleLowerCase() === WTON_ADDRESS.toLocaleLowerCase()) {
@@ -153,13 +156,16 @@ function SelectToken(props: {tokenType: Number}) {
         onClick={() => {
           setSelected({ name: name, img: img });
           setExpanded(false);
-          tokenType === 0?  setToken0({ name: name, address: address, img: img }): setToken1({ name: name, address: address, img: img });
+          tokenType === 0
+            ? setToken0({ name: name, address: address, img: img })
+            : setToken1({ name: name, address: address, img: img });
         }}
         _hover={{ cursor: "pointer" }}
       >
         <Flex alignItems={"center"}>
           <Flex
-            border="1px solid #e7edf3"
+            border="1px solid"
+            borderColor={colorMode === "dark" ? "#313442" : "#e7edf3"}
             h="32px"
             w="32px"
             mr="9px"
@@ -174,7 +180,12 @@ function SelectToken(props: {tokenType: Number}) {
             />
           </Flex>
 
-          <Text>{name}</Text>
+          <Text
+            color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}
+            fontWeight={"bold"}
+          >
+            {name}
+          </Text>
         </Flex>
 
         {address.toLocaleLowerCase() !== ZERO_ADDRESS && (
@@ -197,24 +208,36 @@ function SelectToken(props: {tokenType: Number}) {
   };
 
   return (
-    <Flex w={"310px"} flexDir="column" ref={wrapperRef}>
+    <Flex
+      w={"310px"}
+      flexDir="column"
+      ref={wrapperRef}
+      bg={colorMode === "dark" ? "#121318" : "#ffffff"}
+    >
       <Flex
         w="100%"
         h={"56px"}
-        border={"solid 1px #dfe4ee"}
+        border={"solid 1px"}
+        borderColor={colorMode === "dark" ? "#313442" : "#dfe4ee"}
         borderRadius="28px"
         p="8px"
+        bg={colorMode === "dark" ? "#121318" : "#ffffff"}
         alignItems="center"
         onClick={() => setExpanded(!expanded)}
         _hover={{ cursor: "pointer" }}
         zIndex={expanded ? 1000 : 0}
       >
-        <Flex alignItems="center" justifyContent={"space-between"} w="100%">
+        <Flex
+          alignItems="center"
+          justifyContent={"space-between"}
+          w="100%"
+          bg={colorMode === "dark" ? "#121318" : "#ffffff"}
+        >
           {selected.name === "" ? (
             <Flex alignItems="center">
-              <Box w="40px" h="40px" borderRadius={"50%"} bg="#dfe4ee"></Box>
+              <Box w="40px" h="40px" borderRadius={"50%"} bg={colorMode === 'dark'? "#1e1e24": "#e9edf1"}></Box>
               <Text
-                color={"#3d495d"}
+                color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}
                 fontSize="18px"
                 ml="10px"
                 fontWeight={"normal"}
@@ -223,7 +246,10 @@ function SelectToken(props: {tokenType: Number}) {
               </Text>
             </Flex>
           ) : (
-            <Flex alignItems="center">
+            <Flex
+              alignItems="center"
+              bg={colorMode === "dark" ? "#121318" : "#ffffff"}
+            >
               {selected.img === "" || !selected.img ? (
                 selected.name === "ETH" || selected.name === "WETH" ? (
                   <Flex w="40px" h="40px" borderRadius={"50%"}>
@@ -242,7 +268,8 @@ function SelectToken(props: {tokenType: Number}) {
                   w="40px"
                   h="40px"
                   borderRadius={"50%"}
-                  border={"1px solid #e7edf3"}
+                  border={"1px solid"}
+                  borderColor={colorMode === "dark" ? "#313442" : "#e7edf3"}
                 >
                   <Image
                     loader={myLoader}
@@ -255,7 +282,7 @@ function SelectToken(props: {tokenType: Number}) {
               )}
 
               <Text
-                color={"#3d495d"}
+                color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}
                 fontSize="18px"
                 ml="10px"
                 fontWeight={"normal"}
@@ -264,8 +291,8 @@ function SelectToken(props: {tokenType: Number}) {
               </Text>
             </Flex>
           )}
-          <Flex h="14px" w="14px" mr="16px">
-            <Image src={icon_arrow} />
+          <Flex h="14px" w="14px" mr="16px" transform={'rotate(270deg)'}>
+            <Image src={colorMode === 'dark'? ArrowDownD: ArrowDownL} />
           </Flex>
         </Flex>
       </Flex>
@@ -274,11 +301,12 @@ function SelectToken(props: {tokenType: Number}) {
           flexDir={"column"}
           w="310px"
           position={"absolute"}
-          bg="#fff"
+          bg={colorMode === "dark" ? "#121318" : "#ffffff"}
           mt="28px"
           zIndex={100}
-          borderX={"solid 1px #dfe4ee"}
-          borderBottom="solid 1px #dfe4ee"
+          borderX={"solid 1px"}
+          borderBottom="solid 1px"
+          borderColor={colorMode === "dark" ? "#1f2128" : "#dfe4ee"}
           borderBottomRadius={"28px"}
           px="15px"
           pt={"42px"}

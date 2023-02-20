@@ -529,7 +529,7 @@ function SwapInterfaceModal() {
                   fontSize={20}
                   fontWeight={600}
                 >
-                  Stake
+                  Swap
                 </Text>
                 <Flex
                   pos={"absolute"}
@@ -551,15 +551,15 @@ function SwapInterfaceModal() {
                 <Flex
                   justifyContent={"space-between"}
                   alignItems="center"
-                  color={"#3d495d"}
+                  color={colorMode === 'dark'? '#f1f1f1':'#3d495d'}
                   fontSize="14px"
                 >
-                  <Text mt="18px" mb="8px" textAlign={"left"}>
+                  <Text mt="18px" mb="8px" textAlign={"left"} >
                     Balance: {formatNumberWithCommas(token0Balance)}
                   </Text>
                   <Text
                     fontSize={"14px"}
-                    color={"#3d495d"}
+                    // color={"#3d495d"}
                     fontWeight="bold"
                     onClick={() => {
                       setFocused("input1");
@@ -573,9 +573,9 @@ function SwapInterfaceModal() {
                 </Flex>
                 <Flex
                   position={"relative"}
-                  border={
-                    invalidInput ? "solid 1px #e53e3e" : "solid 1px #dfe4ee"
-                  }
+                  border="1px solid"
+                  borderColor={invalidInput ?'#e53e3e' :colorMode === "dark" ? "#313442" : "#dfe4ee"}
+               
                   height={"56px"}
                   w={"310px"}
                   flexDir={"row"}
@@ -587,7 +587,7 @@ function SwapInterfaceModal() {
                   <NumberInput
                     height={"56px"}
                     w={"230px"}
-                    color={"#86929d"}
+                    color={colorMode === 'dark'? '#f1f1f1': "#86929d"}
                     pl={"24px"}
                     border={"none"}
                     fontSize={"18px"}
@@ -629,12 +629,12 @@ function SwapInterfaceModal() {
                   flexDir={"row"}
                   my="18px"
                 >
-                  <Box h={"1px"} bg={"#e9edf1"} w="310px"></Box>
+                  <Box h={"1px"} bg={colorMode==='dark'?'#353d48': "#e9edf1"} w="310px"></Box>
                   <Button
                     position={"absolute"}
                     w={"40px"}
                     h={"40px"}
-                    backgroundColor={"#e9edf1"}
+                    backgroundColor={colorMode === 'light' ?"#e9edf1":'#1e1e24'}
                     borderRadius={"50%"}
                     //   onClick={switchTokens}
                     _hover={{}}
@@ -647,7 +647,7 @@ function SwapInterfaceModal() {
                       position={"absolute"}
                       onClick={() => switchTokens()}
                       borderRadius="50%"
-                      bg="#e9edf1"
+                      backgroundColor={colorMode === 'light' ?"#e9edf1":'#1e1e24'}
                     >
                       <Image src={swap} />
                     </Flex>
@@ -658,18 +658,15 @@ function SwapInterfaceModal() {
                   mt="18px"
                   mb="8px"
                   textAlign={"left"}
-                  color={"#3d495d"}
+                  color={colorMode === 'dark'? '#f1f1f1':'#3d495d'}
                   fontSize="14px"
                 >
                   Balance: {formatNumberWithCommas(token1Balance)}
                 </Text>
                 <Flex
                   position={"relative"}
-                  border={
-                    invalidInput || maxError
-                      ? "solid 1px #e53e3e"
-                      : "solid 1px #dfe4ee"
-                  }
+                  border="1px solid"
+                  borderColor={invalidInput || maxError ?'#e53e3e' :colorMode === "dark" ? "#313442" : "#dfe4ee"}
                   height={"56px"}
                   w={"310px"}
                   flexDir={"row"}
@@ -681,7 +678,7 @@ function SwapInterfaceModal() {
                   <NumberInput
                     height={"56px"}
                     w={"310px"}
-                    color={"#86929d"}
+                    color={colorMode === 'dark'? '#f1f1f1': "#86929d"}
                     pl={"24px"}
                     border={"none"}
                     fontSize={"18px"}
@@ -732,7 +729,7 @@ function SwapInterfaceModal() {
                   h={"24px"}
                   my={"12px"}
                 >
-                  <Text fontSize={"10px"}>
+                  <Text fontSize={"10px"} color={colorMode === 'dark'? '#8b8b93':'#3d495d'}>
                     Tokamak Swap Protocol wants to use your{" "}
                     {token0.name ? token0.name : "tokens"}
                   </Text>
@@ -745,8 +742,8 @@ function SwapInterfaceModal() {
                     fontWeight="normal"
                     borderRadius={"12px"}
                     _disabled={{
-                      backgroundColor: "#e9edf1",
-                      color: "#8f96a1",
+                      backgroundColor: colorMode === 'dark'?"#1e1e24": "#e9edf1",
+                      color: colorMode === 'dark'?'#2e2e3a' : "#8f96a1",
                     }}
                     _hover={{}}
                     _active={{}}
@@ -796,8 +793,8 @@ function SwapInterfaceModal() {
                   fontSize={"18px"}
                   fontWeight="normal"
                   _disabled={{
-                    backgroundColor: "#e9edf1",
-                    color: "#8f96a1",
+                    backgroundColor: colorMode === 'dark'?"#1e1e24": "#e9edf1",
+                    color: colorMode === 'dark'?'#2e2e3a' : "#8f96a1",
                   }}
                   _hover={{}}
                   _active={{}}
