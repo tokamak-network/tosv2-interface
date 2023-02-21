@@ -1,52 +1,137 @@
 import { atom, selector } from "recoil";
 
-const selectedToken0 = atom ({
-    key:'selectedToken0',
-    default:{
-        name: "",
-        address: "",
-        img: "",
-      }
-})
+export type T_Token = {
+  name: string;
+  address: string;
+  img: string;
+};
 
-const selectedToken1 = atom ({
-    key:'selectedToken1',
-    default:{
-        name: "",
-        address: "",
-        img: "",
-      }
-})
+export type T_swapTX = {
+  tx: boolean;
+  data: {
+    name: string;
+  };
+};
 
+export type T_focus = "input1" | "input2";
 
-const swapTX = atom({
-  key:'swapTX',
+const selectedToken0 = atom<T_Token>({
+  key: "selectedToken0",
   default: {
-    tx:false,
+    name: "",
+    address: "",
+    img: "",
+  },
+});
+
+const selectedToken1 = atom<T_Token>({
+  key: "selectedToken1",
+  default: {
+    name: "",
+    address: "",
+    img: "",
+  },
+});
+
+const swapTX = atom<T_swapTX>({
+  key: "swapTX",
+  default: {
+    tx: false,
     data: {
-      name:''
-    }
-  }
-})
+      name: "",
+    },
+  },
+});
 
-const slip = atom({
-  key:'slip',
-  default: '1'
-})
+const slip = atom<string>({
+  key: "slip",
+  default: "1",
+});
 
-const focus = atom ({
-  key:'focus',
-  default:'input1'
-})
+const focus = atom<T_focus>({
+  key: "focus",
+  default: "input1",
+});
 
-const swapFromAmount = atom ({
-  key: 'swapFromAmount',
-  default: '0'
-})
+const swapFromAmount = atom<string>({
+  key: "swapFromAmount",
+  default: "0",
+});
 
-const swapToAmount = atom ({
-  key: 'swapToAmount',
-  default: '0'
-})
+const swapToAmount = atom<string>({
+  key: "swapToAmount",
+  default: "0",
+});
 
-export {selectedToken0,selectedToken1,swapTX,slip,focus,swapFromAmount,swapToAmount}
+const selectedToken0_state = selector<T_Token>({
+  key: "selectedToken0_state",
+  get: ({ get }) => {
+    const selectedToken0State = get(selectedToken0);
+    return selectedToken0State;
+  },
+});
+
+const selectedToken1_state = selector<T_Token>({
+  key: "selectedToken1_state",
+  get: ({ get }) => {
+    const selectedToken1State = get(selectedToken1);
+    return selectedToken1State;
+  },
+});
+
+const swapTX_state = selector<T_swapTX>({
+  key: "swapTX_state",
+  get: ({ get }) => {
+    const swapTXState = get(swapTX);
+    return swapTXState;
+  },
+});
+
+const slip_state = selector<string>({
+  key: "slip_state",
+  get: ({ get }) => {
+    const slipState = get(slip);
+    return slipState;
+  },
+});
+
+const focus_state = selector<string>({
+  key: "focus_state",
+  get: ({ get }) => {
+    const focusState = get(focus);
+    return focusState;
+  },
+});
+
+const swapFromAmount_state = selector<string>({
+  key: "swapFromAmount_state",
+  get: ({ get }) => {
+    const swapFromAmountState = get(swapFromAmount);
+    return swapFromAmountState;
+  },
+});
+
+const swapToAmount_state = selector<string>({
+  key: "swapToAmount_state",
+  get: ({ get }) => {
+    const swapToAmountState = get(swapToAmount);
+    return swapToAmountState;
+  },
+});
+
+export {
+  selectedToken0,
+  selectedToken0_state,
+  selectedToken1,
+  selectedToken1_state,
+  swapTX,
+  swapTX_state,
+  slip,
+  slip_state,
+  focus,
+  focus_state,
+  swapFromAmount,
+  swapFromAmount_state,
+  swapToAmount,
+  swapToAmount_state,
+};

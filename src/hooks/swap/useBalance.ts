@@ -6,11 +6,12 @@ import { selectedToken0, selectedToken1 } from "atom/swap";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import { convertNumber } from "utils/number";
 import { useBlockNumber } from "hooks/useBlockNumber";
+import {ZERO_ADDRESS} from 'constants/index'
+
 const useBalance = () => {
   const { account, library } = useWeb3React();
   const token0 = useRecoilValue(selectedToken0)
   const token1 = useRecoilValue(selectedToken1)
-  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
   const { blockNumber } = useBlockNumber();
   const { ERC20_CONTRACT: Token0Contract, WTON_CONTRACT } = useCallContract(token0.address !== ZERO_ADDRESS ? token0.address : undefined)
   const { ERC20_CONTRACT: Token1Contract } = useCallContract(token1.address !== ZERO_ADDRESS ? token1.address : undefined)
@@ -96,7 +97,7 @@ const useBalance = () => {
       }
     }
     fetchBalance()
-  }, [token0.address, token1.address, Token0Contract, Token1Contract])
+  }, [token0.address, token1.address, Token0Contract, Token1Contract,token1, token0])
 
 
   return { token0Balance, token1Balance }

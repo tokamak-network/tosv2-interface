@@ -26,7 +26,7 @@ function SettingsComponent() {
   useEffect(() => {
     setSlippageAmnt(focused === "input1" ? "1" : "3");
     setSlippage(focused === "input1" ? "1" : "3");
-  }, [focused]);
+  }, [focused, setSlippage]);
 
   return (
     <Flex
@@ -59,7 +59,7 @@ function SettingsComponent() {
             _hover={{ cursor: "pointer" }}
             onClick={() => setExpanded(!expanded)}
           >
-            <Image src={colorMode === 'dark'? gearDark: gear} />
+            <Image src={colorMode === 'dark'? gearDark: gear} alt={'gear icon'} />
           </Flex>
         </Flex>
       ) : (
@@ -77,7 +77,7 @@ function SettingsComponent() {
               _hover={{ cursor: "pointer" }}
               onClick={() => setExpanded(!expanded)}
             >
-              <Image src={colorMode === 'dark'? gearDark: gear} />
+              <Image src={colorMode === 'dark'? gearDark: gear} alt={'gear icon'} />
             </Flex>
           </Flex>
           <Text fontSize="16px" fontWeight={"bold"} mb="12px" h="21px" mt='11px'   color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}>

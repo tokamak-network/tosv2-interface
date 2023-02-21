@@ -30,7 +30,7 @@ import { selectedToken0, selectedToken1 } from "atom/swap";
 import ArrowDownImg from "assets/icons/arrow-Down.svg";
 import ArrowDownD from 'assets/icons/arrow-DownDark.svg'
 import ArrowDownL from 'assets/icons/arrow-DownLight.svg'
-
+import {ZERO_ADDRESS} from 'constants/index'
 function SelectToken(props: { tokenType: Number }) {
   const { tokenType } = props;
   const theme = useTheme();
@@ -42,7 +42,6 @@ function SelectToken(props: { tokenType: Number }) {
   const [searchString, setSearchString] = useState<string>("");
   const { TON_CONTRACT, WTON_CONTRACT } = useCallContract();
   const { account, library } = useWeb3React();
-  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
   const wrapperRef = useRef(null);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [tokensFromAPI, setTokensFromAPI] = useState<any>([]);
@@ -52,6 +51,7 @@ function SelectToken(props: { tokenType: Number }) {
     address: "",
     symbol: "",
   });
+  
   useEffect(() => {
     if (tokenList !== undefined) {
       const tokensOrdered: any[] = [];
@@ -89,7 +89,7 @@ function SelectToken(props: { tokenType: Number }) {
       setTokensFromAPI(tokensOrdered);
       setSelected(tokenType === 0 ? token0 : token1);
     }
-  }, [tokenList, token0, token1]);
+  }, [tokenList, token0, token1, tokenType]);
 
   const TokenComp = (props: { img: any; name: string; address: string }) => {
     const { img, name, address } = props;
@@ -146,7 +146,7 @@ function SelectToken(props: { tokenType: Number }) {
           }
         }
       }
-    }, [img, name, address]);
+    }, [address, WTON_ADDRESS, img]);
     return (
       <Flex
         h="44px"
@@ -176,6 +176,7 @@ function SelectToken(props: { tokenType: Number }) {
               src={img !== undefined && img !== "" ? img : ETH_symbol}
               height={"32px"}
               width={"32px"}
+              alt={'token avatar'}
               style={{ borderRadius: "50%" }}
             />
           </Flex>
@@ -256,6 +257,7 @@ function SelectToken(props: { tokenType: Number }) {
                     <Image
                       src={ETH_symbol}
                       height={40}
+                      alt={'token avatar'}
                       width={40}
                       style={{ borderRadius: "50%" }}
                     ></Image>
@@ -274,6 +276,7 @@ function SelectToken(props: { tokenType: Number }) {
                   <Image
                     loader={myLoader}
                     src={selected.img}
+                    alt={'token avatar'}
                     height={40}
                     width={40}
                     style={{ borderRadius: "50%" }}
@@ -292,7 +295,7 @@ function SelectToken(props: { tokenType: Number }) {
             </Flex>
           )}
           <Flex h="14px" w="14px" mr="16px" transform={'rotate(270deg)'}>
-            <Image src={colorMode === 'dark'? ArrowDownD: ArrowDownL} />
+            <Image src={colorMode === 'dark'? ArrowDownD: ArrowDownL}  alt='arrow'/>
           </Flex>
         </Flex>
       </Flex>

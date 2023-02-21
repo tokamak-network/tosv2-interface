@@ -9,6 +9,7 @@ import useBalance from "./useBalance";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import { ethers, BigNumber } from "ethers";
 import { getParams } from "@/utils/params";
+import {ZERO_ADDRESS} from 'constants/index'
 
 const useExpectedInput = () => {
     const { account, library } = useWeb3React();
@@ -16,7 +17,6 @@ const useExpectedInput = () => {
     const token1 = useRecoilValue(selectedToken1)
     const slippage = useRecoilValue(slip)
     const toAmountOut = useRecoilValue(swapToAmount)
-    const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
     const { ERC20_CONTRACT: Token0Contract, WTON_CONTRACT, QUOTER_CONTRACT } = useCallContract(token0.address !== ZERO_ADDRESS ? token0.address : undefined)
     const { ERC20_CONTRACT: Token1Contract } = useCallContract(token1.address !== ZERO_ADDRESS ? token1.address : undefined)
     const [approved, setApproved] = useState('0')
@@ -153,7 +153,7 @@ const useExpectedInput = () => {
         }
         getExpectedInput()
 
-    }, [library, account, token0.address, token1.address, toAmountOut, blockNumber, slippage])
+    }, [library, account, token0.address, token1.address, toAmountOut, blockNumber, slippage, WTON_ADDRESS, TON_ADDRESS, QUOTER_CONTRACT])
     return { formattedResultI, maximumAmountInResultI, amountInResultI, formattedAmountOutResultI, amountOutResultI, err, minimumAmountOutResultI }
 }
 

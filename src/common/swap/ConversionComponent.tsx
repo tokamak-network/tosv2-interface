@@ -46,7 +46,7 @@ function ConversionComponent(props: {
             _hover={{ cursor: "pointer" }}
             onClick={() => setExpanded(!expanded)}
           >
-            <Image src={colorMode === 'dark'? maximizeDark: expand} />
+            <Image src={colorMode === 'dark'? maximizeDark: expand} alt={'expand icon'} />
           </Flex>
         </Flex>
       ) : (
@@ -64,7 +64,7 @@ function ConversionComponent(props: {
               _hover={{ cursor: "pointer" }}
               onClick={() => setExpanded(!expanded)}
             >
-              <Image src={colorMode === 'dark'? maximizeDark: expand} />
+              <Image src={colorMode === 'dark'? maximizeDark: expand}  alt={'expand icon'}/>
             </Flex>
           </Flex>
           <Flex justifyContent={"space-between"} w={"100%"} mt="16px">
