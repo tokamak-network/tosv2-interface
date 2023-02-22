@@ -22,7 +22,7 @@ const useExpectedInput = () => {
     const [approved, setApproved] = useState('0')
     const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS, SwapperV2Proxy, Quoter_ADDRESS } = CONTRACT_ADDRESS;
     const { blockNumber } = useBlockNumber();
-    const [formattedResultI, setFormattedResultI] = useState<any>()
+    const [formattedResultI, setFormattedResultI] = useState<string>()
     const [maximumAmountInResultI, setMaximumAmountInResultI] = useState<any>()
     const [amountInResultI, setAmountInResultI] = useState<any>()
     const [formattedAmountOutResultI, setFormattedAmountOutResultI] = useState<any>()
@@ -100,7 +100,7 @@ const useExpectedInput = () => {
                                 0,
                                 convertedAmountOut?.indexOf(".") + 3
                             ) : convertedAmountOut
-                            setFormattedResultI(formatted)
+                            setFormattedResultI(formatted|| '')
                             setMaximumAmountInResultI(maximumAmountIn)
                             setAmountInResultI(amountIn)
                             setFormattedAmountOutResultI(formattedAmountOut)
@@ -120,7 +120,7 @@ const useExpectedInput = () => {
                                 convertedAmountOut?.indexOf(".") + 3
                             ) : convertedAmountOut
 
-                            setFormattedResultI(formatted)
+                            setFormattedResultI(formatted || '')
                             setMaximumAmountInResultI(maximumAmountIn)
                             setAmountInResultI(amountIn)
                             setFormattedAmountOutResultI(formattedAmountOut)
@@ -137,13 +137,13 @@ const useExpectedInput = () => {
                 }
 
                 else if (token0.address.toLowerCase() === WTON_ADDRESS.toLowerCase() && token1.address.toLowerCase() === TON_ADDRESS.toLowerCase() || token1.address.toLowerCase() === WTON_ADDRESS.toLowerCase() && token0.address.toLowerCase() === TON_ADDRESS.toLowerCase()) {
-                    setFormattedResultI(toAmountOut)
+                    setFormattedResultI(toAmountOut || '')
                     setMinimumAmountOutResultI(toAmountOut)
                     setAmountOutResultI(toAmountOut)
                     setErr(undefined)
                 }
                 else {
-                    setFormattedResultI(toAmountOut)
+                    setFormattedResultI(toAmountOut || '')
                     setMinimumAmountOutResultI(toAmountOut)
                     setAmountOutResultI(toAmountOut)
                     setErr(undefined)

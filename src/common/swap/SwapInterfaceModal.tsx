@@ -8,11 +8,6 @@ import {
   ModalContent,
   useTheme,
   useColorMode,
-  Tooltip,
-  useMediaQuery,
-  Grid,
-  NumberInput,
-  NumberInputField,
   Box,
   CircularProgress,
 } from "@chakra-ui/react";
@@ -21,7 +16,6 @@ import useModal from "hooks/useModal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
-import useTokenList from "hooks/swap/useTokenList";
 import { useRecoilValue, useRecoilState } from "recoil";
 import SelectToken from "./SelectToken";
 import {
@@ -41,12 +35,12 @@ import SettingsComponent from "./SettingsComponent";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import useCallContract from "hooks/useCallContract";
 import useCheckApproved from "hooks/swap/useCheckApproved";
-import { useBlockNumber } from "hooks/useBlockNumber";
 import useExpectedOutput from "hooks/swap/useExpectedOutput";
 import useExpectedInput from "hooks/swap/useExpectedInput";
 import { getParams } from "@/utils/params";
 import useCustomToast from "hooks/useCustomToast";
-import {ZERO_ADDRESS} from 'constants/index'
+import { ZERO_ADDRESS } from "constants/index";
+import InputComponent from "./inputComponent";
 
 function SwapInterfaceModal() {
   const theme = useTheme();
@@ -55,7 +49,6 @@ function SwapInterfaceModal() {
   const [token1, setToken1] = useRecoilState(selectedToken1);
   const [toAmount, setToAmount] = useRecoilState(swapToAmount);
   const [fromAmount, setFromAmount] = useRecoilState(swapFromAmount);
-  // const { tx, data } = useRecoilValue(swapTX);
   const [tx, setTX] = useRecoilState(swapTX);
   const { setTx } = useCustomToast();
   const [slippage, setSlippage] = useRecoilState(slip);
@@ -63,11 +56,8 @@ function SwapInterfaceModal() {
   const { token0Balance, token1Balance } = useBalance();
   const { TON_ADDRESS, WTON_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
     CONTRACT_ADDRESS;
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal();
-  const tokenList = useTokenList();
-  const { blockNumber } = useBlockNumber();
   const {
     formattedResult,
     minimumAmountOutResult,
@@ -78,21 +68,13 @@ function SwapInterfaceModal() {
   const {
     formattedResultI,
     maximumAmountInResultI,
-    amountInResultI,
-    formattedAmountOutResultI,
     amountOutResultI,
     err,
     minimumAmountOutResultI,
   } = useExpectedInput();
   const [focused, setFocused] = useRecoilState(focus);
-  // const [swapFromAmt, setSwapFromAmt] = useState<string>("0");
-  // const [swapFromAmt2, setSwapFromAmt2] = useState<string>("0");
-  const [invalidInput, setInvalidInput] = useState<boolean>(false);
   const [expected, setExpected] = useState<string>("0");
   const [maxError, setMaxError] = useState<boolean>(false);
-  const [allowed, setAllowed] = useState<number>(0);
-  // const [slippage, setSlippage] = useState<string>("");
-  const [minAmount, setMinAmount] = useState<string>("");
   const approved = useCheckApproved();
   const {
     ERC20_CONTRACT: Token0Contract,
@@ -106,6 +88,33 @@ function SwapInterfaceModal() {
   const formatNumberWithCommas = (num: string) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
+
+  const buttonStatus = useMemo(() => {
+    switch (true) {
+      case (account && token0.address === "") || token1.address === "":
+        return "Select Tokens";
+        break;
+      case token0.address.toLowerCase() === WTON_ADDRESS.toLowerCase() &&
+        token1.address.toLowerCase() === TON_ADDRESS.toLowerCase():
+        return "Unwrap";
+        break;
+      case token0.address.toLowerCase() === TON_ADDRESS.toLowerCase() &&
+        token1.address.toLowerCase() === WTON_ADDRESS.toLowerCase():
+        return "Wrap";
+        break;
+      case token0.address.toLowerCase() === ZERO_ADDRESS.toLowerCase() &&
+        token1.address.toLowerCase() === WETH_ADDRESS.toLowerCase():
+        return "Wrap";
+        break;
+      case token0.address.toLowerCase() === WETH_ADDRESS.toLowerCase() &&
+        token1.address.toLowerCase() === ZERO_ADDRESS.toLowerCase():
+        return "Unwrap";
+        break;
+      default:
+        return "Swap";
+        break;
+    }
+  }, [TON_ADDRESS, WETH_ADDRESS, WTON_ADDRESS, account, token0.address, token1.address]);
 
   const closeThisModal = useCallback(() => {
     setToken0({
@@ -121,9 +130,10 @@ function SwapInterfaceModal() {
     setToAmount("0");
     setFromAmount("0");
     setSlippage("0");
-    closeModal();
     setFocused("input1");
     setExpected("0");
+    closeModal();
+   
   }, [
     closeModal,
     setToAmount,
@@ -135,18 +145,14 @@ function SwapInterfaceModal() {
     setToken1,
   ]);
 
-
   const switchTokens = () => {
     const newToken0 = token1;
     const newToken1 = token0;
     const input1 = fromAmount;
     const input2 = toAmount;
-    // setSwapFromAmt(input2);
-    // setSwapFromAmt2(input1);
     setFromAmount(input2);
     setToAmount(input1);
     setToken0(newToken0);
-    Token0Contract;
     setToken1(newToken1);
   };
 
@@ -276,7 +282,17 @@ function SwapInterfaceModal() {
         } catch (err) {}
       }
     }
-  },[SwapperV2Proxy_CONTRACT, WTON_ADDRESS, account, closeThisModal, library, setTx, toAmount, token1.address]);
+  }, [
+    SwapperV2Proxy_CONTRACT,
+    WTON_ADDRESS,
+    account,
+    closeThisModal,
+    library,
+    setTx,
+    toAmount,
+    token1.address,
+  ]);
+
   const exactInputWethEth = useCallback(async () => {
     if (library && account && WETH_CONTRACT) {
       // const WETH = new Contract(WETH_ADDRESS, WETHABI, library);
@@ -487,75 +503,44 @@ function SwapInterfaceModal() {
     setTx,
   ]);
 
-  useEffect(() => {
-    setAllowed(Number(approved));
-  }, [token0.address, approved]);
-
-  useEffect(() => {
-    if (tx.tx && !tx.data) {
-      // setSwapFromAmt("0");
-      // setSwapFromAmt2("0");
-      setFromAmount("0");
-      setToAmount("0");
+  const getExpectedOut = useCallback(() => {
+    if (
+      token0.address &&
+      fromAmount !== "" &&
+      fromAmount !== "0" &&
+      formattedResult &&
+      minimumAmountOutResult &&
+      amountInResult &&
+      formattedAmountOutResult
+    ) {
+      setExpected(formattedResult);
+      focused === "input1"
+        ? setToAmount(formattedResult)
+        : setFromAmount(formattedResult);
     }
-  }, [tx, blockNumber, setFromAmount, setToAmount]);
-
+  }, [token0.address, fromAmount, formattedResult, minimumAmountOutResult, amountInResult, formattedAmountOutResult, focused, setToAmount, setFromAmount]);
+  
+  const getExpectedIn = useCallback(() => {
+    if (token0.address && toAmount !== "" && toAmount !== "0") {
+      if (err) {
+        setMaxError(true);
+      } else {
+        setMaxError(false);
+        setExpected(formattedResultI || "");
+        focused === "input2"
+          ? setFromAmount(formattedResultI || "")
+          : setToAmount(formattedResultI || "");
+      }
+    }
+  }, [token0.address, toAmount, err, formattedResultI, focused, setToAmount, setFromAmount]);
+  
   useEffect(() => {
-    const getExpectedOut = async () => {
-      if (
-        token0.address &&
-        fromAmount !== "" &&
-        fromAmount !== "0" &&
-        formattedResult &&
-        minimumAmountOutResult &&
-        amountInResult &&
-        formattedAmountOutResult
-      ) {
-        setExpected(formattedResult);
-        focused === "input1"
-          ? setToAmount(formattedResult)
-          : setFromAmount(formattedResult);
-
-        setMinAmount(formattedAmountOutResult);
-      }
-    };
-
-    const getExpectedIn = async () => {
-      if (token0.address && toAmount !== "" && toAmount !== "0") {
-        // console.log('formattedResultI',formattedResultI);
-
-        if (err) {
-          setMaxError(true);
-        } else {
-          setMaxError(false);
-          setExpected(formattedResultI);
-          focused === "input2"
-            ? setFromAmount(formattedResultI)
-            : setToAmount(formattedResultI);
-        }
-      }
-    };
-    focused && focused === "input1" ? getExpectedOut() : getExpectedIn();
-  }, [
-    toAmount,
-    fromAmount,
-    token0.address,
-    token1.address,
-    slippage,
-    focused,
-    formattedResult,
-    minimumAmountOutResult,
-    amountInResult,
-    formattedAmountOutResult,
-    formattedResultI,
-    maximumAmountInResultI,
-    amountInResultI,
-    formattedAmountOutResultI,
-    amountOutResultI,
-    err,
-    setToAmount,
-    setFromAmount,
-  ]);
+    if (focused && focused === "input1") {
+      getExpectedOut();
+    } else if (focused && focused === "input2") {
+      getExpectedIn();
+    }
+  }, [focused, getExpectedOut, getExpectedIn]);
 
   return (
     <Modal
@@ -568,12 +553,10 @@ function SwapInterfaceModal() {
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={"350px"}
         maxW={"350px"}
-        // h={"651px"}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>
             <Flex flexDir={"column"} pos={"relative"}>
-              {/* Title Area*/}
               <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
@@ -591,7 +574,6 @@ function SwapInterfaceModal() {
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
                 </Flex>
               </Flex>
-              {/* Content Area*/}
               <Flex
                 width={"100%"}
                 justifyContent="center"
@@ -610,11 +592,9 @@ function SwapInterfaceModal() {
                   </Text>
                   <Text
                     fontSize={"14px"}
-                    // color={"#3d495d"}
                     fontWeight="bold"
                     onClick={() => {
                       setFocused("input1");
-                      // setSwapFromAmt(token0Balance);
                       setFromAmount(token0Balance);
                     }}
                     _hover={{ cursor: "pointer" }}
@@ -622,62 +602,11 @@ function SwapInterfaceModal() {
                     MAX
                   </Text>
                 </Flex>
-                <Flex
-                  position={"relative"}
-                  border="1px solid"
-                  borderColor={
-                    invalidInput
-                      ? "#e53e3e"
-                      : colorMode === "dark"
-                      ? "#313442"
-                      : "#dfe4ee"
-                  }
-                  height={"56px"}
-                  w={"310px"}
-                  flexDir={"row"}
-                  borderRadius={"4px"}
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  pr={"18px"}
-                >
-                  <NumberInput
-                    height={"56px"}
-                    w={"230px"}
-                    color={colorMode === "dark" ? "#f1f1f1" : "#86929d"}
-                    pl={"24px"}
-                    border={"none"}
-                    fontSize={"18px"}
-                    borderRadius={"4px"}
-                    min={0}
-                    borderColor={"transparent"}
-                    _focus={{
-                      borderColor: "transparent",
-                    }}
-                    _active={{
-                      borderColor: "transparent",
-                    }}
-                    focusBorderColor="transparent"
-                    _hover={{
-                      borderColor: "transparent",
-                    }}
-                    onClick={() => setFocused("input1")}
-                    // defaultValue={0}
-                    value={focused === "input1" ? fromAmount : expected}
-                    onChange={(e) => {
-                      const valueNum = e;
-                      // setSwapFromAmt(valueNum);
-                      setFromAmount(valueNum);
-                    }}
-                  >
-                    <NumberInputField
-                      border={"none"}
-                      height={"56px"}
-                      outline={"none"}
-                      borderColor={"transparent"}
-                      pl={"0px"}
-                    />
-                  </NumberInput>
-                </Flex>
+                <InputComponent
+                  expected={expected}
+                  inputNum={"1"}
+                  maxError={maxError}
+                />
                 <Flex
                   h={"40px"}
                   justifyContent={"center"}
@@ -698,7 +627,6 @@ function SwapInterfaceModal() {
                       colorMode === "light" ? "#e9edf1" : "#1e1e24"
                     }
                     borderRadius={"50%"}
-                    //   onClick={switchTokens}
                     _hover={{}}
                     _focus={{}}
                     _active={{}}
@@ -713,7 +641,7 @@ function SwapInterfaceModal() {
                         colorMode === "light" ? "#e9edf1" : "#1e1e24"
                       }
                     >
-                      <Image src={swap} alt={'swap button'}/>
+                      <Image src={swap} alt={"swap button"} />
                     </Flex>
                   </Button>
                 </Flex>
@@ -727,62 +655,11 @@ function SwapInterfaceModal() {
                 >
                   Balance: {formatNumberWithCommas(token1Balance)}
                 </Text>
-                <Flex
-                  position={"relative"}
-                  border="1px solid"
-                  borderColor={
-                    invalidInput || maxError
-                      ? "#e53e3e"
-                      : colorMode === "dark"
-                      ? "#313442"
-                      : "#dfe4ee"
-                  }
-                  height={"56px"}
-                  w={"310px"}
-                  flexDir={"row"}
-                  borderRadius={"4px"}
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  pr={"18px"}
-                >
-                  <NumberInput
-                    height={"56px"}
-                    w={"310px"}
-                    color={colorMode === "dark" ? "#f1f1f1" : "#86929d"}
-                    pl={"24px"}
-                    border={"none"}
-                    fontSize={"18px"}
-                    min={0}
-                    borderRadius={"4px"}
-                    borderColor={"transparent"}
-                    _focus={{
-                      borderColor: "transparent",
-                    }}
-                    _active={{
-                      borderColor: "transparent",
-                    }}
-                    focusBorderColor="transparent"
-                    _hover={{
-                      borderColor: "transparent",
-                    }}
-                    defaultValue={0}
-                    value={focused === "input2" ? toAmount : expected}
-                    onClick={() => setFocused("input2")}
-                    onChange={(e) => {
-                      const valueNum = e;
-                      // setSwapFromAmt2(valueNum);
-                      setToAmount(valueNum);
-                    }}
-                  >
-                    <NumberInputField
-                      border={"none"}
-                      height={"56px"}
-                      outline={"none"}
-                      borderColor={"transparent"}
-                      pl={"0px"}
-                    />
-                  </NumberInput>
-                </Flex>
+                <InputComponent
+                  maxError={maxError}
+                  expected={expected}
+                  inputNum={"2"}
+                />
                 {maxError && (
                   <Text
                     color={"#e53e3e"}
@@ -825,7 +702,7 @@ function SwapInterfaceModal() {
                       token0.address === "" ||
                       tx.tx === true ||
                       !account ||
-                      allowed > Number(fromAmount) ||
+                      Number(approved) > Number(fromAmount) ||
                       token0.address === ZERO_ADDRESS
                     }
                     onClick={() => approve()}
@@ -846,7 +723,7 @@ function SwapInterfaceModal() {
                 <ConversionComponent
                   expectedAmnt={expected}
                   slippage={slippage}
-                  minAmount={minAmount}
+                  minAmount={formattedAmountOutResult || ''}
                   focused={focused}
                   swapFromAmt2={toAmount}
                 />
@@ -857,9 +734,6 @@ function SwapInterfaceModal() {
                   padding={"16px 118px"}
                   mb={"10px"}
                   ml="15px"
-                  // cursor={
-                  //   !Number(swapFromAmt) || !account || invalidInput ? "not-allowed" : "pointer"
-                  // }
                   w={"280px"}
                   backgroundColor={account ? "#007aff" : "#e9edf1"}
                   color={account ? "#fff" : "#8f96a1"}
@@ -879,7 +753,7 @@ function SwapInterfaceModal() {
                     Number(token0Balance) === 0 ||
                     maxError ||
                     token1.address === "" ||
-                    allowed < Number(fromAmount) ||
+                    Number(approved) < Number(fromAmount) ||
                     (Number(fromAmount) === 0 && Number(toAmount) === 0) ||
                     token0.address === token1.address ||
                     Number(fromAmount) > Number(token0Balance)
@@ -891,31 +765,7 @@ function SwapInterfaceModal() {
                   }
                 >
                   <Text>
-                    {account
-                      ? token0.address === "" || token1.address === ""
-                        ? "Select Tokens"
-                        : token0.address.toLowerCase() ===
-                            WTON_ADDRESS.toLowerCase() &&
-                          token1.address.toLowerCase() ===
-                            TON_ADDRESS.toLowerCase()
-                        ? "Unwrap"
-                        : token0.address.toLowerCase() ===
-                            TON_ADDRESS.toLowerCase() &&
-                          token1.address.toLowerCase() ===
-                            WTON_ADDRESS.toLowerCase()
-                        ? "Wrap"
-                        : token0.address.toLowerCase() ===
-                            ZERO_ADDRESS.toLowerCase() &&
-                          token1.address.toLowerCase() ===
-                            WETH_ADDRESS.toLowerCase()
-                        ? "Wrap"
-                        : token0.address.toLowerCase() ===
-                            WETH_ADDRESS.toLowerCase() &&
-                          token1.address.toLowerCase() ===
-                            ZERO_ADDRESS.toLowerCase()
-                        ? "Unwrap"
-                        : "Swap"
-                      : "Connect Wallet"}{" "}
+                    {buttonStatus}
                   </Text>
                 </Button>
               </Flex>

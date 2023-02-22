@@ -2,7 +2,7 @@ import { useWeb3React } from "@web3-react/core";
 import { useEffect, useState } from "react";
 import useCallContract from "hooks/useCallContract";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { selectedToken0, selectedToken1, swapTX, slip, focus, swapToAmount, swapFromAmount } from "atom/swap";
+import { selectedToken0, selectedToken1, selectedToken0_state, slip, selectedToken1_state, swapToAmount, swapFromAmount } from "atom/swap";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import { convertNumber } from "utils/number";
 import useBalance from "./useBalance";
@@ -13,8 +13,8 @@ import {ZERO_ADDRESS} from 'constants/index'
 
 const useExpectedOutput = () => {
     const { account, library } = useWeb3React();
-    const token0 = useRecoilValue(selectedToken0)
-    const token1 = useRecoilValue(selectedToken1)
+    const token0 = useRecoilValue(selectedToken0_state)
+    const token1 = useRecoilValue(selectedToken1_state)
     const slippage = useRecoilValue(slip)
     const fromAmountIn = useRecoilValue(swapFromAmount)
     const { ERC20_CONTRACT: Token0Contract, WTON_CONTRACT, QUOTER_CONTRACT } = useCallContract(token0.address !== ZERO_ADDRESS ? token0.address : undefined)
@@ -22,10 +22,10 @@ const useExpectedOutput = () => {
     const [approved, setApproved] = useState('0')
     const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS, SwapperV2Proxy, Quoter_ADDRESS } = CONTRACT_ADDRESS;
     const { blockNumber } = useBlockNumber();
-    const [formattedResult, setFormattedResult] = useState<any>()
-    const [minimumAmountOutResult, setMinimumAmountOutResult] = useState<any>()
-    const [amountInResult, setAmountInResult] = useState<any>()
-    const [formattedAmountOutResult, setFormattedAmountOutResult] = useState<any>()
+    const [formattedResult, setFormattedResult] = useState<string | undefined>()
+    const [minimumAmountOutResult, setMinimumAmountOutResult] = useState<string | undefined>()
+    const [amountInResult, setAmountInResult] = useState<ethers.BigNumber | string>()
+    const [formattedAmountOutResult, setFormattedAmountOutResult] = useState<string | undefined>()
 
     useEffect(() => {
         async function getExOutput() {

@@ -1,11 +1,4 @@
-import {
-  useState,
-  useEffect,
-  useRef,
-  Dispatch,
-  SetStateAction,
-  useCallback,
-} from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import {
   Text,
   Flex,
@@ -28,9 +21,9 @@ import useCallContract from "hooks/useCallContract";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import { selectedToken0, selectedToken1 } from "atom/swap";
 import ArrowDownImg from "assets/icons/arrow-Down.svg";
-import ArrowDownD from 'assets/icons/arrow-DownDark.svg'
-import ArrowDownL from 'assets/icons/arrow-DownLight.svg'
-import {ZERO_ADDRESS} from 'constants/index'
+import ArrowDownD from "assets/icons/arrow-DownDark.svg";
+import ArrowDownL from "assets/icons/arrow-DownLight.svg";
+import { ZERO_ADDRESS } from "constants/index";
 function SelectToken(props: { tokenType: Number }) {
   const { tokenType } = props;
   const theme = useTheme();
@@ -38,34 +31,31 @@ function SelectToken(props: { tokenType: Number }) {
   const tokenList = useTokenList();
   const [token0, setToken0] = useRecoilState(selectedToken0);
   const [token1, setToken1] = useRecoilState(selectedToken1);
-  const [validAddress, setValidAddress] = useState<boolean>(false);
-  const [searchString, setSearchString] = useState<string>("");
   const { TON_CONTRACT, WTON_CONTRACT } = useCallContract();
   const { account, library } = useWeb3React();
   const wrapperRef = useRef(null);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [tokensFromAPI, setTokensFromAPI] = useState<any>([]);
   const [selected, setSelected] = useState({ name: "", img: "" });
-  const [searchToken, setSearchToken] = useState({
-    name: "",
-    address: "",
-    symbol: "",
-  });
-  
-  useEffect(() => {
-    if (tokenList !== undefined) {
-      const tokensOrdered: any[] = [];
-      const Eth = {
-        token: {
-          address: ZERO_ADDRESS,
-          symbol: "ETH",
-          name: "Ether",
-        },
-        tokenAddress: ZERO_ADDRESS,
-        tokenImage: "",
-      };
+
+  const tokensOrdered = useMemo(() => {
+    if (tokenList === undefined) {
+      return [];
+    }
+
+    const Eth = {
+      token: {
+        address: ZERO_ADDRESS,
+        symbol: "ETH",
+        name: "Ether",
+      },
+      tokenAddress: ZERO_ADDRESS,
+      tokenImage: "",
+    };
+
+    const ordered =
       Number(DEFAULT_NETWORK) === 1
-        ? tokensOrdered.push(
+        ? [
             Eth,
             tokenList[7],
             tokenList[4],
@@ -73,9 +63,9 @@ function SelectToken(props: { tokenType: Number }) {
             tokenList[1],
             tokenList[0],
             tokenList[3],
-            tokenList[6]
-          )
-        : tokensOrdered.push(
+            tokenList[6],
+          ]
+        : [
             Eth,
             tokenList[5],
             tokenList[6],
@@ -83,17 +73,21 @@ function SelectToken(props: { tokenType: Number }) {
             tokenList[2],
             tokenList[1],
             tokenList[3],
-            tokenList[4]
-          );
+            tokenList[4],
+          ];
 
-      setTokensFromAPI(tokensOrdered);
-      setSelected(tokenType === 0 ? token0 : token1);
-    }
-  }, [tokenList, token0, token1, tokenType]);
+    return ordered;
+  }, [tokenList]);
+
+  useEffect(() => {
+    setTokensFromAPI(tokensOrdered);
+    setSelected(tokenType === 0 ? token0 : token1);
+  }, [tokenType, token0, token1, tokensOrdered]);
 
   const TokenComp = (props: { img: any; name: string; address: string }) => {
     const { img, name, address } = props;
     const { TON_ADDRESS, WTON_ADDRESS } = CONTRACT_ADDRESS;
+
     const addToken = useCallback(async () => {
       if (TON_CONTRACT && WTON_CONTRACT && account) {
         if (address.toLocaleLowerCase() === WTON_ADDRESS.toLocaleLowerCase()) {
@@ -176,7 +170,7 @@ function SelectToken(props: { tokenType: Number }) {
               src={img !== undefined && img !== "" ? img : ETH_symbol}
               height={"32px"}
               width={"32px"}
-              alt={'token avatar'}
+              alt={"token avatar"}
               style={{ borderRadius: "50%" }}
             />
           </Flex>
@@ -236,7 +230,12 @@ function SelectToken(props: { tokenType: Number }) {
         >
           {selected.name === "" ? (
             <Flex alignItems="center">
-              <Box w="40px" h="40px" borderRadius={"50%"} bg={colorMode === 'dark'? "#1e1e24": "#e9edf1"}></Box>
+              <Box
+                w="40px"
+                h="40px"
+                borderRadius={"50%"}
+                bg={colorMode === "dark" ? "#1e1e24" : "#e9edf1"}
+              ></Box>
               <Text
                 color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}
                 fontSize="18px"
@@ -257,7 +256,7 @@ function SelectToken(props: { tokenType: Number }) {
                     <Image
                       src={ETH_symbol}
                       height={40}
-                      alt={'token avatar'}
+                      alt={"token avatar"}
                       width={40}
                       style={{ borderRadius: "50%" }}
                     ></Image>
@@ -276,7 +275,7 @@ function SelectToken(props: { tokenType: Number }) {
                   <Image
                     loader={myLoader}
                     src={selected.img}
-                    alt={'token avatar'}
+                    alt={"token avatar"}
                     height={40}
                     width={40}
                     style={{ borderRadius: "50%" }}
@@ -294,8 +293,11 @@ function SelectToken(props: { tokenType: Number }) {
               </Text>
             </Flex>
           )}
-          <Flex h="14px" w="14px" mr="16px" transform={'rotate(270deg)'}>
-            <Image src={colorMode === 'dark'? ArrowDownD: ArrowDownL}  alt='arrow'/>
+          <Flex h="14px" w="14px" mr="16px" transform={"rotate(270deg)"}>
+            <Image
+              src={colorMode === "dark" ? ArrowDownD : ArrowDownL}
+              alt="arrow"
+            />
           </Flex>
         </Flex>
       </Flex>
