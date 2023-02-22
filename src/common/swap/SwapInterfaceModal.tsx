@@ -341,11 +341,7 @@ function SwapInterfaceModal() {
                 >
                   Balance: {formatNumberWithCommas(token1Balance)}
                 </Text>
-                <InputComponent
-                  maxError={maxError}
-                  expected={expected}
-                  inputNum={"2"}
-                />
+                <InputComponent maxError={maxError} expected={expected} inputNum={"2"} />
                 {maxError && (
                   <Text
                     color={"#e53e3e"}
