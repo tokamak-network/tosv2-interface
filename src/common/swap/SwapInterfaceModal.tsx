@@ -1,22 +1,30 @@
 /*
 Author : Lakmi
-Work Ticket : TSV2-212
+Work Ticket :
 Description : This is SwapModal to exchange tokens 
-Flow : Need your ideas 
-Child components : 
-> TokenFrom
-  > token 1 data
-> TokenTo
-  > token 2 data
-> Settings
-  > setting and advanced values for token swap
-> Bottom 
-  > button area
+Flow : 
+  > When the user selects the token0 from the dropdown list, the balance0 will be computed, same for token1 as well. 
+  > when the user enters the value in input1 or input2, the useExpectedInput, and useExpectedOutput will compute the resulting amounts. 
+  Child components : 
+> SelectToken
+  > Token list drop down menu
+> InputComponent
+  > NumberInput component for swap
+> ConversionComponent, SettingsComponent
+  > the 2 components to show the expected output/input and set the slippage percentage
+> SwapButton 
+  > Big button at the bottom with all the button logic and functions that will be executed
 hooks : 
-> useTopData 
-  > token 1 data for Top component
-some more : 
-...
+> useBalance  
+  > returns the balances of token0 and token1 when the token changes
+> useCheckApproved
+  > returns the approved amount of tokens for token0
+> useExpectedInput
+  > returns the expected input amount for swapExactOutput function
+> useExpectedOutput
+  > returns the expected output amount for swapExactInput function
+> useTokenList
+  > returns the token list from the token api
 */
 
 import {

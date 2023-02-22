@@ -23,11 +23,11 @@ const useExpectedInput = () => {
     const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS, SwapperV2Proxy, Quoter_ADDRESS } = CONTRACT_ADDRESS;
     const { blockNumber } = useBlockNumber();
     const [formattedResultI, setFormattedResultI] = useState<string>()
-    const [maximumAmountInResultI, setMaximumAmountInResultI] = useState<any>()
-    const [amountInResultI, setAmountInResultI] = useState<any>()
-    const [formattedAmountOutResultI, setFormattedAmountOutResultI] = useState<any>()
-    const [amountOutResultI, setAmountOutResultI] = useState<any>()
-    const [minimumAmountOutResultI, setMinimumAmountOutResultI] = useState<any>()
+    const [maximumAmountInResultI, setMaximumAmountInResultI] = useState<string | undefined>()
+    const [amountInResultI, setAmountInResultI] = useState<string | undefined>()
+    const [formattedAmountOutResultI, setFormattedAmountOutResultI] = useState<string | undefined>()
+    const [amountOutResultI, setAmountOutResultI] = useState<ethers.BigNumber | string>()
+    const [minimumAmountOutResultI, setMinimumAmountOutResultI] = useState<string | undefined>()
 
     const [err, setErr] = useState<any>()
 
