@@ -1,30 +1,22 @@
 /*
 Author : Lakmi
-Work Ticket :
+Work Ticket : TSV2-212
 Description : This is SwapModal to exchange tokens 
-Flow : 
-  > When the user selects the token0 from the dropdown list, the balance0 will be computed, same for token1 as well. 
-  > when the user enters the value in input1 or input2, the useExpectedInput, and useExpectedOutput will compute the resulting amounts. 
-  Child components : 
-> SelectToken
-  > Token list drop down menu
-> InputComponent
-  > NumberInput component for swap
-> ConversionComponent, SettingsComponent
-  > the 2 components to show the expected output/input and set the slippage percentage
-> SwapButton 
-  > Big button at the bottom with all the button logic and functions that will be executed
+Flow : Need your ideas 
+Child components : 
+> TokenFrom
+  > token 1 data
+> TokenTo
+  > token 2 data
+> Settings
+  > setting and advanced values for token swap
+> Bottom 
+  > button area
 hooks : 
-> useBalance  
-  > returns the balances of token0 and token1 when the token changes
-> useCheckApproved
-  > returns the approved amount of tokens for token0
-> useExpectedInput
-  > returns the expected input amount for swapExactOutput function
-> useExpectedOutput
-  > returns the expected output amount for swapExactInput function
-> useTokenList
-  > returns the token list from the token api
+> useTopData 
+  > token 1 data for Top component
+some more : 
+...
 */
 
 import {
@@ -93,19 +85,26 @@ function SwapInterfaceModal() {
     formattedAmountOutResult,
   } = useExpectedOutput();
 
-  const { formattedResultI, err, minimumAmountOutResultI } = useExpectedInput();
+  const {
+    formattedResultI,
+    err,
+    minimumAmountOutResultI,
+  } = useExpectedInput();
   const [focused, setFocused] = useRecoilState(focus);
   const [expected, setExpected] = useState<string>("0");
   const [maxError, setMaxError] = useState<boolean>(false);
   const approved = useCheckApproved();
-  const { ERC20_CONTRACT: Token0Contract, WTON_CONTRACT } = useCallContract(
+  const {
+    ERC20_CONTRACT: Token0Contract,
+    WTON_CONTRACT,
+  } = useCallContract(
     token0.address !== ZERO_ADDRESS ? token0.address : undefined
   );
 
   const formatNumberWithCommas = (num: string) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-
+  
   const closeThisModal = useCallback(() => {
     setToken0({
       name: "",
@@ -123,6 +122,7 @@ function SwapInterfaceModal() {
     setFocused("input1");
     setExpected("0");
     closeModal();
+   
   }, [
     closeModal,
     setToAmount,
@@ -196,18 +196,8 @@ function SwapInterfaceModal() {
         ? setToAmount(formattedResult)
         : setFromAmount(formattedResult);
     }
-  }, [
-    token0.address,
-    fromAmount,
-    formattedResult,
-    minimumAmountOutResult,
-    amountInResult,
-    formattedAmountOutResult,
-    focused,
-    setToAmount,
-    setFromAmount,
-  ]);
-
+  }, [token0.address, fromAmount, formattedResult, minimumAmountOutResult, amountInResult, formattedAmountOutResult, focused, setToAmount, setFromAmount]);
+  
   const getExpectedIn = useCallback(() => {
     if (token0.address && toAmount !== "" && toAmount !== "0") {
       if (err) {
@@ -220,16 +210,8 @@ function SwapInterfaceModal() {
           : setToAmount(formattedResultI || "");
       }
     }
-  }, [
-    token0.address,
-    toAmount,
-    err,
-    formattedResultI,
-    focused,
-    setToAmount,
-    setFromAmount,
-  ]);
-
+  }, [token0.address, toAmount, err, formattedResultI, focused, setToAmount, setFromAmount]);
+  
   useEffect(() => {
     if (focused && focused === "input1") {
       getExpectedOut();
@@ -419,16 +401,12 @@ function SwapInterfaceModal() {
                 <ConversionComponent
                   expectedAmnt={expected}
                   slippage={slippage}
-                  minAmount={formattedAmountOutResult || ""}
+                  minAmount={formattedAmountOutResult || ''}
                   focused={focused}
                   swapFromAmt2={toAmount}
                 />
                 <SettingsComponent />
-                <SwapButton
-                  maxError={maxError}
-                  approved={approved}
-                  closeThisModal={closeThisModal}
-                />
+                <SwapButton maxError={maxError} approved={approved} closeThisModal={closeThisModal} />
               </Flex>
             </Flex>
           </Flex>

@@ -16,7 +16,7 @@
     "@emotion/styled": "^11.9.3",
     "@fontsource/poppins": "^4.5.8",
     "@nivo/core": "^0.72.0",
-    "@nivo/line": "^0.55.0",
+    "@nivo/line": "^0.72.0",
     "decimal.js": "^10.3.1",
     "framer-motion": "^6.5.1",
     "graphql": "^16.5.0",
