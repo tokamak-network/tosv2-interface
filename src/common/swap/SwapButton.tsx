@@ -76,50 +76,35 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
   const { TON_ADDRESS, WTON_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
     CONTRACT_ADDRESS;
 
-  const buttonStatus = useMemo(() => {
-    switch (true) {
-      case (account && token0.address === "") || token1.address === "":
-        return "Select Tokens";
-        break;
-      case token0.address.toLowerCase() === WTON_ADDRESS.toLowerCase() &&
-        token1.address.toLowerCase() === TON_ADDRESS.toLowerCase():
-        return "Unwrap";
-        break;
-      case token0.address.toLowerCase() === TON_ADDRESS.toLowerCase() &&
-        token1.address.toLowerCase() === WTON_ADDRESS.toLowerCase():
-        return "Wrap";
-        break;
-      case token0.address.toLowerCase() === ZERO_ADDRESS.toLowerCase() &&
-        token1.address.toLowerCase() === WETH_ADDRESS.toLowerCase():
-        return "Wrap";
-        break;
-      case token0.address.toLowerCase() === WETH_ADDRESS.toLowerCase() &&
-        token1.address.toLowerCase() === ZERO_ADDRESS.toLowerCase():
-        return "Unwrap";
-        break;
-      default:
-        return "Swap";
-        break;
-    }
-  }, [
-    TON_ADDRESS,
-    WETH_ADDRESS,
-    WTON_ADDRESS,
-    account,
-    token0.address,
-    token1.address,
-  ]);
+  enum ButtonStatus {
+    SELECT_TOKENS = "Select Tokens",
+    UNWRAP = "Unwrap",
+    WRAP = "Wrap",
+    SWAP = "Swap",
+  }
 
-  const switchTokens = () => {
-    const newToken0 = token1;
-    const newToken1 = token0;
-    const input1 = fromAmount;
-    const input2 = toAmount;
-    setFromAmount(input2);
-    setToAmount(input1);
-    setToken0(newToken0);
-    setToken1(newToken1);
-  };
+
+  const buttonStatus = useMemo(() => {
+    const { address: token0Address } = token0;
+    const { address: token1Address } = token1;
+
+    if (!account || token1Address === "") {
+      return ButtonStatus.SELECT_TOKENS;
+    }
+
+    switch (`${token0Address.toLowerCase()},${token1Address.toLowerCase()}`) {
+      case `${WTON_ADDRESS.toLowerCase()},${TON_ADDRESS.toLowerCase()}`:
+        return ButtonStatus.UNWRAP;
+      case `${TON_ADDRESS.toLowerCase()},${WTON_ADDRESS.toLowerCase()}`:
+        return ButtonStatus.WRAP;
+      case `${ZERO_ADDRESS.toLowerCase()},${WETH_ADDRESS.toLowerCase()}`:
+        return ButtonStatus.WRAP;
+      case `${WETH_ADDRESS.toLowerCase()},${ZERO_ADDRESS.toLowerCase()}`:
+        return ButtonStatus.UNWRAP;
+      default:
+        return ButtonStatus.SWAP;
+    }
+  }, [account, token0.address, token1.address]);
 
   const exactInput = async (
     swapperV2: any,
