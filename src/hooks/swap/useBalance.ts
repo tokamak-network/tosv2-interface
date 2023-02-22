@@ -141,8 +141,6 @@ const useBalance = () => {
     account,
     WTON_ADDRESS,
     WTON_CONTRACT,
-    Token1Contract,
-    Token0Contract,
   ]);
 
   return { token0Balance, token1Balance };
