@@ -4,6 +4,7 @@ import TokenSymbol from "common/token/TokenSymol";
 import constant from "constant";
 import useBondModal from "hooks/bond/useBondModal";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
+import useInput from "hooks/useInput";
 import { useEffect, useMemo } from "react";
 import { TokenTypes } from "types";
 
@@ -25,29 +26,11 @@ function TokenImageContrainer(props: { tokenTypes: TokenTypes; name: string }) {
 }
 
 export default function BondModal_Input() {
-  //need to put types
-  const { bondModalData } = useBondModal();
-  const maxValue: number | undefined = useMemo(() => {
-    return undefined;
-  }, []);
-  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
-    useBondModalCondition(maxValue);
   const { errMsg } = constant;
-
-  // useEffect(() => {
-  //   if (bondModalData && userETHBalance) {
-  //     const mValue =
-  //       bondModalData &&
-  //       Number(bondModalData?.maxBond) > Number(userETHBalance)
-  //         ? Number(userETHBalance.replaceAll(",", ""))
-  //         : Number(bondModalData?.maxBond.replaceAll(",", ""));
-
-  //     if (Number(bondModalData?.maxBond) === 0) {
-  //       return setMaxValue(Number(userETHBalance.replaceAll(",", "")));
-  //     }
-  //     setMaxValue(mValue);
-  //   }
-  // }, [bondModalData, userETHBalance]);
+  const { modalCondition, userTokenBalance } = useBondModal();
+  const { zeroInputBalance, inputOver } = modalCondition;
+  const { maxValue, balacne, balanceNum, name } = userTokenBalance;
+  const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
 
   const tokenImage = useMemo(() => {
     switch (bondTokenType) {
@@ -61,7 +44,7 @@ export default function BondModal_Input() {
       default:
         return <Text>no bondTokenType</Text>;
     }
-  }, [bondTokenType]);
+  }, []);
 
   return (
     <Flex flexDir={"column"} px={"70px"} rowGap={"10px"}>
@@ -88,7 +71,7 @@ export default function BondModal_Input() {
             pageKey={"Bond_screen"}
             recoilKey={"bond_modal"}
             atomKey={"bond_modal_balance"}
-            isError={bondModalData && (zeroInputBalance || inputOver)}
+            isError={maxValue !== undefined && (zeroInputBalance || inputOver)}
             errorMsg={
               zeroInputBalance
                 ? errMsg.bondZeroInput
@@ -106,7 +89,9 @@ export default function BondModal_Input() {
           {tokenImage}
         </Flex>
         <Flex fontSize={12} columnGap={"9px"} alignItems={"center"}>
-          <Text>Balance: 0.00 ETH</Text>
+          <Text>
+            Balance: {balacne} {name}
+          </Text>
           <Button
             w={"48px"}
             h={"20px"}
@@ -114,6 +99,12 @@ export default function BondModal_Input() {
             bgColor={"transparent"}
             fontSize={11}
             color={"#5a5a5a"}
+            onClick={() => {
+              setValue({
+                ...inputValue,
+                bond_modal_balance: maxValue,
+              });
+            }}
           >
             MAX
           </Button>

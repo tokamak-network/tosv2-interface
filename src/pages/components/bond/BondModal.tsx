@@ -68,6 +68,8 @@ import BondConfirm from "./modal/BondConfirm";
 import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
 import BondModal_Input from "./modal/BondModal_Input";
+import BondModal_Period from "./modal/BondModal_Period";
+import { bond_modal } from "atom/bond/modal";
 
 function BondModal() {
   const theme = useTheme();
@@ -80,11 +82,8 @@ function BondModal() {
   );
   const { selectedModalData, selectedModal, closeModal } = useModal();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
-  const { userETHBalance } = useUserBalance();
-  const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
-  const fiveDaysLater = getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm");
-  const [fiveDaysLockupEndTime, setFiveDaysLockupEndTime] =
-    useState(fiveDaysLater);
+  const bondModalRecoilValue = useRecoilValue(bond_modal);
+  const { fiveDaysLockup, fiveDaysLockupEndTime } = bondModalRecoilValue;
 
   const propData = selectedModalData as BondCardProps;
   const marketId = propData?.index;
@@ -116,7 +115,6 @@ function BondModal() {
 
   const closeThisModal = useCallback(() => {
     setResetValue();
-    setFiveDaysLockup(false);
     closeModal();
   }, [closeModal, setResetValue]);
 
@@ -166,26 +164,13 @@ function BondModal() {
     closeThisModal,
   ]);
 
-  useEffect(() => {
-    if (fiveDaysLockup) {
-      setInterval(() => {
-        const fiveDaysLater = getTimeLeft(
-          getNowTimeStamp(),
-          5,
-          "YYYY. MM.DD. HH:mm"
-        );
-        setFiveDaysLockupEndTime(fiveDaysLater);
-      }, 1000);
-    }
-  }, [fiveDaysLockup]);
+  // useEffect(() => {
+  //   setStosLoading(true);
+  // }, [inputValue, setBottomLoading, setStosLoading]);
 
-  useEffect(() => {
-    setStosLoading(true);
-  }, [inputValue, setBottomLoading, setStosLoading]);
-
-  useEffect(() => {
-    setBottomLoading(true);
-  }, [inputValue.bond_modal_balance, setBottomLoading]);
+  // useEffect(() => {
+  //   setBottomLoading(true);
+  // }, [inputValue.bond_modal_balance, setBottomLoading]);
 
   const capacityIsZero =
     Number(propData?.discountRate?.replaceAll("%", "")) <= 0;
@@ -239,76 +224,7 @@ function BondModal() {
                 mb={"29px"}
               >
                 {/* Period input */}
-                <Flex mb={"9px"}>
-                  <Flex
-                    fontSize={12}
-                    flexDir={"column"}
-                    alignItems="center"
-                    mt="10px"
-                    w={"100%"}
-                    px={"70px"}
-                  >
-                    <Flex
-                      w={"100%"}
-                      justifyContent={"space-between"}
-                      // justifyContent={bp700px ? "space-between" : ""}
-                      // mb={bp700px ? "10px" : ""}
-                      mb={"9px"}
-                    >
-                      <Text
-                        mr={"6px"}
-                        color={colorMode === "light" ? "gray.800" : "white.200"}
-                      >
-                        Set Lock-Up Period
-                      </Text>
-                      <Flex>
-                        <CustomCheckBox
-                          pageKey="Bond_screen"
-                          value={""}
-                          valueKey={"Bond_Modal"}
-                          state={fiveDaysLockup}
-                          setState={setFiveDaysLockup}
-                        ></CustomCheckBox>
-                        <Text ml={"6px"} mr="3px">
-                          5 Days Lock-Up
-                        </Text>
-
-                        <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
-                      </Flex>
-                    </Flex>
-                    <InputPeriod
-                      w={bp700px ? "310px" : "460px"}
-                      h={"39px"}
-                      pageKey={"Bond_screen"}
-                      recoilKey={"bond_modal"}
-                      atomKey={"bond_modal_period"}
-                      placeHolder={"1 Weeks"}
-                      style={{ marginLeft: "auto" }}
-                      isDisabled={fiveDaysLockup}
-                      isDisabledText={"5 Days"}
-                      rightUnit={"Weeks"}
-                      maxValue={LOCKTOS_maxWeeks}
-                      minValue={1}
-                      isError={inputPeriodOver}
-                      errorMsg={errMsg.periodExceed}
-                      leftTime={leftHourAndMin}
-                      leftDays={leftDays}
-                      endTime={
-                        fiveDaysLockup || inputPeriodOver ? undefined : endTime
-                      }
-                    ></InputPeriod>
-                  </Flex>
-                </Flex>
-                <Flex w={"600px"} px={bp700px ? "30px" : ""} mb={"30px"}>
-                  <StakeGraph
-                    pageKey={"Bond_screen"}
-                    subKey={"bond_modal"}
-                    periodKey={"bond_modal_period"}
-                    isSlideDisabled={fiveDaysLockup}
-                    minValue={1}
-                  ></StakeGraph>
-                </Flex>
-
+                <BondModal_Period />
                 {/* ETH input */}
                 <BondModal_Input />
                 {/* end of content middle area */}
