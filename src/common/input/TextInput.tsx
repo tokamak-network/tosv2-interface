@@ -60,6 +60,9 @@ type NumberInputProp = {
   maxValue?: string | number;
   rightUnit?: string;
   minValue?: number;
+  fontSize?: number;
+  inputContainerStyle?: {};
+  inputFieldStyle?: {};
 };
 
 const TextInput: React.FC<InputProp> = (props) => {
@@ -135,7 +138,7 @@ const TextInput: React.FC<InputProp> = (props) => {
           <Button
             w={"30px"}
             h={"20px"}
-            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
+            color={colorMode === "dark" ? "#64646f" : "#7e7e8f"}
             _hover={{ color: "#2775ff" }}
             bg={"none"}
             fontSize={14}
@@ -180,6 +183,9 @@ function BalanceInput(props: NumberInputProp) {
     maxValue,
     errorMsg,
     rightUnit,
+    fontSize,
+    inputContainerStyle,
+    inputFieldStyle,
   } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
@@ -268,15 +274,18 @@ function BalanceInput(props: NumberInputProp) {
           defaultValue={maxValue}
           value={value[atomKey]}
           display={"flex"}
+          {...inputContainerStyle}
         >
           <NumberInputField
             h={"100%"}
             placeholder={placeHolder}
             onChange={onChange}
-            fontSize={14}
+            fontSize={fontSize || 14}
             border={{}}
             //@ts-ignore
             ref={inputRef}
+            padding={15}
+            {...inputFieldStyle}
           ></NumberInputField>
         </NumberInput>
         {value[atomKey] && rightUnit && (
@@ -298,24 +307,26 @@ function BalanceInput(props: NumberInputProp) {
             <Text>{rightUnit}</Text>
           </Flex>
         )}
-        <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
-          <Button
-            w={"30px"}
-            h={"20px"}
-            color={colorMode==='dark'? "#64646f":'#7e7e8f'}
-            _hover={{ color: "#2775ff" }}
-            bg={"none"}
-            fontSize={14}
-            fontWeight={600}
-            isDisabled={isDisabled}
-            onClick={() =>
-              maxValue &&
-              setValue({ ...inputValue, [atomKey]: String(maxValue) })
-            }
-          >
-            Max
-          </Button>
-        </InputRightElement>
+        {maxValue && (
+          <InputRightElement ml={"30px"} w={"30px"} mr={"12px"}>
+            <Button
+              w={"30px"}
+              h={"20px"}
+              color={colorMode === "dark" ? "#64646f" : "#7e7e8f"}
+              _hover={{ color: "#2775ff" }}
+              bg={"none"}
+              fontSize={14}
+              fontWeight={600}
+              isDisabled={isDisabled}
+              onClick={() =>
+                maxValue &&
+                setValue({ ...inputValue, [atomKey]: String(maxValue) })
+              }
+            >
+              Max
+            </Button>
+          </InputRightElement>
+        )}
       </InputGroup>
       {isError && (
         <Flex

@@ -67,6 +67,7 @@ import useStosReward from "hooks/stake/useStosReward";
 import BondConfirm from "./modal/BondConfirm";
 import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
+import BondModal_Input from "./modal/BondModal_Input";
 
 function BondModal() {
   const theme = useTheme();
@@ -78,7 +79,6 @@ function BondModal() {
     "bond_modal"
   );
   const { selectedModalData, selectedModal, closeModal } = useModal();
-  const { bondModalData } = useBondModal();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const { userETHBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
@@ -187,20 +187,6 @@ function BondModal() {
     setBottomLoading(true);
   }, [inputValue.bond_modal_balance, setBottomLoading]);
 
-  useEffect(() => {
-    if (bondModalData && userETHBalance) {
-      const mValue =
-        bondModalData && Number(bondModalData?.maxBond) > Number(userETHBalance)
-          ? Number(userETHBalance.replaceAll(",", ""))
-          : Number(bondModalData?.maxBond.replaceAll(",", ""));
-
-      if (Number(bondModalData?.maxBond) === 0) {
-        return setMaxValue(Number(userETHBalance.replaceAll(",", "")));
-      }
-      setMaxValue(mValue);
-    }
-  }, [bondModalData, userETHBalance]);
-
   const capacityIsZero =
     Number(propData?.discountRate?.replaceAll("%", "")) <= 0;
 
@@ -210,7 +196,7 @@ function BondModal() {
       isCentered
       onClose={() => closeThisModal()}
     >
-      <ModalOverlay className="modalOverlayDrawer"  bg={'none'} />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
@@ -249,164 +235,85 @@ function BondModal() {
               <Flex
                 w={"100%"}
                 flexDir={"column"}
-                px={bp700px ? "20px" : "120px"}
+                px={bp700px ? "20px" : "50px"}
                 mb={"29px"}
               >
-                <Flex mb={"9px"} w={"100%"} justifyContent="center">
-                  <Grid
-                    templateColumns={
-                      bp700px ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
-                    }
-                    templateRows={bp700px ? "repeat(3, 1fr)" : "repeat(2, 1fr)"}
-                  >
-                    <GridItem>
-                      <Tile
-                        title={"Bond Price"}
-                        //@ts-ignore
-                        content={`$${selectedModalData?.bondingPrice}`}
-                        tooltip={"Bonding price for 1 TOS in USD."}
-                      />
-                    </GridItem>
-                    <GridItem>
-                      <Tile
-                        title={"Market Price"}
-                        content={`${bondModalData?.marketPrice}`}
-                        tooltip={"Market price for 1 TOS in USD."}
-                      />
-                    </GridItem>
-                    <GridItem>
-                      <Tile
-                        title={"Discount"}
-                        content={`${propData?.discountRate}`}
-                        tooltip={"Discount for bonding."}
-                        isWarning={capacityIsZero}
-                      />
-                    </GridItem>
-                    <GridItem>
-                      <Tile
-                        title={"Min Bond"}
-                        content={bondModalData?.minBond}
-                        symbol={"ETH"}
-                        tooltip={
-                          "The recommended minimum amount to bond to offset the gas cost."
-                        }
-                      />
-                    </GridItem>
-                    <GridItem>
-                      <Tile
-                        title={"Max Bond"}
-                        content={bondModalData?.maxBond}
-                        symbol={"ETH"}
-                        tooltip={
-                          "The maximum bondable amount based on the current bond market capacity."
-                        }
-                      />
-                    </GridItem>
-                    <GridItem>
-                      <Tile
-                        title={"LTOS Index"}
-                        content={ltosIndex}
-                        symbol={"TOS"}
-                        tooltip={
-                          "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
-                        }
-                      />
-                    </GridItem>
-                  </Grid>
-                </Flex>
+                {/* Period input */}
                 <Flex mb={"9px"}>
-                  <BalanceInput
-                    w={"100%"}
-                    h={45}
-                    placeHolder={"Enter an amount of ETH"}
-                    pageKey={"Bond_screen"}
-                    recoilKey={"bond_modal"}
-                    atomKey={"bond_modal_balance"}
-                    maxValue={maxValue}
-                    isError={bondModalData && (zeroInputBalance || inputOver)}
-                    errorMsg={
-                      zeroInputBalance
-                        ? errMsg.bondZeroInput
-                        : "Input has exceeded maximum bondable amount per 1 transaction"
-                    }
-                    rightUnit={"ETH"}
-                  ></BalanceInput>
-                </Flex>
-                <Flex
-                  fontSize={12}
-                  color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                  h={"17px"}
-                  justifyContent={"space-between"}
-                  mb={"12px"}
-                  px="6px"
-                >
-                  <Text>Your Balance</Text>
-                  <Text>{userETHBalance} ETH</Text>
-                </Flex>
-                <Flex
-                  fontSize={12}
-                  flexDir={bp700px ? "column" : "row"}
-                  alignItems="center"
-                  mt="10px"
-                >
                   <Flex
+                    fontSize={12}
+                    flexDir={"column"}
+                    alignItems="center"
+                    mt="10px"
                     w={"100%"}
-                    justifyContent={bp700px ? "space-between" : ""}
-                    mb={bp700px ? "10px" : ""}
+                    px={"70px"}
                   >
-                    <Text
-                      mr={"6px"}
-                      color={colorMode === "light" ? "gray.800" : "white.200"}
+                    <Flex
+                      w={"100%"}
+                      justifyContent={"space-between"}
+                      // justifyContent={bp700px ? "space-between" : ""}
+                      // mb={bp700px ? "10px" : ""}
+                      mb={"9px"}
                     >
-                      Lock-Up Period
-                    </Text>
-                    <Flex>
-                      <CustomCheckBox
-                        pageKey="Bond_screen"
-                        value={""}
-                        valueKey={"Bond_Modal"}
-                        state={fiveDaysLockup}
-                        setState={setFiveDaysLockup}
-                      ></CustomCheckBox>
-                      <Text ml={"6px"} mr="3px">
-                        5 Days Lock-Up
+                      <Text
+                        mr={"6px"}
+                        color={colorMode === "light" ? "gray.800" : "white.200"}
+                      >
+                        Set Lock-Up Period
                       </Text>
+                      <Flex>
+                        <CustomCheckBox
+                          pageKey="Bond_screen"
+                          value={""}
+                          valueKey={"Bond_Modal"}
+                          state={fiveDaysLockup}
+                          setState={setFiveDaysLockup}
+                        ></CustomCheckBox>
+                        <Text ml={"6px"} mr="3px">
+                          5 Days Lock-Up
+                        </Text>
 
-                      <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+                        <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+                      </Flex>
                     </Flex>
+                    <InputPeriod
+                      w={bp700px ? "310px" : "460px"}
+                      h={"39px"}
+                      pageKey={"Bond_screen"}
+                      recoilKey={"bond_modal"}
+                      atomKey={"bond_modal_period"}
+                      placeHolder={"1 Weeks"}
+                      style={{ marginLeft: "auto" }}
+                      isDisabled={fiveDaysLockup}
+                      isDisabledText={"5 Days"}
+                      rightUnit={"Weeks"}
+                      maxValue={LOCKTOS_maxWeeks}
+                      minValue={1}
+                      isError={inputPeriodOver}
+                      errorMsg={errMsg.periodExceed}
+                      leftTime={leftHourAndMin}
+                      leftDays={leftDays}
+                      endTime={
+                        fiveDaysLockup || inputPeriodOver ? undefined : endTime
+                      }
+                    ></InputPeriod>
                   </Flex>
-                  <InputPeriod
-                    w={bp700px ? "310px" : "220px"}
-                    h={"39px"}
-                    pageKey={"Bond_screen"}
-                    recoilKey={"bond_modal"}
-                    atomKey={"bond_modal_period"}
-                    placeHolder={"1 Weeks"}
-                    style={{ marginLeft: "auto" }}
-                    isDisabled={fiveDaysLockup}
-                    isDisabledText={"5 Days"}
-                    rightUnit={"Weeks"}
-                    maxValue={LOCKTOS_maxWeeks}
-                    minValue={1}
-                    isError={inputPeriodOver}
-                    errorMsg={errMsg.periodExceed}
-                    leftTime={leftHourAndMin}
-                    leftDays={leftDays}
-                    endTime={
-                      fiveDaysLockup || inputPeriodOver ? undefined : endTime
-                    }
-                  ></InputPeriod>
                 </Flex>
+                <Flex w={"600px"} px={bp700px ? "30px" : ""} mb={"30px"}>
+                  <StakeGraph
+                    pageKey={"Bond_screen"}
+                    subKey={"bond_modal"}
+                    periodKey={"bond_modal_period"}
+                    isSlideDisabled={fiveDaysLockup}
+                    minValue={1}
+                  ></StakeGraph>
+                </Flex>
+
+                {/* ETH input */}
+                <BondModal_Input />
+                {/* end of content middle area */}
               </Flex>
-              <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
-                <StakeGraph
-                  pageKey={"Bond_screen"}
-                  subKey={"bond_modal"}
-                  periodKey={"bond_modal_period"}
-                  isSlideDisabled={fiveDaysLockup}
-                  minValue={1}
-                ></StakeGraph>
-              </Flex>
+
               {/* Content Bottom */}
               <BondModal_BottomContent
                 fiveDaysLockup={fiveDaysLockup}
@@ -445,7 +352,7 @@ function BondModal() {
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
-                    color={colorMode ==='dark'? "white.200": "gray.800"}
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
                   >
                     WTON
                   </Link>
@@ -456,7 +363,7 @@ function BondModal() {
                     href={
                       "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
                     }
-                    color={colorMode ==='dark'? "white.200": "gray.800"}
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
                   >
                     ETH
                   </Link>
@@ -467,7 +374,7 @@ function BondModal() {
                   <Link
                     isExternal={true}
                     href={"https://tosv2.tokamak.network/stake"}
-                    color={colorMode ==='dark'? "white.200": "gray.800"}
+                    color={colorMode === "dark" ? "white.200" : "gray.800"}
                     textDecoration={"underline"}
                   >
                     stake

@@ -1,5 +1,5 @@
 function commafy(num: number | string | undefined, decilamPoint?: number) {
-  if (num === undefined) {
+  if (num === undefined || num === null) {
     return "-";
   }
   //@ts-ignore
