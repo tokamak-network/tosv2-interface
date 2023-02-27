@@ -24,14 +24,9 @@ function BondCardSection() {
     },
     pollInterval: 10000,
   });
-  // const { priceData } = usePrice();
+  const { priceData } = usePrice();
 
   // const { BondDepositoryProxy_CONTRACT } = useCallContract();
-
-  const priceData = {
-    ethPrice: 1524.33,
-    tosPrice: 1,
-  };
 
   useEffect(() => {
     // if (data && priceData && priceData?.tosPrice && priceData?.ethPrice)
@@ -75,13 +70,15 @@ function BondCardSection() {
             startDay,
             leftDay: "",
             endDay,
+            minimumBondPrice: "0",
+            version: "1.0",
           };
         }
       );
 
       setCardList(bondcardDatas);
     }
-  }, []);
+  }, [priceData]);
 
   return (
     <Flex

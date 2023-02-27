@@ -20,6 +20,8 @@ export type BondCardProps = {
   buyTokenType: TokenTypes;
   index: number;
   tooltip?: string;
+  minimumBondPrice: string;
+  version: string;
 };
 
 export type BondRawdata = {
