@@ -141,6 +141,7 @@ function SelectToken(props: { tokenType: Number }) {
         }
       }
     }, [address, WTON_ADDRESS, img]);
+    
     return (
       <Flex
         h="44px"

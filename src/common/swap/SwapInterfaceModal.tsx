@@ -240,7 +240,7 @@ function SwapInterfaceModal() {
         minW={"350px"}
         maxW={"350px"}
       >
-        <ModalBody px={0} pt={"30px"}>
+        <ModalBody px={0} pt={"30px"} zIndex={10000}>
           <Flex w="100%" flexDir={"column"}>
             <Flex flexDir={"column"} pos={"relative"}>
               <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>

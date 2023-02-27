@@ -76,33 +76,25 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
   const { TON_ADDRESS, WTON_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
     CONTRACT_ADDRESS;
 
-  enum ButtonStatus {
-    SELECT_TOKENS = "Select Tokens",
-    UNWRAP = "Unwrap",
-    WRAP = "Wrap",
-    SWAP = "Swap",
-  }
-
-
   const buttonStatus = useMemo(() => {
     const { address: token0Address } = token0;
     const { address: token1Address } = token1;
 
     if (!account || token1Address === "") {
-      return ButtonStatus.SELECT_TOKENS;
+      return "Select Tokens";
     }
 
     switch (`${token0Address.toLowerCase()},${token1Address.toLowerCase()}`) {
       case `${WTON_ADDRESS.toLowerCase()},${TON_ADDRESS.toLowerCase()}`:
-        return ButtonStatus.UNWRAP;
+        return "Unwrap";
       case `${TON_ADDRESS.toLowerCase()},${WTON_ADDRESS.toLowerCase()}`:
-        return ButtonStatus.WRAP;
+        return "Wrap";
       case `${ZERO_ADDRESS.toLowerCase()},${WETH_ADDRESS.toLowerCase()}`:
-        return ButtonStatus.WRAP;
+        return "Wrap";
       case `${WETH_ADDRESS.toLowerCase()},${ZERO_ADDRESS.toLowerCase()}`:
-        return ButtonStatus.UNWRAP;
+        return "Unwrap";
       default:
-        return ButtonStatus.SWAP;
+        return "Swap";
     }
   }, [account, token0.address, token1.address]);
 
