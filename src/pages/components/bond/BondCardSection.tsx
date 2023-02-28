@@ -43,8 +43,15 @@ function BondCardSection() {
       // const dummyServerData = getDummyServerBondData();
 
       const bondcardDatas: BondCardProps[] = bonds.map((bond: BondRawdata) => {
-        const { capacity, index, totalSold, endTime, bondPrice, startTime } =
-          bond;
+        const {
+          capacity,
+          index,
+          totalSold,
+          endTime,
+          bondPrice,
+          startTime,
+          version,
+        } = bond;
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
         const startDay = convertTimeStamp(startTime);
         const endDay = convertTimeStamp(endTime);
@@ -71,7 +78,7 @@ function BondCardSection() {
           leftDay: "",
           endDay,
           minimumBondPrice: "0",
-          version: "1.0",
+          version,
         };
       });
 

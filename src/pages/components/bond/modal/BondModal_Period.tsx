@@ -55,7 +55,7 @@ export default function BondModal_Period() {
               Set Lock-Up Period
             </Text>
             <Flex>
-              <CustomCheckBox
+              {/* <CustomCheckBox
                 pageKey="Bond_screen"
                 value={""}
                 valueKey={"Bond_Modal"}
@@ -66,7 +66,7 @@ export default function BondModal_Period() {
                     fiveDaysLockup: isChecked,
                   });
                 }}
-              ></CustomCheckBox>
+              ></CustomCheckBox> */}
               <Text ml={"6px"} mr="3px">
                 5 Days Lock-Up
               </Text>

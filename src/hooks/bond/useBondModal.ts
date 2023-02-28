@@ -41,7 +41,7 @@ function useBondModal() {
 
   //need to put marketId
   const { youWillGet, endTime, stosReward, originalTosAmount } =
-    useBondModalInputData(0);
+    useBondModalInputData();
 
   //maxValue for each case(token type)
   let tempTokenType: TokenTypes = "ETH";

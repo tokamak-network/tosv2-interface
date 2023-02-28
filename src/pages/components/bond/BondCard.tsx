@@ -164,7 +164,7 @@ function BondCard(props: { data: BondCardProps }) {
         textAlign={"center"}
       >
         <Text color={"white.200"} fontSize={20} fontWeight={600}>
-          ETH Bond v1.1
+          ETH Bond {data?.version}
         </Text>
         <Text fontSize={12}>
           Buy TOS for up to 20% off with your WTON and
