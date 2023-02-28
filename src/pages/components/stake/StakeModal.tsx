@@ -185,6 +185,8 @@ function StakeModal() {
   const callStake = useCallback(async () => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
+
+    
     if (StakingV2Proxy_CONTRACT) {
       if (fiveDaysLockup) {
         console.log("---stake()---");
