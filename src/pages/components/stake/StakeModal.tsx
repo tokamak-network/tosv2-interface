@@ -31,8 +31,6 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
-import useBondModal from "hooks/bond/useBondModal";
-import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/utils/number";
@@ -66,14 +64,8 @@ import useMediaView from "hooks/useMediaView";
 function StakeModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const {
-    selectedModalData,
-    selectedModal,
-    closeModal,
-    isModalLoading,
-    modalSectionMtValue,
-  } = useModal<StakeCardProps>();
-  const { bondModalData } = useBondModal();
+  const { selectedModalData, selectedModal, closeModal, isModalLoading } =
+    useModal<StakeCardProps>();
   const { inputValue, setValue, setResetValue } = useInput(
     "Stake_screen",
     "stake_modal"
@@ -291,7 +283,6 @@ function StakeModal() {
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
-        mt={modalSectionMtValue}
       >
         <ModalBody px={0} pt={"30px"}>
           <Flex w="100%" flexDir={"column"}>

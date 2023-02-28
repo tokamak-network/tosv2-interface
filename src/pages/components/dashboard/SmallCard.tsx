@@ -1,6 +1,6 @@
-import { Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Flex, Text, useColorMode, Button } from "@chakra-ui/react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Dashboard_SmallCardType } from "types/dashboard";
 import BasicTooltip from "common/tooltip";
 
@@ -15,6 +15,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
     tooltipMessage,
   } = props;
   const [width] = useWindowDimensions();
+  const [unit, setUnit] = useState("$");
   const isMobile = width < 490;
   const { colorMode } = useColorMode();
   const PriceContent = useMemo(() => {
@@ -69,18 +70,45 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
       bgColor={colorMode === "dark" ? "gray.600" : "white.100"}
       {...style}
     >
-      <Flex>
-        <Text
-          color={"gray.100"}
-          fontSize={12}
-          fontWeight={600}
-          h={17}
-          mb={"12px"}
-          mr={"6px"}
-        >
-          {title}
-        </Text>
-        <BasicTooltip label={tooltipMessage} />
+      <Flex justifyContent={"space-between"}>
+        <Flex>
+          <Text
+            color={"gray.100"}
+            fontSize={12}
+            fontWeight={600}
+            h={17}
+            mb={"12px"}
+            mr={"6px"}
+          >
+            {title}
+          </Text>
+          <BasicTooltip label={tooltipMessage} />
+        </Flex>
+
+        <Flex fontSize={10} fontWeight={600} color={'white.100'}>
+          <Button
+            h={"23px"}
+            w="30px"
+            bg={unit === '$'? 'blue.200':''}
+            onClick={()=>setUnit('$')}
+            // border="1px solid red"
+            borderRightWidth={"0.5px"}
+            borderRightRadius={"0px"}
+          >
+            $
+          </Button>
+          <Button
+            h={"23px"}
+            w="30px"
+            bg={unit === 'ETH'? 'blue.200':''}
+            // border="1px solid red"
+            onClick={()=>setUnit('ETH')}
+            borderLeftWidth={"0.5px"}
+            borderLeftRadius={"0px"}
+          >
+            ETH
+          </Button>
+        </Flex>
       </Flex>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex

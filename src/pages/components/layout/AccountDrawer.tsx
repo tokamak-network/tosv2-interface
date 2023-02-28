@@ -48,6 +48,7 @@ function AccountDrawer(props: HeaderProps) {
   const { colorMode } = useColorMode();
   const router = useRouter();
   const { openModal } = useModal("stake_stake_modal");
+  const { openModal: openSwapModal } = useModal("swap_interface_modal");
   const { account, connector, activate, active, error, deactivate } =
     useWeb3React();
   const sendToStake = () => {
@@ -128,6 +129,12 @@ function AccountDrawer(props: HeaderProps) {
                     TOS
                   </Flex>
                 </Flex>
+                <SubmitButton
+                  name="Buy More"
+                  w={"90px"}
+                  h={"30px"}
+                  onClick={openSwapModal}
+                ></SubmitButton>
                 <SubmitButton
                   name="Stake"
                   w={"90px"}

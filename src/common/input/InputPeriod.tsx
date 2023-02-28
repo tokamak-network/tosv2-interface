@@ -245,7 +245,8 @@ const InputPeriod = (props: InputProp) => {
           pos={"absolute"}
           top={"48px"}
           w={w || 270}
-          justifyContent={bp700px ? "flex-start" : "center"}
+          justifyContent={bp700px ? "flex-start" : ""}
+          pl={bp700px ? "" : "17px"}
         >
           <Text>End Time : {endTime}</Text>
         </Flex>

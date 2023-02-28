@@ -1,0 +1,21 @@
+<svg id="arrow-right2_blue" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #2775ff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <rect id="Base" class="cls-1" width="16" height="16"/>
+  <g id="arrow_right2" transform="translate(1.25 3.25)">
+    <path id="패스_1016" data-name="패스 1016" class="cls-2" d="M8.037.75,12.084,4.8,8.037,8.843"/>
+    <line id="선_43" data-name="선 43" class="cls-2" x2="11.22" transform="translate(0.75 4.797)"/>
+  </g>
+</svg>
