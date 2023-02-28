@@ -66,6 +66,7 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
+    const { openModal: openSwapModal } = useModal("swap_interface_modal");
   const { inputValue, setValue, setResetValue } = useInput(
     "Stake_screen",
     "stake_modal"
