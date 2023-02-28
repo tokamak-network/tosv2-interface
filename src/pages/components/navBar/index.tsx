@@ -231,10 +231,14 @@ const NavItem = (props: { isExpended: boolean }) => {
                   <Flex pos={"relative"}>
                     <Box
                       pos={"absolute"}
-                      left={-6}
+                      left={colorMode === "dark" ? -6 : -7}
                       // bg={"red"}
                       top={-3}
-                      style={{ transform: `rotate(180deg)` }}
+                      style={
+                        colorMode === "dark"
+                          ? { transform: `rotate(180deg)` }
+                          : { transform: `rotate(270deg)` }
+                      }
                       zIndex={zIndexStyle.TopOverHeader + 1}
                     >
                       <Image
@@ -291,7 +295,7 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
             : "DAO";
         return (
           <>
-            <Flex pos={"relative"} key={`${index+1}`}>
+            <Flex pos={"relative"} key={`${index + 1}`}>
               <Flex
                 w={isExpended ? 206 : 54}
                 h={54}
@@ -352,10 +356,14 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
                   <Flex pos={"relative"}>
                     <Box
                       pos={"absolute"}
-                      left={-6}
+                      left={colorMode === "dark" ? -6 : -7}
                       // bg={"red"}
                       top={-3}
-                      style={{ transform: `rotate(180deg)` }}
+                      style={
+                        colorMode === "dark"
+                          ? { transform: `rotate(180deg)` }
+                          : { transform: `rotate(270deg)` }
+                      }
                     >
                       <Image
                         src={
@@ -430,7 +438,7 @@ function MobileSideBar() {
         pt={33}
         alignItems="center"
         bg={colorMode === "light" ? "#ffffff" : "#1f2128"}
-        zIndex={zIndexStyle.TopOverHeader+1}
+        zIndex={zIndexStyle.TopOverHeader + 1}
       >
         <Flex
           flexDir={isExpended ? "row" : "column"}

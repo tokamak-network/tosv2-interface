@@ -25,7 +25,7 @@ function BondModal_BottomContent(props: {
   const marketId = selectedModalData?.index;
 
   const { youWillGet, endTime, stosReward, originalTosAmount } =
-    useBondModalInputData(marketId);
+    useBondModalInputData();
 
   const contentList: IBottomContentProps[] = [
     {

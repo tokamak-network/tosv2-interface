@@ -3,7 +3,7 @@ import moment from "moment";
 import Moment from "moment-timezone";
 
 function convertTimeStamp(timeStamp: number, format?: string): string {
-  const date = moment.unix(timeStamp).format(format || "YYYY.MM.D");
+  const date = moment.unix(timeStamp).format(format || "YYYY.MM.DD");
   return date;
 }
 

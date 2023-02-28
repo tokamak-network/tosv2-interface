@@ -11,21 +11,21 @@ import { modalBottomLoadingState } from "atom/global/modal";
 import { getTimeZone } from "@/utils/time";
 import useStosBond from "./useStosBond";
 import commafy from "@/utils/commafy";
+import { BondCardProps } from "types/bond";
+import useModal from "hooks/useModal";
+import usePrice from "hooks/usePrice";
 
-type UseUnstake = {
-  youWillGet: string | undefined;
-  stosReward: string | undefined;
-  endTime: string | undefined;
-  originalTosAmount: string;
-};
+function useBondModalInputData() {
+  const { selectedModalData } = useModal<BondCardProps>();
+  const marketId = selectedModalData?.index ?? undefined;
 
-function useBondModalInputData(marketId: number | undefined): UseUnstake {
   const [youWillGet, setYouWillGet] = useState<string | undefined>(undefined);
   const [endTime, setEndTime] = useState<string | undefined>(undefined);
   const [inputTosAmount, setInputTosAmount] = useState<string | undefined>(
     undefined
   );
   const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
+  const [bondDiscount, setBondDiscount] = useState<string>("-");
 
   const {
     StakingV2Proxy_CONTRACT,
@@ -34,11 +34,10 @@ function useBondModalInputData(marketId: number | undefined): UseUnstake {
   } = useCallContract();
 
   const { inputValue } = useInput("Bond_screen", "bond_modal");
-  const { newEndTime } = useStosReward(
-    Number(inputTosAmount),
-    inputValue?.bond_modal_period
-  );
+  const bondInputPeriod = inputValue?.bond_modal_period;
+  const { newEndTime } = useStosReward(Number(inputTosAmount), bondInputPeriod);
   const { newBalanceStos } = useStosBond(Number(inputTosAmount));
+  const { priceData } = usePrice();
   const { rebasePeriod } = constant;
 
   const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
@@ -87,8 +86,8 @@ function useBondModalInputData(marketId: number | undefined): UseUnstake {
     StakingV2Proxy_CONTRACT,
     BondDepositoryProxy_CONTRACT,
     LockTOS_CONTRACT,
-    marketId,
     rebasePeriod,
+    marketId,
   ]);
 
   useEffect(() => {
@@ -139,8 +138,9 @@ function useBondModalInputData(marketId: number | undefined): UseUnstake {
   }, [
     StakingV2Proxy_CONTRACT,
     BondDepositoryProxy_CONTRACT,
-    marketId,
+    selectedModalData,
     inputValue?.bond_modal_balance,
+    marketId,
   ]);
 
   useEffect(() => {
@@ -153,11 +153,45 @@ function useBondModalInputData(marketId: number | undefined): UseUnstake {
     });
   }, [newEndTime]);
 
+  useEffect(() => {
+    async function fetchBondDiscount() {
+      if (
+        BondDepositoryProxy_CONTRACT &&
+        marketId &&
+        bondInputPeriod &&
+        priceData &&
+        priceData?.tosPrice &&
+        priceData?.ethPrice
+      ) {
+        const { ethPrice, tosPrice } = priceData;
+        const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
+          marketId
+        );
+        const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+          marketId,
+          bondInputPeriod,
+          basePriceInfo[0]
+        );
+        const bondingPriceCom = convertNumber({ amount: bondingPrice });
+        const bondingPricePerTos =
+          (priceData.ethPrice / Number(bondingPriceCom)) * 0.995;
+        const minimumBondPrice = Number(
+          commafy(bondingPricePerTos).replaceAll(",", "")
+        );
+        const discount = ((tosPrice - minimumBondPrice) / tosPrice) * 100;
+
+        setBondDiscount(commafy(discount));
+      }
+    }
+    fetchBondDiscount().catch((e) => console.log(e));
+  }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod, priceData]);
+
   return {
     youWillGet,
     endTime,
     stosReward: commafy(newBalanceStos),
     originalTosAmount,
+    bondDiscount,
   };
 }
 

@@ -12,19 +12,39 @@ export type BondCardProps = {
   bondingPrice: string;
   discountRate: string;
   totalSold: string;
+  startDay: string;
+  leftDay: string;
+  endDay: string;
   endTime: number;
-  tokenType: TokenTypes;
+  sellTokenType: TokenTypes;
+  buyTokenType: TokenTypes;
   index: number;
   tooltip?: string;
+  minimumBondPrice: string;
+  version: string;
+  progress: string;
 };
 
 export type BondRawdata = {
-  bondPrice: number;
-  capacity: number;
   index: number;
-  tokenLogo: string;
+  version: string;
+  capacity: number;
+  quoteToken: string;
   totalSold: number;
+  bondPrice: number;
   endTime: number;
+  updatedTime: number;
+  startTime: number;
+  maxPayout: number;
+  initialMaxPayout: number;
+  capacityUpdatePeriod: number;
+  bonusRatesAddress: string;
+  bonusRatesId: number;
+  bondType: number;
+  closed: boolean;
+  periodicCapacity: number;
+  currentCapacity: number;
+  createdAt: Date;
 };
 
 export type MyCardProps = {
@@ -41,7 +61,7 @@ export type GetMyHistory = {
   from: string;
   data: any;
   chainId: number;
-  blockNumber: number;
+  blocknumber: number;
   transactionHash: string;
   blockTimestamp: number;
   createdTime: Date;
@@ -52,3 +72,7 @@ export type BondModalInput = {
   bond_modal_period: number;
   bond_modal_balance: number | undefined;
 };
+
+export enum BondPool {
+  "TOS-ETH" = "TOS-ETH",
+}

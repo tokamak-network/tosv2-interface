@@ -1,4 +1,4 @@
-import { Box, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Flex, Link, Text, useColorMode, useTheme } from "@chakra-ui/react";
 import { introTextHover } from "atom/intro";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useRecoilState } from "recoil";
@@ -49,9 +49,12 @@ function ContentContainer(props: {
 }) {
   const { title, content } = props;
   const [width] = useWindowDimensions();
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
+
   return (
     <Flex flexDir={"column"} textAlign={"center"}>
-      <Text color={"white.200"} fontSize={22} fontWeight={"bold"} mb={"12px"}>
+      <Text color={colorMode ==='dark'? "white.200":'gray.800'} fontSize={22} fontWeight={"bold"} mb={"12px"}>
         {title}
       </Text>
       {content.map((content, index) => (
@@ -59,7 +62,7 @@ function ContentContainer(props: {
           key={index}
           lineHeight={1.71}
           fontSize={14}
-          color={"gray.100"}
+          color={colorMode ==='dark'? "gray.100":'gray.700'}
           display={width < 400 ? "flex" : ""}
           flexDir={width < 400 ? "column" : "row"}
         >
@@ -84,24 +87,26 @@ function TosContentContainer() {
   const [selectText, setSelectText] = useRecoilState(introTextHover);
   const [width, height] = useWindowDimensions();
   const isMobile = width < 650;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   return (
     <Flex flexDir={"column"} rowGap={"45px"}>
       <Flex flexDir={"column"} textAlign={"center"}>
-        <Text color={"white.200"} fontSize={22} fontWeight={"bold"} mb={"12px"}>
+        <Text color={colorMode ==='dark'? "white.200":'gray.800'} fontSize={22} fontWeight={"bold"} mb={"12px"}>
           TOS is the native token in TONStarter ecosystem
         </Text>
         <Text
           lineHeight={1.71}
           fontSize={14}
-          color={"gray.100"}
+          color={colorMode ==='dark'? "gray.100":'gray.700'}
           mb={isMobile ? "14px" : ""}
         >
           - You can get TOS using{" "}
           <Link
             isExternal={true}
             href={"https://swap.tokamak.network/"}
-            color={"white.100"}
+            color={colorMode ==='dark'?"white.100":'gray.800'}
             textDecoration={"underline"}
           >
             Swap
@@ -116,14 +121,14 @@ function TosContentContainer() {
         </Text>
       </Flex>
       <Flex flexDir={"column"} textAlign={"center"}>
-        <Text color={"white.200"} fontSize={22} fontWeight={"bold"} mb={"12px"}>
+        <Text color={colorMode ==='dark'? "white.200":'gray.800'} fontSize={22} fontWeight={"bold"} mb={"12px"}>
           TOS can be…
         </Text>
         {!isMobile ? (
           <Box
             display={"flex"}
             flexDir={"column"}
-            color={selectText === 1 ? "white.200" : "gray.100"}
+            color={colorMode ==='dark'? selectText === 1 ? "white.200" : "gray.100":selectText === 1 ? "gray.800" : "gray.700" }
             _hover={{
               cursor: "pointer",
             }}
@@ -164,8 +169,8 @@ function TosContentContainer() {
             mb={"12px"}
           >
             <Text lineHeight={1.71} fontSize={14}>
-              - locked for <span style={{ color: "#f1f1f1" }}>sTOS</span> and
-              <span style={{ color: "#f1f1f1" }}> LTOS</span>, where sTOS is
+              - locked for <span style={{ color: colorMode === 'dark'? "#f1f1f1":'#07070c' }}>sTOS</span> and
+              <span style={{  color: colorMode === 'dark'? "#f1f1f1":'#07070c' }}> LTOS</span>, where sTOS is
               used to participate in TONStarter governance, receive airdrops
               from projects, and participate in IDO
             </Text>
@@ -178,21 +183,22 @@ function TosContentContainer() {
           <Box
             display={"flex"}
             flexDir={"column"}
-            color={selectText === 2 ? "white.200" : "gray.100"}
+            color={colorMode ==='dark'? selectText === 2 ? "white.200" : "gray.100":selectText === 2 ? "gray.800" : "gray.700" }
+           
             _hover={{
               cursor: "pointer",
             }}
             onMouseOver={() => setSelectText(2)}
             onMouseLeave={() => setSelectText(undefined)}
           >
-            <Flex lineHeight={1.71} fontSize={14} my={"6px"} pr={'20px'}>
+            <Flex lineHeight={1.71} fontSize={14} my={"6px"} pr={'6px'}>
               - staked for{" "}
               <Text color={"#ec8c56"} ml={"5px"}>
                 LTOS
               </Text>
               , that earns compound interest in TOS based on LTOS index every 8
               hours
-              <Text>
+              <Text w={'20px'}>
                 {selectText === 2 && (
                   <Link
                     pos={"absolute"}
@@ -215,7 +221,7 @@ function TosContentContainer() {
             mb={"12px"}
           >
             <Text lineHeight={1.71} fontSize={14}>
-              - staked for <span style={{ color: "#f1f1f1" }}>LTOS</span>, that
+              - staked for <span style={{  color: colorMode === 'dark'? "#f1f1f1":'#07070c' }}>LTOS</span>, that
               earns compound interest in TOS based on LTOS index every 8 hours
             </Text>
             <Link href={"https://tokamaknetwork.gitbook.io/home/02-service-guide/tosv2/stake"} isExternal={true} color={"blue.200"} ml={"11px"}>
@@ -227,7 +233,8 @@ function TosContentContainer() {
           <Box
             display={"flex"}
             flexDir={"column"}
-            color={selectText === 3 ? "white.200" : "gray.100"}
+            color={colorMode ==='dark'? selectText === 3 ? "white.200" : "gray.100":selectText === 3 ? "gray.800" : "gray.700" }
+
             _hover={{
               cursor: "pointer",
             }}
@@ -273,8 +280,9 @@ function TosContentContainer() {
             <Text lineHeight={1.71} fontSize={14}>
               - used to create Uniswap LP token that can be locked to get{" "}
               <span style={{ color: "#f1f1f1" }}>dTOS</span> (coming soon), a non
+              <span style={{  color: colorMode === 'dark'? "#f1f1f1":'#07070c' }}>dTOS</span>, a non
               transferrable discount token that greatly reduces the price for
-              <span style={{ color: "#f1f1f1" }}> bonding</span>
+              <span style={{  color: colorMode === 'dark'? "#f1f1f1":'#07070c' }}> bonding</span>
             </Text>
             <Link href={"https://tokamaknetwork.gitbook.io/home/03-content/glossary"} isExternal={true} color={"blue.200"} ml={"11px"}>
               + more

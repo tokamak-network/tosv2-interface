@@ -31,8 +31,6 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
-import useBondModal from "hooks/bond/useBondModal";
-import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/utils/number";
@@ -68,9 +66,6 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
-    const { openModal: openSwapModal } = useModal("swap_interface_modal");
-
-  const { bondModalData } = useBondModal();
   const { inputValue, setValue, setResetValue } = useInput(
     "Stake_screen",
     "stake_modal"
@@ -285,7 +280,7 @@ function StakeModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlay" />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}

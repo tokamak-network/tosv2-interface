@@ -26,7 +26,7 @@ const TermsOfUse = () => {
       isCentered
       onClose={() => closeModal()}
     >
-      <ModalOverlay />
+      <ModalOverlay className="modalOverlayDrawer"  bg={'none'} />
       <ModalContent
         fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "black.200"}

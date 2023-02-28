@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, Text, useMediaQuery,useColorMode, useTheme } from "@chakra-ui/react";
 import useBondTopCards from "hooks/bond/useBondTopCards";
 import { TopCardList } from "types";
 import { StakeTopCardProps } from "types/stake";
@@ -6,15 +6,17 @@ import TopCard from "./TopCard";
 
 function MobileTopCard(props: { cardList: StakeTopCardProps[] }) {
   const { cardList } = props;
+  const { colorMode } = useColorMode();
+  const theme = useTheme()
 
   return (
     <Flex
       py={"18px"}
       pl={"15px"}
-      bgColor={"gray.600"}
+      bgColor={colorMode==='dark'? "gray.600":'white.100'}
       flexDir={"column"}
       borderWidth={1}
-      borderColor={"gray.600"}
+      borderColor={colorMode==='dark'?"gray.600":'#e8edf2'}
       borderRadius={14}
       w={"100%"}
     >
@@ -28,7 +30,7 @@ function MobileTopCard(props: { cardList: StakeTopCardProps[] }) {
             mb={index !== cardList.length - 1 ? "24px" : 0}
           >
             <Text
-              color={"gray.100"}
+               color={colorMode==='dark'? 'gray.100':"gray.1000"}
               fontSize={12}
               fontWeight={600}
               h={17}
@@ -36,7 +38,7 @@ function MobileTopCard(props: { cardList: StakeTopCardProps[] }) {
             >
               {title}
             </Text>
-            <Text fontSize={22} color={"white.200"} fontWeight={"bold"}>
+            <Text fontSize={22} color={colorMode==='dark'?"white.200":'gray.800'}  fontWeight={"bold"}>
               {priceUnit} {price}
             </Text>
           </Flex>

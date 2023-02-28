@@ -45,8 +45,6 @@ import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
-import useBondModal from "hooks/bond/useBondModal";
-import useInputData from "hooks/bond/useBondModalInputData";
 import { inputBalanceState, inputState } from "atom/global/input";
 import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
@@ -82,7 +80,6 @@ function UpdateModal() {
   const { selectedModal, closeModal, isModalLoading } = useModal<{
     ltosAmount: string | undefined;
   }>();
-  const { bondModalData } = useBondModal();
   const { stakeV2 } = useStakeV2();
   const { inputValue, setResetValue, setValue } = useInput(
     "Stake_screen",
@@ -246,7 +243,7 @@ function UpdateModal() {
       isCentered
       onClose={closeThisModal}
     >
-      <ModalOverlay className="modalOverlay" />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         // fontFamily={theme.fonts.roboto}
         bg={colorMode === "light" ? "white.100" : "#121318"}
@@ -359,7 +356,11 @@ function UpdateModal() {
                   <Flex
                     w={bp700px ? "100%" : "204px"}
                     h={"39px"}
-                    border={"1px solid #313442"}
+                    border={
+                      colorMode === "dark"
+                        ? "1px solid #313442"
+                        : "1px solid #e8edf2"
+                    }
                     borderRadius={8}
                     alignItems={"center"}
                     pl={"15px"}
