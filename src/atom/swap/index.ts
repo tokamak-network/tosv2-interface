@@ -1,4 +1,5 @@
 import { atom, selector } from "recoil";
+import CONTRACT_ADDRESS from "services/addresses/contract";
 
 export type T_Token = {
   name: string;
@@ -15,6 +16,8 @@ export type T_swapTX = {
 
 export type T_focus = "input1" | "input2";
 
+const { TOS_ADDRESS } = CONTRACT_ADDRESS;
+
 const selectedToken0 = atom<T_Token>({
   key: "selectedToken0",
   default: {
@@ -27,9 +30,9 @@ const selectedToken0 = atom<T_Token>({
 const selectedToken1 = atom<T_Token>({
   key: "selectedToken1",
   default: {
-    name: "",
-    address: "",
-    img: "",
+    name: "TOS",
+    address: TOS_ADDRESS,
+    img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/tos-symbol%403x.png",
   },
 });
 

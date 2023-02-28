@@ -68,6 +68,8 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
+    const { openModal: openSwapModal } = useModal("swap_interface_modal");
+
   const { bondModalData } = useBondModal();
   const { inputValue, setValue, setResetValue } = useInput(
     "Stake_screen",
@@ -363,7 +365,10 @@ function StakeModal() {
                   px="6px"
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userTOSBalance || "-"} TOS</Text>
+                  <Flex>
+                   <Button   onClick={openSwapModal} h='25px' w='70px' mr='10px' fontSize={'12px'} fontWeight='normal'> buy more</Button>
+                    <Text>{userTOSBalance || "-"} TOS</Text>
+                  </Flex>
                 </Flex>
 
                 <Flex flexDir={"column"}>

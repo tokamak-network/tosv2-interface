@@ -33,36 +33,6 @@ function useTokenList() {
     }
   });
   },[fetTokenData])
-//   fetTokenData().then((e) => {
-//     if (e !== undefined) {
-//       console.log("**fetchTokens err**");
-//       console.log(e);
-//     }
-//   });
-
-//   useEffect(() => {
-//       async function fetTokenData() {
-//           try {
-//               const tokensReq = await fetch(fetchTokensURL)
-//                   .then((res) => res.json())
-//                   .then((result) => result)
-//               const tokensData: TokensData[] = await tokensReq.datas;
-
-//               if (tokensData !== undefined) {
-//                   setTokenList(tokensData)
-//               }
-//           } catch (e) {
-//               console.log(e)
-//               return undefined
-//           }
-//       }
-//       fetTokenData().then((e) => {
-//           if (e !== undefined) {
-//               console.log("**fetchTokens err**");
-//               console.log(e);
-//           }
-//       });
-//   }, [])
 
   return tokenList;
 }

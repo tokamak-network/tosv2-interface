@@ -96,7 +96,7 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
       default:
         return "Swap";
     }
-  }, [account, token0.address, token1.address]);
+  }, [TON_ADDRESS, WETH_ADDRESS, WTON_ADDRESS, account, token0, token1]);
 
   const exactInput = async (
     swapperV2: any,

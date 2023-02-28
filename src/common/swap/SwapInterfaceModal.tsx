@@ -82,7 +82,7 @@ function SwapInterfaceModal() {
   const [slippage, setSlippage] = useRecoilState(slip);
   const { account, library } = useWeb3React();
   const { token0Balance, token1Balance } = useBalance();
-  const { TON_ADDRESS, WTON_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
+  const { TON_ADDRESS, WTON_ADDRESS,TOS_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
     CONTRACT_ADDRESS;
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal();
@@ -120,9 +120,10 @@ function SwapInterfaceModal() {
       img: "",
     });
     setToken1({
-      name: "",
-      address: "",
-      img: "",
+      name: "TOS",
+    address:TOS_ADDRESS,
+    img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/tos-symbol%403x.png",
+  
     });
     setToAmount("0");
     setFromAmount("0");
@@ -168,7 +169,7 @@ function SwapInterfaceModal() {
         const totalSupply = await contract?.totalSupply();
         const receipt = await contract?.approve(SwapperV2Proxy, totalSupply);
         setTX({ tx: true, data: { name: "approve" } });
-        setTx(receipt);
+  
         if (receipt) {
           await receipt.wait();
           setTX({ tx: false, data: { name: "approve" } });
@@ -186,7 +187,6 @@ function SwapInterfaceModal() {
     WTON_ADDRESS,
     SwapperV2Proxy,
     setTX,
-    setTx,
   ]);
 
   const getExpectedOut = useCallback(() => {
