@@ -366,7 +366,14 @@ function StakeModal() {
                 >
                   <Text>Your Balance</Text>
                   <Flex>
-                   <Button   onClick={openSwapModal} h='25px' w='70px' mr='10px' fontSize={'12px'} fontWeight='normal'> buy more</Button>
+                  <Text
+                color={'blue.200'}
+                  fontSize='12px'
+                  onClick={openSwapModal}
+                  _hover={{cursor:'pointer'}}
+                  mr='5px'
+                >
+                  Buy More</Text>
                     <Text>{userTOSBalance || "-"} TOS</Text>
                   </Flex>
                 </Flex>

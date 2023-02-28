@@ -129,12 +129,14 @@ function AccountDrawer(props: HeaderProps) {
                     TOS
                   </Flex>
                 </Flex>
-                <SubmitButton
-                  name="Buy More"
-                  w={"90px"}
-                  h={"30px"}
+                <Text
+                color={'blue.200'}
+                  fontSize='12px'
                   onClick={openSwapModal}
-                ></SubmitButton>
+                  _hover={{cursor:'pointer'}}
+                >
+                  Buy More
+                </Text>
                 <SubmitButton
                   name="Stake"
                   w={"90px"}
