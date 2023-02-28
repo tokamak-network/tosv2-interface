@@ -1,5 +1,5 @@
 import useModal from "hooks/useModal";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BondCardProps } from "types/bond";
 import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";
 import { useQuery } from "@apollo/client";
@@ -10,136 +10,79 @@ import { useWeb3React } from "@web3-react/core";
 import { BigNumber, ethers, utils } from "ethers";
 import usePrice from "hooks/usePrice";
 import constant from "constant";
-
-type BondModalData = {
-  bondPrice: string;
-  marketPrice: string;
-  discount: string;
-  minBond: string;
-  maxBond: string;
-  ltosIndex: string;
-};
-
-type BondInputData = {
-  youWillGet: string;
-  endTime: string;
-};
+import useBondModalCondition from "./useBondModalCondition";
+import useInput from "hooks/useInput";
+import useStosReward from "hooks/stake/useStosReward";
+import useBondModalInputData from "./useBondModalInputData";
+import useUserBalance from "hooks/useUserBalance";
+import { TokenTypes } from "types";
 
 function useBondModal() {
+  //1.5
   const { selectedModalData } = useModal();
-  const propData = selectedModalData as BondCardProps;
-  const [bondModalData, setBondModalData] = useState<BondModalData | undefined>(
-    undefined
+
+  //stos
+  const { inputValue, setValue, setResetValue } = useInput(
+    "Bond_screen",
+    "bond_modal"
   );
-  const [bondInputData, setBondInputData] = useState<BondInputData | undefined>(
-    undefined
+  const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
+    inputValue.bond_modal_balance,
+    inputValue.bond_modal_period
   );
 
-  const {
-    loading,
-    error,
-    data: apiData,
-  } = useQuery(GET_DASHBOARD, {
-    variables: {
-      period: "-1",
-      limit: 1,
-    },
-    pollInterval: 10000,
-  });
+  //need to calculate maxValue
+  const maxValue = 9999;
 
-  const { BondDepositoryProxy_CONTRACT, StakingV2Proxy_CONTRACT } =
-    useCallContract();
+  //modal condition
+  const { userETHBalance, userETTBalanceNum } = useUserBalance();
+  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
+    useBondModalCondition(maxValue);
 
-  const context = useWeb3React();
-  const { priceData } = usePrice();
-  const { mainnetGasPrice, minBondGasPrice } = constant;
+  //need to put marketId
+  const { youWillGet, endTime, stosReward, originalTosAmount } =
+    useBondModalInputData();
 
-  useEffect(() => {
-    async function fetchAsyncData() {
-      if (propData && apiData && priceData && BondDepositoryProxy_CONTRACT) {
-        const marketData = await BondDepositoryProxy_CONTRACT.viewMarket(
-          propData.index
-        );
-
-        const maxBondWei =
-          await BondDepositoryProxy_CONTRACT?.purchasableAssetAmountAtOneTime(
-            marketData.tosPrice,
-            marketData.maxPayout
-          );
-        const ltosIndexWei = await StakingV2Proxy_CONTRACT?.possibleIndex();
-
-        const bondInfo = await BondDepositoryProxy_CONTRACT.getBonds();
-
-        const gasPriceWei = await context.library?.getGasPrice();
-        const gasPrice = Number(utils.formatUnits(gasPriceWei, 9));
-
-        const maxBond = convertNumber({
-          amount: maxBondWei?.toString(),
-        }) as string;
-        const ltosIndex = convertNumber({
-          amount: ltosIndexWei?.toString(),
-        }) as string;
-
-        const _tosPrice = bondInfo[4];
-        const bondPrice =
-          (1 / Number(_tosPrice.toString())) * 1e18 * priceData.ethPrice;
-
-        const marketPrice = commafy(apiData.getDashboard[0].tosPrice);
-
-        const discount =
-          Number(marketPrice) -
-          Number(propData.bondingPrice) / (Number(marketPrice) * 100);
-
-        //minbond
-        //285,753 x gasPrice / 1e9 / Discount
-        // ex:
-        // gasPrice = 30 gwei, Discount = 5% = 0.05
-        // Min Bond = 285,753 x 30 / 1e9 / 0.05 = 0.1714518 ETH
-
-        const divParam =
-          Number(propData.discountRate.replaceAll("%", "")) / 100;
-
-        const minbond = BigNumber.from(convertToWei(minBondGasPrice))
-          .mul(gasPriceWei)
-          .div(convertToWei(divParam.toString()));
-        // .mul(mainnetGasPrice);
-
-        const convertedMinBond = convertNumber({
-          amount: minbond.toString(),
-          decimalPoints: 6,
-          decimalPlaces: 6,
-        });
-
-        setBondModalData({
-          bondPrice: `$${commafy(bondPrice)}`,
-          marketPrice: `$${marketPrice}`,
-          discount: `${commafy(discount)}%`,
-          minBond: `${
-            Number(convertedMinBond) < 0 ? "0.000000" : convertedMinBond
-          }`,
-          maxBond: `${commafy(maxBond)}`,
-          ltosIndex: `${commafy(ltosIndex)}`,
-        });
-      }
+  //maxValue for each case(token type)
+  let tempTokenType: TokenTypes = "ETH";
+  const userTokenBalance = useMemo(() => {
+    switch (tempTokenType) {
+      case "ETH":
+        return {
+          balacne: userETHBalance,
+          balanceNum: userETTBalanceNum,
+          name: "ETH",
+          maxValue,
+        };
+      default:
+        return {
+          balance: "-",
+          balanceNum: 0,
+          name: "-",
+          maxValue: 0,
+        };
     }
-    try {
-      fetchAsyncData();
-    } catch (e) {
-      console.log("**useBondModal err**");
-      console.log(e);
-    }
-  }, [
-    propData,
-    apiData,
-    BondDepositoryProxy_CONTRACT,
-    StakingV2Proxy_CONTRACT,
-    context?.library,
-    priceData,
-    minBondGasPrice,
-  ]);
+  }, [tempTokenType, userETHBalance, userETTBalanceNum]);
 
   return {
-    bondModalData,
+    sTos: {
+      leftDays,
+      leftWeeks,
+      leftHourAndMin,
+    },
+    modalCondition: {
+      inputOver,
+      inputPeriodOver,
+      btnDisabled,
+      zeroInputBalance,
+    },
+    bondModalInputData: {
+      youWillGet,
+      endTime,
+      stosReward,
+      originalTosAmount,
+    },
+    userTokenBalance,
   };
 }
 

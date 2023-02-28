@@ -69,10 +69,12 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
       isLoading={isLoading}
       _hover={{}}
       _focus={{ backgroundColor: "#257eee" }}
-      fontSize={12}
+      fontSize={16}
       spinner={<Spinner size={"md"}></Spinner>}
       {...theme.BUTTON_STYLE.submitButtonStyle(colorMode)}
-      bgColor={isDisabled ? "gray.500" : ""}
+      bgColor={isDisabled ? colorMode==='dark'? "#1e1e24" :'#e9edf1': ""}
+      color={isDisabled ? colorMode==='dark'? "#5a5a5a" :'#a9a9b7': "#f1f1f1"}
+
       onClick={() => onClick && onClick()}
       {...style}
     >

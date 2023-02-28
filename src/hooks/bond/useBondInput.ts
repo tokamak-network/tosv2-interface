@@ -8,7 +8,7 @@ function useBondInput(key: InputKey): {
   setValue: any;
   resetValue: any;
 } {
-  const stakeModal_inputValues = useRecoilValue(bond_bondModal_state);
+  const bondModal_inputValues = useRecoilValue(bond_bondModal_state);
   const [bondModalValue, setBondModalValue] =
     useRecoilState(bond_bondModal_input);
   const resetBondModalValue = useResetRecoilState(bond_bondModal_input);
@@ -16,7 +16,7 @@ function useBondInput(key: InputKey): {
   switch (key) {
     case "bond_modal":
       return {
-        inputValue: stakeModal_inputValues,
+        inputValue: bondModal_inputValues,
         value: bondModalValue,
         setValue: setBondModalValue,
         resetValue: resetBondModalValue,

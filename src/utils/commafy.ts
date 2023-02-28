@@ -1,5 +1,5 @@
 function commafy(num: number | string | undefined, decilamPoint?: number) {
-  if (num === undefined) {
+  if (num === undefined || num === null) {
     return "-";
   }
   //@ts-ignore
@@ -7,6 +7,9 @@ function commafy(num: number | string | undefined, decilamPoint?: number) {
     return "-";
   }
   if (num === 0 || num === "0") {
+    if (decilamPoint === 0) {
+      return "0";
+    }
     if (decilamPoint) {
       return `0.${"0".repeat(decilamPoint)}`;
     }
@@ -17,10 +20,13 @@ function commafy(num: number | string | undefined, decilamPoint?: number) {
     str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,");
   }
   if (str[1] && str[1].length >= 2) {
-    str[1] = str[1].slice(0, decilamPoint || 2);
+    str[1] = str[1].slice(0, decilamPoint ?? 2);
   }
   if (str[1] === undefined) {
     str[1] = `${"0".repeat(decilamPoint ?? 2)}`;
+  }
+  if (str[1] === "") {
+    return str[0];
   }
   return str.join(".").replaceAll(" ", "");
 }

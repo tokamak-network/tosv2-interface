@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorMode, useTheme } from "@chakra-ui/react";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useMemo, useState } from "react";
 import IntroCircle from "./IntroCircle";
@@ -7,6 +7,8 @@ import IntroText from "./IntroText";
 function IntroContainer() {
   const [selectedTab1, setSelectedTab1] = useState<boolean>(true);
   const [width] = useWindowDimensions();
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   const tabButtonStyle = {
     borderBottomWidth: 3,
@@ -27,23 +29,55 @@ function IntroContainer() {
     >
       <Box fontSize={21} display={"flex"} columnGap={"21px"}>
         <Text
-          color={selectedTab1 ? "white.200" : "gray.200"}
+          color={
+            colorMode === "light"
+              ? selectedTab1
+                ? "gray.800"
+                : "gray.700"
+              : selectedTab1
+              ? "white.200"
+              : "gray.200"
+          }
           fontWeight={"bold"}
           cursor={"pointer"}
           onClick={() => setSelectedTab1(true)}
           borderBottomWidth={selectedTab1 ? 3 : ""}
-          borderBottomColor={selectedTab1 ? "white.200" : ""}
+          borderBottomColor={
+            colorMode === "light"
+              ? selectedTab1
+                ? "gray.800"
+                : "gray.700"
+              : selectedTab1
+              ? "white.200"
+              : "gray.200"
+          }
           pb={selectedTab1 ? 1 : ""}
         >
           TON⇄TONStarter
         </Text>
         <Text
-          color={!selectedTab1 ? "white.200" : "gray.200"}
+          color={
+            colorMode === "light"
+              ? !selectedTab1
+                ?"gray.800"
+                : "gray.700"
+              : !selectedTab1
+              ? "white.200"
+              : "gray.200"
+          }
           fontWeight={"bold"}
           cursor={"pointer"}
           onClick={() => setSelectedTab1(false)}
           borderBottomWidth={!selectedTab1 ? 3 : ""}
-          borderBottomColor={!selectedTab1 ? "white.200" : ""}
+          borderBottomColor={
+            colorMode === "light"
+              ? !selectedTab1
+                ? "gray.800"
+                : "gray.700"
+              : !selectedTab1
+              ? "white.200"
+              : "gray.200"
+          }
           pb={!selectedTab1 ? 1 : ""}
         >
           TOS

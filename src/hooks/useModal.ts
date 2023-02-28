@@ -3,6 +3,7 @@ import { modalData, modalLoadingState, modalState } from "atom/global/modal";
 import React, { SetStateAction, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import { ModalType } from "types/modal";
+import { useModalStyle } from "./style/useModalStyle";
 
 function useModal<T>(
   modalType?: ModalType,
@@ -15,6 +16,7 @@ function useModal<T>(
   >(modalData);
   const [value, setValue] = useRecoilState(inputState);
   const [isModalLoading, setIsModalLoading] = useRecoilState(modalLoadingState);
+  const { modalSectionMtValue } = useModalStyle();
 
   const openModal = () => {
     if (modalType) {
@@ -47,6 +49,7 @@ function useModal<T>(
     selectedModal,
     selectedModalData,
     isModalLoading,
+    modalSectionMtValue,
   };
 }
 

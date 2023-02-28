@@ -42,7 +42,7 @@ function Graph(props: {
     crosshair: {
       line: {
         stroke: colorMode === "dark" ? "#ffffff" : "#9a9aaf",
-        strokeWidth: 2,
+        strokeWidth: 1,
         strokeOpacity: 0.4,
         strokeDasharray: "0",
       },

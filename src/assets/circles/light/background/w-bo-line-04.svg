@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1175.153" height="1175.153" viewBox="0 0 1175.153 1175.153">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.98" y1="0.129" x2="0.793" y2="0.595" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f36784"/>
+      <stop offset="1" stop-color="#f36784" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.971" y1="0.145" x2="0.712" y2="0.743" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#cb877a"/>
+      <stop offset="1" stop-color="#cb877a" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="패스_1031" x="445.767" y="14.686" width="664.693" height="717.25" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+      <feFlood flood-color="#cb877a"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient-3" x1="0.972" y1="0.166" x2="0.806" y2="0.588" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#faf41d"/>
+      <stop offset="1" stop-color="#faf41d" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="패스_1067" x="448.767" y="17.686" width="658.693" height="711.25" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-2"/>
+      <feFlood flood-color="#faf41d"/>
+      <feComposite operator="in" in2="blur-2"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="w-bo-line-04" transform="translate(0 0)" opacity="0.5">
+    <circle id="Guide" cx="417.066" cy="417.066" r="417.066" transform="translate(536.17 1175.153) rotate(-130)" fill="none"/>
+    <path id="패스_1058" data-name="패스 1058" d="M677.026,46.574C646.388,105.851,601.571,155.813,546.2,194.7a415.881,415.881,0,0,1-239.249,75.476c-114.9,0-228.024-49.483-306.3-133.665L0,137.1A420.569,420.569,0,0,0,306.976,270.866a416.49,416.49,0,0,0,240.575-75.884,418.679,418.679,0,0,0,132.192-151.4C686.884,29.7,691.673,14.747,697.271,0c-5.648,14.873-10.249,27.164-17.488,41.163" transform="matrix(-0.643, -0.766, 0.766, -0.643, 898.464, 727.437)" fill="url(#linear-gradient)"/>
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#패스_1031)">
+      <path id="패스_1031-2" data-name="패스 1031" d="M677.026,46.574C646.388,105.851,601.571,155.813,546.2,194.7a415.881,415.881,0,0,1-239.249,75.476c-114.9,0-228.024-49.483-306.3-133.665L0,137.1A420.569,420.569,0,0,0,306.976,270.866a416.49,416.49,0,0,0,240.575-75.884,418.679,418.679,0,0,0,132.192-151.4C686.884,29.7,691.673,14.747,697.271,0c-5.648,14.873-10.249,27.164-17.488,41.163" transform="translate(898.46 727.44) rotate(-130)" fill="url(#linear-gradient-2)"/>
+    </g>
+    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#패스_1067)" style="mix-blend-mode: overlay;isolation: isolate">
+      <path id="패스_1067-2" data-name="패스 1067" d="M677.026,46.574C646.388,105.851,601.571,155.813,546.2,194.7a415.881,415.881,0,0,1-239.249,75.476c-114.9,0-228.024-49.483-306.3-133.665L0,137.1A420.569,420.569,0,0,0,306.976,270.866a416.49,416.49,0,0,0,240.575-75.884,418.679,418.679,0,0,0,132.192-151.4C686.884,29.7,691.673,14.747,697.271,0c-5.648,14.873-10.249,27.164-17.488,41.163" transform="translate(898.46 727.44) rotate(-130)" opacity="0.5" fill="url(#linear-gradient-3)"/>
+    </g>
+    <path id="패스_1061" data-name="패스 1061" d="M7.622.009c4.205-.07,7.611.272,7.607.764s-3.417.947-7.622,1.017S0,1.518,0,1.026,3.417.079,7.622.009Z" transform="matrix(-0.966, 0.259, -0.259, -0.966, 480.049, 184.201)" fill="#eb7253"/>
+    <path id="패스_1068" data-name="패스 1068" d="M7.622.012c4.205-.093,7.611.363,7.607,1.019S11.812,2.294,7.607,2.387,0,2.024,0,1.368,3.417.105,7.622.012Z" transform="translate(480.127 184.49) rotate(165)" fill="#fff8c1"/>
+    <path id="패스_1062" data-name="패스 1062" d="M7.622.014c4.205-.11,7.611.43,7.607,1.205s-3.417,1.494-7.622,1.6S0,2.394,0,1.618,3.417.124,7.622.014Z" transform="matrix(-0.966, 0.259, -0.259, -0.966, 480.185, 184.703)" fill="#8a301e" style="mix-blend-mode: overlay;isolation: isolate"/>
+  </g>
+</svg>

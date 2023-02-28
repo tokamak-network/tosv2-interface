@@ -16,7 +16,7 @@ function Pagination(props: PaginationProps) {
     <Flex
       w={"40px"}
       h={"40px"}
-      color={colorMode === "dark" ? "white.200" : "#2c2c35"}
+      color={isSelected?"white.200" :colorMode === "dark" ? "white.200" : "#2c2c35"}
       bg={isSelected ? "blue.100" : ""}
       _hover={{ color: isSelected ? "white.200" : "blue.100" }}
       textAlign="center"

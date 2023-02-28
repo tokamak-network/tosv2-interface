@@ -4,12 +4,23 @@ const GET_BOND_LIST = gql`
   query GetBondList($period: String, $limit: Int) {
     getBondList(period: $period, limit: $limit) {
       index
+      version
       capacity
       quoteToken
       totalSold
-      tokenLogo
       bondPrice
       endTime
+      updatedTime
+      startTime
+      maxPayout
+      initialMaxPayout
+      capacityUpdatePeriod
+      bonusRatesAddress
+      bonusRatesId
+      bondType
+      closed
+      periodicCapacity
+      currentCapacity
       createdAt
     }
   }

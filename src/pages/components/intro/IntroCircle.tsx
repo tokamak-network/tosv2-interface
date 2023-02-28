@@ -14,6 +14,19 @@ import bgBLine4 from "assets/circles/dark/background/d-bo-line-04.svg";
 import bgBLine5 from "assets/circles/dark/background/d-bo-line-05.svg";
 import bgBLine6 from "assets/circles/dark/background/d-bo-line-06.svg";
 
+import l_bgLine1 from "assets/circles/light/background/w-bb-line-01.svg";
+import l_bgLine2 from "assets/circles/light/background/w-bb-line-02.svg";
+import l_bgLine3 from "assets/circles/light/background/w-bb-line-03.svg";
+import l_bgLine4 from "assets/circles/light/background/w-bb-line-04.svg";
+import l_bgLine5 from "assets/circles/light/background/w-bb-line-05.svg";
+import l_bgLine6 from "assets/circles/light/background/w-bb-line-06.svg";
+import l_bgBLine1 from "assets/circles/light/background/w-bo-line-01.svg";
+import l_bgBLine2 from "assets/circles/light/background/w-bo-line-02.svg";
+import l_bgBLine3 from "assets/circles/light/background/w-bo-line-03.svg";
+import l_bgBLine4 from "assets/circles/light/background/w-bo-line-04.svg";
+import l_bgBLine5 from "assets/circles/light/background/w-bo-line-05.svg";
+import l_bgBLine6 from "assets/circles/light/background/w-bo-line-06.svg";
+
 //big lines
 import bigLine1 from "assets/circles/dark/big/db-line-01.svg";
 import bigLine2 from "assets/circles/dark/big/db-line-02.svg";
@@ -28,6 +41,20 @@ import bigLine10 from "assets/circles/dark/big/db-line-10.svg";
 import bigLine11 from "assets/circles/dark/big/db-line-11.svg";
 import bigLine12 from "assets/circles/dark/big/db-line-12.svg";
 import bigLine13 from "assets/circles/dark/big/db-line-13.svg";
+
+import l_bigLine1 from "assets/circles/light/big/wb-line-01.svg";
+import l_bigLine2 from "assets/circles/light/big/wb-line-02.svg";
+import l_bigLine3 from "assets/circles/light/big/wb-line-03.svg";
+import l_bigLine4 from "assets/circles/light/big/wb-line-04.svg";
+import l_bigLine5 from "assets/circles/light/big/wb-line-05.svg";
+import l_bigLine6 from "assets/circles/light/big/wb-line-06.svg";
+import l_bigLine7 from "assets/circles/light/big/wb-line-07.svg";
+import l_bigLine8 from "assets/circles/light/big/wb-line-08.svg";
+import l_bigLine9 from "assets/circles/light/big/wb-line-09.svg";
+import l_bigLine10 from "assets/circles/light/big/wb-line-10.svg";
+import l_bigLine11 from "assets/circles/light/big/wb-line-11.svg";
+import l_bigLine12 from "assets/circles/light/big/wb-line-12.svg";
+import l_bigLine13 from "assets/circles/light/big/wb-line-13.svg";
 
 //small lines
 import smallLine1 from "assets/circles/dark/small/ds-line-01.svg";
@@ -44,14 +71,36 @@ import smallLine11 from "assets/circles/dark/small/ds-line-11.svg";
 import smallLine12 from "assets/circles/dark/small/ds-line-12.svg";
 import smallLine13 from "assets/circles/dark/small/ds-line-13.svg";
 
+import l_smallLine1 from "assets/circles/light/small/ws-line-01.svg";
+import l_smallLine2 from "assets/circles/light/small/ws-line-02.svg";
+import l_smallLine3 from "assets/circles/light/small/ws-line-03.svg";
+import l_smallLine4 from "assets/circles/light/small/ws-line-04.svg";
+import l_smallLine5 from "assets/circles/light/small/ws-line-05.svg";
+import l_smallLine6 from "assets/circles/light/small/ws-line-06.svg";
+import l_smallLine7 from "assets/circles/light/small/ws-line-07.svg";
+import l_smallLine8 from "assets/circles/light/small/ws-line-08.svg";
+import l_smallLine9 from "assets/circles/light/small/ws-line-09.svg";
+import l_smallLine10 from "assets/circles/light/small/ws-line-10.svg";
+import l_smallLine11 from "assets/circles/light/small/ws-line-11.svg";
+import l_smallLine12 from "assets/circles/light/small/ws-line-12.svg";
+import l_smallLine13 from "assets/circles/light/small/ws-line-13.svg";
+
 //mobile circle
 import MobileCircle from "assets/circles/dark-mg-intro-t-01.svg";
+import l_MobileCircle from "assets/circles/bright-mg-intro-t-01.svg";
 
 //lights
 import lightPoint from "assets/circles/light-point.png";
 
 import Image from "next/image";
-import { Box, Flex, Text, position } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  position,
+  useTheme,
+  useColorMode,
+} from "@chakra-ui/react";
 import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { introTextHover, introTextHoverSelectedState } from "atom/intro";
@@ -79,6 +128,8 @@ function LightPoint() {
   const selectText = useRecoilValue(introTextHoverSelectedState);
   const [width, height] = useWindowDimensions();
   const isMobile = width < 1024;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
   return (
     <>
       <motion.div
@@ -202,6 +253,8 @@ function LightPointText(props: { selectedTab1: boolean }) {
   const [selectText, setSelectText] = useRecoilState(introTextHover);
   const [width, height] = useWindowDimensions();
   const isMobile = width < 1024;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   return (
     <motion.div
@@ -226,7 +279,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 1 || selectText === 2 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"right"}
           pos="absolute"
@@ -237,14 +290,24 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 1 || selectText === 2 ? "#ec8c56" : "#64646f"}
+            color={
+              selectText === 1 || selectText === 2
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             LTOS
           </Text>
-          <Text>Earn interest</Text>
-          <Text>in TOS</Text>
+          <Text opacity={selectText === 1 || selectText === 2 ? 1 : 0.5}>
+            Earn interest
+          </Text>
+          <Text opacity={selectText === 1 || selectText === 2 ? 1 : 0.5}>
+            in TOS
+          </Text>
         </Box>
       ) : (
         <Flex
@@ -263,7 +326,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 1 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"right"}
           pos="absolute"
@@ -274,15 +337,23 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 1 ? "#ec8c56" : "#64646f"}
+            color={
+              selectText === 1
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             sTOS
           </Text>
-          <Text>Participate in governance </Text>
-          <Text>Earn airdrop </Text>
-          <Text>Participate in IDO</Text>
+          <Flex opacity={selectText === 1 ? 1 : 0.5} flexDir="column">
+            <Text>Participate in governance </Text>
+            <Text>Earn airdrop </Text>
+            <Text>Participate in IDO</Text>
+          </Flex>
         </Box>
       ) : (
         <Flex
@@ -301,7 +372,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 3 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"left"}
           pos="absolute"
@@ -313,15 +384,23 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 3 ? "#ec8c56" : "#64646f"}
+            color={
+              selectText === 3
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             dTOS
           </Text>
-          <Text>(Coming soon)</Text>
-          <Text>High discount rate</Text>
-          <Text>for bonding</Text>
+          <Flex opacity={selectText === 3 ? 1 : 0.5} flexDir="column">
+            <Text>(Coming soon)</Text>
+            <Text>High discount rate</Text>
+            <Text>for bonding</Text>
+          </Flex>
         </Box>
       ) : (
         <Flex
@@ -340,7 +419,7 @@ function LightPointText(props: { selectedTab1: boolean }) {
         <Box
           display={"flex"}
           flexDir={"column"}
-          color={selectText === 3 ? "#8b8b93" : "#64646f"}
+          color={colorMode === "dark" ? "#8b8b93" : "#7e7e8f"}
           fontSize={14}
           textAlign={"left"}
           pos="absolute"
@@ -352,14 +431,22 @@ function LightPointText(props: { selectedTab1: boolean }) {
           cursor={"pointer"}
         >
           <Text
-            color={selectText === 3 ? "#ec8c56" : "#64646f"}
+            color={
+              selectText === 3
+                ? "#ec8c56"
+                : colorMode === "dark"
+                ? "#64646f"
+                : "#9a9aaf"
+            }
             fontSize={24}
             fontWeight={"bold"}
           >
             Bond
           </Text>
-          <Text>Raise capital for</Text>
-          <Text>TONStarter Ecosystem</Text>
+          <Flex opacity={selectText === 3 ? 1 : 0.5} flexDir="column">
+            <Text>Raise capital for</Text>
+            <Text>TONStarter Ecosystem</Text>
+          </Flex>
         </Box>
       ) : (
         <Flex
@@ -390,6 +477,8 @@ const MotionWapper = (props: {
     props;
 
   const rotateAngle = clockDirection ? 360 : -360;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
   return (
     <motion.div
       animate={{
@@ -400,7 +489,12 @@ const MotionWapper = (props: {
         ease: "linear",
         duration: duration ?? Math.floor(Math.random() * 25) + 4,
       }}
-      style={{ position: "absolute", opacity: opacity ?? 1, ...style, outline: 'none' }}
+      style={{
+        position: "absolute",
+        opacity: opacity ?? 1,
+        ...style,
+        outline: "none",
+      }}
       initial={{ rotate: initialRotate }}
     >
       <Image src={src} alt={"bgLine"}></Image>
@@ -414,6 +508,38 @@ function BackgroundLines(props: { selectedTab1: boolean }) {
   const randomNumsArr = randomNums();
   const secondRandomNumsArr = randomNums();
   const [width, height] = useWindowDimensions();
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
+  const bgBLineArr =
+    colorMode === "dark"
+      ? [
+          bgLine1,
+          bgLine2,
+          bgLine3,
+          bgLine4,
+          bgLine5,
+          bgLine6,
+          bgBLine1,
+          bgBLine2,
+          bgBLine3,
+          bgBLine4,
+          bgBLine5,
+          bgBLine6,
+        ]
+      : [
+          l_bgLine1,
+          l_bgLine2,
+          l_bgLine3,
+          l_bgLine4,
+          l_bgLine5,
+          l_bgLine6,
+          l_bgBLine1,
+          l_bgBLine2,
+          l_bgBLine3,
+          l_bgBLine4,
+          l_bgBLine5,
+          l_bgBLine6,
+        ];
 
   if (width < 1024) {
     return null;
@@ -487,7 +613,74 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
   const [height] = useWindowDimensions();
   const isMobile = width < 530;
   const isMobileAnimation = width < 1024;
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
+  const bigLineArr =
+    colorMode === "dark"
+      ? [
+          bigLine1,
+          bigLine2,
+          bigLine3,
+          bigLine4,
+          bigLine5,
+          bigLine6,
+          bigLine7,
+          bigLine8,
+          bigLine9,
+          bigLine10,
+          bigLine11,
+          bigLine12,
+          bigLine13,
+        ]
+      : [
+          l_bigLine1,
+          l_bigLine2,
+          l_bigLine3,
+          l_bigLine4,
+          l_bigLine5,
+          l_bigLine6,
+          l_bigLine7,
+          l_bigLine8,
+          l_bigLine9,
+          l_bigLine10,
+          l_bigLine11,
+          l_bigLine12,
+          l_bigLine13,
+        ];
+
+  const smallLineArr =
+    colorMode === "dark"
+      ? [
+          smallLine1,
+          smallLine2,
+          smallLine3,
+          smallLine4,
+          smallLine5,
+          smallLine6,
+          smallLine7,
+          smallLine8,
+          smallLine9,
+          smallLine10,
+          smallLine11,
+          smallLine12,
+          smallLine13,
+        ]
+      : [
+          l_smallLine1,
+          l_smallLine2,
+          l_smallLine3,
+          l_smallLine4,
+          l_smallLine5,
+          l_smallLine6,
+          l_smallLine7,
+          l_smallLine8,
+          l_smallLine9,
+          l_smallLine10,
+          l_smallLine11,
+          l_smallLine12,
+          l_smallLine13,
+        ];
   useEffect(() => {
     if (selectedTab1 === false) {
       isAlreadyMoved = true;
@@ -538,21 +731,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           }}
         >
           {!isMobile ? (
-            [
-              bigLine1,
-              bigLine2,
-              bigLine3,
-              bigLine4,
-              bigLine5,
-              bigLine6,
-              bigLine7,
-              bigLine8,
-              bigLine9,
-              bigLine10,
-              bigLine11,
-              bigLine12,
-              bigLine13,
-            ].map((imgSrc: any, index: number) => {
+            bigLineArr.map((imgSrc: any, index: number) => {
               return (
                 <MotionWapper
                   src={imgSrc}
@@ -566,7 +745,10 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
               );
             })
           ) : (
-            <MotionWapper src={MobileCircle} duration={8}></MotionWapper>
+            <MotionWapper
+              src={colorMode === "dark" ? MobileCircle : l_MobileCircle}
+              duration={8}
+            ></MotionWapper>
           )}
         </motion.div>
       </Flex>
@@ -609,25 +791,10 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           {selectedTab1 === false && (
             <LightPointText selectedTab1={selectedTab1}></LightPointText>
           )}
-          {[
-            smallLine1,
-            smallLine2,
-            smallLine3,
-            smallLine4,
-            smallLine5,
-            smallLine6,
-            smallLine7,
-            smallLine8,
-            smallLine9,
-            smallLine10,
-            smallLine11,
-            smallLine12,
-            smallLine13,
-            ,
-          ].map((imgSrc: any, index: number) => {
-            if(width < 1040 && index < 2) {
-              return null
-            } 
+          {smallLineArr.map((imgSrc: any, index: number) => {
+            if (width < 1040 && index < 2) {
+              return null;
+            }
             return (
               <MotionWapper
                 src={imgSrc}
@@ -648,7 +815,7 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
                       ? {
                           width: "200px",
                         }
-                      : {border: 'none'}
+                      : { border: "none" }
                     : {}
                 }
               ></MotionWapper>
@@ -671,7 +838,11 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
                   }
             }
           >
-            <Text fontSize={28} fontWeight={"bold"} color={"#64646f"}>
+            <Text
+              fontSize={28}
+              fontWeight={"bold"}
+              color={colorMode === "dark" ? "white.100" : "gray.800"}
+            >
               TOS
             </Text>
           </motion.div>
@@ -703,7 +874,15 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
           pos={"relative"}
           fontSize={width > 530 ? 28 : 21}
           fontWeight={"bold"}
-          color={selectedTab1 ? "white.100" : "#64646f"}
+          color={
+            colorMode === "dark"
+              ? selectedTab1
+                ? "white.100"
+                : "#64646f"
+              : selectedTab1
+              ? "gray.800"
+              : "gray.700"
+          }
           top={"-10px"}
           width={"100%"}
           minW={"100%"}
@@ -720,11 +899,17 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
             pos={"absolute"}
             left={width > 900 ? "270px" : width > 530 ? "100px" : "50px"}
             color={
-              selectText === 1
+              colorMode === "dark"
+                ? selectText === 1
+                  ? ""
+                  : selectedTab1
+                  ? "white.100"
+                  : "#64646f"
+                : selectText === 1
                 ? ""
                 : selectedTab1
-                ? "white.100"
-                : "#64646f"
+                ? "gray.800"
+                : "gray.700"
             }
           >
             TONStarter
@@ -739,6 +924,8 @@ function TabOneCircle(props: { selectedTab1: boolean; width: number }) {
 function IntroCircle(props: { selectedTab1: boolean }) {
   const { selectedTab1 } = props;
   const [width] = useWindowDimensions();
+  const theme = useTheme();
+  const { colorMode } = useColorMode();
 
   const height = useMemo(() => {
     if (width > 1024) {
@@ -759,7 +946,6 @@ function IntroCircle(props: { selectedTab1: boolean }) {
       mt={width < 530 ? "40px" : "120px"}
       alignItems={"center"}
       justifyContent={"center"}
-
     >
       <TabOneCircle selectedTab1={selectedTab1} width={width} />
       <BackgroundLines selectedTab1={selectedTab1} />
