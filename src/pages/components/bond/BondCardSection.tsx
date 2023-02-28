@@ -18,67 +18,68 @@ function BondCardSection() {
     undefined
   );
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
-  const { loading, error, data } = useQuery(GET_BOND_LIST, {
-    variables: {
-      period: "-1",
-    },
-    pollInterval: 10000,
-  });
+  const { loading, error, data } = useQuery<{ getBondList: [] }>(
+    GET_BOND_LIST,
+    {
+      variables: {
+        period: "-1",
+      },
+      pollInterval: 10000,
+    }
+  );
   const { priceData } = usePrice();
 
-  // const { BondDepositoryProxy_CONTRACT } = useCallContract();
+  if (error) {
+    console.log("**graphql_getBondList err**");
+    console.log(error);
+  }
 
   useEffect(() => {
-    // if (data && priceData && priceData?.tosPrice && priceData?.ethPrice)
-    if (priceData && priceData?.tosPrice && priceData?.ethPrice) {
-      // const bonds = data.getBondList;
+    if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {
+      const bonds = data.getBondList;
       const { ethPrice, tosPrice } = priceData;
 
-      const dummyServerData = getDummyServerBondData();
+      //test
+      // const dummyServerData = getDummyServerBondData();
 
-      const bondcardDatas: BondCardProps[] = dummyServerData.map(
-        (bond: BondRawdata) => {
-          const {
-            capacity,
-            index,
-            tokenLogo,
-            totalSold,
-            endTime,
-            bondPrice: _tosPrice,
-          } = bond;
-          const bondPrice = (1 / _tosPrice) * 1e18 * ethPrice;
-          const convertedbondPrice = Number(
-            convertNumber({ amount: bondPrice.toString() })
-          );
-          const discount = ((tosPrice - convertedbondPrice) / tosPrice) * 100;
-          const startDay = convertTimeStamp(1676272010);
-          const endDay = convertTimeStamp(endTime);
+      const bondcardDatas: BondCardProps[] = bonds.map((bond: BondRawdata) => {
+        const { capacity, index, totalSold, endTime, bondPrice, startTime } =
+          bond;
+        const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
+        const startDay = convertTimeStamp(startTime);
+        const endDay = convertTimeStamp(endTime);
+        const bondCapacity = commafy(capacity, 0);
+        const totalSoldCom = commafy(totalSold, 0);
+        const progress =
+          Number(capacity) / Number(totalSold) === Infinity
+            ? "0"
+            : isNaN(Number(capacity) / Number(totalSold))
+            ? "-"
+            : commafy(Number(capacity) / Number(totalSold), 0);
 
-          return {
-            bondCapacity: commafy(capacity),
-            bondingPrice: convertNumber({
-              amount: bondPrice.toString(),
-              localeString: true,
-              round: false,
-            }) as string,
-            discountRate: `${commafy(discount)}%`,
-            sellTokenType: "ETH",
-            buyTokenType: "TOS",
-            totalSold: `${commafy(totalSold)} TOS`,
-            endTime,
-            index,
-            startDay,
-            leftDay: "",
-            endDay,
-            minimumBondPrice: "0",
-            version: "1.0",
-          };
-        }
-      );
+        return {
+          bondCapacity,
+          totalSold: totalSoldCom,
+          progress,
+          bondingPrice: `$ ${commafy(bondPrice)}`,
+          discountRate: `${commafy(discount)} %`,
+          sellTokenType: "ETH",
+          buyTokenType: "TOS",
+          endTime,
+          index,
+          startDay,
+          leftDay: "",
+          endDay,
+          minimumBondPrice: "0",
+          version: "1.0",
+        };
+      });
 
       setCardList(bondcardDatas);
     }
-  }, [priceData]);
+  }, [priceData, data]);
+
+  console.log(cardList);
 
   return (
     <Flex
@@ -89,7 +90,9 @@ function BondCardSection() {
       flexWrap={"wrap"}
     >
       {cardList?.map((cardData: BondCardProps, index) =>
-        index === cardList.length - 1 ? null : (
+        isProduction() ? (
+          index === cardList.length - 1
+        ) : undefined ? null : (
           <BondCard
             data={cardData}
             key={cardData.bondCapacity + index}

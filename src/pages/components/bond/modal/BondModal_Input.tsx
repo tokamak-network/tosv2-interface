@@ -4,6 +4,7 @@ import TokenSymbol from "common/token/TokenSymol";
 import constant from "constant";
 import useBondModal from "hooks/bond/useBondModal";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
+import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useInput from "hooks/useInput";
 import { useEffect, useMemo } from "react";
 import { TokenTypes } from "types";
@@ -31,6 +32,7 @@ export default function BondModal_Input() {
   const { zeroInputBalance, inputOver } = modalCondition;
   const { maxValue, balacne, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
+  const { bondDiscount } = useBondModalInputData();
 
   const tokenImage = useMemo(() => {
     switch (bondTokenType) {
@@ -52,7 +54,7 @@ export default function BondModal_Input() {
         <Text color={"white.200"} mr={"9px"}>
           Bond Discount
         </Text>
-        <Text color={"blue.200"}>33.0%</Text>
+        <Text color={"blue.200"}>{bondDiscount}%</Text>
       </Flex>
       <Flex
         border={"1px solid #313442"}

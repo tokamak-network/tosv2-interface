@@ -177,15 +177,17 @@ function BondCard(props: { data: BondCardProps }) {
             <Text fontSize={13} color={"white.200"}>
               Progress
             </Text>
-            <Text fontSize={12}>90%</Text>
+            <Text fontSize={12}>{data?.progress}%</Text>
           </Flex>
           <Flex fontSize={11}>
-            <Text color={"white.200"}>4,581,532 /</Text>
-            <Text>&nbsp;5,000,000 {data?.buyTokenType}</Text>
+            <Text color={"white.200"}>{data?.totalSold} /</Text>
+            <Text>
+              &nbsp;{data?.bondCapacity} {data?.buyTokenType}
+            </Text>
           </Flex>
         </Flex>
         <Progress
-          value={90}
+          value={Number(data?.progress)}
           color={isClosed ? "#64646f" : "#2775ff"}
           borderRadius={100}
           h={"5px"}
@@ -210,7 +212,7 @@ function BondCard(props: { data: BondCardProps }) {
         ></ContentComponent>
         <ContentComponent
           title="Minimum Bond Price"
-          content={`${data?.bondCapacity} TOS`}
+          content={`${data?.bondingPrice}`}
         ></ContentComponent>
         <ContentComponent
           title="Lock-Up (Min)"

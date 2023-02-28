@@ -80,18 +80,19 @@ function BondModal() {
     "Bond_screen",
     "bond_modal"
   );
-  const { selectedModalData, selectedModal, closeModal } = useModal();
+  const { selectedModalData, selectedModal, closeModal } =
+    useModal<BondCardProps>();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup, fiveDaysLockupEndTime } = bondModalRecoilValue;
 
-  const propData = selectedModalData as BondCardProps;
-  const marketId = propData?.index;
+  const marketId = selectedModalData?.index;
 
   const { bp700px } = useMediaView();
 
   const { youWillGet, endTime, stosReward, originalTosAmount } =
-    useBondModalInputData(marketId);
+    useBondModalInputData();
+
   const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
     inputValue.bond_modal_balance,
     inputValue.bond_modal_period
@@ -173,7 +174,7 @@ function BondModal() {
   // }, [inputValue.bond_modal_balance, setBottomLoading]);
 
   const capacityIsZero =
-    Number(propData?.discountRate?.replaceAll("%", "")) <= 0;
+    Number(selectedModalData?.discountRate?.replaceAll("%", "")) <= 0;
 
   return (
     <Modal
