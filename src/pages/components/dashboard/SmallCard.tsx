@@ -87,7 +87,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
         </Flex>
         {switchButton ? (
           <Flex
-            color={"white.100"}
+           
             w="80px"
             border={"1px solid #313442"}
             borderRadius="5px"
@@ -99,6 +99,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
               fontWeight={500}
               _hover={{cursor:'pointer'}}
               _active={{}}
+              color={unit === "$" ? "white.100":'#64646f'}
               w="50%"
               bg={unit === "$" ? "#0f0f12" : "transparent"}
               onClick={() => setUnit("$")}
@@ -109,6 +110,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
               h={"19px"}
               fontSize={"12px"}
               w="50%"
+              color={unit === "ETH" ? "white.100":'#64646f'}
               fontWeight={500}
               _hover={{cursor:'pointer'}}
               _active={{}}
