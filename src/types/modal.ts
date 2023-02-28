@@ -7,6 +7,8 @@ export type StakeModalType =
   | "stake_unstake_modal"
   | "stake_update_modal"
   | "stake_multiUnstake_modal"
-  | "stake_updateAfterEndTime_modal";
+  | "stake_updateAfterEndTime_modal"
+  | 'swap_interface_modal';
+
 
 export type ModalType = GlobalType | BondModalType | StakeModalType;
