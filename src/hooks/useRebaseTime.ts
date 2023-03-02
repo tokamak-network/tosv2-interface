@@ -48,8 +48,6 @@ function useRebaseTime(format: ":") {
           ? `0${nextRebaseTime.secs}`
           : `${nextRebaseTime.secs}`;
 
-      getTimeZone();
-
       if (format) {
         return setRebaseTime(`${hour}${format}${min}${format}${sec}`);
       }

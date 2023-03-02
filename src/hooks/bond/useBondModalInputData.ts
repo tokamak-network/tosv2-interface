@@ -69,7 +69,7 @@ function useBondModalInputData() {
         const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
           marketId
         );
-        const tosPrice = bondList.tosPrice;
+        const tosPrice = bondList.market.tosPrice;
         const tosValuation =
           await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
             tosPrice,
@@ -116,7 +116,8 @@ function useBondModalInputData() {
         const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
           marketId
         );
-        const tosPrice = bondList.tosPrice;
+
+        const tosPrice = bondList.market.tosPrice;
         const tosAmount =
           await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
             tosPrice,

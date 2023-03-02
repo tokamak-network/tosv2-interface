@@ -14,10 +14,10 @@ export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const MAINNET_API = process.env.NEXT_PUBLIC_API_PRODUCTION;
 const DEV_API = process.env.NEXT_PUBLIC_API_DEV;
 const TOKEN_API = process.env.NEXT_PUBLIC_TOKEN_API as string;
-console.log('TOKEN_API',TOKEN_API);
-console.log('DEV_API',DEV_API);
 
-export const fetchTokensURL = `${TOKEN_API}/tokens?chainId=${Number(DEFAULT_NETWORK)}`;
+export const fetchTokensURL = `${TOKEN_API}/tokens?chainId=${Number(
+  DEFAULT_NETWORK
+)}`;
 
 export const BASE_PROVIDER =
   REACT_APP_MODE === "PRODUCTION"

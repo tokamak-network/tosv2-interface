@@ -69,7 +69,7 @@ function BondCardSection() {
           totalSold: totalSoldCom,
           progress,
           bondingPrice: `$ ${commafy(bondPrice)}`,
-          discountRate: `${commafy(discount)} %`,
+          discountRate: Number(commafy(discount)),
           sellTokenType: "ETH",
           buyTokenType: "TOS",
           endTime,
@@ -81,6 +81,18 @@ function BondCardSection() {
           version,
         };
       });
+
+      const discountArr = bondcardDatas.map(
+        (bondData) => bondData.discountRate
+      );
+      const biggestElementIndex = discountArr.indexOf(
+        Math.max.apply(Math, discountArr)
+      );
+
+      bondcardDatas[biggestElementIndex] = {
+        ...bondcardDatas[biggestElementIndex],
+        isHighest: true,
+      };
 
       setCardList(bondcardDatas);
     }

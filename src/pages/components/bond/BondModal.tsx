@@ -192,7 +192,7 @@ function BondModal() {
   // }, [inputValue.bond_modal_balance, setBottomLoading]);
 
   const capacityIsZero =
-    Number(selectedModalData?.discountRate?.replaceAll("%", "")) <= 0;
+    selectedModalData && selectedModalData?.discountRate <= 0;
 
   return (
     <Modal

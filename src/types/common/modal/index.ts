@@ -8,4 +8,6 @@ export type IBottomContentProps = {
   thirdTooltip?: string;
   fourthTooltip?: string;
   contentFontSize?: number;
+  isPlus?: boolean;
+  noSign?: boolean;
 };
