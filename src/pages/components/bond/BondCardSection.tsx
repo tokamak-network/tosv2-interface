@@ -60,9 +60,9 @@ function BondCardSection() {
         const progress =
           Number(capacity) / Number(totalSold) === Infinity
             ? "0"
-            : isNaN(Number(capacity) / Number(totalSold))
+            : isNaN(Number(totalSold) / Number(capacity))
             ? "-"
-            : commafy(Number(capacity) / Number(totalSold), 0);
+            : commafy((Number(totalSold) / Number(capacity)) * 100, 0);
 
         return {
           bondCapacity,

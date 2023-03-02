@@ -90,8 +90,13 @@ function BondModal() {
 
   const { bp700px } = useMediaView();
 
-  const { youWillGet, endTime, stosReward, originalTosAmount } =
-    useBondModalInputData();
+  const {
+    youWillGet,
+    endTime,
+    stosReward,
+    originalTosAmount,
+    minimumTosPrice,
+  } = useBondModalInputData();
 
   const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
     inputValue.bond_modal_balance,
@@ -121,16 +126,28 @@ function BondModal() {
 
   const callBond = useCallback(async () => {
     try {
-      if (BondDepositoryProxy_CONTRACT && inputValue.bond_modal_balance) {
+      console.log(minimumTosPrice);
+      if (
+        BondDepositoryProxy_CONTRACT &&
+        inputValue.bond_modal_balance &&
+        minimumTosPrice
+      ) {
         const inputAmount = inputValue.bond_modal_balance;
         const periodWeeks = inputValue.bond_modal_period + 1;
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           console.log("---ETHDepositWithSTOS()---");
-          console.log(marketId, convertToWei(inputAmount), periodWeeks);
+          console.log(
+            marketId,
+            convertToWei(inputAmount),
+            minimumTosPrice,
+            periodWeeks,
+            { value: convertToWei(inputAmount) }
+          );
           const tx = await BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
             marketId,
             convertToWei(inputAmount),
+            minimumTosPrice,
             periodWeeks,
             { value: convertToWei(inputAmount) }
           );
@@ -163,6 +180,7 @@ function BondModal() {
     fiveDaysLockup,
     setTx,
     closeThisModal,
+    minimumTosPrice,
   ]);
 
   // useEffect(() => {
@@ -246,7 +264,7 @@ function BondModal() {
                 onClick={() =>
                   capacityIsZero ? setIsOpenConfirm(true) : callBond()
                 }
-                isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
+                // isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
             </Flex>
             {capacityIsZero && (

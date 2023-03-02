@@ -1,5 +1,5 @@
 import { convertNumber, convertToWei } from "@/utils/number";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers, FixedNumber } from "ethers";
 import useStosReward from "hooks/stake/useStosReward";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
@@ -26,6 +26,9 @@ function useBondModalInputData() {
   );
   const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
   const [bondDiscount, setBondDiscount] = useState<string>("-");
+  const [minimumTosPrice, setMinimumTosPrice] = useState<BigNumber | undefined>(
+    undefined
+  );
 
   const {
     StakingV2Proxy_CONTRACT,
@@ -92,6 +95,10 @@ function useBondModalInputData() {
 
   useEffect(() => {
     async function fetchLtosData() {
+      console.log("--fetchLtosData--");
+
+      console.log(inputValue);
+
       if (
         inputValue?.bond_modal_balance === undefined ||
         inputValue?.bond_modal_balance === ""
@@ -129,8 +136,8 @@ function useBondModalInputData() {
     }
     fetchLtosData()
       .catch((e) => {
-        // console.log("**useBondModalInputData3 err**");
-        // console.log(e);
+        console.log("**fetchLtosData err**");
+        console.log(e);
       })
       .finally(() => {
         setLoading(false);
@@ -179,11 +186,18 @@ function useBondModalInputData() {
           commafy(bondingPricePerTos).replaceAll(",", "")
         );
         const discount = ((tosPrice - minimumBondPrice) / tosPrice) * 100;
-
+        setMinimumTosPrice(
+          BigNumber.from(bondingPrice).div(
+            BigNumber.from(FixedNumber.from(0.95))
+          )
+        );
         setBondDiscount(commafy(discount));
       }
     }
-    fetchBondDiscount().catch((e) => console.log(e));
+    fetchBondDiscount().catch((e) => {
+      console.log("**fetchBondDiscount err**");
+      console.log(e);
+    });
   }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod, priceData]);
 
   return {
@@ -192,6 +206,7 @@ function useBondModalInputData() {
     stosReward: commafy(newBalanceStos),
     originalTosAmount,
     bondDiscount,
+    minimumTosPrice,
   };
 }
 
