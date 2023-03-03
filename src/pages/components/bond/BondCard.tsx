@@ -256,7 +256,7 @@ function BondCard(props: { data: BondCardProps }) {
             marginTop: "9px",
             fontWeight: "normal",
           }}
-          // isDisabled={bondButtonIsDisabled}
+          isDisabled={bondButtonIsDisabled}
           isLoading={txPending}
           onClick={account ? openModal : tryActivation}
         ></BasicButton>

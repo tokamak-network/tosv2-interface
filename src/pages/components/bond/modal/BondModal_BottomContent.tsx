@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 import { IBottomContentProps } from "types/common/modal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
+import { useMemo } from "react";
 
 function BondModal_BottomContent(props: {
   fiveDaysLockup: boolean;

@@ -6,7 +6,7 @@ import useBondModal from "hooks/bond/useBondModal";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useInput from "hooks/useInput";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { TokenTypes } from "types";
 
 let bondTokenType = "ETH";
@@ -47,6 +47,13 @@ export default function BondModal_Input() {
         return <Text>no bondTokenType</Text>;
     }
   }, []);
+
+  const setMaxValue = useCallback(() => {
+    setValue({
+      ...inputValue,
+      bond_modal_balance: String(maxValue),
+    });
+  }, [inputValue, maxValue, setValue]);
 
   return (
     <Flex flexDir={"column"} px={"70px"} rowGap={"10px"}>
@@ -108,12 +115,7 @@ export default function BondModal_Input() {
             bgColor={"transparent"}
             fontSize={11}
             color={"blue.200"}
-            onClick={() => {
-              setValue({
-                ...inputValue,
-                bond_modal_balance: maxValue,
-              });
-            }}
+            onClick={() => setMaxValue()}
           >
             MAX
           </Button>

@@ -118,12 +118,6 @@ function useBondModalInputData() {
         );
 
         const tosPrice = bondList.market.tosPrice;
-        // const tosAmount =
-        //   await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
-        //     tosPrice,
-        //     ethAmountWei
-        //   );
-
         const tosValuation = BigNumber.from(ethAmountWei)
           .mul(tosPrice)
           .div("1000000000000000000");
@@ -141,8 +135,8 @@ function useBondModalInputData() {
     }
     fetchLtosData()
       .catch((e) => {
-        console.log("**fetchLtosData err**");
-        console.log(e);
+        // console.log("**fetchLtosData err**");
+        // console.log(e);
       })
       .finally(() => {
         setLoading(false);

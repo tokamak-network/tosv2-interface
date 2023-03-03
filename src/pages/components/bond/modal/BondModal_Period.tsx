@@ -1,4 +1,4 @@
-import { Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
 import {
   bond_modal,
   bond_modal_state,
@@ -55,18 +55,21 @@ export default function BondModal_Period() {
               Set Lock-Up Period
             </Text>
             <Flex>
-              {/* <CustomCheckBox
-                pageKey="Bond_screen"
-                value={""}
-                valueKey={"Bond_Modal"}
-                state={fiveDaysLockup}
-                setState={(isChecked: boolean) => {
+              <Checkbox
+                size={"lg"}
+                style={{
+                  borderRadius: "4px",
+                  borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
+                }}
+                isChecked={fiveDaysLockup}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  const isChecked = e.target.checked;
                   setBondModalState({
                     ...bondModalState,
                     fiveDaysLockup: isChecked,
                   });
                 }}
-              ></CustomCheckBox> */}
+              ></Checkbox>
               <Text ml={"6px"} mr="3px">
                 5 Days Lock-Up
               </Text>

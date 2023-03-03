@@ -97,6 +97,7 @@ function BondModal() {
     originalTosAmount,
     minimumTosPrice,
     isMinusDiscount,
+    maxCapacityValue,
   } = useBondModalInputData();
 
   const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
@@ -115,9 +116,9 @@ function BondModal() {
     modalBottomLoadingState
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
-  const [maxValue, setMaxValue] = useState<number | undefined>(undefined);
+
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
-    useBondModalCondition(maxValue);
+    useBondModalCondition(maxCapacityValue);
   const { errMsg } = constant;
 
   const closeThisModal = useCallback(() => {
@@ -155,12 +156,15 @@ function BondModal() {
         }
 
         console.log("---ETHDeposit()---");
-        console.log(marketId, convertToWei(inputAmount), {
-          value: convertToWei(inputAmount),
-        });
+        console.log(`marketId : ${marketId}`);
+        console.log(`inputAmount : ${convertToWei(inputAmount)}`);
+        console.log(`minimumTosPrice : ${minimumTosPrice.toString()}`);
+        console.log(`value : ${convertToWei(inputAmount)}`);
+
         const tx = await BondDepositoryProxy_CONTRACT.ETHDeposit(
           marketId,
           convertToWei(inputAmount),
+          minimumTosPrice,
           { value: convertToWei(inputAmount) }
         );
         setTx(tx);

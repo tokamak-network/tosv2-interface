@@ -11,11 +11,13 @@ import {
   useColorMode,
   Checkbox,
   Link,
+  Input,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
 import { useState } from "react";
 import SubmitButton from "common/button/SubmitButton";
+import useMediaView from "hooks/useMediaView";
 
 const BondConfirm = (props: {
   isOpenConfirm: boolean;
@@ -25,157 +27,94 @@ const BondConfirm = (props: {
   const theme = useTheme();
   const { isOpenConfirm, setIsOpenConfirm, callBond } = props;
   const { colorMode } = useColorMode();
+  const { bp700px } = useMediaView();
+
+  const [typeConfirm, setTypeConfirm] = useState<string | undefined>(undefined);
+
+  const closeModal = () => {
+    setIsOpenConfirm(false);
+    setTypeConfirm(undefined);
+  };
 
   return (
     <Modal
       isOpen={isOpenConfirm}
+      //   isOpen={selectedModal === "bond_openConfirm_modal"}
       isCentered
-      onClose={() => setIsOpenConfirm(false)}
+      onClose={() => closeModal()}
     >
-      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
-        fontFamily={theme.fonts.roboto}
-        bg={colorMode === "light" ? "white.100" : "black.200"}
-        maxW="500px"
-        p={0}
-        // h={"568px"}
+        bg={colorMode === "light" ? "white.100" : "#121318"}
+        minW={bp700px ? "350px" : "612px"}
+        h={"340px"}
       >
-        <ModalBody
-          p={0}
-          className={"modalOverlay"}
-          bg={colorMode === "light" ? "white.100" : "black.200"}
-          boxShadow={"none"}
-        >
-          <Box pt={"1.250em"} pb={"1.250em"}>
-            <Flex
-              alignItems={"center"}
-              justifyContent={"center"}
-              pos={"relative"}
+        <ModalBody px={0} pt={"30px"}>
+          {/* Title Area*/}
+          <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
+            <Text
+              color={colorMode === "light" ? "gray.800" : "white.200"}
+              fontSize={20}
+              fontWeight={600}
+              ml="9px"
             >
-              <Heading
-                fontSize={"1.250em"}
-                fontWeight={"bold"}
-                fontFamily={theme.fonts.titil}
-                color={colorMode === "light" ? "gray.100" : "white.100"}
-                textAlign={"center"}
-              >
-                Warning
-              </Heading>
-              <Flex position={"absolute"} right={"25px"}>
-                <Image
-                  src={CLOSE_ICON}
-                  style={{
-                    cursor: "pointer",
-                    right: "15px",
-                    position: "absolute",
-                  }}
-                  alt={"CLOSE_ICON"}
-                  onClick={() => setIsOpenConfirm(false)}
-                ></Image>
-              </Flex>
-            </Flex>
-          </Box>
-
-          <Flex
-            flexDir="column"
-            alignItems="center"
-            mt={"11px"}
-            mb={"24px"}
-            pl={"25px"}
-            pr={"6px"}
-            fontSize={13}
-            color={colorMode === "light" ? "gray.100" : "white.100"}
-          >
-            <Flex w={"100%"} flexDir={"column"}>
-              <Flex
-                w={"100%"}
-                // h={"300px"}
-                overflow={"auto"}
-                fontSize={13}
-                css={{
-                  "&::-webkit-scrollbar": {
-                    width: "6px",
-                  },
-                  "::-webkit-scrollbar-track": {
-                    background: "transparent",
-                    borderRadius: "4px",
-                  },
-                  "::-webkit-scrollbar-thumb": {
-                    background: "#257eee",
-                    borderRadius: "3px",
-                  },
-                }}
-              >
-                <Flex
-                  fontSize={12}
-                  textAlign="center"
-                  w={"100%"}
-                  //   mt={"21px"}
-                  mb={"20px"}
-                  flexDir={"column"}
-                  color={colorMode === "dark" ? "gray.100" : "gray.700"}
-                  //   color={"#e23738"}
-                >
-                  <Text>
-                    Currently, it is cheaper to purchase TOS from Uniswap V3 (
-                    <Link
-                      isExternal={true}
-                      href={
-                        "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
-                      }
-                      color={colorMode ==='dark'? "white.200": "gray.800"}
-                      textDecoration={"underline"}
-                    >
-                      WTON
-                    </Link>
-                    ,
-                    <Link
-                      isExternal={true}
-                      href={
-                        "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
-                      }
-                      color={colorMode ==='dark'? "white.200": "gray.800"}
-                      textDecoration={"underline"}
-                    >
-                      {" "}
-                      ETH
-                    </Link>
-                    )
-                  </Text>
-                  <Text>
-                    and{" "}
-                    <Link
-                      isExternal={true}
-                      href={"https://tosv2.tokamak.network/stake"}
-                      color={colorMode ==='dark'? "white.200": "gray.800"}
-                      textDecoration={"underline"}
-                    >
-                      stake
-                    </Link>{" "}
-                    them for LTOS. You can continue bonding,
-                  </Text>
-                  <Text>
-                    if you would like to purchase LTOS without impacting the
-                    price.
-                  </Text>
-                </Flex>
-                <Flex></Flex>
-              </Flex>
+              Are you sure?
+            </Text>
+            <Flex
+              pos={"absolute"}
+              right={"1.56em"}
+              cursor={"pointer"}
+              onClick={() => closeModal()}
+            >
+              <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
             </Flex>
           </Flex>
-
-          {/* <Box mt={"25px"} mb={"25px"} px={"15px"}>
-            <Line></Line>
-          </Box> */}
-
-          <Box
-            as={Flex}
-            alignItems="center"
-            justifyContent="center"
-            mb={"24px"}
+          {/* Content Area*/}
+          <Flex
+            w={"100%"}
+            flexDir={"column"}
+            px={bp700px ? "20px" : "120px"}
+            mb={"18px"}
+            alignItems={"center"}
+            justifyContent={"center"}
+            textAlign={"center"}
+            rowGap={"12px"}
+            fontSize={14}
+            color={"#8b8b93"}
           >
-            <SubmitButton name="Confirm" onClick={callBond}></SubmitButton>
-          </Box>
+            <Text>
+              Buying here is more expensive than <br /> Tokamak Network Swap or
+              other exchanges
+            </Text>
+            <Text>Type &quot;confirm&quot; to proceed anyway</Text>
+          </Flex>
+          {/* Button Area*/}
+          <Flex
+            flexDir={"column"}
+            rowGap={"30px"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            <Input
+              w={"460px"}
+              fontSize={14}
+              color={"#64646f"}
+              placeholder={"Type “confirm” here"}
+              textAlign={"center"}
+              onChange={(e) => {
+                setTypeConfirm(e.target.value);
+              }}
+            ></Input>
+            <SubmitButton
+              w={"460px"}
+              name="Confirm"
+              onClick={() => {
+                callBond();
+                setIsOpenConfirm(false);
+              }}
+              isDisabled={typeConfirm !== "confirm"}
+            ></SubmitButton>
+          </Flex>
         </ModalBody>
       </ModalContent>
     </Modal>
