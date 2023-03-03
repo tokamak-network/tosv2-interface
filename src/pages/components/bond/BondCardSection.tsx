@@ -75,6 +75,7 @@ function BondCardSection() {
           endTime,
           index,
           startDay,
+          startTime,
           leftDay: "",
           endDay,
           minimumBondPrice: "0",
@@ -97,8 +98,6 @@ function BondCardSection() {
       setCardList(bondcardDatas);
     }
   }, [priceData, data]);
-
-  console.log(cardList);
 
   return (
     <Flex

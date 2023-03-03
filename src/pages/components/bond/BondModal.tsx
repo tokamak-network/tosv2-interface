@@ -126,7 +126,6 @@ function BondModal() {
 
   const callBond = useCallback(async () => {
     try {
-      console.log(minimumTosPrice);
       if (
         BondDepositoryProxy_CONTRACT &&
         inputValue.bond_modal_balance &&
@@ -137,13 +136,12 @@ function BondModal() {
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           console.log("---ETHDepositWithSTOS()---");
-          console.log(
-            marketId,
-            convertToWei(inputAmount),
-            minimumTosPrice.toString(),
-            periodWeeks,
-            { value: convertToWei(inputAmount) }
-          );
+          console.log(`marketId : ${marketId}`);
+          console.log(`inputAmount : ${convertToWei(inputAmount)}`);
+          console.log(`minimumTosPrice : ${minimumTosPrice.toString()}`);
+          console.log(`periodWeeks : ${periodWeeks}`);
+          console.log(`value : ${convertToWei(inputAmount)}`);
+
           const tx = await BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
             marketId,
             convertToWei(inputAmount),

@@ -23,6 +23,8 @@ import InactiveArrow from "assets/icons/bond/arrow-right2_disabled.svg";
 import RepeatIcon from "assets/icons/bond/s-repeat.svg";
 import Image from "next/image";
 
+function getStatusText() {}
+
 function ContentComponent(props: {
   title: string;
   content: string;
@@ -96,18 +98,23 @@ function BondCard(props: { data: BondCardProps }) {
   >("Time Starts");
 
   const timeDiff = data?.endTime - getNowTimeStamp();
+  const openTimeDiff = data?.startTime - getNowTimeStamp();
+
   const countDown = getDuration(timeDiff);
+  const openCountDown = getDuration(openTimeDiff);
+
   const txPending = useRecoilValue(selectedTxState);
 
   const capacityIsZero = Number(data?.bondCapacity.replaceAll("%", "")) <= 0;
   const discountIsMinus = data?.discountRate < 0;
 
   const [isOpen, setIsOpen] = useState(timeDiff >= 0 || !capacityIsZero);
+  const [isNotOpen, setIsNotOpen] = useState(openTimeDiff > 0);
   const bondIsDisabled = timeDiff < 0;
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
-  const bondButtonIsDisabled = bondIsDisabled || capacityIsZero;
+  const bondButtonIsDisabled = bondIsDisabled || capacityIsZero || isNotOpen;
   const isClosed = bondIsDisabled || capacityIsZero;
 
   const changeTitleState = useCallback(() => {
@@ -158,8 +165,14 @@ function BondCard(props: { data: BondCardProps }) {
           flexDir={"column"}
         >
           {data?.isHighest && <Text>Highest</Text>}
-          <Text color={"white.200"}>
-            {isClosed
+          <Text
+            color={isNotOpen ? "#5eea8d" : isClosed ? "gray.100" : "white.200"}
+          >
+            {isNotOpen
+              ? openTimeDiff > 86400
+                ? `D-${openCountDown.days}`
+                : `D-${openCountDown.hours}:${openCountDown.mins}:${openCountDown.secs}`
+              : isClosed
               ? "Closed"
               : `${String(data?.discountRate).split(".")[0]}% Off`}
           </Text>
@@ -195,9 +208,9 @@ function BondCard(props: { data: BondCardProps }) {
             <Text fontSize={12}>{data?.progress}%</Text>
           </Flex>
           <Flex fontSize={11}>
-            <Text color={"white.200"}>{data?.totalSold} /</Text>
+            <Text color={"white.200"}>{data?.totalSold}&nbsp;</Text>
             <Text>
-              &nbsp;{data?.bondCapacity} {data?.buyTokenType}
+              / {data?.bondCapacity} {data?.buyTokenType}
             </Text>
           </Flex>
         </Flex>

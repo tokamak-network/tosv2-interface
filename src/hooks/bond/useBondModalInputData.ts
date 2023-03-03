@@ -195,7 +195,7 @@ function useBondModalInputData() {
         const discount = ((tosPrice - minimumBondPrice) / tosPrice) * 100;
 
         setMinimumTosPrice(
-          BigNumber.from(bondingPrice).mul(BigNumber.from("950000000000000000"))
+          BigNumber.from(bondingPrice).mul("995000000000000000")
         );
 
         setBondDiscount(commafy(discount));

@@ -13,6 +13,7 @@ export type BondCardProps = {
   discountRate: number;
   totalSold: string;
   startDay: string;
+  startTime: number;
   leftDay: string;
   endDay: string;
   endTime: number;
