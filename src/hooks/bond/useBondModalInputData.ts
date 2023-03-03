@@ -193,11 +193,11 @@ function useBondModalInputData() {
           commafy(bondingPricePerTos).replaceAll(",", "")
         );
         const discount = ((tosPrice - minimumBondPrice) / tosPrice) * 100;
-
-        setMinimumTosPrice(
-          BigNumber.from(bondingPrice).mul("995000000000000000")
+        const mininmumTosPrice = BigInt(
+          Number(bondingPrice.toString()) / 1.005
         );
 
+        setMinimumTosPrice(BigNumber.from(mininmumTosPrice.toString()));
         setBondDiscount(commafy(discount));
       }
     }
