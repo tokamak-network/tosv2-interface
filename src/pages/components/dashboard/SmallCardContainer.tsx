@@ -74,6 +74,7 @@ const SmallCardContainer = () => {
           title: "TOS Price",
           tooltip: true,
           tooltipMessage: "TOS market price in USD",
+          switchButton: true
         },
         {
           price: backingPerTosNum as string,
@@ -81,6 +82,7 @@ const SmallCardContainer = () => {
           title: "Backing Per TOS",
           tooltip: true,
           tooltipMessage: "Amount of treasury asset backed per 1 TOS in ETH",
+          switchButton: true
         },
         {
           price: commafy(mintingRate) as string,
@@ -89,7 +91,8 @@ const SmallCardContainer = () => {
           tooltip: true,
           tooltipMessage:
             "Minting rate per ETH determines how many TOS gets minted for every 1 ETH that gets bonded",
-        },
+            switchButton: false
+          },
         {
           price: commafy(ltosIndex, 7) as string,
           priceUnit: "TOS",
@@ -98,7 +101,8 @@ const SmallCardContainer = () => {
           tooltip: true,
           tooltipMessage:
             "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours.",
-        },
+            switchButton: false
+          },
       ];
       setCardList(dummyData);
     }
@@ -152,6 +156,7 @@ const SmallCardContainer = () => {
               title={cardData.title}
               priceUnit={cardData.priceUnit}
               tooltipMessage={cardData.tooltipMessage}
+              switchButton={cardData.switchButton}
             ></SmallCard>
           </Box>
         );

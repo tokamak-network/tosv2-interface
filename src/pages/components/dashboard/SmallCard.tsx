@@ -13,6 +13,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
     style,
     tooltip,
     tooltipMessage,
+    switchButton,
   } = props;
   const [width] = useWindowDimensions();
   const [unit, setUnit] = useState("$");
@@ -84,31 +85,44 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
           </Text>
           <BasicTooltip label={tooltipMessage} />
         </Flex>
-
-        <Flex fontSize={10} fontWeight={600} color={'white.100'}>
-          <Button
-            h={"23px"}
-            w="30px"
-            bg={unit === '$'? 'blue.200':''}
-            onClick={()=>setUnit('$')}
-            // border="1px solid red"
-            borderRightWidth={"0.5px"}
-            borderRightRadius={"0px"}
+        {switchButton ? (
+          <Flex
+           
+            w="80px"
+            border={"1px solid #313442"}
+            borderRadius="5px"
+            h={"21px"}
           >
-            $
-          </Button>
-          <Button
-            h={"23px"}
-            w="30px"
-            bg={unit === 'ETH'? 'blue.200':''}
-            // border="1px solid red"
-            onClick={()=>setUnit('ETH')}
-            borderLeftWidth={"0.5px"}
-            borderLeftRadius={"0px"}
-          >
-            ETH
-          </Button>
-        </Flex>
+            <Button
+              h={"19px"}
+              fontSize={"12px"}
+              fontWeight={500}
+              _hover={{cursor:'pointer'}}
+              _active={{}}
+              color={unit === "$" ? "white.100":'#64646f'}
+              w="50%"
+              bg={unit === "$" ? "#0f0f12" : "transparent"}
+              onClick={() => setUnit("$")}
+            >
+              $
+            </Button>
+            <Button
+              h={"19px"}
+              fontSize={"12px"}
+              w="50%"
+              color={unit === "ETH" ? "white.100":'#64646f'}
+              fontWeight={500}
+              _hover={{cursor:'pointer'}}
+              _active={{}}
+              bg={unit === "ETH" ? "#0f0f12" : "transparent"}
+              onClick={() => setUnit("ETH")}
+            >
+              ETH
+            </Button>
+          </Flex>
+        ) : (
+          <></>
+        )}
       </Flex>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <Flex

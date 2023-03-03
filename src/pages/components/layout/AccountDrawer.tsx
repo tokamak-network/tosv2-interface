@@ -129,11 +129,13 @@ function AccountDrawer(props: HeaderProps) {
                     TOS
                   </Flex>
                 </Flex>
+                <Flex justifyContent={'center'} alignItems='center'>
                 <Text
                 color={'blue.200'}
                   fontSize='12px'
                   onClick={openSwapModal}
                   _hover={{cursor:'pointer'}}
+                  mr='15px'
                 >
                   Buy More
                 </Text>
@@ -141,8 +143,10 @@ function AccountDrawer(props: HeaderProps) {
                   name="Stake"
                   w={"90px"}
                   h={"30px"}
+                  style={{ fontSize: "12px" , fontWeight: 'normal'}}
                   onClick={sendToStake}
                 ></SubmitButton>
+                </Flex>
               </Flex>
             </GridItem>
             <GridItem>

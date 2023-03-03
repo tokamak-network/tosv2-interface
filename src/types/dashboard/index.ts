@@ -6,5 +6,6 @@ export type Dashboard_SmallCardType = {
   tooltip?: boolean;
   tooltipMessage :string;
   style?: {};
+  switchButton?: boolean
 };
 export type Dashboard_SmallCardArrType = Dashboard_SmallCardType[];
