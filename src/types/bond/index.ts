@@ -25,6 +25,7 @@ export type BondCardProps = {
   version: string;
   progress: string;
   isHighest?: boolean;
+  isDiscountMinus: boolean;
 };
 
 export type BondRawdata = {

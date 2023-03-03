@@ -80,6 +80,7 @@ function BondCardSection() {
           endDay,
           minimumBondPrice: "0",
           version,
+          isDiscountMinus: Number(commafy(discount)) < 0,
         };
       });
 
@@ -96,7 +97,7 @@ function BondCardSection() {
 
       bondcardDatas[biggestElementIndex] = {
         ...bondcardDatas[biggestElementIndex],
-        isHighest: discountArr[biggestElementIndex] === -9999 ? false : true,
+        isHighest: discountArr[biggestElementIndex] > 0 ? true : false,
       };
 
       setCardList(bondcardDatas);

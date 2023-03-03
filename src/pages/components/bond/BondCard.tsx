@@ -32,9 +32,17 @@ function ContentComponent(props: {
   ImageSrc?: any;
   setStateTitleAction?: () => void;
   isHighest?: boolean;
+  isMinus?: boolean;
 }) {
-  const { title, content, style, ImageSrc, setStateTitleAction, isHighest } =
-    props;
+  const {
+    title,
+    content,
+    style,
+    ImageSrc,
+    setStateTitleAction,
+    isHighest,
+    isMinus,
+  } = props;
   const { colorMode } = useColorMode();
 
   if (ImageSrc) {
@@ -74,6 +82,8 @@ function ContentComponent(props: {
         color={
           isHighest
             ? "blue.200"
+            : isMinus
+            ? "red.100"
             : colorMode === "dark"
             ? "white.200"
             : "gray.800"
@@ -193,11 +203,18 @@ function BondCard(props: { data: BondCardProps }) {
         <Text color={"white.200"} fontSize={20} fontWeight={600}>
           ETH Bond {data?.version}
         </Text>
-        <Text fontSize={12}>
-          Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off with
-          your WTON and
-          <br /> TOS to improve the liquidity
-        </Text>
+        {data?.isDiscountMinus ? (
+          <Text fontSize={12} color={"red.100"}>
+            Notice: You can purchase TOS cheaper
+            <br /> on Tokamak Network Swap
+          </Text>
+        ) : (
+          <Text fontSize={12}>
+            Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
+            with your WTON and
+            <br /> TOS to improve the liquidity
+          </Text>
+        )}
       </Flex>
       <Flex flexDir={"column"} rowGap={"5px"} mb={"21px"}>
         <Flex justifyContent={"space-between"}>
@@ -238,6 +255,7 @@ function BondCard(props: { data: BondCardProps }) {
           title="Discount (Max)"
           content={`${data?.discountRate}%`}
           isHighest={data?.isHighest}
+          isMinus={data?.isDiscountMinus}
         ></ContentComponent>
         <ContentComponent
           title="Minimum Bond Price"
