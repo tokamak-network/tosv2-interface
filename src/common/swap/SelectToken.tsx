@@ -33,6 +33,8 @@ function SelectToken(props: { tokenType: Number }) {
   const [token1, setToken1] = useRecoilState(selectedToken1);
   const { TON_CONTRACT, WTON_CONTRACT } = useCallContract();
   const { account, library } = useWeb3React();
+
+
   const wrapperRef = useRef(null);
   const [expanded, setExpanded] = useState<boolean>(false);
   const [tokensFromAPI, setTokensFromAPI] = useState<any>([]);
@@ -87,9 +89,12 @@ function SelectToken(props: { tokenType: Number }) {
   const TokenComp = (props: { img: any; name: string; address: string }) => {
     const { img, name, address } = props;
     const { TON_ADDRESS, WTON_ADDRESS } = CONTRACT_ADDRESS;
+    const { ERC20_CONTRACT: tokenContract } = useCallContract(
+      address !== ZERO_ADDRESS ? address : undefined
+    );
 
     const addToken = useCallback(async () => {
-      if (TON_CONTRACT && WTON_CONTRACT && account) {
+      if (TON_CONTRACT && WTON_CONTRACT && account && tokenContract ) {
         if (address.toLocaleLowerCase() === WTON_ADDRESS.toLocaleLowerCase()) {
           const tokenSymbol = await WTON_CONTRACT.symbol();
           const tokenDecimals = await WTON_CONTRACT.decimals();
@@ -115,8 +120,8 @@ function SelectToken(props: { tokenType: Number }) {
             console.log(error);
           }
         } else {
-          const tokenSymbol = await TON_CONTRACT.symbol();
-          const tokenDecimals = await TON_CONTRACT.decimals();
+          const tokenSymbol = await tokenContract.symbol();
+          const tokenDecimals = await tokenContract.decimals();
           try {
             // wasAdded is a boolean. Like any RPC method, an error may be thrown.
             //@ts-ignore
