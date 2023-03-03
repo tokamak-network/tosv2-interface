@@ -23,7 +23,6 @@ function BondCardSection() {
     {
       variables: {
         period: "-1",
-        limit: 2,
       },
       pollInterval: 10000,
     }
