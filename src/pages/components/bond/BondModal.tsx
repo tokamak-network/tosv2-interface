@@ -140,7 +140,7 @@ function BondModal() {
           console.log(
             marketId,
             convertToWei(inputAmount),
-            minimumTosPrice,
+            minimumTosPrice.toString(),
             periodWeeks,
             { value: convertToWei(inputAmount) }
           );
