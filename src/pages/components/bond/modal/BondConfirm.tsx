@@ -101,6 +101,7 @@ const BondConfirm = (props: {
               color={"#64646f"}
               placeholder={"Type “confirm” here"}
               textAlign={"center"}
+              focusBorderColor={"#8a8a98"}
               onChange={(e) => {
                 setTypeConfirm(e.target.value);
               }}
