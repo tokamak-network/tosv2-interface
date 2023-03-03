@@ -32,7 +32,7 @@ export default function BondModal_Input() {
   const { zeroInputBalance, inputOver } = modalCondition;
   const { maxValue, balacne, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
-  const { bondDiscount } = useBondModalInputData();
+  const { bondDiscount, isMinusDiscount } = useBondModalInputData();
 
   const tokenImage = useMemo(() => {
     switch (bondTokenType) {
@@ -54,7 +54,9 @@ export default function BondModal_Input() {
         <Text color={"white.200"} mr={"9px"}>
           Bond Discount
         </Text>
-        <Text color={"blue.200"}>{bondDiscount}%</Text>
+        <Text color={isMinusDiscount ? "red.100" : "blue.200"} fontWeight={600}>
+          {bondDiscount}%
+        </Text>
       </Flex>
       <Flex
         borderWidth={"1px"}

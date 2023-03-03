@@ -11,7 +11,7 @@ import useCallContract from "hooks/useCallContract";
 import { convertNumber } from "@/utils/number";
 import { getDummyServerBondData } from "test/bond/dummyBondData";
 import { isProduction } from "constants/production";
-import { convertTimeStamp } from "@/utils/time";
+import { convertTimeStamp, getNowTimeStamp } from "@/utils/time";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
@@ -83,8 +83,12 @@ function BondCardSection() {
         };
       });
 
-      const discountArr = bondcardDatas.map(
-        (bondData) => bondData.discountRate
+      //remove bonds are already done or not started yet from the list to calculate highest yield bond
+      const discountArr = bondcardDatas.map((bondData) =>
+        bondData.endTime < getNowTimeStamp() ||
+        bondData.startTime > getNowTimeStamp()
+          ? -9999
+          : bondData.discountRate
       );
       const biggestElementIndex = discountArr.indexOf(
         Math.max.apply(Math, discountArr)
@@ -92,7 +96,7 @@ function BondCardSection() {
 
       bondcardDatas[biggestElementIndex] = {
         ...bondcardDatas[biggestElementIndex],
-        isHighest: true,
+        isHighest: discountArr[biggestElementIndex] === -9999 ? false : true,
       };
 
       setCardList(bondcardDatas);

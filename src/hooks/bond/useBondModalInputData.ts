@@ -3,7 +3,7 @@ import { BigNumber, ethers, FixedNumber } from "ethers";
 import useStosReward from "hooks/stake/useStosReward";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import JSBI from "jsbi";
 import constant from "constant";
 import { useRecoilState } from "recoil";
@@ -239,6 +239,10 @@ function useBondModalInputData() {
     });
   }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod]);
 
+  const isMinusDiscount = useMemo(() => {
+    return Number(bondDiscount) < 0;
+  }, [bondDiscount]);
+
   return {
     youWillGet,
     endTime,
@@ -247,6 +251,7 @@ function useBondModalInputData() {
     bondDiscount,
     minimumTosPrice,
     maxCapacityValue,
+    isMinusDiscount,
   };
 }
 

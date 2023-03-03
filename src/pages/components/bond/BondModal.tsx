@@ -96,6 +96,7 @@ function BondModal() {
     stosReward,
     originalTosAmount,
     minimumTosPrice,
+    isMinusDiscount,
   } = useBondModalInputData();
 
   const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
@@ -189,9 +190,6 @@ function BondModal() {
   //   setBottomLoading(true);
   // }, [inputValue.bond_modal_balance, setBottomLoading]);
 
-  const capacityIsZero =
-    selectedModalData && selectedModalData?.discountRate <= 0;
-
   return (
     <Modal
       isOpen={selectedModal === "bond_bond_modal"}
@@ -253,19 +251,18 @@ function BondModal() {
                 fiveDaysLockupEndTime={fiveDaysLockupEndTime}
               />
             </Flex>
-            <Flex justifyContent={"center"} mb={capacityIsZero ? "" : "40px"}>
+            <Flex justifyContent={"center"} mb={isMinusDiscount ? "" : "40px"}>
               <SubmitButton
                 w={bp700px ? 310 : 460}
                 h={42}
                 name="Bond"
-                // onClick={callBond}
                 onClick={() =>
-                  capacityIsZero ? setIsOpenConfirm(true) : callBond()
+                  isMinusDiscount ? setIsOpenConfirm(true) : callBond()
                 }
-                // isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
+                isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
             </Flex>
-            {capacityIsZero && (
+            {isMinusDiscount && (
               <Flex
                 fontSize={11}
                 textAlign="center"

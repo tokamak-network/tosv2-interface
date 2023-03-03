@@ -24,8 +24,14 @@ function BondModal_BottomContent(props: {
     useModal<BondCardProps>();
   const marketId = selectedModalData?.index;
 
-  const { youWillGet, endTime, stosReward, originalTosAmount, bondDiscount } =
-    useBondModalInputData();
+  const {
+    youWillGet,
+    endTime,
+    stosReward,
+    originalTosAmount,
+    bondDiscount,
+    isMinusDiscount,
+  } = useBondModalInputData();
 
   const contentList: IBottomContentProps[] = [
     {
@@ -45,7 +51,7 @@ function BondModal_BottomContent(props: {
       //   "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
       isPlus: true,
       noSign: true,
-      style: { color: "blue.200" },
+      style: { color: isMinusDiscount ? "red.100" : "blue.200" },
     },
     {
       title: "End Time",
