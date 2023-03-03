@@ -23,14 +23,18 @@ import InactiveArrow from "assets/icons/bond/arrow-right2_disabled.svg";
 import RepeatIcon from "assets/icons/bond/s-repeat.svg";
 import Image from "next/image";
 
+function getStatusText() {}
+
 function ContentComponent(props: {
   title: string;
   content: string;
   style?: any;
   ImageSrc?: any;
   setStateTitleAction?: () => void;
+  isHighest?: boolean;
 }) {
-  const { title, content, style, ImageSrc, setStateTitleAction } = props;
+  const { title, content, style, ImageSrc, setStateTitleAction, isHighest } =
+    props;
   const { colorMode } = useColorMode();
 
   if (ImageSrc) {
@@ -66,7 +70,15 @@ function ContentComponent(props: {
       <Text color={colorMode === "dark" ? "gray.100" : "gray.1000"}>
         {title}
       </Text>
-      <Text color={colorMode === "dark" ? "white.200" : "gray.800"}>
+      <Text
+        color={
+          isHighest
+            ? "blue.200"
+            : colorMode === "dark"
+            ? "white.200"
+            : "gray.800"
+        }
+      >
         {content}
       </Text>
     </Flex>
@@ -86,18 +98,23 @@ function BondCard(props: { data: BondCardProps }) {
   >("Time Starts");
 
   const timeDiff = data?.endTime - getNowTimeStamp();
+  const openTimeDiff = data?.startTime - getNowTimeStamp();
+
   const countDown = getDuration(timeDiff);
+  const openCountDown = getDuration(openTimeDiff);
+
   const txPending = useRecoilValue(selectedTxState);
 
   const capacityIsZero = Number(data?.bondCapacity.replaceAll("%", "")) <= 0;
-  const discountIsMinus = Number(data?.discountRate.replaceAll("%", "")) < 0;
+  const discountIsMinus = data?.discountRate < 0;
 
   const [isOpen, setIsOpen] = useState(timeDiff >= 0 || !capacityIsZero);
+  const [isNotOpen, setIsNotOpen] = useState(openTimeDiff > 0);
   const bondIsDisabled = timeDiff < 0;
   const timeLeft = bondIsDisabled
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
-  const bondButtonIsDisabled = bondIsDisabled || capacityIsZero;
+  const bondButtonIsDisabled = bondIsDisabled || capacityIsZero || isNotOpen;
   const isClosed = bondIsDisabled || capacityIsZero;
 
   const changeTitleState = useCallback(() => {
@@ -145,9 +162,19 @@ function BondCard(props: { data: BondCardProps }) {
           textAlign={"center"}
           alignItems="center"
           justifyContent={"center"}
+          flexDir={"column"}
         >
-          <Text>
-            {isClosed ? "Closed" : `${data?.discountRate.split(".")[0]}% Off`}
+          {data?.isHighest && <Text>Highest</Text>}
+          <Text
+            color={isNotOpen ? "#5eea8d" : isClosed ? "gray.100" : "white.200"}
+          >
+            {isNotOpen
+              ? openTimeDiff > 86400
+                ? `D-${openCountDown.days}`
+                : `D-${openCountDown.hours}:${openCountDown.mins}:${openCountDown.secs}`
+              : isClosed
+              ? "Closed"
+              : `${String(data?.discountRate).split(".")[0]}% Off`}
           </Text>
         </Flex>
       </Flex>
@@ -167,7 +194,8 @@ function BondCard(props: { data: BondCardProps }) {
           ETH Bond {data?.version}
         </Text>
         <Text fontSize={12}>
-          Buy TOS for up to 20% off with your WTON and
+          Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off with
+          your WTON and
           <br /> TOS to improve the liquidity
         </Text>
       </Flex>
@@ -180,9 +208,9 @@ function BondCard(props: { data: BondCardProps }) {
             <Text fontSize={12}>{data?.progress}%</Text>
           </Flex>
           <Flex fontSize={11}>
-            <Text color={"white.200"}>{data?.totalSold} /</Text>
+            <Text color={"white.200"}>{data?.totalSold}&nbsp;</Text>
             <Text>
-              &nbsp;{data?.bondCapacity} {data?.buyTokenType}
+              / {data?.bondCapacity} {data?.buyTokenType}
             </Text>
           </Flex>
         </Flex>
@@ -208,7 +236,8 @@ function BondCard(props: { data: BondCardProps }) {
         ></ContentComponent>
         <ContentComponent
           title="Discount (Max)"
-          content={data?.discountRate}
+          content={`${data?.discountRate}%`}
+          isHighest={data?.isHighest}
         ></ContentComponent>
         <ContentComponent
           title="Minimum Bond Price"
@@ -216,7 +245,7 @@ function BondCard(props: { data: BondCardProps }) {
         ></ContentComponent>
         <ContentComponent
           title="Lock-Up (Min)"
-          content={data?.totalSold}
+          content={"5 Days"}
         ></ContentComponent>
         <BasicButton
           name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}

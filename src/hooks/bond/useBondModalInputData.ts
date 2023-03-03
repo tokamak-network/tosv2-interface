@@ -1,5 +1,5 @@
 import { convertNumber, convertToWei } from "@/utils/number";
-import { BigNumber, ethers } from "ethers";
+import { BigNumber, ethers, FixedNumber } from "ethers";
 import useStosReward from "hooks/stake/useStosReward";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
@@ -26,6 +26,9 @@ function useBondModalInputData() {
   );
   const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
   const [bondDiscount, setBondDiscount] = useState<string>("-");
+  const [minimumTosPrice, setMinimumTosPrice] = useState<BigNumber | undefined>(
+    undefined
+  );
 
   const {
     StakingV2Proxy_CONTRACT,
@@ -39,7 +42,6 @@ function useBondModalInputData() {
   const { newBalanceStos } = useStosBond(Number(inputTosAmount));
   const { priceData } = usePrice();
   const { rebasePeriod } = constant;
-
   const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
 
   useEffect(() => {
@@ -66,12 +68,16 @@ function useBondModalInputData() {
         const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
           marketId
         );
-        const tosPrice = bondList.tosPrice;
-        const tosValuation =
-          await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
-            tosPrice,
-            ethAmountWei
-          );
+
+        const tosPrice = bondList.market.tosPrice;
+        // const tosValuation =
+        //   await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
+        //     tosPrice,
+        //     ethAmountWei
+        //   );
+        const tosValuation = BigNumber.from(ethAmountWei)
+          .mul(tosPrice)
+          .div("1000000000000000000");
 
         const tosAmount = convertNumber({ amount: tosValuation.toString() });
         return setInputTosAmount(tosAmount);
@@ -92,45 +98,52 @@ function useBondModalInputData() {
 
   useEffect(() => {
     async function fetchLtosData() {
-      if (
-        inputValue?.bond_modal_balance === undefined ||
-        inputValue?.bond_modal_balance === ""
-      ) {
+      const ethAmount = inputValue.bond_modal_balance;
+
+      if (ethAmount === undefined || ethAmount === "") {
         return setYouWillGet("-");
       }
       if (
         StakingV2Proxy_CONTRACT &&
         BondDepositoryProxy_CONTRACT &&
-        inputValue?.bond_modal_balance &&
+        ethAmount &&
         marketId
       ) {
-        const ethAmount = inputValue.bond_modal_balance;
+        console.log(ethAmount);
+
         const ethAmountWei = convertToWei(ethAmount);
         const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
           marketId
         );
-        const tosPrice = bondList.tosPrice;
-        const tosAmount =
-          await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
-            tosPrice,
-            ethAmountWei
-          );
+
+        const tosPrice = bondList.market.tosPrice;
+        // const tosAmount =
+        //   await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
+        //     tosPrice,
+        //     ethAmountWei
+        //   );
+
+        const tosValuation = BigNumber.from(ethAmountWei)
+          .mul(tosPrice)
+          .div("1000000000000000000");
 
         const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
-          tosAmount
+          tosValuation
         );
+        console.log(LTOS_BN.toString());
+
         const ltos = convertNumber({ amount: LTOS_BN, localeString: true });
 
         setOriginalTosAmount(
-          convertNumber({ amount: tosAmount.toString() }) || "-"
+          convertNumber({ amount: tosValuation.toString() }) || "-"
         );
         return setYouWillGet(ltos);
       }
     }
     fetchLtosData()
       .catch((e) => {
-        // console.log("**useBondModalInputData3 err**");
-        // console.log(e);
+        console.log("**fetchLtosData err**");
+        console.log(e);
       })
       .finally(() => {
         setLoading(false);
@@ -139,8 +152,9 @@ function useBondModalInputData() {
     StakingV2Proxy_CONTRACT,
     BondDepositoryProxy_CONTRACT,
     selectedModalData,
-    inputValue?.bond_modal_balance,
+    inputValue,
     marketId,
+    setLoading,
   ]);
 
   useEffect(() => {
@@ -180,10 +194,17 @@ function useBondModalInputData() {
         );
         const discount = ((tosPrice - minimumBondPrice) / tosPrice) * 100;
 
+        setMinimumTosPrice(
+          BigNumber.from(bondingPrice).mul("995000000000000000")
+        );
+
         setBondDiscount(commafy(discount));
       }
     }
-    fetchBondDiscount().catch((e) => console.log(e));
+    fetchBondDiscount().catch((e) => {
+      console.log("**fetchBondDiscount err**");
+      console.log(e);
+    });
   }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod, priceData]);
 
   return {
@@ -192,6 +213,7 @@ function useBondModalInputData() {
     stosReward: commafy(newBalanceStos),
     originalTosAmount,
     bondDiscount,
+    minimumTosPrice,
   };
 }
 

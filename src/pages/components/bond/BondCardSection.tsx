@@ -60,21 +60,22 @@ function BondCardSection() {
         const progress =
           Number(capacity) / Number(totalSold) === Infinity
             ? "0"
-            : isNaN(Number(capacity) / Number(totalSold))
+            : isNaN(Number(totalSold) / Number(capacity))
             ? "-"
-            : commafy(Number(capacity) / Number(totalSold), 0);
+            : commafy((Number(totalSold) / Number(capacity)) * 100, 0);
 
         return {
           bondCapacity,
           totalSold: totalSoldCom,
           progress,
           bondingPrice: `$ ${commafy(bondPrice)}`,
-          discountRate: `${commafy(discount)} %`,
+          discountRate: Number(commafy(discount)),
           sellTokenType: "ETH",
           buyTokenType: "TOS",
           endTime,
           index,
           startDay,
+          startTime,
           leftDay: "",
           endDay,
           minimumBondPrice: "0",
@@ -82,11 +83,21 @@ function BondCardSection() {
         };
       });
 
+      const discountArr = bondcardDatas.map(
+        (bondData) => bondData.discountRate
+      );
+      const biggestElementIndex = discountArr.indexOf(
+        Math.max.apply(Math, discountArr)
+      );
+
+      bondcardDatas[biggestElementIndex] = {
+        ...bondcardDatas[biggestElementIndex],
+        isHighest: true,
+      };
+
       setCardList(bondcardDatas);
     }
   }, [priceData, data]);
-
-  console.log(cardList);
 
   return (
     <Flex

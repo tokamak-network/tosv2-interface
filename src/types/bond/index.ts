@@ -10,9 +10,10 @@ export type BondTopCardProps = {
 export type BondCardProps = {
   bondCapacity: string;
   bondingPrice: string;
-  discountRate: string;
+  discountRate: number;
   totalSold: string;
   startDay: string;
+  startTime: number;
   leftDay: string;
   endDay: string;
   endTime: number;
@@ -23,6 +24,7 @@ export type BondCardProps = {
   minimumBondPrice: string;
   version: string;
   progress: string;
+  isHighest?: boolean;
 };
 
 export type BondRawdata = {
