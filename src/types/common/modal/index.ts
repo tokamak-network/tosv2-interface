@@ -10,4 +10,5 @@ export type IBottomContentProps = {
   contentFontSize?: number;
   isPlus?: boolean;
   noSign?: boolean;
+  style?: {};
 };

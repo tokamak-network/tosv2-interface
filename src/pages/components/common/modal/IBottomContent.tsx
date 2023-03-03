@@ -18,6 +18,7 @@ function IBottomContent(props: IBottomContentProps) {
     contentFontSize,
     isPlus,
     noSign,
+    style,
   } = props;
   const { colorMode } = useColorMode();
   const { isModalLoading } = useModal();
@@ -89,6 +90,7 @@ function IBottomContent(props: IBottomContentProps) {
                     color={colorMode === "dark" ? "white.200" : "gray.800"}
                     fontWeight={600}
                     mr={fourthTooltip ? "6px" : ""}
+                    {...style}
                   >
                     {thirdContent}
                   </Text>
