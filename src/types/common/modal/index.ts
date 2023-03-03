@@ -11,4 +11,5 @@ export type IBottomContentProps = {
   isPlus?: boolean;
   noSign?: boolean;
   style?: {};
+  hasTitleStar?: boolean;
 };

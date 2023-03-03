@@ -19,6 +19,7 @@ function IBottomContent(props: IBottomContentProps) {
     isPlus,
     noSign,
     style,
+    hasTitleStar,
   } = props;
   const { colorMode } = useColorMode();
   const { isModalLoading } = useModal();
@@ -34,10 +35,15 @@ function IBottomContent(props: IBottomContentProps) {
         <Flex justifyContent={"flex-start"} alignItems={"center"}>
           <Text
             color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-            mr={"6px"}
+            mr={hasTitleStar ? "3px" : "6px"}
           >
             {title}
           </Text>
+          {hasTitleStar && (
+            <Text color={"red.100"} mr={"3px"}>
+              *
+            </Text>
+          )}
           {tooltip ? <BasicTooltip label={tooltip} /> : <></>}
         </Flex>
         {isModalLoading ? (

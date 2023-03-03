@@ -107,7 +107,7 @@ export default function BondModal_Input() {
             border={"1px solid #535353"}
             bgColor={"transparent"}
             fontSize={11}
-            color={"#5a5a5a"}
+            color={"blue.200"}
             onClick={() => {
               setValue({
                 ...inputValue,

@@ -38,6 +38,7 @@ function BondModal_BottomContent(props: {
       title: "You Give",
       content: `${inputValue.bond_modal_balance || "-"} ETH`,
       tooltip: "",
+      hasTitleStar: true,
     },
     {
       title: "You Will Get",
@@ -52,6 +53,7 @@ function BondModal_BottomContent(props: {
       isPlus: true,
       noSign: true,
       style: { color: isMinusDiscount ? "red.100" : "blue.200" },
+      hasTitleStar: true,
     },
     {
       title: "End Time",
