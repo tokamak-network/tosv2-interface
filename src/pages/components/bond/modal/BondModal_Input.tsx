@@ -57,7 +57,12 @@ export default function BondModal_Input() {
         <Text color={"blue.200"}>{bondDiscount}%</Text>
       </Flex>
       <Flex
-        border={"1px solid #313442"}
+        borderWidth={"1px"}
+        borderColor={
+          maxValue !== undefined && (zeroInputBalance || inputOver)
+            ? "#e23738"
+            : "#313442"
+        }
         w={"460px"}
         h={"78px"}
         bgColor={"#1f2128"}

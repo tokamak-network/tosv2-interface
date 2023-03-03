@@ -269,7 +269,9 @@ function BalanceInput(props: NumberInputProp) {
             boxShadow: "",
             borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
           }}
-          errorBorderColor={"#e23738"}
+          errorBorderColor={
+            selectedModal === "bond_bond_modal" ? "none" : "#e23738"
+          }
           outline="none"
           defaultValue={maxValue}
           value={value[atomKey]}
@@ -333,7 +335,9 @@ function BalanceInput(props: NumberInputProp) {
           fontSize={12}
           color={"#e23738"}
           justifyContent={"flex-start"}
-          pl={"6px"}
+          ml={selectedModal === "bond_bond_modal" ? "-5px" : ""}
+          pl={selectedModal === "bond_bond_modal" ? "" : "6px"}
+          mt={selectedModal === "bond_bond_modal" ? "45px" : ""}
         >
           <Text>{errorMsg}</Text>
         </Flex>
