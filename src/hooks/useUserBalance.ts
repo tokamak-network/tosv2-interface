@@ -34,7 +34,7 @@ const useUserBalance = () => {
     undefined
   );
 
-  const userETTBalanceNum = useMemo(() => {
+  const userETHBalanceNum = useMemo(() => {
     if (userETHBalance) {
       return Number(userETHBalance.replaceAll(",", ""));
     }
@@ -116,7 +116,7 @@ const useUserBalance = () => {
     userETHBalance,
     userLTOSBalance,
     userSTOSBalance,
-    userETTBalanceNum,
+    userETHBalanceNum,
   };
 };
 

@@ -31,17 +31,31 @@ function useBondModal() {
     inputValue.bond_modal_period
   );
 
-  //need to calculate maxValue
-  const maxValue = 9999;
+  //need to put marketId
+  const {
+    youWillGet,
+    endTime,
+    stosReward,
+    originalTosAmount,
+    maxCapacityValue,
+  } = useBondModalInputData();
+
+  //calculate maxValue
+  const { userETHBalance, userETHBalanceNum } = useUserBalance();
+  const maxValue = useMemo(() => {
+    if (userETHBalanceNum === undefined || maxCapacityValue === undefined) {
+      return 0;
+    }
+    if (userETHBalanceNum !== undefined && maxCapacityValue !== undefined) {
+      return maxCapacityValue > userETHBalanceNum
+        ? userETHBalanceNum
+        : maxCapacityValue;
+    }
+  }, [userETHBalanceNum, maxCapacityValue]);
 
   //modal condition
-  const { userETHBalance, userETTBalanceNum } = useUserBalance();
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
     useBondModalCondition(maxValue);
-
-  //need to put marketId
-  const { youWillGet, endTime, stosReward, originalTosAmount } =
-    useBondModalInputData();
 
   //maxValue for each case(token type)
   let tempTokenType: TokenTypes = "ETH";
@@ -50,7 +64,7 @@ function useBondModal() {
       case "ETH":
         return {
           balacne: userETHBalance,
-          balanceNum: userETTBalanceNum,
+          balanceNum: userETHBalanceNum,
           name: "ETH",
           maxValue,
         };
@@ -62,7 +76,7 @@ function useBondModal() {
           maxValue: 0,
         };
     }
-  }, [tempTokenType, userETHBalance, userETTBalanceNum]);
+  }, [tempTokenType, userETHBalance, userETHBalanceNum, maxValue]);
 
   return {
     sTos: {

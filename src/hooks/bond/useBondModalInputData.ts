@@ -29,6 +29,9 @@ function useBondModalInputData() {
   const [minimumTosPrice, setMinimumTosPrice] = useState<BigNumber | undefined>(
     undefined
   );
+  const [maxCapacityValue, setMaxCapacityValue] = useState<number | undefined>(
+    undefined
+  );
 
   const {
     StakingV2Proxy_CONTRACT,
@@ -109,8 +112,6 @@ function useBondModalInputData() {
         ethAmount &&
         marketId
       ) {
-        console.log(ethAmount);
-
         const ethAmountWei = convertToWei(ethAmount);
         const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
           marketId
@@ -130,8 +131,6 @@ function useBondModalInputData() {
         const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
           tosValuation
         );
-        console.log(LTOS_BN.toString());
-
         const ltos = convertNumber({ amount: LTOS_BN, localeString: true });
 
         setOriginalTosAmount(
@@ -207,6 +206,39 @@ function useBondModalInputData() {
     });
   }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod, priceData]);
 
+  useEffect(() => {
+    async function fetchMaxValue() {
+      if (BondDepositoryProxy_CONTRACT && marketId) {
+        const capacity = await BondDepositoryProxy_CONTRACT.possibleMaxCapacity(
+          marketId
+        );
+        const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
+          marketId
+        );
+        const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+          marketId,
+          bondInputPeriod,
+          basePriceInfo[0]
+        );
+
+        const currentCapacityETH_BN = BigNumber.from(
+          capacity.currentCapacity
+        ).div(bondingPrice);
+
+        const currentCapacityETH = commafy(currentCapacityETH_BN.toString(), 2);
+        // if (currentCapacityETH)
+        //   return setMaxCapacityValue(
+        //     Number(currentCapacityETH.replaceAll(",", ""))
+        //   );
+        setMaxCapacityValue(Number(currentCapacityETH));
+      }
+    }
+    fetchMaxValue().catch((e) => {
+      console.log("**fetchMaxValue err**");
+      console.log(e);
+    });
+  }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod]);
+
   return {
     youWillGet,
     endTime,
@@ -214,6 +246,7 @@ function useBondModalInputData() {
     originalTosAmount,
     bondDiscount,
     minimumTosPrice,
+    maxCapacityValue,
   };
 }
 
