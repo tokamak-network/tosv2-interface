@@ -15,6 +15,7 @@ import { BondCardProps } from "types/bond";
 import useModal from "hooks/useModal";
 import usePrice from "hooks/usePrice";
 import { bond_modal } from "atom/bond/modal";
+import { useBondDepository } from "./useBondDepository";
 
 function useBondModalInputData() {
   const { selectedModalData } = useModal<BondCardProps>();
@@ -51,6 +52,10 @@ function useBondModalInputData() {
   const { priceData } = usePrice();
   const { rebasePeriod } = constant;
   const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
+
+  const { bondingPrice } = useBondDepository();
+
+  console.log(bondingPrice?.toString());
 
   useEffect(() => {
     async function fetchBondModalInputData() {
@@ -180,20 +185,23 @@ function useBondModalInputData() {
         bondInputPeriod !== undefined &&
         priceData &&
         priceData?.tosPrice &&
-        priceData?.ethPrice
+        priceData?.ethPrice &&
+        bondingPrice
       ) {
         const { ethPrice, tosPrice } = priceData;
-        const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
-          marketId
-        );
+        // const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
+        //   marketId
+        // );
 
-        const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
-          marketId,
-          bondInputPeriod,
-          basePriceInfo[0]
-        );
+        // const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+        //   marketId,
+        //   bondInputPeriod,
+        //   basePriceInfo[0]
+        // );
 
-        const bondingPriceCom = convertNumber({ amount: bondingPrice });
+        const bondingPriceCom = convertNumber({
+          amount: bondingPrice.toString(),
+        });
         const bondingPricePerTos =
           (priceData.ethPrice / Number(bondingPriceCom)) * 0.995;
         const minimumBondPrice = Number(
@@ -212,22 +220,28 @@ function useBondModalInputData() {
       console.log("**fetchBondDiscount err**");
       console.log(e);
     });
-  }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod, priceData]);
+  }, [
+    BondDepositoryProxy_CONTRACT,
+    marketId,
+    bondInputPeriod,
+    priceData,
+    bondingPrice,
+  ]);
 
   useEffect(() => {
     async function fetchMaxValue() {
-      if (BondDepositoryProxy_CONTRACT && marketId) {
+      if (BondDepositoryProxy_CONTRACT && marketId && bondingPrice) {
         const capacity = await BondDepositoryProxy_CONTRACT.possibleMaxCapacity(
           marketId
         );
-        const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
-          marketId
-        );
-        const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
-          marketId,
-          bondInputPeriod,
-          basePriceInfo[0]
-        );
+        // const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
+        //   marketId
+        // );
+        // const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+        //   marketId,
+        //   bondInputPeriod,
+        //   basePriceInfo[0]
+        // );
 
         const currentCapacityETH_BN = BigNumber.from(
           capacity.currentCapacity
@@ -245,7 +259,7 @@ function useBondModalInputData() {
       console.log("**fetchMaxValue err**");
       console.log(e);
     });
-  }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod]);
+  }, [BondDepositoryProxy_CONTRACT, marketId, bondInputPeriod, bondingPrice]);
 
   const isMinusDiscount = useMemo(() => {
     return Number(bondDiscount) < 0;
