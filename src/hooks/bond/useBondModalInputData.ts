@@ -6,7 +6,7 @@ import useInput from "hooks/useInput";
 import { useEffect, useMemo, useState } from "react";
 import JSBI from "jsbi";
 import constant from "constant";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { modalBottomLoadingState } from "atom/global/modal";
 import { getTimeZone } from "@/utils/time";
 import useStosBond from "./useStosBond";
@@ -14,6 +14,7 @@ import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
 import useModal from "hooks/useModal";
 import usePrice from "hooks/usePrice";
+import { bond_modal } from "atom/bond/modal";
 
 function useBondModalInputData() {
   const { selectedModalData } = useModal<BondCardProps>();
@@ -39,10 +40,14 @@ function useBondModalInputData() {
     LockTOS_CONTRACT,
   } = useCallContract();
 
+  const bondModalRecoilValue = useRecoilValue(bond_modal);
+  const { fiveDaysLockup } = bondModalRecoilValue;
+
   const { inputValue } = useInput("Bond_screen", "bond_modal");
-  const bondInputPeriod = inputValue?.bond_modal_period;
+  const bondInputPeriod = fiveDaysLockup ? 0 : inputValue?.bond_modal_period;
   const { newEndTime } = useStosReward(Number(inputTosAmount), bondInputPeriod);
   const { newBalanceStos } = useStosBond(Number(inputTosAmount));
+
   const { priceData } = usePrice();
   const { rebasePeriod } = constant;
   const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
@@ -113,11 +118,16 @@ function useBondModalInputData() {
         marketId
       ) {
         const ethAmountWei = convertToWei(ethAmount);
-        const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
+        const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
           marketId
         );
 
-        const tosPrice = bondList.market.tosPrice;
+        const tosPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+          marketId,
+          bondInputPeriod,
+          basePriceInfo[0]
+        );
+
         const tosValuation = BigNumber.from(ethAmountWei)
           .mul(tosPrice)
           .div("1000000000000000000");
@@ -148,6 +158,7 @@ function useBondModalInputData() {
     inputValue,
     marketId,
     setLoading,
+    bondInputPeriod,
   ]);
 
   useEffect(() => {
@@ -165,7 +176,8 @@ function useBondModalInputData() {
       if (
         BondDepositoryProxy_CONTRACT &&
         marketId &&
-        bondInputPeriod &&
+        bondInputPeriod !== "" &&
+        bondInputPeriod !== undefined &&
         priceData &&
         priceData?.tosPrice &&
         priceData?.ethPrice
@@ -174,11 +186,13 @@ function useBondModalInputData() {
         const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
           marketId
         );
+
         const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
           marketId,
           bondInputPeriod,
           basePriceInfo[0]
         );
+
         const bondingPriceCom = convertNumber({ amount: bondingPrice });
         const bondingPricePerTos =
           (priceData.ethPrice / Number(bondingPriceCom)) * 0.995;

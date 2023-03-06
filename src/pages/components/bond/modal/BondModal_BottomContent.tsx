@@ -9,6 +9,7 @@ import { BondCardProps } from "types/bond";
 import { IBottomContentProps } from "types/common/modal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import { useMemo } from "react";
+import { getNowTimeStamp, getTimeLeft } from "@/utils/time";
 
 function BondModal_BottomContent(props: {
   fiveDaysLockup: boolean;
@@ -58,7 +59,9 @@ function BondModal_BottomContent(props: {
     },
     {
       title: "End Time",
-      content: fiveDaysLockup ? fiveDaysLockupEndTime : endTime || "-",
+      content: fiveDaysLockup
+        ? getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm")
+        : endTime ?? "-",
       tooltip: "LTOS can be unstaked after this time. ",
     },
   ];
