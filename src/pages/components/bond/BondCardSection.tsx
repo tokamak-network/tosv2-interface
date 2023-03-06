@@ -142,8 +142,6 @@ function BondCardSection() {
     }
   }, [priceData, data, sortValue]);
 
-  console.log(cardList);
-
   return (
     <Grid
       // columns={3} gridRowGap={"24px"} columnGap={"25px"}

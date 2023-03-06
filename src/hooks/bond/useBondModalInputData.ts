@@ -55,8 +55,6 @@ function useBondModalInputData() {
 
   const { bondingPrice } = useBondDepository();
 
-  console.log(bondingPrice?.toString());
-
   useEffect(() => {
     async function fetchBondModalInputData() {
       if (
@@ -72,24 +70,24 @@ function useBondModalInputData() {
         BondDepositoryProxy_CONTRACT &&
         LockTOS_CONTRACT &&
         inputValue?.bond_modal_balance &&
-        marketId
+        marketId &&
+        bondingPrice
       ) {
         const ethAmount = inputValue.bond_modal_balance;
         const ethAmountWei = convertToWei(ethAmount);
 
         //new script
-        const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
-          marketId
-        );
-
-        const tosPrice = bondList.market.tosPrice;
-        // const tosValuation =
-        //   await BondDepositoryProxy_CONTRACT.calculateTosAmountForAsset(
-        //     tosPrice,
-        //     ethAmountWei
+        //   const bondList = await BondDepositoryProxy_CONTRACT.viewMarket(
+        //     marketId
         //   );
+
+        //  const tosPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+        //    marketId,
+        //    bondInputPeriod,
+        //    basePriceInfo[0]
+        //  );
         const tosValuation = BigNumber.from(ethAmountWei)
-          .mul(tosPrice)
+          .mul(bondingPrice)
           .div("1000000000000000000");
 
         const tosAmount = convertNumber({ amount: tosValuation.toString() });
@@ -107,6 +105,7 @@ function useBondModalInputData() {
     LockTOS_CONTRACT,
     rebasePeriod,
     marketId,
+    bondingPrice,
   ]);
 
   useEffect(() => {
@@ -120,21 +119,13 @@ function useBondModalInputData() {
         StakingV2Proxy_CONTRACT &&
         BondDepositoryProxy_CONTRACT &&
         ethAmount &&
-        marketId
+        marketId &&
+        bondingPrice
       ) {
         const ethAmountWei = convertToWei(ethAmount);
-        const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
-          marketId
-        );
-
-        const tosPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
-          marketId,
-          bondInputPeriod,
-          basePriceInfo[0]
-        );
 
         const tosValuation = BigNumber.from(ethAmountWei)
-          .mul(tosPrice)
+          .mul(bondingPrice)
           .div("1000000000000000000");
 
         const LTOS_BN = await StakingV2Proxy_CONTRACT.getTosToLtosPossibleIndex(
@@ -164,6 +155,7 @@ function useBondModalInputData() {
     marketId,
     setLoading,
     bondInputPeriod,
+    bondingPrice,
   ]);
 
   useEffect(() => {
