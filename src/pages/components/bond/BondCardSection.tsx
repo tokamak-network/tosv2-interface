@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Flex, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
+import { Flex, Grid, SimpleGrid, useMediaQuery, Wrap } from "@chakra-ui/react";
 import TabButton from "common/button/TabButton";
 import { GET_BOND_LIST } from "graphql/bond/getBond";
 import { useEffect, useState } from "react";
@@ -12,12 +12,16 @@ import { convertNumber } from "@/utils/number";
 import { getDummyServerBondData } from "test/bond/dummyBondData";
 import { isProduction } from "constants/production";
 import { convertTimeStamp, getNowTimeStamp } from "@/utils/time";
+import { useRecoilValue } from "recoil";
+import { bond_filter_sort_state } from "atom/bond/filter";
+import useMediaView from "hooks/useMediaView";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
     undefined
   );
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
+  const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { loading, error, data } = useQuery<{ getBondList: [] }>(
     GET_BOND_LIST,
     {
@@ -28,6 +32,8 @@ function BondCardSection() {
     }
   );
   const { priceData } = usePrice();
+
+  const sortValue = useRecoilValue(bond_filter_sort_state);
 
   if (error) {
     console.log("**graphql_getBondList err**");
@@ -63,6 +69,8 @@ function BondCardSection() {
             : isNaN(Number(totalSold) / Number(capacity))
             ? "-"
             : commafy((Number(totalSold) / Number(capacity)) * 100, 0);
+        const endTimeDiff = endTime - getNowTimeStamp();
+        const openTimeDiff = startTime - getNowTimeStamp();
 
         return {
           bondCapacity,
@@ -81,6 +89,12 @@ function BondCardSection() {
           minimumBondPrice: "0",
           version,
           isDiscountMinus: Number(commafy(discount)) < 0,
+          status:
+            openTimeDiff > 0
+              ? "will be open"
+              : endTimeDiff > 0
+              ? "open"
+              : "closed",
         };
       });
 
@@ -100,14 +114,41 @@ function BondCardSection() {
         isHighest: discountArr[biggestElementIndex] > 0 ? true : false,
       };
 
-      setCardList(bondcardDatas);
+      // setCardList(bondcardDatas);
+
+      const openList = bondcardDatas.filter(
+        (bondData: BondCardProps) => bondData.status === "open"
+      );
+      const futureList = bondcardDatas.filter(
+        (bondData: BondCardProps) => bondData.status === "will be open"
+      );
+      const closedList = bondcardDatas.filter(
+        (bondData: BondCardProps) => bondData.status === "closed"
+      );
+
+      switch (sortValue) {
+        case "default":
+          const result = openList.concat(futureList).concat(closedList);
+          return setCardList(result);
+        case "open":
+          return setCardList(openList);
+        case "future":
+          return setCardList(futureList);
+        case "closed":
+          return setCardList(closedList);
+        default:
+          break;
+      }
     }
-  }, [priceData, data]);
+  }, [priceData, data, sortValue]);
+
+  console.log(cardList);
 
   return (
-    <Flex
+    <Grid
       // columns={3} gridRowGap={"24px"} columnGap={"25px"}
-      columnGap={"2%"}
+      columnGap={"2.2%"}
+      templateColumns={isSmallerThan1024 ? "repeat(1, 1fr)" : "repeat(3, 1fr)"}
       rowGap={"20px"}
       justifyContent={isSmallerThan750 ? "center" : ""}
       flexWrap={"wrap"}
@@ -122,7 +163,7 @@ function BondCardSection() {
           ></BondCard>
         )
       )}
-    </Flex>
+    </Grid>
   );
 }
 

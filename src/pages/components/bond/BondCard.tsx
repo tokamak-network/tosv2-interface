@@ -178,7 +178,7 @@ function BondCard(props: { data: BondCardProps }) {
           <Text
             color={isNotOpen ? "#5eea8d" : isClosed ? "gray.100" : "white.200"}
           >
-            {isNotOpen
+            {data?.status === "will be open"
               ? openTimeDiff > 86400
                 ? `D-${openCountDown.days}`
                 : `D-${openCountDown.hours}:${openCountDown.mins}:${openCountDown.secs}`

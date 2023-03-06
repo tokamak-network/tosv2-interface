@@ -15,12 +15,12 @@ const defaultValue: T_BondModalValues = {
 };
 
 const bond_modal = atom<T_BondModalValues>({
-  key: "bond_filter_sort",
+  key: "bond_modal_values",
   default: defaultValue,
 });
 
 const bond_modal_state = selector({
-  key: "bond_filter_sort_state", // unique ID (with respect to other atoms/selectors)
+  key: "bond_modal_values_state", // unique ID (with respect to other atoms/selectors)
   get: ({ get }) => {
     const bondFilterSortState = get(bond_modal);
     return bondFilterSortState;

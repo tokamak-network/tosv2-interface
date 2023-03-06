@@ -1,10 +1,10 @@
 import { atom, selector } from "recoil";
 
-export type T_SortValues = "Earliest" | "Latest";
+export type T_SortValues = "default" | "open" | "future" | "closed";
 
 const bond_filter_sort = atom<T_SortValues>({
   key: "bond_filter_sort",
-  default: "Earliest",
+  default: "default",
 });
 
 const bond_filter_sort_state = selector({
