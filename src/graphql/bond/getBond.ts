@@ -13,7 +13,6 @@ const GET_BOND_LIST = gql`
       updatedTime
       startTime
       maxPayout
-      initialMaxPayout
       capacityUpdatePeriod
       bonusRatesAddress
       bonusRatesId

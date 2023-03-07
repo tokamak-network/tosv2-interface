@@ -14,12 +14,46 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
     tooltip,
     tooltipMessage,
     switchButton,
+    switchPrice,
+    switchPriceUnit,
   } = props;
   const [width] = useWindowDimensions();
-  const [unit, setUnit] = useState("$");
+  const [unit, setUnit] = useState<"$" | "ETH">("$");
   const isMobile = width < 490;
   const { colorMode } = useColorMode();
+
+  console.log("unit");
+  console.log(unit);
+
   const PriceContent = useMemo(() => {
+    if (switchButton) {
+      switch (unit) {
+        case "$":
+          return (
+            <Text
+              fontSize={22}
+              fontWeight={"bold"}
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+            >
+              {priceUnit === "$" ? priceUnit : switchPrice}{" "}
+              {priceUnit === "$" ? price : switchPrice}
+            </Text>
+          );
+        case "ETH":
+          return (
+            <Text
+              fontSize={22}
+              fontWeight={"bold"}
+              color={colorMode === "dark" ? "white.200" : "gray.800"}
+            >
+              {priceUnit === "$" ? switchPrice : price}{" "}
+              {priceUnit === "$" ? switchPrice : price}
+            </Text>
+          );
+        default:
+          return <></>;
+      }
+    }
     switch (priceUnit) {
       case "$":
         return (
@@ -85,9 +119,8 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
           </Text>
           <BasicTooltip label={tooltipMessage} />
         </Flex>
-        {switchButton ? (
+        {switchButton && (
           <Flex
-           
             w="80px"
             border={"1px solid #313442"}
             borderRadius="5px"
@@ -97,9 +130,9 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
               h={"19px"}
               fontSize={"12px"}
               fontWeight={500}
-              _hover={{cursor:'pointer'}}
+              _hover={{ cursor: "pointer" }}
               _active={{}}
-              color={unit === "$" ? "white.100":'#64646f'}
+              color={unit === "$" ? "white.100" : "#64646f"}
               w="50%"
               bg={unit === "$" ? "#0f0f12" : "transparent"}
               onClick={() => setUnit("$")}
@@ -110,9 +143,9 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
               h={"19px"}
               fontSize={"12px"}
               w="50%"
-              color={unit === "ETH" ? "white.100":'#64646f'}
+              color={unit === "ETH" ? "white.100" : "#64646f"}
               fontWeight={500}
-              _hover={{cursor:'pointer'}}
+              _hover={{ cursor: "pointer" }}
               _active={{}}
               bg={unit === "ETH" ? "#0f0f12" : "transparent"}
               onClick={() => setUnit("ETH")}
@@ -120,8 +153,6 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
               ETH
             </Button>
           </Flex>
-        ) : (
-          <></>
         )}
       </Flex>
       <Flex justifyContent={"space-between"} alignItems={"center"}>

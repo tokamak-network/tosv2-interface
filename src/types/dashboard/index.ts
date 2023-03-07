@@ -4,8 +4,10 @@ export type Dashboard_SmallCardType = {
   priceChangePercent?: number;
   title: string;
   tooltip?: boolean;
-  tooltipMessage :string;
+  tooltipMessage: string;
   style?: {};
-  switchButton?: boolean
+  switchButton?: boolean;
+  switchPrice?: string | number;
+  switchPriceUnit?: string;
 };
 export type Dashboard_SmallCardArrType = Dashboard_SmallCardType[];

@@ -39,15 +39,23 @@ const SmallCardContainer = () => {
 
   useEffect(() => {
     if (data) {
-      const { tosPrice, backingPerTos, mintingRate, ltosIndex } =
-        data.getDashboardCard[0];
+      const {
+        tosPrice,
+        backingPerTos,
+        mintingRate,
+        ltosIndex,
+        tosPerEthPrice,
+        backingPerTosEth,
+      } = data.getDashboardCard[0];
 
       const {
         tosPrice: exTosPrice,
         backingPerTos: exBackingPerTos,
         ltosPrice: exLtosPrice,
         ltosIndex: exLtosIndex,
-      } = data.getDashboardCard[0];
+      } = data.getDashboardCard[1];
+
+      console.log(data);
 
       const tosPriceChangePercent =
         (Number(commafy(tosPrice - exTosPrice)) / Number(commafy(exTosPrice))) *
@@ -74,7 +82,9 @@ const SmallCardContainer = () => {
           title: "TOS Price",
           tooltip: true,
           tooltipMessage: "TOS market price in USD",
-          switchButton: true
+          switchButton: true,
+          switchPrice: commafy(tosPerEthPrice) as string,
+          switchPriceUnit: "ETH",
         },
         {
           price: backingPerTosNum as string,
@@ -82,7 +92,9 @@ const SmallCardContainer = () => {
           title: "Backing Per TOS",
           tooltip: true,
           tooltipMessage: "Amount of treasury asset backed per 1 TOS in ETH",
-          switchButton: true
+          switchButton: true,
+          switchPrice: commafy(backingPerTosEth) as string,
+          switchPriceUnit: "$",
         },
         {
           price: commafy(mintingRate) as string,
@@ -91,8 +103,8 @@ const SmallCardContainer = () => {
           tooltip: true,
           tooltipMessage:
             "Minting rate per ETH determines how many TOS gets minted for every 1 ETH that gets bonded",
-            switchButton: false
-          },
+          switchButton: false,
+        },
         {
           price: commafy(ltosIndex, 7) as string,
           priceUnit: "TOS",
@@ -101,8 +113,8 @@ const SmallCardContainer = () => {
           tooltip: true,
           tooltipMessage:
             "Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours.",
-            switchButton: false
-          },
+          switchButton: false,
+        },
       ];
       setCardList(dummyData);
     }

@@ -14,7 +14,7 @@ import TokenSymbol from "common/token/TokenSymol";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 
@@ -67,7 +67,10 @@ function ContentComponent(props: {
             onClick={() => setStateTitleAction && setStateTitleAction()}
           ></Image>
         </Flex>
-        <Text color={colorMode === "dark" ? "white.200" : "gray.800"}>
+        <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontWeight={"bold"}
+        >
           {content}
         </Text>
       </Flex>
@@ -88,6 +91,7 @@ function ContentComponent(props: {
             ? "white.200"
             : "gray.800"
         }
+        fontWeight={"bold"}
       >
         {content}
       </Text>
@@ -167,12 +171,13 @@ function BondCard(props: { data: BondCardProps }) {
           <TokenSymbol tokenType={data?.buyTokenType}></TokenSymbol>
         </Flex>
         <Flex
-          fontSize={12}
+          fontSize={14}
           color={isClosed ? "#8b8b93" : "blue.200"}
           textAlign={"center"}
           alignItems="center"
           justifyContent={"center"}
           flexDir={"column"}
+          fontWeight={"bold"}
         >
           {data?.isHighest && <Text>Highest</Text>}
           <Text
@@ -184,7 +189,7 @@ function BondCard(props: { data: BondCardProps }) {
                 : `D-${openCountDown.hours}:${openCountDown.mins}:${openCountDown.secs}`
               : isClosed
               ? "Closed"
-              : `${String(data?.discountRate).split(".")[0]}% Off`}
+              : `~ ${String(data?.discountRate).split(".")[0]}% Off`}
           </Text>
         </Flex>
       </Flex>
@@ -231,12 +236,7 @@ function BondCard(props: { data: BondCardProps }) {
             </Text>
           </Flex>
         </Flex>
-        <Progress
-          value={Number(data?.progress)}
-          color={isClosed ? "#64646f" : "#2775ff"}
-          borderRadius={100}
-          h={"5px"}
-        ></Progress>
+        <Progress value={50} borderRadius={100} h={"5px"}></Progress>
       </Flex>
       <Flex flexDir={"column"} rowGap={"9px"}>
         <ContentComponent
@@ -253,16 +253,16 @@ function BondCard(props: { data: BondCardProps }) {
         ></ContentComponent>
         <ContentComponent
           title="Discount (Max)"
-          content={`${data?.discountRate}%`}
+          content={`~ ${data?.discountRate}%`}
           isHighest={data?.isHighest}
           isMinus={data?.isDiscountMinus}
         ></ContentComponent>
         <ContentComponent
-          title="Minimum Bond Price"
+          title="Bond Price"
           content={`${data?.bondingPrice}`}
         ></ContentComponent>
         <ContentComponent
-          title="Lock-Up (Min)"
+          title="Remaining Sales"
           content={"5 Days"}
         ></ContentComponent>
         <BasicButton

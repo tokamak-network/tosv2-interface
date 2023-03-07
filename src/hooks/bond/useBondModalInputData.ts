@@ -181,16 +181,6 @@ function useBondModalInputData() {
         bondingPrice
       ) {
         const { ethPrice, tosPrice } = priceData;
-        // const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
-        //   marketId
-        // );
-
-        // const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
-        //   marketId,
-        //   bondInputPeriod,
-        //   basePriceInfo[0]
-        // );
-
         const bondingPriceCom = convertNumber({
           amount: bondingPrice.toString(),
         });
@@ -226,24 +216,11 @@ function useBondModalInputData() {
         const capacity = await BondDepositoryProxy_CONTRACT.possibleMaxCapacity(
           marketId
         );
-        // const basePriceInfo = await BondDepositoryProxy_CONTRACT.getBasePrice(
-        //   marketId
-        // );
-        // const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
-        //   marketId,
-        //   bondInputPeriod,
-        //   basePriceInfo[0]
-        // );
-
         const currentCapacityETH_BN = BigNumber.from(
           capacity.currentCapacity
         ).div(bondingPrice);
-
         const currentCapacityETH = commafy(currentCapacityETH_BN.toString(), 2);
-        // if (currentCapacityETH)
-        //   return setMaxCapacityValue(
-        //     Number(currentCapacityETH.replaceAll(",", ""))
-        //   );
+
         setMaxCapacityValue(Number(currentCapacityETH));
       }
     }

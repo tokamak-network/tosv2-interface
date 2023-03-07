@@ -23,11 +23,14 @@ const GET_DASHBOARD_CARD = gql`
   query GetDashboardCard($period: String!, $limit: Int!) {
     getDashboardCard(period: $period, limit: $limit) {
       tosPrice
+      tosPerEthPrice
       backingPerTos
+      backingPerTosEth
       ltosPrice
-      mintingRate
       ltosIndex
+      mintingRate
       chainId
+      createdAt
     }
   }
 `;

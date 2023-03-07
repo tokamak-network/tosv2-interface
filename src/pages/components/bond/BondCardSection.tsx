@@ -100,21 +100,41 @@ function BondCardSection() {
 
       //remove bonds are already done or not started yet from the list to calculate highest yield bond
       const discountArr = bondcardDatas.map((bondData) =>
-        bondData.endTime < getNowTimeStamp() ||
-        bondData.startTime > getNowTimeStamp()
-          ? -9999
-          : bondData.discountRate
-      );
-      const biggestElementIndex = discountArr.indexOf(
-        Math.max.apply(Math, discountArr)
+        bondData.status === "open" ? bondData.discountRate : -9999
       );
 
-      bondcardDatas[biggestElementIndex] = {
-        ...bondcardDatas[biggestElementIndex],
-        isHighest: discountArr[biggestElementIndex] > 0 ? true : false,
-      };
+      let max = discountArr[0];
+      let maxIndices: number[] = [];
+      let maxArr = [];
 
-      // setCardList(bondcardDatas);
+      for (let i = 0; i < discountArr.length; i++) {
+        if (discountArr[i] > max) {
+          max = discountArr[i];
+          maxIndices = [i];
+        } else if (discountArr[i] === max) {
+          maxIndices.push(i);
+        }
+      }
+
+      //to set highest value for bonds which have even same discount value
+      for (let i = 0; i < maxIndices.length; i++) {
+        const index = maxIndices[i];
+        bondcardDatas[index] = {
+          ...bondcardDatas[index],
+          isHighest: discountArr[index] > 0 ? true : false,
+        };
+      }
+
+      // const biggestElementIndex = discountArr.indexOf(
+      //   Math.max.apply(Math, discountArr)
+      // );
+
+      // bondcardDatas[biggestElementIndex] = {
+      //   ...bondcardDatas[biggestElementIndex],
+      //   isHighest: discountArr[biggestElementIndex] > 0 ? true : false,
+      // };
+
+      setCardList(bondcardDatas);
 
       const openList = bondcardDatas.filter(
         (bondData: BondCardProps) => bondData.status === "open"

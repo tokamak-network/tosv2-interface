@@ -143,11 +143,11 @@ function StakeGraph(props: {
         </SliderMark> */}
 
         <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
-          <SliderFilledTrack bg={"#2775ff"} />
+          <SliderFilledTrack bg={"#2bb415"} />
           {minValue && (
             <SliderFilledTrack
               maxW={`${(minValue / 155) * 100}%`}
-              bg={"#2bb415"}
+              bg={"#2775ff"}
             />
           )}
         </SliderTrack>
