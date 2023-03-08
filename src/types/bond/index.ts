@@ -26,6 +26,8 @@ export type BondCardProps = {
   progress: string;
   isHighest?: boolean;
   isDiscountMinus: boolean;
+  currentCapacityProgress: string;
+  currentBondable: string;
   status: "open" | "closed" | "will be open";
 };
 

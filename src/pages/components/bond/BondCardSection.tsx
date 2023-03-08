@@ -57,18 +57,38 @@ function BondCardSection() {
           bondPrice,
           startTime,
           version,
+          currentCapacity,
         } = bond;
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
         const startDay = convertTimeStamp(startTime);
         const endDay = convertTimeStamp(endTime);
         const bondCapacity = commafy(capacity, 0);
         const totalSoldCom = commafy(totalSold, 0);
+
+        const currentProgress =
+          Number(totalSold) / Number(currentCapacity + totalSold);
+        const currentCapacityProgressValue =
+          Number(currentCapacity) / Number(totalSold);
+        const currentBondableValue =
+          Number(currentCapacity) - Number(totalSold);
         const progress =
-          Number(capacity) / Number(totalSold) === Infinity
-            ? "0"
-            : isNaN(Number(totalSold) / Number(capacity))
+          currentProgress === Infinity
             ? "-"
-            : commafy((Number(totalSold) / Number(capacity)) * 100, 0);
+            : isNaN(currentProgress)
+            ? "-"
+            : commafy(currentProgress * 100, 0);
+        const currentCapacityProgress =
+          currentCapacityProgressValue === Infinity
+            ? "-"
+            : isNaN(currentCapacityProgressValue)
+            ? "-"
+            : commafy(currentCapacityProgressValue * 100, 0);
+        const currentBondable =
+          currentBondableValue === Infinity
+            ? "-"
+            : isNaN(currentBondableValue)
+            ? "-"
+            : commafy(currentBondableValue, 0);
         const endTimeDiff = endTime - getNowTimeStamp();
         const openTimeDiff = startTime - getNowTimeStamp();
 
@@ -89,6 +109,8 @@ function BondCardSection() {
           minimumBondPrice: "0",
           version,
           isDiscountMinus: Number(commafy(discount)) < 0,
+          currentCapacityProgress,
+          currentBondable,
           status:
             openTimeDiff > 0
               ? "will be open"

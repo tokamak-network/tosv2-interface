@@ -44,6 +44,7 @@ const colors = {
   green: {
     100: "#5eea8d",
   },
+  progress: "#5eea8d",
 };
 
 const PAGE_LAYOUT_STYLE = {

@@ -144,6 +144,15 @@ function BondCard(props: { data: BondCardProps }) {
     }
   }, [titleState]);
 
+  const currentCapacityProgressRef = useRef<HTMLDivElement | null>(null);
+
+  if (currentCapacityProgressRef?.current?.childNodes) {
+    const currentCapacityChildNode =
+      currentCapacityProgressRef.current.childNodes;
+    //@ts-ignore
+    currentCapacityChildNode[0].style.backgroundColor = "#5eea8d";
+  }
+
   //vierport ref 1134px
   return (
     <Flex
@@ -236,7 +245,23 @@ function BondCard(props: { data: BondCardProps }) {
             </Text>
           </Flex>
         </Flex>
-        <Progress value={50} borderRadius={100} h={"5px"}></Progress>
+        <Flex pos={"relative"}>
+          <Progress
+            value={Number(data?.progress)}
+            borderRadius={100}
+            h={"5px"}
+            w={"100%"}
+            zIndex={100}
+          ></Progress>
+          <Progress
+            ref={currentCapacityProgressRef}
+            value={Number(data?.currentCapacityProgress)}
+            borderRadius={100}
+            h={"5px"}
+            w={"100%"}
+            pos={"absolute"}
+          ></Progress>
+        </Flex>
       </Flex>
       <Flex flexDir={"column"} rowGap={"9px"}>
         <ContentComponent
@@ -262,8 +287,8 @@ function BondCard(props: { data: BondCardProps }) {
           content={`${data?.bondingPrice}`}
         ></ContentComponent>
         <ContentComponent
-          title="Remaining Sales"
-          content={"5 Days"}
+          title="Current Bondable"
+          content={`${data?.currentBondable} TOS`}
         ></ContentComponent>
         <BasicButton
           name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
