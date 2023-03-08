@@ -258,7 +258,7 @@ function BondCard(props: { data: BondCardProps }) {
           </Text>
         )}
       </Flex>
-      <Flex flexDir={"column"} rowGap={"5px"} mb={"21px"}>
+      <Flex flexDir={"column"} rowGap={"5px"} mb={"17px"}>
         <Flex justifyContent={"space-between"}>
           <Flex columnGap={"6px"}>
             <Text fontSize={13} color={"white.200"}>
@@ -273,7 +273,7 @@ function BondCard(props: { data: BondCardProps }) {
             </Text>
           </Flex>
         </Flex>
-        <Flex pos={"relative"} mb={"21px"}>
+        <Flex pos={"relative"} mb={"17px"}>
           <Progress
             ref={soldoutProgressRef}
             value={Number(data?.progress)}
@@ -283,7 +283,7 @@ function BondCard(props: { data: BondCardProps }) {
             zIndex={100}
           ></Progress>
           {Number(data?.progress) > 0 && (
-            <Box pos={"absolute"} w={"100%"} left={blueTooltipW}>
+            <Box pos={"absolute"} w={"100%"} left={blueTooltipW} top={"-5px"}>
               <Image src={BlueTooltip} alt={"BlueTooltip"}></Image>
             </Box>
           )}
@@ -296,7 +296,7 @@ function BondCard(props: { data: BondCardProps }) {
             pos={"absolute"}
           ></Progress>
           {Number(data?.progress) > 0 && (
-            <Box pos={"absolute"} w={"100%"} left={greenTooltipW}>
+            <Box pos={"absolute"} w={"100%"} left={greenTooltipW} top={"-5px"}>
               <Image src={GreenTooltip} alt={"GreenTooltip"}></Image>
             </Box>
           )}
