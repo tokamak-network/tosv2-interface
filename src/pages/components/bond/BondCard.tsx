@@ -326,7 +326,7 @@ function BondCard(props: { data: BondCardProps }) {
           ></ContentComponent>
           <ContentComponent
             title="Current Bondable"
-            content={`${data?.currentBondable} TOS`}
+            content={data?.currentBondable}
           ></ContentComponent>
           <BasicButton
             name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}

@@ -65,8 +65,7 @@ function BondCardSection() {
         const bondCapacity = commafy(capacity, 0);
         const totalSoldCom = commafy(totalSold, 0);
 
-        const currentProgress =
-          Number(totalSold) / Number(currentCapacity + totalSold);
+        const currentProgress = Number(totalSold) / Number(capacity);
         const currentCapacityProgressValue =
           Number(currentCapacity) / Number(capacity);
         const currentBondableValue =
@@ -84,11 +83,13 @@ function BondCardSection() {
             ? "0"
             : commafy(currentCapacityProgressValue * 100, 0);
         const currentBondable =
-          currentBondableValue === Infinity
+          Number(currentCapacity) <= 0
+            ? "N/A"
+            : currentBondableValue === Infinity
             ? "-"
             : isNaN(currentBondableValue)
             ? "-"
-            : commafy(currentBondableValue, 0);
+            : `${commafy(currentBondableValue, 0)} TOS`;
         const endTimeDiff = endTime - getNowTimeStamp();
         const openTimeDiff = startTime - getNowTimeStamp();
 
