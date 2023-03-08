@@ -55,6 +55,8 @@ const SmallCardContainer = () => {
         ltosIndex: exLtosIndex,
       } = data.getDashboardCard[1];
 
+      console.log(data);
+
       const tosPriceChangePercent =
         (Number(commafy(tosPrice - exTosPrice)) / Number(commafy(exTosPrice))) *
         100;
@@ -85,14 +87,14 @@ const SmallCardContainer = () => {
           switchPriceUnit: "ETH",
         },
         {
-          price: backingPerTosNum as string,
-          priceUnit: "ETH",
+          price: commafy(backingPerTosEth) as string,
+          priceUnit: "$",
           title: "Backing Per TOS",
           tooltip: true,
           tooltipMessage: "Amount of treasury asset backed per 1 TOS in ETH",
           switchButton: true,
-          switchPrice: commafy(backingPerTosEth) as string,
-          switchPriceUnit: "$",
+          switchPrice: commafy(backingPerTosNum) as string,
+          switchPriceUnit: "ETH",
         },
         {
           price: commafy(mintingRate) as string,
@@ -135,6 +137,8 @@ const SmallCardContainer = () => {
                 title={cardData.title}
                 priceUnit={cardData.priceUnit}
                 tooltipMessage={cardData.tooltipMessage}
+                switchPrice={cardData.switchPrice}
+                switchPriceUnit={cardData.switchPriceUnit}
                 style={
                   index === 0
                     ? { borderTopRadius: 14 }
