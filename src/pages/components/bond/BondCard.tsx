@@ -264,12 +264,12 @@ function BondCard(props: { data: BondCardProps }) {
             <Text fontSize={13} color={"white.200"}>
               Progress
             </Text>
-            <Text fontSize={12}>{data?.progress}%</Text>
+            <Text fontSize={12}>{data?.currentProgressOnCurrentCapacity}%</Text>
           </Flex>
           <Flex fontSize={11}>
             <Text color={"white.200"}>{data?.totalSold}&nbsp;</Text>
             <Text>
-              / {data?.bondCapacity} {data?.buyTokenType}
+              / {data?.currentCapacity} {data?.buyTokenType}
             </Text>
           </Flex>
         </Flex>
