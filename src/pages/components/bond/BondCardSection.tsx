@@ -68,20 +68,20 @@ function BondCardSection() {
         const currentProgress =
           Number(totalSold) / Number(currentCapacity + totalSold);
         const currentCapacityProgressValue =
-          Number(currentCapacity) / Number(totalSold);
+          Number(currentCapacity) / Number(capacity);
         const currentBondableValue =
           Number(currentCapacity) - Number(totalSold);
         const progress =
           currentProgress === Infinity
-            ? "-"
+            ? "0"
             : isNaN(currentProgress)
-            ? "-"
+            ? "0"
             : commafy(currentProgress * 100, 0);
         const currentCapacityProgress =
           currentCapacityProgressValue === Infinity
-            ? "-"
+            ? "0"
             : isNaN(currentCapacityProgressValue)
-            ? "-"
+            ? "0"
             : commafy(currentCapacityProgressValue * 100, 0);
         const currentBondable =
           currentBondableValue === Infinity

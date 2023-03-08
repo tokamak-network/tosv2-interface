@@ -14,14 +14,18 @@ import TokenSymbol from "common/token/TokenSymol";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 
 import ActiveArrow from "assets/icons/bond/arrow-right2_blue.svg";
 import InactiveArrow from "assets/icons/bond/arrow-right2_disabled.svg";
 import RepeatIcon from "assets/icons/bond/s-repeat.svg";
+import BlueTooltip from "assets/icons/bond/gage_blue_arrow.svg";
+import GreenTooltip from "assets/icons/bond/gage_green_arrow.svg";
+
 import Image from "next/image";
+import { useWindowDimensions } from "hooks/useWindowDimensions";
 
 function getStatusText() {}
 
@@ -110,6 +114,7 @@ function BondCard(props: { data: BondCardProps }) {
   const [titleState, setTitleState] = useState<
     "Time Starts" | "Time Ends" | "Time Left"
   >("Time Starts");
+  const [width] = useWindowDimensions();
 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const openTimeDiff = data?.startTime - getNowTimeStamp();
@@ -144,14 +149,36 @@ function BondCard(props: { data: BondCardProps }) {
     }
   }, [titleState]);
 
+  const soldoutProgressRef = useRef<HTMLDivElement | null>(null);
   const currentCapacityProgressRef = useRef<HTMLDivElement | null>(null);
 
   if (currentCapacityProgressRef?.current?.childNodes) {
     const currentCapacityChildNode =
       currentCapacityProgressRef.current.childNodes;
     //@ts-ignore
-    currentCapacityChildNode[0].style.backgroundColor = "#5eea8d";
+    currentCapacityChildNode[0].style.backgroundColor = "#2bb415";
   }
+
+  const blueTooltipW: string | undefined = useMemo(() => {
+    if (soldoutProgressRef?.current?.childNodes) {
+      const soldoutProgressChildNode = soldoutProgressRef.current.childNodes;
+      //@ts-ignore
+      const width = soldoutProgressChildNode[0].clientWidth;
+
+      return width ? `${width - 4}px` : undefined;
+    }
+  }, [soldoutProgressRef, width]);
+
+  const greenTooltipW: string | undefined = useMemo(() => {
+    if (currentCapacityProgressRef?.current?.childNodes) {
+      const soldoutProgressChildNode =
+        currentCapacityProgressRef.current.childNodes;
+      //@ts-ignore
+      const width = soldoutProgressChildNode[0].clientWidth;
+
+      return width ? `${width - 4}px` : undefined;
+    }
+  }, [currentCapacityProgressRef, width]);
 
   //vierport ref 1134px
   return (
@@ -204,7 +231,8 @@ function BondCard(props: { data: BondCardProps }) {
       </Flex>
       <Flex
         w={"100%"}
-        h={"130px"}
+        minH={"130px"}
+        maxH={"130px"}
         border={"1px solid #313442"}
         borderRadius={10}
         mb={"11px"}
@@ -245,14 +273,20 @@ function BondCard(props: { data: BondCardProps }) {
             </Text>
           </Flex>
         </Flex>
-        <Flex pos={"relative"}>
+        <Flex pos={"relative"} mb={"21px"}>
           <Progress
+            ref={soldoutProgressRef}
             value={Number(data?.progress)}
             borderRadius={100}
             h={"5px"}
             w={"100%"}
             zIndex={100}
           ></Progress>
+          {Number(data?.progress) > 0 && (
+            <Box pos={"absolute"} w={"100%"} left={blueTooltipW}>
+              <Image src={BlueTooltip} alt={"BlueTooltip"}></Image>
+            </Box>
+          )}
           <Progress
             ref={currentCapacityProgressRef}
             value={Number(data?.currentCapacityProgress)}
@@ -261,48 +295,53 @@ function BondCard(props: { data: BondCardProps }) {
             w={"100%"}
             pos={"absolute"}
           ></Progress>
+          {Number(data?.progress) > 0 && (
+            <Box pos={"absolute"} w={"100%"} left={greenTooltipW}>
+              <Image src={GreenTooltip} alt={"GreenTooltip"}></Image>
+            </Box>
+          )}
         </Flex>
-      </Flex>
-      <Flex flexDir={"column"} rowGap={"9px"}>
-        <ContentComponent
-          title={titleState}
-          content={
-            titleState === "Time Starts"
-              ? data?.startDay
-              : titleState === "Time Left"
-              ? timeLeft
-              : data?.endDay
-          }
-          ImageSrc={RepeatIcon}
-          setStateTitleAction={changeTitleState}
-        ></ContentComponent>
-        <ContentComponent
-          title="Discount (Max)"
-          content={`~ ${data?.discountRate}%`}
-          isHighest={data?.isHighest}
-          isMinus={data?.isDiscountMinus}
-        ></ContentComponent>
-        <ContentComponent
-          title="Bond Price"
-          content={`${data?.bondingPrice}`}
-        ></ContentComponent>
-        <ContentComponent
-          title="Current Bondable"
-          content={`${data?.currentBondable} TOS`}
-        ></ContentComponent>
-        <BasicButton
-          name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
-          w={["100%", "270px", "150px"]}
-          h={"33px"}
-          style={{
-            alignSelf: "center",
-            marginTop: "9px",
-            fontWeight: "normal",
-          }}
-          isDisabled={bondButtonIsDisabled}
-          isLoading={txPending}
-          onClick={account ? openModal : tryActivation}
-        ></BasicButton>
+        <Flex flexDir={"column"} rowGap={"9px"}>
+          <ContentComponent
+            title={titleState}
+            content={
+              titleState === "Time Starts"
+                ? data?.startDay
+                : titleState === "Time Left"
+                ? timeLeft
+                : data?.endDay
+            }
+            ImageSrc={RepeatIcon}
+            setStateTitleAction={changeTitleState}
+          ></ContentComponent>
+          <ContentComponent
+            title="Discount (Max)"
+            content={`~ ${data?.discountRate}%`}
+            isHighest={data?.isHighest}
+            isMinus={data?.isDiscountMinus}
+          ></ContentComponent>
+          <ContentComponent
+            title="Bond Price"
+            content={`${data?.bondingPrice}`}
+          ></ContentComponent>
+          <ContentComponent
+            title="Current Bondable"
+            content={`${data?.currentBondable} TOS`}
+          ></ContentComponent>
+          <BasicButton
+            name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
+            w={["100%", "270px", "150px"]}
+            h={"33px"}
+            style={{
+              alignSelf: "center",
+              marginTop: "9px",
+              fontWeight: "normal",
+            }}
+            isDisabled={bondButtonIsDisabled}
+            isLoading={txPending}
+            onClick={account ? openModal : tryActivation}
+          ></BasicButton>
+        </Flex>
       </Flex>
     </Flex>
   );
