@@ -22,38 +22,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
   const isMobile = width < 490;
   const { colorMode } = useColorMode();
 
-  console.log("unit");
-  console.log(unit);
-
   const PriceContent = useMemo(() => {
-    if (switchButton) {
-      switch (unit) {
-        case "$":
-          return (
-            <Text
-              fontSize={22}
-              fontWeight={"bold"}
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-            >
-              {priceUnit === "$" ? priceUnit : switchPrice}{" "}
-              {priceUnit === "$" ? price : switchPrice}
-            </Text>
-          );
-        case "ETH":
-          return (
-            <Text
-              fontSize={22}
-              fontWeight={"bold"}
-              color={colorMode === "dark" ? "white.200" : "gray.800"}
-            >
-              {priceUnit === "$" ? switchPrice : price}{" "}
-              {priceUnit === "$" ? switchPrice : price}
-            </Text>
-          );
-        default:
-          return <></>;
-      }
-    }
     switch (priceUnit) {
       case "$":
         return (
