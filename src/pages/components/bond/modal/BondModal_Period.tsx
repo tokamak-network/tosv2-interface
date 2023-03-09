@@ -15,7 +15,7 @@ import useStosReward from "hooks/stake/useStosReward";
 import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
 import StakeGraph from "pages/components/common/modal/StakeGraph";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useRecoilState } from "recoil";
 
 export default function BondModal_Period() {
