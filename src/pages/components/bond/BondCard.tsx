@@ -315,7 +315,7 @@ function BondCard(props: { data: BondCardProps }) {
             setStateTitleAction={changeTitleState}
           ></ContentComponent>
           <ContentComponent
-            title="Discount (Max)"
+            title="Discount"
             content={`~ ${data?.discountRate}%`}
             isHighest={data?.isHighest}
             isMinus={data?.isDiscountMinus}
