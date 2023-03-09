@@ -7,6 +7,7 @@ import MyHistory from "./MyHistory";
 import BondSortSelect from "./BondSortSelect";
 import StakeCheckbox from "./StakeCheckbox";
 import useMediaView from "hooks/useMediaView";
+import BondRadioGroup from "./BondRadioGroup";
 
 function BondCardContainer() {
   const [tab, setTab] = useState<0 | 1>(0);
@@ -41,7 +42,17 @@ function BondCardContainer() {
         {tab === 0 ||
           (tab === 1 && account && <BondSortSelect></BondSortSelect>)}
       </Flex> */}
-        <BondSortSelect></BondSortSelect>
+        <Flex
+          w={["100%", "400px", "500px"]}
+          columnGap={["6px", "6px", "30px"]}
+          justifyContent={bp500px ? "flex-start" : "flex-end"}
+          mt={["", "", ""]}
+          flexDir={bp500px ? "column" : "row"}
+          rowGap={bp500px ? "24px" : 0}
+        >
+          <BondRadioGroup></BondRadioGroup>
+          {/* <BondSortSelect></BondSortSelect> */}
+        </Flex>
       </Flex>
       {tab === 0 ? (
         <BondCardSection></BondCardSection>

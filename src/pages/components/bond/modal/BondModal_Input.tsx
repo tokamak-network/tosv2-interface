@@ -55,6 +55,15 @@ export default function BondModal_Input() {
     });
   }, [inputValue, maxValue, setValue]);
 
+  useEffect(() => {
+    if (maxValue) {
+      setValue({
+        ...inputValue,
+        bond_modal_balance: String(maxValue),
+      });
+    }
+  }, [maxValue]);
+
   return (
     <Flex flexDir={"column"} px={"70px"} rowGap={"10px"}>
       <Flex fontSize={12} fontWeight={"bold"}>

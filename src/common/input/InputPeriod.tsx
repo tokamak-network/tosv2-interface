@@ -118,6 +118,16 @@ const InputPeriod = (props: InputProp) => {
     return "27px";
   }, [value, atomKey]);
 
+  useEffect(() => {
+    if (
+      value[atomKey] !== undefined &&
+      value[atomKey] !== "" &&
+      value[atomKey] !== 0
+    ) {
+      return setWeekHighlight(true);
+    }
+  }, [value, atomKey]);
+
   return (
     <Flex flexDir={"column"} pos={"relative"} {...style}>
       <InputGroup>

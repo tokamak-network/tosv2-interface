@@ -320,7 +320,7 @@ function BondCard(props: { data: BondCardProps }) {
             w={"100%"}
             pos={"absolute"}
           ></Progress>
-          {Number(data?.progress) > 0 && (
+          {Number(data?.currentCapacityProgress) > 0 && (
             <Box pos={"absolute"} w={"100%"} left={greenTooltipW} top={"-5px"}>
               <Image src={GreenTooltip} alt={"GreenTooltip"}></Image>
             </Box>
@@ -340,7 +340,7 @@ function BondCard(props: { data: BondCardProps }) {
             setStateTitleAction={changeTitleState}
           ></ContentComponent>
           <ContentComponent
-            title="Discount (Max)"
+            title="Discount"
             content={`~ ${data?.discountRate}%`}
             isHighest={data?.isHighest}
             isMinus={data?.isDiscountMinus}
