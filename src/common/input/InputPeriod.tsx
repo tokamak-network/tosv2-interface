@@ -119,7 +119,11 @@ const InputPeriod = (props: InputProp) => {
   }, [value, atomKey]);
 
   useEffect(() => {
-    if (value[atomKey] !== undefined && value[atomKey] !== "") {
+    if (
+      value[atomKey] !== undefined &&
+      value[atomKey] !== "" &&
+      value[atomKey] !== 0
+    ) {
       return setWeekHighlight(true);
     }
   }, [value, atomKey]);
