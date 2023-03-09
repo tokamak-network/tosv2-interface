@@ -83,17 +83,17 @@ const SmallCardContainer = () => {
           tooltip: true,
           tooltipMessage: "TOS market price in USD",
           switchButton: true,
-          switchPrice: commafy(tosPerEthPrice) as string,
+          switchPrice: commafy(tosPerEthPrice, 7) as string,
           switchPriceUnit: "ETH",
         },
         {
-          price: commafy(backingPerTosEth) as string,
+          price: commafy(backingPerTosEth, 7) as string,
           priceUnit: "$",
           title: "Backing Per TOS",
           tooltip: true,
           tooltipMessage: "Amount of treasury asset backed per 1 TOS in ETH",
           switchButton: true,
-          switchPrice: commafy(backingPerTosNum) as string,
+          switchPrice: commafy(backingPerTosNum, 7) as string,
           switchPriceUnit: "ETH",
         },
         {
@@ -171,6 +171,8 @@ const SmallCardContainer = () => {
               priceUnit={cardData.priceUnit}
               tooltipMessage={cardData.tooltipMessage}
               switchButton={cardData.switchButton}
+              switchPrice={cardData.switchPrice}
+              switchPriceUnit={cardData.switchPriceUnit}
             ></SmallCard>
           </Box>
         );

@@ -22,9 +22,6 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
   const isMobile = width < 490;
   const { colorMode } = useColorMode();
 
-  console.log(title);
-  console.log(switchPrice);
-
   const PriceContent = useMemo(() => {
     if (switchButton) {
       switch (unit) {
