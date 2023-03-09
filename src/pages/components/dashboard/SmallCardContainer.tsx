@@ -55,8 +55,6 @@ const SmallCardContainer = () => {
         ltosIndex: exLtosIndex,
       } = data.getDashboardCard[1];
 
-      console.log(data);
-
       const tosPriceChangePercent =
         (Number(commafy(tosPrice - exTosPrice)) / Number(commafy(exTosPrice))) *
         100;
