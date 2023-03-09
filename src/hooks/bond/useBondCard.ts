@@ -65,8 +65,11 @@ export function useBondCard() {
           Number(currentCapacity) / Number(capacity);
         const currentBondableValue =
           Number(currentCapacity) - Number(totalSold);
+
         const progress = checkProgressNumber(currentProgress);
-        const currentCapacityTotal = Number(currentCapacity + totalSold);
+        const currentCapacityTotal = Number(
+          Math.floor(currentCapacity) + Math.floor(totalSold)
+        );
         const currentProgressOnCurrentCapacity = checkProgressNumber(
           currentProgressOnCurrentCapacityValue
         );
@@ -76,11 +79,9 @@ export function useBondCard() {
         const currentBondable =
           Number(currentCapacity) <= 0
             ? "N/A"
-            : currentBondableValue === Infinity
+            : isNaN(currentCapacity)
             ? "-"
-            : isNaN(currentBondableValue)
-            ? "-"
-            : `${commafy(currentBondableValue, 0)} TOS`;
+            : `${commafy(currentCapacity, 0)} TOS`;
         const endTimeDiff = endTime - getNowTimeStamp();
         const openTimeDiff = startTime - getNowTimeStamp();
 
