@@ -10,7 +10,7 @@ import { bond_filter_sort, T_SortValues } from "atom/bond/filter";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
-export function BondRadioGroup() {
+function BondRadioGroup() {
   const [bondRadioValue, setBondRadiouValue] =
     useRecoilState<T_SortValues>(bond_filter_sort);
   const { colorMode } = useColorMode();
@@ -79,3 +79,5 @@ export function BondRadioGroup() {
     </Flex>
   );
 }
+
+export default BondRadioGroup;

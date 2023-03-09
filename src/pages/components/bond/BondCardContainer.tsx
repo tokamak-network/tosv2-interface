@@ -7,7 +7,7 @@ import MyHistory from "./MyHistory";
 import BondSortSelect from "./BondSortSelect";
 import StakeCheckbox from "./StakeCheckbox";
 import useMediaView from "hooks/useMediaView";
-import { BondRadioGroup } from "./BondRadioGroup";
+import BondRadioGroup from "./BondRadioGroup";
 
 function BondCardContainer() {
   const [tab, setTab] = useState<0 | 1>(0);
