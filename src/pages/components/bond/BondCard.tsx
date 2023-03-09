@@ -295,7 +295,7 @@ function BondCard(props: { data: BondCardProps }) {
             w={"100%"}
             pos={"absolute"}
           ></Progress>
-          {Number(data?.progress) > 0 && (
+          {Number(data?.currentCapacityProgress) > 0 && (
             <Box pos={"absolute"} w={"100%"} left={greenTooltipW} top={"-5px"}>
               <Image src={GreenTooltip} alt={"GreenTooltip"}></Image>
             </Box>
