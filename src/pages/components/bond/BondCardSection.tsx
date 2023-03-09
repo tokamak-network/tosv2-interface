@@ -32,6 +32,7 @@ function BondCardSection() {
       flexWrap={"wrap"}
     >
       {cardList?.map((cardData: BondCardProps, index) =>
+        //need to check displaying one vault which was a test vault on the mainnet
         isProduction() ? (
           index === cardList.length - 1
         ) : undefined ? null : (

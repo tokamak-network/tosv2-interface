@@ -221,6 +221,12 @@ function useBondModalInputData() {
         ).div(bondingPrice);
         const currentCapacityETH = commafy(currentCapacityETH_BN.toString(), 2);
 
+        console.log("test");
+        console.log(capacity.currentCapacity.toString());
+        console.log(bondingPrice.toString());
+
+        console.log(currentCapacityETH);
+
         setMaxCapacityValue(Number(currentCapacityETH));
       }
     }

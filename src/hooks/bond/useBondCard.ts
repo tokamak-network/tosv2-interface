@@ -150,8 +150,6 @@ export function useBondCard() {
       //   isHighest: discountArr[biggestElementIndex] > 0 ? true : false,
       // };
 
-      setCardList(bondcardDatas);
-
       const openList = bondcardDatas.filter(
         (bondData: BondCardProps) => bondData.status === "open"
       );

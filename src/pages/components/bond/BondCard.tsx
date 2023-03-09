@@ -167,7 +167,7 @@ function BondCard(props: { data: BondCardProps }) {
 
       return width ? `${width - 4}px` : undefined;
     }
-  }, [soldoutProgressRef, width]);
+  }, [soldoutProgressRef.current, width]);
 
   const greenTooltipW: string | undefined = useMemo(() => {
     if (currentCapacityProgressRef?.current?.childNodes) {
@@ -178,7 +178,7 @@ function BondCard(props: { data: BondCardProps }) {
 
       return width ? `${width - 4}px` : undefined;
     }
-  }, [currentCapacityProgressRef, width]);
+  }, [currentCapacityProgressRef.current, width]);
 
   //vierport ref 1134px
   return (
