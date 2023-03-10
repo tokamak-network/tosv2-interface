@@ -22,7 +22,7 @@ export function useBondDepository() {
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
 
-  const _weeks = fiveDaysLockup ? 0 : inputValue?.bond_modal_period;
+  const _weeks = fiveDaysLockup ? 0 : inputValue?.bond_modal_period + 1;
 
   useEffect(() => {
     async function fetchBasePrice() {
