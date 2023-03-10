@@ -249,7 +249,7 @@ function BondCard(props: { data: BondCardProps }) {
         textAlign={"center"}
       >
         <Text color={"white.200"} fontSize={20} fontWeight={600}>
-          ETH Bond {data?.version}
+          ETH Bond {data?.version} ({data?.marketId})
         </Text>
         {data?.isDiscountMinus ? (
           <Text fontSize={12} color={"red.100"}>

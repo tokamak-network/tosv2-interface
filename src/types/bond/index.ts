@@ -31,7 +31,7 @@ export type BondCardProps = {
   currentBondable: string;
   currentCapacity: string;
   status: "open" | "closed" | "will be open";
-  marketId: string;
+  marketId: number;
 };
 
 export type BondRawdata = {
