@@ -136,6 +136,10 @@ function BondCard(props: { data: BondCardProps }) {
   const bondButtonIsDisabled = bondIsDisabled || capacityIsZero || isNotOpen;
   const isClosed = bondIsDisabled || capacityIsZero;
 
+  const discountRate = data?.isDiscountMinus
+    ? `${data?.discountRate}%`
+    : `~ ${data?.discountRate}%`;
+
   const changeTitleState = useCallback(() => {
     switch (titleState) {
       case "Time Starts":
@@ -225,7 +229,9 @@ function BondCard(props: { data: BondCardProps }) {
                 : `D-${openCountDown.hours}:${openCountDown.mins}:${openCountDown.secs}`
               : isClosed
               ? "Closed"
-              : `~ ${String(data?.discountRate).split(".")[0]}% Off`}
+              : `${data?.isDiscountMinus ? "" : "~"} ${
+                  String(data?.discountRate).split(".")[0]
+                }% Off`}
           </Text>
         </Flex>
       </Flex>
@@ -316,7 +322,8 @@ function BondCard(props: { data: BondCardProps }) {
           ></ContentComponent>
           <ContentComponent
             title="Discount"
-            content={`~ ${data?.discountRate}%`}
+            //remove tilda(~) when it's on minus status
+            content={discountRate}
             isHighest={data?.isHighest}
             isMinus={data?.isDiscountMinus}
           ></ContentComponent>

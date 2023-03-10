@@ -51,6 +51,7 @@ export function useBondCard() {
           startTime,
           version,
           currentCapacity,
+          closed,
         } = bond;
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
         const startDay = convertTimeStamp(startTime);
@@ -106,12 +107,14 @@ export function useBondCard() {
           currentCapacityProgress,
           currentBondable,
           currentCapacity: commafy(currentCapacityTotal, 0),
-          status:
-            openTimeDiff > 0
-              ? "will be open"
-              : endTimeDiff > 0
-              ? "open"
-              : "closed",
+          status: closed
+            ? "closed"
+            : openTimeDiff > 0
+            ? "will be open"
+            : endTimeDiff > 0
+            ? "open"
+            : "closed",
+          marketId: index,
         };
       });
 
