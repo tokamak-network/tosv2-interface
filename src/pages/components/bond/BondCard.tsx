@@ -117,6 +117,8 @@ function BondCard(props: { data: BondCardProps }) {
   >("Time Starts");
   const [width] = useWindowDimensions();
 
+  const closed = data?.status === "closed";
+
   const timeDiff = data?.endTime - getNowTimeStamp();
   const openTimeDiff = data?.startTime - getNowTimeStamp();
 
@@ -128,14 +130,14 @@ function BondCard(props: { data: BondCardProps }) {
   const capacityIsZero = Number(data?.bondCapacity.replaceAll("%", "")) <= 0;
   const discountIsMinus = data?.discountRate < 0;
 
+  const isClosed = closed || capacityIsZero;
+
   const [isOpen, setIsOpen] = useState(timeDiff >= 0 || !capacityIsZero);
   const [isNotOpen, setIsNotOpen] = useState(openTimeDiff > 0);
-  const bondIsDisabled = timeDiff < 0;
-  const timeLeft = bondIsDisabled
+  const timeLeft = closed
     ? "0 days 0 hours 0 min"
     : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
-  const bondButtonIsDisabled = bondIsDisabled || capacityIsZero || isNotOpen;
-  const isClosed = bondIsDisabled || capacityIsZero;
+  const bondButtonIsDisabled = closed || capacityIsZero || isNotOpen;
 
   const discountRate = data?.isDiscountMinus
     ? `${data?.discountRate}%`
