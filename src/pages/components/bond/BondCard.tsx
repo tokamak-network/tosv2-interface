@@ -26,6 +26,7 @@ import GreenTooltip from "assets/icons/bond/gage_green_arrow.svg";
 
 import Image from "next/image";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
+import { isProduction } from "constants/production";
 
 function getStatusText() {}
 
@@ -249,7 +250,8 @@ function BondCard(props: { data: BondCardProps }) {
         textAlign={"center"}
       >
         <Text color={"white.200"} fontSize={20} fontWeight={600}>
-          ETH Bond {data?.version} ({data?.marketId})
+          ETH Bond {data?.version} ({isProduction() === false && data?.marketId}
+          )
         </Text>
         {data?.isDiscountMinus ? (
           <Text fontSize={12} color={"red.100"}>
