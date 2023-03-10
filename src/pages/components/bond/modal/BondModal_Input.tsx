@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text, useColorMode } from "@chakra-ui/react";
 import { BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import constant from "constant";
@@ -12,6 +12,8 @@ import { TokenTypes } from "types";
 let bondTokenType = "ETH";
 
 function TokenImageContrainer(props: { tokenTypes: TokenTypes; name: string }) {
+  const { colorMode } = useColorMode();
+
   return (
     <Flex columnGap={"9px"} alignItems={"center"}>
       <TokenSymbol
@@ -21,7 +23,7 @@ function TokenImageContrainer(props: { tokenTypes: TokenTypes; name: string }) {
         imageW={"8.4px"}
         imageH={"14.4px"}
       ></TokenSymbol>
-      <Text>{props.name}</Text>
+      <Text color={colorMode === 'dark'? 'white.200':'gray.800'}>{props.name}</Text>
     </Flex>
   );
 }
@@ -33,6 +35,7 @@ export default function BondModal_Input() {
   const { maxValue, balacne, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
   const { bondDiscount, isMinusDiscount } = useBondModalInputData();
+  const { colorMode } = useColorMode();
 
   const tokenImage = useMemo(() => {
     switch (bondTokenType) {
@@ -67,7 +70,7 @@ export default function BondModal_Input() {
   return (
     <Flex flexDir={"column"} px={"70px"} rowGap={"10px"}>
       <Flex fontSize={12} fontWeight={"bold"}>
-        <Text color={"white.200"} mr={"9px"}>
+        <Text color={colorMode ==='dark'? "white.200":'gray.800'} mr={"9px"}>
           Bond Discount
         </Text>
         <Text color={isMinusDiscount ? "red.100" : "blue.200"} fontWeight={600}>
@@ -79,11 +82,11 @@ export default function BondModal_Input() {
         borderColor={
           maxValue !== undefined && (zeroInputBalance || inputOver)
             ? "#e23738"
-            : "#313442"
+            : colorMode ==='dark'? "#313442" : "#e8edf2"
         }
         w={"460px"}
         h={"78px"}
-        bgColor={"#1f2128"}
+        bgColor={colorMode === 'dark'? "#1f2128":'white.100'}
         px={"20px"}
         py={"14px"}
         borderRadius={"10px"}
@@ -103,10 +106,12 @@ export default function BondModal_Input() {
                 : "Input has exceeded maximum bondable amount per 1 transaction"
             }
             fontSize={18}
+            
             inputContainerStyle={{
               borderRadius: 0,
               borderWidth: 0,
               margin: 0,
+              fontWeight:600,
               height: "25px",
             }}
             inputFieldStyle={{ padding: 0 }}
@@ -120,7 +125,7 @@ export default function BondModal_Input() {
           <Button
             w={"48px"}
             h={"20px"}
-            border={"1px solid #535353"}
+            border={colorMode === 'dark'? "1px solid #535353": '1px solid #e8edf2'}
             bgColor={"transparent"}
             fontSize={11}
             color={"blue.200"}
