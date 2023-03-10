@@ -286,13 +286,13 @@ function BondCard(props: { data: BondCardProps }) {
         <Flex pos={"relative"} mb={"17px"}>
           <Progress
             ref={soldoutProgressRef}
-            value={Number(data?.progress)}
+            value={Number(data?.blueProgress)}
             borderRadius={100}
             h={"5px"}
             w={"100%"}
             zIndex={100}
           ></Progress>
-          {Number(data?.progress) > 0 && (
+          {Number(data?.blueProgress) > 0 && (
             <Box pos={"absolute"} w={"100%"} left={blueTooltipW} top={"-5px"}>
               <Image src={BlueTooltip} alt={"BlueTooltip"}></Image>
             </Box>

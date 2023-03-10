@@ -1,6 +1,6 @@
 import useModal from "hooks/useModal";
 import { useEffect, useMemo, useState } from "react";
-import { BondCardProps } from "types/bond";
+import { BondCardProps, BondRawdata } from "types/bond";
 import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";
 import { useQuery } from "@apollo/client";
 import commafy from "@/utils/commafy";
@@ -18,9 +18,6 @@ import useUserBalance from "hooks/useUserBalance";
 import { TokenTypes } from "types";
 
 function useBondModal() {
-  //1.5
-  const { selectedModalData } = useModal();
-
   //stos
   const { inputValue, setValue, setResetValue } = useInput(
     "Bond_screen",

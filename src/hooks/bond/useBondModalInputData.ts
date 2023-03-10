@@ -16,10 +16,12 @@ import useModal from "hooks/useModal";
 import usePrice from "hooks/usePrice";
 import { bond_modal } from "atom/bond/modal";
 import { useBondDepository } from "./useBondDepository";
+import useBondModal from "./useBondModal";
 
 function useBondModalInputData() {
   const { selectedModalData } = useModal<BondCardProps>();
   const marketId = selectedModalData?.index ?? undefined;
+  const ethPrice = selectedModalData?.ethPrice ?? undefined;
 
   const [youWillGet, setYouWillGet] = useState<string | undefined>(undefined);
   const [endTime, setEndTime] = useState<string | undefined>(undefined);
@@ -177,10 +179,10 @@ function useBondModalInputData() {
         bondInputPeriod !== undefined &&
         priceData &&
         priceData?.tosPrice &&
-        priceData?.ethPrice &&
+        ethPrice &&
         bondingPrice
       ) {
-        const { ethPrice, tosPrice } = priceData;
+        const { tosPrice } = priceData;
         const bondingPriceCom = convertNumber({
           amount: bondingPrice.toString(),
         });
@@ -190,6 +192,19 @@ function useBondModalInputData() {
           commafy(bondingPricePerTos).replaceAll(",", "")
         );
         const discount = ((tosPrice - minimumBondPrice) / tosPrice) * 100;
+
+        const test =
+          priceData.ethPrice /
+          Number(ethers.utils.formatUnits(bondingPrice.toString(), 18)) /
+          1.005;
+        const testDisCount = ((tosPrice - test) / tosPrice) * 100;
+
+        console.log("test");
+        console.log("eht Price : ", ethPrice);
+        console.log("bondingPrice : ", bondingPrice.toString());
+        console.log("tosPrice : ", test);
+        console.log(testDisCount);
+
         const mininmumTosPrice = BigInt(
           Number(bondingPrice.toString()) / 1.005
         );
@@ -208,6 +223,7 @@ function useBondModalInputData() {
     bondInputPeriod,
     priceData,
     bondingPrice,
+    ethPrice,
   ]);
 
   useEffect(() => {

@@ -20,6 +20,7 @@ const GET_BOND_LIST = gql`
       closed
       periodicCapacity
       currentCapacity
+      ethPrice
       createdAt
     }
   }

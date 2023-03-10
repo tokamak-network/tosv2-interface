@@ -16,7 +16,7 @@ export function useBondCard() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
     undefined
   );
-  const { loading, error, data } = useQuery<{ getBondList: [] }>(
+  const { loading, error, data } = useQuery<{ getBondList: BondRawdata[] }>(
     GET_BOND_LIST,
     {
       variables: {
@@ -52,6 +52,7 @@ export function useBondCard() {
           version,
           currentCapacity,
           closed,
+          ethPrice,
         } = bond;
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
         const startDay = convertTimeStamp(startTime);
@@ -59,15 +60,16 @@ export function useBondCard() {
         const bondCapacity = commafy(capacity, 0);
         const totalSoldCom = commafy(totalSold, 0);
 
+        const blueProgressValue = Number(totalSold) / Number(capacity);
+        const blueProgress = Number(checkProgressNumber(blueProgressValue));
+
         const currentProgressOnCurrentCapacityValue =
           Number(totalSold) / Number(currentCapacity + totalSold);
-        const currentProgress = Number(totalSold) / Number(capacity);
         const currentCapacityProgressValue =
           Number(currentCapacity) / Number(capacity);
         const currentBondableValue =
           Number(currentCapacity) - Number(totalSold);
 
-        const progress = checkProgressNumber(currentProgress);
         const currentCapacityTotal = Number(
           Math.floor(currentCapacity) + Math.floor(totalSold)
         );
@@ -89,7 +91,7 @@ export function useBondCard() {
         return {
           bondCapacity,
           totalSold: totalSoldCom,
-          progress,
+          blueProgress,
           currentProgressOnCurrentCapacity,
           bondingPrice: `$ ${commafy(bondPrice)}`,
           discountRate: Number(commafy(discount)),
@@ -115,6 +117,7 @@ export function useBondCard() {
             ? "open"
             : "closed",
           marketId: index,
+          ethPrice,
         };
       });
 

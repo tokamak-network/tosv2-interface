@@ -23,7 +23,7 @@ export type BondCardProps = {
   tooltip?: string;
   minimumBondPrice: string;
   version: string;
-  progress: string;
+  blueProgress: number;
   isHighest?: boolean;
   isDiscountMinus: boolean;
   currentCapacityProgress: string;
@@ -32,6 +32,7 @@ export type BondCardProps = {
   currentCapacity: string;
   status: "open" | "closed" | "will be open";
   marketId: number;
+  ethPrice: number;
 };
 
 export type BondRawdata = {
@@ -53,6 +54,7 @@ export type BondRawdata = {
   closed: boolean;
   periodicCapacity: number;
   currentCapacity: number;
+  ethPrice: number;
   createdAt: Date;
 };
 

@@ -66,7 +66,7 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
-    const { openModal: openSwapModal } = useModal("swap_interface_modal");
+  const { openModal: openSwapModal } = useModal("swap_interface_modal");
   const { inputValue, setValue, setResetValue } = useInput(
     "Stake_screen",
     "stake_modal"
@@ -182,7 +182,6 @@ function StakeModal() {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
 
-    
     if (StakingV2Proxy_CONTRACT) {
       if (fiveDaysLockup) {
         console.log("---stake()---");
@@ -234,7 +233,7 @@ function StakeModal() {
   }, [TOS_CONTRACT, StakingV2Proxy, setTx]);
 
   useEffect(() => {
-    if (tosAllowance) {
+    if (tosAllowance !== undefined) {
       if (tosAllowance === 0) {
         return setIsAllowance(false);
       }
@@ -364,14 +363,15 @@ function StakeModal() {
                 >
                   <Text>Your Balance</Text>
                   <Flex>
-                  <Text
-                color={'blue.200'}
-                  fontSize='12px'
-                  onClick={openSwapModal}
-                  _hover={{cursor:'pointer'}}
-                  mr='5px'
-                >
-                  Buy More</Text>
+                    <Text
+                      color={"blue.200"}
+                      fontSize="12px"
+                      onClick={openSwapModal}
+                      _hover={{ cursor: "pointer" }}
+                      mr="5px"
+                    >
+                      Buy More
+                    </Text>
                     <Text>{userTOSBalance || "-"} TOS</Text>
                   </Flex>
                 </Flex>
