@@ -432,6 +432,7 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
         tx.tx === true ||
         token0.address === "" ||
         Number(token0Balance) === 0 ||
+        tx.data.name === "approve"||
         maxError ||
         token1.address === "" ||
         Number(approved) < Number(fromAmount) ||
