@@ -14,16 +14,20 @@ function BondCardContainer() {
   const { account } = useWeb3React();
   const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { bp700px, bp500px, customMaxView } = useMediaView(1024);
+  const { bp1024px, bp700px, bp500px, pcView } = useMediaView();
 
   return (
     <Flex mt={"55px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
-      <Flex justifyContent={"space-between"}>
+      <Flex
+        flexDir={bp1024px ? "column" : "row"}
+        justifyContent={"space-between"}
+        mb={bp500px ? "21px" : "34px"}
+      >
         <Text
           fontSize={22}
           fontWeight={"bold"}
           color={colorMode === "dark" ? "white.200" : "gray.800"}
-          mb={"34px"}
+          mb={bp1024px ? "27px" : ""}
         >
           Bond List
         </Text>
@@ -48,7 +52,6 @@ function BondCardContainer() {
           justifyContent={bp500px ? "flex-start" : "flex-end"}
           mt={["", "", ""]}
           flexDir={bp500px ? "column" : "row"}
-          rowGap={bp500px ? "24px" : 0}
         >
           <BondRadioGroup></BondRadioGroup>
           {/* <BondSortSelect></BondSortSelect> */}

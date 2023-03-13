@@ -75,6 +75,9 @@ const InputPeriod = (props: InputProp) => {
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length > 3) {
+      return;
+    }
     //@ts-ignore
     if (isNaN(event.target.value)) {
       return;
@@ -134,6 +137,9 @@ const InputPeriod = (props: InputProp) => {
         <Input
           isInvalid={isError}
           isDisabled={isDisabled}
+          _disabled={{
+            borderColor: colorMode === "light" ? "#e8edf2" : "#2C2C35",
+          }}
           w={w || 270}
           h={h || 45}
           ml={"auto"}

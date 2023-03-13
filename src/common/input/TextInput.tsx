@@ -282,8 +282,10 @@ function BalanceInput(props: NumberInputProp) {
             h={"100%"}
             placeholder={placeHolder}
             onChange={onChange}
+            outline={"none"}
             fontSize={fontSize || 14}
             border={{}}
+            _focus={{ boxShadow: "none" }}
             //@ts-ignore
             ref={inputRef}
             padding={15}
