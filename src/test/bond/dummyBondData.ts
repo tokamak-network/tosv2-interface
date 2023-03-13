@@ -22,6 +22,7 @@ export function getDummyServerBondData(): BondRawdata[] {
       periodicCapacity: 4850.5243745,
       currentCapacity: 9701.048749,
       createdAt: new Date(),
+      ethPrice: 0,
     },
   ];
   return dummyServerBondData;

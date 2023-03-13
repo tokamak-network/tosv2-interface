@@ -201,8 +201,8 @@ function useBondModalInputData() {
 
         console.log("test");
         console.log("eht Price : ", ethPrice);
-        console.log("bondingPrice : ", bondingPrice.toString());
-        console.log("tosPrice : ", test);
+        console.log("bondingPrice from contract : ", bondingPrice.toString());
+        console.log("bondingTosPrice : ", test);
         console.log(testDisCount);
 
         const mininmumTosPrice = BigInt(
