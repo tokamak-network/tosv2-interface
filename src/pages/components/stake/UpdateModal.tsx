@@ -145,12 +145,16 @@ function UpdateModal() {
     if (StakingV2Proxy_CONTRACT && stakeId && leftWeeks >= 0) {
       //before endTime
       //increaseBeforeEndOrNonEnd(uint256 _stakeId, uint256 _amount uint256, uint256 _unlockWeeks)
+      const stakeAmount = inputValue.stake_updateModal_tos_balance.replaceAll(
+        " ",
+        ""
+      );
       console.log(`StakingV2Proxy_CONTRACT[
         "increaseBeforeEndOrNonEnd(uint256,uint256,uint256)"
       ]`);
       console.log(
         stakeId,
-        convertToWei(inputValue.stake_updateModal_tos_balance),
+        convertToWei(stakeAmount),
         inputValue.stake_updateModal_period - leftWeeks
       );
 
@@ -158,7 +162,7 @@ function UpdateModal() {
         "increaseBeforeEndOrNonEnd(uint256,uint256,uint256)"
       ](
         stakeId,
-        convertToWei(inputValue.stake_updateModal_tos_balance),
+        convertToWei(stakeAmount),
         inputValue.stake_updateModal_period - leftWeeks
       );
       setTx(tx);

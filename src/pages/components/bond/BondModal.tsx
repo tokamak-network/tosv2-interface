@@ -33,12 +33,14 @@ import {
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
+import question from "assets/icons/question.svg";
+import USER_GUIDE from "assets/icons/bond/sicon-user_guide.svg";
+
 import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { TextInput, BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
-import question from "assets/icons/question.svg";
 import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
 import useInputData from "hooks/bond/useBondModalInputData";
@@ -70,6 +72,7 @@ import useMediaView from "hooks/useMediaView";
 import BondModal_Input from "./modal/BondModal_Input";
 import BondModal_Period from "./modal/BondModal_Period";
 import { bond_modal } from "atom/bond/modal";
+import { isProduction } from "constants/production";
 
 function BondModal() {
   const theme = useTheme();
@@ -211,28 +214,46 @@ function BondModal() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
-                <TokenSymbol
+              <Flex
+                w={"100%"}
+                flexDir={"column"}
+                mb={"34px"}
+                h={"28px"}
+                alignItems={"center"}
+                rowGap={"6px"}
+              >
+                {/* <TokenSymbol
                   tokenType={"ETH"}
                   h={"30px"}
                   w={"30px"}
-                ></TokenSymbol>
-                <Text
-                  color={colorMode === "light" ? "gray.800" : "white.200"}
-                  fontSize={20}
-                  fontWeight={600}
-                  ml="9px"
-                >
-                  ETH Bond
-                </Text>
-
+                ></TokenSymbol> */}
+                <Flex>
+                  <Text
+                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                    fontSize={20}
+                    fontWeight={600}
+                  >
+                    ETH Bond {selectedModalData?.version}
+                  </Text>
+                  <Flex
+                    pos={"absolute"}
+                    right={"1.56em"}
+                    cursor={"pointer"}
+                    onClick={() => closeThisModal()}
+                  >
+                    <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
+                  </Flex>
+                </Flex>
                 <Flex
-                  pos={"absolute"}
-                  right={"1.56em"}
+                  columnGap={"6px"}
+                  pl={"4px"}
                   cursor={"pointer"}
-                  onClick={() => closeThisModal()}
+                  onClick={() => {}}
                 >
-                  <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
+                  <Image src={USER_GUIDE} alt={"USER_GUIDE"}></Image>
+                  <Text fontSize={13} color={"gray.100"}>
+                    Bond User Guide
+                  </Text>
                 </Flex>
               </Flex>
               {/* Content Area*/}
@@ -308,7 +329,9 @@ function BondModal() {
                     isExternal={true}
                     textDecoration={"underline"}
                     href={
-                      "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
+                      isProduction()
+                        ? "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
+                        : "https://app.uniswap.org/#/swap?inputCurrency=0xe86fCf5213C785AcF9a8BFfEeDEfA9a2199f7Da6&outputCurrency=0x67F3bE272b1913602B191B3A68F7C238A2D81Bb9"
                     }
                     color={colorMode === "dark" ? "white.200" : "gray.800"}
                   >
@@ -319,7 +342,9 @@ function BondModal() {
                     isExternal={true}
                     textDecoration={"underline"}
                     href={
-                      "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
+                      isProduction()
+                        ? "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
+                        : "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x67F3bE272b1913602B191B3A68F7C238A2D81Bb9"
                     }
                     color={colorMode === "dark" ? "white.200" : "gray.800"}
                   >
@@ -331,7 +356,11 @@ function BondModal() {
                   and{" "}
                   <Link
                     isExternal={true}
-                    href={"https://tosv2.tokamak.network/stake"}
+                    href={
+                      isProduction()
+                        ? "https://tosv2.tokamak.network/stake"
+                        : "https://goerli.tosv2.tokamak.network/stake"
+                    }
                     color={colorMode === "dark" ? "white.200" : "gray.800"}
                     textDecoration={"underline"}
                   >

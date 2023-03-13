@@ -22,7 +22,7 @@ export function useBondCard() {
       variables: {
         period: "-1",
       },
-      pollInterval: 10000,
+      pollInterval: 8000,
     }
   );
   const { priceData } = usePrice();
@@ -182,6 +182,9 @@ export function useBondCard() {
       }
     }
   }, [priceData, data, sortValue]);
+
+  console.log("--cardList--");
+  console.log(cardList);
 
   return { cardList };
 }
