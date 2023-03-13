@@ -214,17 +214,17 @@ function BondCard(props: { data: BondCardProps }) {
           <TokenSymbol tokenType={data?.buyTokenType}></TokenSymbol>
         </Flex>
         <Flex
-          fontSize={14}
+          fontSize={12}
           color={isClosed ? "#8b8b93" : "blue.200"}
-          textAlign={"center"}
-          alignItems="center"
-          justifyContent={"center"}
+          textAlign={"right"}
+          alignItems={"flex-end"}
           flexDir={"column"}
           fontWeight={"bold"}
         >
           {data?.isHighest && <Text>Highest</Text>}
           <Text
             color={isNotOpen ? "#5eea8d" : isClosed ? "gray.100" : "white.200"}
+            fontSize={14}
           >
             {data?.status === "will be open"
               ? openTimeDiff > 86400
@@ -257,8 +257,9 @@ function BondCard(props: { data: BondCardProps }) {
         </Text>
         {data?.isDiscountMinus ? (
           <Text fontSize={12} color={"red.100"}>
-            Notice: You can purchase TOS cheaper
-            <br /> on Tokamak Network Swap
+            Notice: You can purchase TOS at a lower
+            <br /> price by using Tokamak Network Swap <br />
+            <span style={{ color: "#f1f1f1" }}>(WTON, ETH)</span>
           </Text>
         ) : (
           <Text fontSize={12}>
@@ -274,12 +275,12 @@ function BondCard(props: { data: BondCardProps }) {
             <Text fontSize={13} color={"white.200"}>
               Progress
             </Text>
-            <Text fontSize={12}>{data?.currentProgressOnCurrentCapacity}%</Text>
+            <Text fontSize={12}>{data?.blueProgress}%</Text>
           </Flex>
           <Flex fontSize={11}>
             <Text color={"white.200"}>{data?.totalSold}&nbsp;</Text>
             <Text>
-              / {data?.currentCapacity} {data?.buyTokenType}
+              / {data?.bondCapacity} {data?.buyTokenType}
             </Text>
           </Flex>
         </Flex>
