@@ -186,31 +186,19 @@ function useBondModalInputData() {
         const bondingPriceCom = convertNumber({
           amount: bondingPrice.toString(),
         });
-        const bondingPricePerTos =
-          (priceData.ethPrice / Number(bondingPriceCom)) * 0.995;
-        const minimumBondPrice = Number(
-          commafy(bondingPricePerTos).replaceAll(",", "")
-        );
-        const discount = ((tosPrice - minimumBondPrice) / tosPrice) * 100;
 
-        const test =
+        const discunt =
           priceData.ethPrice /
           Number(ethers.utils.formatUnits(bondingPrice.toString(), 18)) /
           1.005;
-        const testDisCount = ((tosPrice - test) / tosPrice) * 100;
-
-        console.log("test");
-        console.log("eht Price : ", ethPrice);
-        console.log("bondingPrice from contract : ", bondingPrice.toString());
-        console.log("bondingTosPrice : ", test);
-        console.log(testDisCount);
+        const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
 
         const mininmumTosPrice = BigInt(
           Number(bondingPrice.toString()) / 1.005
         );
 
         setMinimumTosPrice(BigNumber.from(mininmumTosPrice.toString()));
-        setBondDiscount(commafy(discount));
+        setBondDiscount(commafy(discountRate));
       }
     }
     fetchBondDiscount().catch((e) => {
