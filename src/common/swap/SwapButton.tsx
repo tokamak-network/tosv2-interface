@@ -428,7 +428,7 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
       }}
       _hover={{}}
       _active={{}}
-      disabled={
+      isDisabled={
         tx.tx === true ||
         token0.address === "" ||
         Number(token0Balance) === 0 ||
