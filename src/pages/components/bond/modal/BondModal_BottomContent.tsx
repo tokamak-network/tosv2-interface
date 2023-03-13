@@ -35,36 +35,47 @@ function BondModal_BottomContent(props: {
     isMinusDiscount,
   } = useBondModalInputData();
 
-  const contentList: IBottomContentProps[] = [
-    {
-      title: "You Give",
-      content: `${inputValue.bond_modal_balance || "-"} ETH`,
-      tooltip: "",
-      hasTitleStar: true,
-    },
-    {
-      title: "You Will Get",
-      content: `${youWillGet ?? "-"} LTOS`,
-      secondContent: `${fiveDaysLockup ? "0" : stosReward} sTOS`,
-      thirdContent: `(${bondDiscount}% discount)`,
-      tooltip:
-        "You get LTOS based on what you gi  ve and sTOS is also based on the lock-up period.",
-      secondTooltip: `Currently worth ${originalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-      // thirdTooltip:
-      //   "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-      isPlus: true,
-      noSign: true,
-      style: { color: isMinusDiscount ? "red.100" : "blue.200" },
-      hasTitleStar: true,
-    },
-    {
-      title: "End Time",
-      content: fiveDaysLockup
-        ? getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm")
-        : endTime ?? "-",
-      tooltip: "LTOS can be unstaked after this time. ",
-    },
-  ];
+  const contentList: IBottomContentProps[] = useMemo(() => {
+    return [
+      {
+        title: "You Give",
+        content: `${inputValue.bond_modal_balance || "-"} ETH`,
+        tooltip: "",
+        hasTitleStar: true,
+      },
+      {
+        title: "You Will Get",
+        content: `${youWillGet ?? "-"} LTOS`,
+        secondContent: `${fiveDaysLockup ? "0" : stosReward} sTOS`,
+        thirdContent: `(${bondDiscount}% discount)`,
+        tooltip:
+          "You get LTOS based on what you gi  ve and sTOS is also based on the lock-up period.",
+        secondTooltip: `Currently worth ${originalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+        // thirdTooltip:
+        //   "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
+        isPlus: true,
+        noSign: true,
+        style: { color: isMinusDiscount ? "red.100" : "blue.200" },
+        hasTitleStar: true,
+      },
+      {
+        title: "End Time",
+        content: fiveDaysLockup
+          ? getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm")
+          : endTime ?? "-",
+        tooltip: "LTOS can be unstaked after this time. ",
+      },
+    ];
+  }, [
+    inputValue,
+    fiveDaysLockup,
+    stosReward,
+    bondDiscount,
+    endTime,
+    isMinusDiscount,
+    originalTosAmount,
+    youWillGet,
+  ]);
 
   return (
     <Flex
