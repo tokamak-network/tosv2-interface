@@ -380,7 +380,7 @@ function SwapInterfaceModal() {
                     }}
                     _hover={{}}
                     _active={{}}
-                    disabled={
+                    isDisabled={
                       token0.address === "" ||
                       tx.tx === true ||
                       !account ||
