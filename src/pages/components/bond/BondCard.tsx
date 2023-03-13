@@ -315,7 +315,9 @@ function BondCard(props: { data: BondCardProps }) {
           <ContentComponent
             title={titleState}
             content={
-              titleState === "Time Starts"
+              data?.status === "closed" || data?.status === "will be open"
+                ? "N/A"
+                : titleState === "Time Starts"
                 ? data?.startDay
                 : titleState === "Time Left"
                 ? timeLeft
