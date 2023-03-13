@@ -49,6 +49,7 @@ export default function BondModal_Period() {
             mb={"9px"}
           >
             <Text
+            fontWeight={600}
               mr={"6px"}
               color={colorMode === "light" ? "gray.800" : "white.200"}
             >
@@ -70,7 +71,7 @@ export default function BondModal_Period() {
                   });
                 }}
               ></Checkbox>
-              <Text ml={"6px"} mr="3px">
+              <Text ml={"6px"} mr="3px" color={colorMode === 'dark'? 'gray.100':'gray.1000'}>
                 5 Days Lock-Up
               </Text>
 

@@ -5,8 +5,11 @@ import {
   useMediaQuery,
   useColorMode,
   Progress,
+  useTheme,
   Box,
+  theme,
 } from "@chakra-ui/react";
+
 import { useWeb3React } from "@web3-react/core";
 import { selectedTxState } from "atom/global/tx";
 import BasicButton from "common/button/BasicButton";
@@ -109,13 +112,14 @@ function BondCard(props: { data: BondCardProps }) {
   const { data } = props;
   const { openModal } = useModal("bond_bond_modal", data);
   const {} = useMediaView();
+  const theme = useTheme();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
   const { bp700px } = useMediaView();
   const [titleState, setTitleState] = useState<
     "Time Starts" | "Time Ends" | "Time Left"
   >("Time Starts");
-  const [width] = useWindowDimensions();
+  const [width] = useWindowDimensions()
 
   const closed = data?.status === "closed";
 
@@ -215,7 +219,15 @@ function BondCard(props: { data: BondCardProps }) {
         </Flex>
         <Flex
           fontSize={14}
-          color={isClosed ? "#8b8b93" : "blue.200"}
+          color={
+            colorMode === "dark"
+              ? isClosed
+                ? "#8b8b93"
+                : "blue.200"
+              : isClosed
+              ? "gray.1000"
+              : "gray.800"
+          }
           textAlign={"center"}
           alignItems="center"
           justifyContent={"center"}
@@ -224,7 +236,17 @@ function BondCard(props: { data: BondCardProps }) {
         >
           {data?.isHighest && <Text>Highest</Text>}
           <Text
-            color={isNotOpen ? "#5eea8d" : isClosed ? "gray.100" : "white.200"}
+            color={
+              isNotOpen
+                ? "#5eea8d"
+                : colorMode === "dark"
+                ? isClosed
+                  ? "gray.100"
+                  : "white.200"
+                : isClosed
+                ? "#8b8b93"
+                : "blue.200"
+            }
           >
             {data?.status === "will be open"
               ? openTimeDiff > 86400
@@ -242,7 +264,8 @@ function BondCard(props: { data: BondCardProps }) {
         w={"100%"}
         minH={"130px"}
         maxH={"130px"}
-        border={"1px solid #313442"}
+        border={"1px solid"}
+        borderColor={colorMode==='dark'?'#313442':"#e8edf2"}
         borderRadius={10}
         mb={"11px"}
         alignItems={"center"}
@@ -251,7 +274,7 @@ function BondCard(props: { data: BondCardProps }) {
         flexDir={"column"}
         textAlign={"center"}
       >
-        <Text color={"white.200"} fontSize={20} fontWeight={600}>
+        <Text color={colorMode==='dark'? "white.200":'gray.800'} fontSize={20} fontWeight={600}>
           ETH Bond {data?.version} ({isProduction() === false && data?.marketId}
           )
         </Text>
@@ -261,7 +284,7 @@ function BondCard(props: { data: BondCardProps }) {
             <br /> on Tokamak Network Swap
           </Text>
         ) : (
-          <Text fontSize={12}>
+          <Text fontSize={12} color={"gray.100"}>
             Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
             with your WTON and
             <br /> TOS to improve the liquidity
@@ -271,14 +294,14 @@ function BondCard(props: { data: BondCardProps }) {
       <Flex flexDir={"column"} rowGap={"5px"} mb={"17px"}>
         <Flex justifyContent={"space-between"}>
           <Flex columnGap={"6px"}>
-            <Text fontSize={13} color={"white.200"}>
+            <Text fontSize={13} color={colorMode==='light'?"#3f536e": "#dee4ef"} fontWeight={600}>
               Progress
             </Text>
-            <Text fontSize={12}>{data?.currentProgressOnCurrentCapacity}%</Text>
+            <Text fontSize={12} color={'blue.200'} fontWeight={600}>{data?.currentProgressOnCurrentCapacity}%</Text>
           </Flex>
-          <Flex fontSize={11}>
-            <Text color={"white.200"}>{data?.totalSold}&nbsp;</Text>
-            <Text>
+          <Flex fontSize={11} fontWeight={500}>
+            <Text color={colorMode === 'dark'? "white.200":'#3a495f'}>{data?.totalSold}&nbsp;</Text>
+            <Text  color={colorMode === 'dark'? "gray.100":'#3a495f'}>
               / {data?.currentCapacity} {data?.buyTokenType}
             </Text>
           </Flex>
@@ -290,6 +313,7 @@ function BondCard(props: { data: BondCardProps }) {
             borderRadius={100}
             h={"5px"}
             w={"100%"}
+            // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
             zIndex={100}
           ></Progress>
           {Number(data?.blueProgress) > 0 && (
@@ -302,6 +326,7 @@ function BondCard(props: { data: BondCardProps }) {
             value={Number(data?.currentCapacityProgress)}
             borderRadius={100}
             h={"5px"}
+            // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
             w={"100%"}
             pos={"absolute"}
           ></Progress>
