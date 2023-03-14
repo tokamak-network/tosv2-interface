@@ -241,7 +241,7 @@ function BondCard(props: { data: BondCardProps }) {
           textAlign={"right"}
           alignItems={"flex-end"}
           flexDir={"column"}
-          fontWeight={"bold"}
+          fontWeight={data?.status === "open" ? "bold" : ""}
         >
           {data?.isHighest && <Text>Highest</Text>}
           <Text
@@ -308,10 +308,10 @@ function BondCard(props: { data: BondCardProps }) {
                 setOpenedAccountBar(true);
                 openSwapModal();
                 setToken0({
-                  name:'WTON',
-                  address:WTON_ADDRESS,
-                  img:'https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png'
-                })
+                  name: "WTON",
+                  address: WTON_ADDRESS,
+                  img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
+                });
               }}
               onMouseEnter={() => setHoverWTON(true)}
               onMouseLeave={() => setHoverWTON(false)}
@@ -331,10 +331,10 @@ function BondCard(props: { data: BondCardProps }) {
                 setOpenedAccountBar(true);
                 openSwapModal();
                 setToken0({
-                  name:'ETH',
-                  address:ZERO_ADDRESS,
-                  img:''
-                })
+                  name: "ETH",
+                  address: ZERO_ADDRESS,
+                  img: "",
+                });
               }}
             >
               {" "}
