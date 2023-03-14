@@ -318,7 +318,7 @@ function BondCard(props: { data: BondCardProps }) {
             >
               WTON
             </span>
-            ,{" "}
+           <span  style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c"}}>, {' '}</span>
             <span
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
@@ -337,7 +337,7 @@ function BondCard(props: { data: BondCardProps }) {
                 })
               }}
             >
-              {" "}
+             
               ETH
             </span>
           </Text>

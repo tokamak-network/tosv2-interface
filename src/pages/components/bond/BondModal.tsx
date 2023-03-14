@@ -357,7 +357,7 @@ function BondModal() {
             >
               WTON
             </span>
-                  ,{" "}
+            <span  style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c"}}>, {' '}</span>
                   <span
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
