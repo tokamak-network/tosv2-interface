@@ -335,50 +335,57 @@ function BondModal() {
                 px={bp700px ? "20px" : 0}
               >
                 <Text>
-                  Currently, it is cheaper to purchase TOS from Uniswap V3 (
-                    <span
-              style={{
-                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
-                textDecoration: "underline",
-                cursor: hoverWTON ? "pointer" : "default",
-              }}
-              // onClick={openSwapModal}
-              onClick={() => {
-                setOpenedAccountBar(true);
-                openSwapModal();
-                setToken0({
-                  name:'WTON',
-                  address:WTON_ADDRESS,
-                  img:'https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png'
-                })
-              }}
-              onMouseEnter={() => setHoverWTON(true)}
-              onMouseLeave={() => setHoverWTON(false)}
-            >
-              WTON
-            </span>
-            <span  style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c"}}>, {' '}</span>
+                  Currently, it is cheaper to purchase TOS from Tokamak Network
+                  Swap (
                   <span
-              style={{
-                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
-                textDecoration: "underline",
-                cursor: hoverETH ? "pointer" : "default",
-              }}
-              onMouseEnter={() => setHoverETH(true)}
-              onMouseLeave={() => setHoverETH(false)}
-              onClick={() => {
-                setOpenedAccountBar(true);
-                openSwapModal();
-                setToken0({
-                  name:'ETH',
-                  address:ZERO_ADDRESS,
-                  img:''
-                })
-              }}
-            >
-              {" "}
-              ETH
-            </span>
+                    style={{
+                      color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
+                      textDecoration: "underline",
+                      cursor: hoverWTON ? "pointer" : "default",
+                    }}
+                    // onClick={openSwapModal}
+                    onClick={() => {
+                      setOpenedAccountBar(true);
+                      openSwapModal();
+                      setToken0({
+                        name: "WTON",
+                        address: WTON_ADDRESS,
+                        img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
+                      });
+                    }}
+                    onMouseEnter={() => setHoverWTON(true)}
+                    onMouseLeave={() => setHoverWTON(false)}
+                  >
+                    WTON
+                  </span>
+                  <span
+                    style={{
+                      color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
+                    }}
+                  >
+                    ,{" "}
+                  </span>
+                  <span
+                    style={{
+                      color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
+                      textDecoration: "underline",
+                      cursor: hoverETH ? "pointer" : "default",
+                    }}
+                    onMouseEnter={() => setHoverETH(true)}
+                    onMouseLeave={() => setHoverETH(false)}
+                    onClick={() => {
+                      setOpenedAccountBar(true);
+                      openSwapModal();
+                      setToken0({
+                        name: "ETH",
+                        address: ZERO_ADDRESS,
+                        img: "",
+                      });
+                    }}
+                  >
+                    {" "}
+                    ETH
+                  </span>
                   )
                 </Text>
                 <Text>
@@ -395,12 +402,9 @@ function BondModal() {
                   >
                     stake
                   </Link>{" "}
-                  them for LTOS. You can continue bonding,
+                  them for LTOS. You can continue bonding
                 </Text>
-                <Text>
-                  if you would like to purchase LTOS without impacting the
-                  price.
-                </Text>
+                <Text>to get LTOS without impacting the price.</Text>
               </Flex>
             )}
           </Flex>

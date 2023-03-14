@@ -295,8 +295,9 @@ function BondCard(props: { data: BondCardProps }) {
         {data?.isDiscountMinus ? (
           <Text fontSize={12} color={"red.100"}>
             Notice: You can purchase TOS at a lower
-            <br /> price at Tokamak Network Swap using
+            <br /> price by using Tokamak Network Swap
             <br />
+            <span>(</span>
             <span
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
@@ -340,6 +341,7 @@ function BondCard(props: { data: BondCardProps }) {
              
               ETH
             </span>
+            <span>)</span>
           </Text>
         ) : (
           <Text fontSize={12} color={"gray.100"}>
@@ -359,11 +361,11 @@ function BondCard(props: { data: BondCardProps }) {
             >
               Progress
             </Text>
-            <Text fontSize={12}>{data?.blueProgress}%</Text>
+            <Text  color={colorMode === "light" ? "#2775ff" : "#8b8b93"} fontSize={12} fontWeight={'semibold'}>{data?.blueProgress}%</Text>
           </Flex>
           <Flex fontSize={11}>
-            <Text color={"white.200"}>{data?.totalSold}&nbsp;</Text>
-            <Text>
+            <Text fontWeight={'semibold'} color={colorMode === "light" ? "#3a495f" : "#f1f1f1"}>{data?.totalSold}&nbsp;</Text>
+            <Text color={colorMode === "light" ? "#3a495f" : "#8b8b93"}>
               / {data?.bondCapacity} {data?.buyTokenType}
             </Text>
           </Flex>
