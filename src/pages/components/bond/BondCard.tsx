@@ -299,7 +299,7 @@ function BondCard(props: { data: BondCardProps }) {
             <br />
             <span
               style={{
-                color: colorMode === "dark" ? "white.200" : "gray.800",
+                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                 textDecoration: "underline",
                 cursor: hoverWTON ? "pointer" : "default",
               }}
@@ -321,7 +321,7 @@ function BondCard(props: { data: BondCardProps }) {
             ,{" "}
             <span
               style={{
-                color: colorMode === "dark" ? "white.200" : "gray.800",
+                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                 textDecoration: "underline",
                 cursor: hoverETH ? "pointer" : "default",
               }}
