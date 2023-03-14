@@ -71,7 +71,7 @@ import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
 import BondModal_Input from "./modal/BondModal_Input";
 import BondModal_Period from "./modal/BondModal_Period";
-import { bond_modal } from "atom/bond/modal";
+import { bond_modal, bond_modal_state_defaultValue } from "atom/bond/modal";
 import { isProduction } from "constants/production";
 
 function BondModal() {
@@ -88,6 +88,8 @@ function BondModal() {
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup, fiveDaysLockupEndTime } = bondModalRecoilValue;
+  const [bondModalRecoilState, setBondModalRecoilState] =
+    useRecoilState(bond_modal);
 
   const marketId = selectedModalData?.index;
 
@@ -126,8 +128,9 @@ function BondModal() {
 
   const closeThisModal = useCallback(() => {
     setResetValue();
+    setBondModalRecoilState(bond_modal_state_defaultValue);
     closeModal();
-  }, [closeModal, setResetValue]);
+  }, [closeModal, setResetValue, setBondModalRecoilState]);
 
   const callBond = useCallback(async () => {
     try {
@@ -147,6 +150,18 @@ function BondModal() {
           console.log(`periodWeeks : ${periodWeeks}`);
           console.log(`value : ${convertToWei(inputAmount)}`);
 
+          const gasEstimate =
+            await BondDepositoryProxy_CONTRACT.estimateGas.ETHDepositWithSTOS(
+              marketId,
+              convertToWei(inputAmount),
+              minimumTosPrice,
+              periodWeeks,
+              { value: convertToWei(inputAmount) }
+            );
+
+          console.log("gasEstimate");
+          console.log(gasEstimate.toString());
+
           const tx = await BondDepositoryProxy_CONTRACT.ETHDepositWithSTOS(
             marketId,
             convertToWei(inputAmount),
@@ -163,6 +178,16 @@ function BondModal() {
         console.log(`inputAmount : ${convertToWei(inputAmount)}`);
         console.log(`minimumTosPrice : ${minimumTosPrice.toString()}`);
         console.log(`value : ${convertToWei(inputAmount)}`);
+        const gasEstimate =
+          await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
+            marketId,
+            convertToWei(inputAmount),
+            minimumTosPrice,
+            { value: convertToWei(inputAmount) }
+          );
+
+        console.log("gasEstimate");
+        console.log(gasEstimate.toString());
 
         const tx = await BondDepositoryProxy_CONTRACT.ETHDeposit(
           marketId,

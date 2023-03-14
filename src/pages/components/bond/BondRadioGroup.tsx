@@ -15,7 +15,7 @@ function BondRadioGroup() {
   const [bondRadioValue, setBondRadiouValue] =
     useRecoilState<T_SortValues>(bond_filter_sort);
   const { colorMode } = useColorMode();
-  const { bp500px } = useMediaView();
+  const { bp500px, bp1024px } = useMediaView();
 
   return (
     <Flex
@@ -33,7 +33,9 @@ function BondRadioGroup() {
           columnGap={bp500px ? "" : "34px"}
           w={"100%"}
           h={"100%"}
-          justifyContent={bp500px ? "space-between" : "flex-start"}
+          justifyContent={
+            bp500px ? "space-between" : bp1024px ? "flex-start" : "flex-end"
+          }
         >
           <Radio value="default">
             <Text
