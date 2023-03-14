@@ -362,7 +362,7 @@ function SwapInterfaceModal() {
                     fontSize={"10px"}
                     color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}
                   >
-                    Tokamak Swap Protocol wants to use your{" "}
+                    Tokamak Network Swap wants to use your{" "}
                     {token0.name ? token0.name : "tokens"}
                   </Text>
                   <Button
