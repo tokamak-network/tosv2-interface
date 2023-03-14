@@ -344,10 +344,10 @@ function BondCard(props: { data: BondCardProps }) {
             <span>)</span>
           </Text>
         ) : (
-          <Text fontSize={12} color={"gray.100"}>
+          <Text fontSize={12} color={colorMode === 'dark'? "gray.100":'#8b8b93'}>
             Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
-            with your WTON and
-            <br /> TOS to improve the liquidity
+            with your WTON 
+            <br />and TOS to improve the liquidity
           </Text>
         )}
       </Flex>
