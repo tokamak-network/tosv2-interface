@@ -3,7 +3,7 @@
 
 import { REACT_APP_MODE } from "../../constants";
 
-type CONTRACT_ADDRESSES_TYPE = {
+export type CONTRACT_ADDRESSES_TYPE = {
   TON_ADDRESS:
     | "0x2be5e8c109e2197D077D13A82dAead6a9b3433C5"
     | "0x68c1F9620aeC7F2913430aD6daC1bb16D8444F00";
