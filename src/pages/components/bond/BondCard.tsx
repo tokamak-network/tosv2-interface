@@ -319,7 +319,11 @@ function BondCard(props: { data: BondCardProps }) {
             >
               WTON
             </span>
-           <span  style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c"}}>, {' '}</span>
+            <span
+              style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c" }}
+            >
+              ,{" "}
+            </span>
             <span
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
@@ -338,7 +342,6 @@ function BondCard(props: { data: BondCardProps }) {
                 });
               }}
             >
-             
               ETH
             </span>
             <span>)</span>
@@ -361,10 +364,21 @@ function BondCard(props: { data: BondCardProps }) {
             >
               Progress
             </Text>
-            <Text  color={colorMode === "light" ? "#2775ff" : "#8b8b93"} fontSize={12} fontWeight={'semibold'}>{data?.blueProgress}%</Text>
+            <Text
+              color={colorMode === "light" ? "#2775ff" : "#8b8b93"}
+              fontSize={12}
+              fontWeight={"semibold"}
+            >
+              {data?.blueProgress}%
+            </Text>
           </Flex>
           <Flex fontSize={11}>
-            <Text fontWeight={'semibold'} color={colorMode === "light" ? "#3a495f" : "#f1f1f1"}>{data?.totalSold}&nbsp;</Text>
+            <Text
+              fontWeight={"semibold"}
+              color={colorMode === "light" ? "#3a495f" : "#f1f1f1"}
+            >
+              {data?.totalSold}&nbsp;
+            </Text>
             <Text color={colorMode === "light" ? "#3a495f" : "#8b8b93"}>
               / {data?.bondCapacity} {data?.buyTokenType}
             </Text>
@@ -404,12 +418,12 @@ function BondCard(props: { data: BondCardProps }) {
           <ContentComponent
             title={titleState}
             content={
-              data?.status === "closed" || data?.status === "will be open"
-                ? "N/A"
-                : titleState === "Time Starts"
+              titleState === "Time Starts"
                 ? data?.startDay
                 : titleState === "Time Left"
-                ? timeLeft
+                ? data?.status === "closed" || data?.status === "will be open"
+                  ? "N/A"
+                  : timeLeft
                 : data?.endDay
             }
             ImageSrc={RepeatIcon}
