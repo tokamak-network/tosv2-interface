@@ -389,7 +389,7 @@ function BondCard(props: { data: BondCardProps }) {
             borderRadius={100}
             h={"5px"}
             w={"100%"}
-            // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
+            bg={'transparent'}
             zIndex={100}
           ></Progress>
           {Number(data?.blueProgress) > 0 && (
@@ -402,9 +402,11 @@ function BondCard(props: { data: BondCardProps }) {
             value={Number(data?.currentCapacityProgress)}
             borderRadius={100}
             h={"5px"}
-            // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
+            bg={colorMode === "dark" ? "#353d48" : "#e7edf3"}
             w={"100%"}
             pos={"absolute"}
+         
+
           ></Progress>
           {Number(data?.currentCapacityProgress) > 0 && (
             <Box pos={"absolute"} w={"100%"} left={greenTooltipW} top={"-5px"}>
