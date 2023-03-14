@@ -3,6 +3,50 @@ import { useEffect, useMemo, useState } from "react";
 import { convertNumber } from "utils/number";
 import useCallContract from "hooks/useCallContract";
 import { useBlockNumber } from "./useBlockNumber";
+import { Contract, ethers, providers } from "ethers";
+import { SupportedToken, SupportedTokenList, TokenNames } from "types/tokens";
+
+class TokenBalance {
+  erc20Contract: Contract;
+  account: string;
+  decimals?: number;
+  balanceWei: Promise<number>;
+  balanceCommified: Promise<string>;
+
+  constructor(erc20Contract: Contract, account: string, decimals?: number) {
+    this.erc20Contract = erc20Contract;
+    this.account = account;
+    this.decimals = decimals ?? 18;
+
+    this.balanceWei = this.fetchBalanceWei();
+    this.balanceCommified = this.fetchBalanceCommified();
+  }
+
+  private async fetchBalanceWei(): Promise<number> {
+    const balanceBN = await this.erc20Contract.balanceOf(this.account);
+    const balanceWei = ethers.utils.formatUnits(balanceBN, this.decimals);
+
+    return Number(balanceWei.slice(0, 20));
+  }
+
+  private async fetchBalanceCommified(): Promise<string> {
+    const balanceBN = await this.erc20Contract.balanceOf(this.account);
+    const balanceCommified =
+      convertNumber({
+        amount: balanceBN.toString(),
+        localeString: true,
+        type: this.decimals === 18 ? "wei" : "ray",
+      }) ?? "-";
+    return balanceCommified;
+  }
+
+  async getBalanceWei() {
+    return this.balanceWei;
+  }
+  async getBalanceCommified() {
+    return this.balanceCommified;
+  }
+}
 
 const useUserBalance = () => {
   const { account, library } = useWeb3React();
@@ -27,6 +71,9 @@ const useUserBalance = () => {
   const [userETHBalance, setUserETHBalance] = useState<string | undefined>(
     undefined
   );
+  const [userETHBalanceWei, setUserETHBalanceWei] = useState<
+    number | undefined
+  >(undefined);
   const [userLTOSBalance, setUserLTOSBalance] = useState<string | undefined>(
     undefined
   );
@@ -34,7 +81,74 @@ const useUserBalance = () => {
     undefined
   );
 
-  const userETHBalanceNum = useMemo(() => {
+  const tokenContractList: SupportedToken[] = useMemo(() => {
+    return [
+      {
+        tokenName: "TON",
+        decimals: 18,
+        contract: TON_CONTRACT as Contract,
+      },
+      {
+        tokenName: "WTON",
+        decimals: 27,
+        contract: WTON_CONTRACT as Contract,
+      },
+      {
+        tokenName: "TOS",
+        decimals: 18,
+        contract: TOS_CONTRACT as Contract,
+      },
+      {
+        tokenName: "sTOS",
+        decimals: 18,
+        contract: LockTOS_CONTRACT as Contract,
+      },
+      {
+        tokenName: "LTOS",
+        decimals: 18,
+        contract: StakingV2Proxy_CONTRACT as Contract,
+      },
+    ];
+  }, [
+    TON_CONTRACT,
+    WTON_CONTRACT,
+    TOS_CONTRACT,
+    LockTOS_CONTRACT,
+    StakingV2Proxy_CONTRACT,
+  ]);
+
+  useEffect(() => {
+    async function fetchEachTokenBalance(contract: Contract, decimals: number) {
+      if (account && contract) {
+        const erc20Balance = new TokenBalance(contract, account, decimals);
+        const erc20BalanceWei = await erc20Balance.getBalanceWei();
+        const erc20BalanceCommified = await erc20Balance.getBalanceCommified();
+
+        return { erc20BalanceWei, erc20BalanceCommified };
+      }
+    }
+    async function fetchTokenBalance() {
+      const result = await Promise.all(
+        tokenContractList.map(async (tokenInfo) => {
+          if (tokenInfo.contract) {
+            const tokenBalance = await fetchEachTokenBalance(
+              tokenInfo.contract,
+              tokenInfo.decimals
+            );
+            return {
+              tokenName: tokenInfo.tokenName,
+              balanceWei: tokenBalance?.erc20BalanceWei,
+              balanceCommified: tokenBalance?.erc20BalanceCommified,
+            };
+          }
+        })
+      );
+      return result;
+    }
+    fetchTokenBalance().catch((e) => console.log(e));
+  }, [blockNumber, tokenContractList, account]);
+
+  const userETHBalanceNum: number | undefined = useMemo(() => {
     if (userETHBalance) {
       return Number(userETHBalance.replaceAll(",", ""));
     }
@@ -48,7 +162,8 @@ const useUserBalance = () => {
         !WTON_CONTRACT ||
         !TOS_CONTRACT ||
         !LockTOS_CONTRACT ||
-        !StakingV2Proxy_CONTRACT
+        !StakingV2Proxy_CONTRACT ||
+        !library
       ) {
         return;
       }

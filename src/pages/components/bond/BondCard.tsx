@@ -198,10 +198,15 @@ function BondCard(props: { data: BondCardProps }) {
   useEffect(() => {
     if (soldoutProgressRef?.current?.childNodes) {
       const totalSoldChildNode = soldoutProgressRef.current.childNodes;
-      //@ts-ignore
-      totalSoldChildNode[0].style.backgroundColor = "#64646f";
+      if (isClosed) {
+        //@ts-ignore
+        totalSoldChildNode[0].style.backgroundColor = "#64646f";
+      } else {
+        //@ts-ignore
+        totalSoldChildNode[0].style.backgroundColor = "#2775ff";
+      }
     }
-  }, [soldoutProgressRef]);
+  }, [soldoutProgressRef, isClosed]);
 
   //change colorScheme for green progress(currentCapacity / totalCapacity)
   useEffect(() => {
@@ -407,12 +412,11 @@ function BondCard(props: { data: BondCardProps }) {
             // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
             zIndex={100}
           ></Progress>
-          {Number(data?.blueProgress) > 0 ||
-            (!isClosed && (
-              <Box pos={"absolute"} w={"100%"} left={blueTooltipW} top={"-5px"}>
-                <Image src={BlueTooltip} alt={"BlueTooltip"}></Image>
-              </Box>
-            ))}
+          {Number(data?.blueProgress) > 0 && !isClosed && (
+            <Box pos={"absolute"} w={"100%"} left={blueTooltipW} top={"-5px"}>
+              <Image src={BlueTooltip} alt={"BlueTooltip"}></Image>
+            </Box>
+          )}
           {!isClosed && (
             <Progress
               ref={currentCapacityProgressRef}
@@ -424,17 +428,11 @@ function BondCard(props: { data: BondCardProps }) {
               pos={"absolute"}
             ></Progress>
           )}
-          {Number(data?.currentCapacityProgress) > 0 ||
-            (!isClosed && (
-              <Box
-                pos={"absolute"}
-                w={"100%"}
-                left={greenTooltipW}
-                top={"-5px"}
-              >
-                <Image src={GreenTooltip} alt={"GreenTooltip"}></Image>
-              </Box>
-            ))}
+          {Number(data?.currentCapacityProgress) > 0 && !isClosed && (
+            <Box pos={"absolute"} w={"100%"} left={greenTooltipW} top={"-5px"}>
+              <Image src={GreenTooltip} alt={"GreenTooltip"}></Image>
+            </Box>
+          )}
         </Flex>
         <Flex flexDir={"column"} rowGap={"9px"}>
           <ContentComponent
