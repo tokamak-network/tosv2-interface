@@ -83,8 +83,6 @@ function BondModal() {
   const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
 
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
-  const [hoverWTON, setHoverWTON] = useState(false);
-  const [hoverETH, setHoverETH] = useState(false);
   const { openModal: openSwapModal } = useModal("swap_interface_modal");
   const [token0, setToken0] = useRecoilState(selectedToken0);
   const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
@@ -341,7 +339,7 @@ function BondModal() {
                     style={{
                       color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                       textDecoration: "underline",
-                      cursor: hoverWTON ? "pointer" : "default",
+                      cursor: "pointer",
                     }}
                     // onClick={openSwapModal}
                     onClick={() => {
@@ -353,8 +351,6 @@ function BondModal() {
                         img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
                       });
                     }}
-                    onMouseEnter={() => setHoverWTON(true)}
-                    onMouseLeave={() => setHoverWTON(false)}
                   >
                     WTON
                   </span>
@@ -369,10 +365,8 @@ function BondModal() {
                     style={{
                       color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                       textDecoration: "underline",
-                      cursor: hoverETH ? "pointer" : "default",
+                      cursor: "pointer",
                     }}
-                    onMouseEnter={() => setHoverETH(true)}
-                    onMouseLeave={() => setHoverETH(false)}
                     onClick={() => {
                       setOpenedAccountBar(true);
                       openSwapModal();

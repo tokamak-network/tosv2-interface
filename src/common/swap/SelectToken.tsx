@@ -24,8 +24,9 @@ import ArrowDownImg from "assets/icons/arrow-Down.svg";
 import ArrowDownD from "assets/icons/arrow-DownDark.svg";
 import ArrowDownL from "assets/icons/arrow-DownLight.svg";
 import { ZERO_ADDRESS } from "constants/index";
-function SelectToken(props: { tokenType: Number }) {
-  const { tokenType } = props;
+
+function SelectToken(props: { tokenType: Number , approveDisable:boolean, submitDisable:boolean}) {
+  const { tokenType,approveDisable, submitDisable } = props;
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const tokenList = useTokenList();
@@ -243,7 +244,7 @@ function SelectToken(props: { tokenType: Number }) {
                 bg={colorMode === "dark" ? "#1e1e24" : "#e9edf1"}
               ></Box>
               <Text
-                color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}
+                color={colorMode === "dark" ? submitDisable && approveDisable? '#5A5A5A' :'white.200' : "#3d495d"}
                 fontSize="18px"
                 ml="10px"
                 fontWeight={"normal"}
@@ -290,7 +291,7 @@ function SelectToken(props: { tokenType: Number }) {
               )}
 
               <Text
-                color={colorMode === "dark" ? "#8b8b93" : "#3d495d"}
+                color={colorMode === "dark" ? submitDisable && approveDisable? '#5A5A5A' :'white.200'  : "#3d495d"}
                 fontSize="18px"
                 ml="10px"
                 fontWeight={"normal"}

@@ -117,8 +117,6 @@ function BondCard(props: { data: BondCardProps }) {
   const { openModal } = useModal("bond_bond_modal", data);
   const {} = useMediaView();
   const theme = useTheme();
-  const [hoverWTON, setHoverWTON] = useState(false);
-  const [hoverETH, setHoverETH] = useState(false);
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
   const { bp700px } = useMediaView();
@@ -302,52 +300,55 @@ function BondCard(props: { data: BondCardProps }) {
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                 textDecoration: "underline",
-                cursor: hoverWTON ? "pointer" : "default",
+                cursor: "pointer",
               }}
               // onClick={openSwapModal}
               onClick={() => {
                 setOpenedAccountBar(true);
                 openSwapModal();
                 setToken0({
-                  name:'WTON',
-                  address:WTON_ADDRESS,
-                  img:'https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png'
-                })
+                  name: "WTON",
+                  address: WTON_ADDRESS,
+                  img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
+                });
               }}
-              onMouseEnter={() => setHoverWTON(true)}
-              onMouseLeave={() => setHoverWTON(false)}
             >
               WTON
             </span>
-           <span  style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c"}}>, {' '}</span>
+            <span
+              style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c" }}
+            >
+              ,{" "}
+            </span>
             <span
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                 textDecoration: "underline",
-                cursor: hoverETH ? "pointer" : "default",
+                cursor: "pointer",
               }}
-              onMouseEnter={() => setHoverETH(true)}
-              onMouseLeave={() => setHoverETH(false)}
               onClick={() => {
                 setOpenedAccountBar(true);
                 openSwapModal();
                 setToken0({
-                  name:'ETH',
-                  address:ZERO_ADDRESS,
-                  img:''
-                })
+                  name: "ETH",
+                  address: ZERO_ADDRESS,
+                  img: "",
+                });
               }}
             >
-             
               ETH
             </span>
             <span>)</span>
           </Text>
         ) : (
-          <Text fontSize={12} color={colorMode === 'dark'? "gray.100":'#8b8b93'}>
+          <Text
+            fontSize={12}
+            color={colorMode === "dark" ? "gray.100" : "#8b8b93"}
+          >
             Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
-            with your WTON 
-            <br />and TOS to improve the liquidity
+            with your WTON
+            <br />
+            and TOS to improve the liquidity
           </Text>
         )}
       </Flex>
@@ -361,10 +362,21 @@ function BondCard(props: { data: BondCardProps }) {
             >
               Progress
             </Text>
-            <Text  color={colorMode === "light" ? "#2775ff" : "#8b8b93"} fontSize={12} fontWeight={'semibold'}>{data?.blueProgress}%</Text>
+            <Text
+              color={colorMode === "light" ? "#2775ff" : "#8b8b93"}
+              fontSize={12}
+              fontWeight={"semibold"}
+            >
+              {data?.blueProgress}%
+            </Text>
           </Flex>
           <Flex fontSize={11}>
-            <Text fontWeight={'semibold'} color={colorMode === "light" ? "#3a495f" : "#f1f1f1"}>{data?.totalSold}&nbsp;</Text>
+            <Text
+              fontWeight={"semibold"}
+              color={colorMode === "light" ? "#3a495f" : "#f1f1f1"}
+            >
+              {data?.totalSold}&nbsp;
+            </Text>
             <Text color={colorMode === "light" ? "#3a495f" : "#8b8b93"}>
               / {data?.bondCapacity} {data?.buyTokenType}
             </Text>
