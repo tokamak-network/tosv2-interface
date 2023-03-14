@@ -6,7 +6,7 @@ export type T_BondModalValues = {
   fiveDaysLockupEndTime: string;
 };
 
-const defaultValue: T_BondModalValues = {
+const bond_modal_state_defaultValue: T_BondModalValues = {
   fiveDaysLockup: false,
   // fiveDaysLockupEndTime: setInterval(() => {
   //   getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm");
@@ -16,7 +16,7 @@ const defaultValue: T_BondModalValues = {
 
 const bond_modal = atom<T_BondModalValues>({
   key: "bond_modal_values",
-  default: defaultValue,
+  default: bond_modal_state_defaultValue,
 });
 
 const bond_modal_state = selector({
@@ -27,4 +27,4 @@ const bond_modal_state = selector({
   },
 });
 
-export { bond_modal, bond_modal_state };
+export { bond_modal_state_defaultValue, bond_modal, bond_modal_state };

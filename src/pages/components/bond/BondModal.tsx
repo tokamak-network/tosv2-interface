@@ -71,12 +71,15 @@ import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
 import BondModal_Input from "./modal/BondModal_Input";
 import BondModal_Period from "./modal/BondModal_Period";
-import { bond_modal } from "atom/bond/modal";
+import { bond_modal, bond_modal_state_defaultValue } from "atom/bond/modal";
 import { isProduction } from "constants/production";
 import { accountBar } from "atom/global/sidebar";
-import CONTRACT_ADDRESS from "services/addresses/contract";
+import CONTRACT_ADDRESS, {
+  CONTRACT_ADDRESSES_TYPE,
+} from "services/addresses/contract";
 import { ZERO_ADDRESS } from "constants/index";
 import { selectedToken0, selectedToken1 } from "atom/swap";
+import { BigNumber, ethers } from "ethers";
 
 function BondModal() {
   const theme = useTheme();
@@ -86,6 +89,7 @@ function BondModal() {
   const { openModal: openSwapModal } = useModal("swap_interface_modal");
   const [token0, setToken0] = useRecoilState(selectedToken0);
   const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
+  const { userTokenBalance } = useBondModal();
 
   const { colorMode } = useColorMode();
   const { inputValue, setValue, setResetValue } = useInput(
@@ -97,6 +101,8 @@ function BondModal() {
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup, fiveDaysLockupEndTime } = bondModalRecoilValue;
+  const [bondModalRecoilState, setBondModalRecoilState] =
+    useRecoilState(bond_modal);
 
   const marketId = selectedModalData?.index;
 
@@ -135,8 +141,9 @@ function BondModal() {
 
   const closeThisModal = useCallback(() => {
     setResetValue();
+    setBondModalRecoilState(bond_modal_state_defaultValue);
     closeModal();
-  }, [closeModal, setResetValue]);
+  }, [closeModal, setResetValue, setBondModalRecoilState]);
 
   const callBond = useCallback(async () => {
     try {
@@ -145,7 +152,9 @@ function BondModal() {
         inputValue.bond_modal_balance &&
         minimumTosPrice
       ) {
-        const inputAmount = inputValue.bond_modal_balance;
+        const inputAmount = String(inputValue.bond_modal_balance)
+          .replaceAll(",", "")
+          .replaceAll(" ", "");
         const periodWeeks = inputValue.bond_modal_period + 1;
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {

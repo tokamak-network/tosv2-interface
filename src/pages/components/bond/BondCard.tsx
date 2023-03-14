@@ -17,7 +17,7 @@ import TokenSymbol from "common/token/TokenSymol";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { BondCardProps } from "types/bond";
 import ActiveArrow from "assets/icons/bond/arrow-right2_blue.svg";
@@ -139,7 +139,7 @@ function BondCard(props: { data: BondCardProps }) {
 
   const txPending = useRecoilValue(selectedTxState);
 
-  const capacityIsZero = Number(data?.bondCapacity.replaceAll("%", "")) <= 0;
+  const capacityIsZero = Number(data?.blueProgress) === 100;
   const discountIsMinus = data?.discountRate < 0;
 
   const isClosed = closed || capacityIsZero;
@@ -171,13 +171,6 @@ function BondCard(props: { data: BondCardProps }) {
   const soldoutProgressRef = useRef<HTMLDivElement | null>(null);
   const currentCapacityProgressRef = useRef<HTMLDivElement | null>(null);
 
-  if (currentCapacityProgressRef?.current?.childNodes) {
-    const currentCapacityChildNode =
-      currentCapacityProgressRef.current.childNodes;
-    //@ts-ignore
-    currentCapacityChildNode[0].style.backgroundColor = "#2bb415";
-  }
-
   const blueTooltipW: string | undefined = useMemo(() => {
     if (soldoutProgressRef?.current?.childNodes) {
       const soldoutProgressChildNode = soldoutProgressRef.current.childNodes;
@@ -198,6 +191,30 @@ function BondCard(props: { data: BondCardProps }) {
       return width ? `${width - 4}px` : undefined;
     }
   }, [currentCapacityProgressRef.current, width]);
+
+  //change colorScheme for blue progress(totalSold / totalCapacity)
+  useEffect(() => {
+    if (soldoutProgressRef?.current?.childNodes) {
+      const totalSoldChildNode = soldoutProgressRef.current.childNodes;
+      if (isClosed) {
+        //@ts-ignore
+        totalSoldChildNode[0].style.backgroundColor = "#64646f";
+      } else {
+        //@ts-ignore
+        totalSoldChildNode[0].style.backgroundColor = "#2775ff";
+      }
+    }
+  }, [soldoutProgressRef, isClosed]);
+
+  //change colorScheme for green progress(currentCapacity / totalCapacity)
+  useEffect(() => {
+    if (currentCapacityProgressRef?.current?.childNodes) {
+      const currentCapacityChildNode =
+        currentCapacityProgressRef.current.childNodes;
+      //@ts-ignore
+      currentCapacityChildNode[0].style.backgroundColor = "#2bb415";
+    }
+  }, [currentCapacityProgressRef]);
 
   //vierport ref 1134px
   return (
@@ -239,7 +256,7 @@ function BondCard(props: { data: BondCardProps }) {
           textAlign={"right"}
           alignItems={"flex-end"}
           flexDir={"column"}
-          fontWeight={"bold"}
+          fontWeight={data?.status === "open" ? "bold" : ""}
         >
           {data?.isHighest && <Text>Highest</Text>}
           <Text
@@ -392,7 +409,7 @@ function BondCard(props: { data: BondCardProps }) {
             bg={'transparent'}
             zIndex={100}
           ></Progress>
-          {Number(data?.blueProgress) > 0 && (
+          {Number(data?.blueProgress) > 0 && !isClosed && (
             <Box pos={"absolute"} w={"100%"} left={blueTooltipW} top={"-5px"}>
               <Image src={BlueTooltip} alt={"BlueTooltip"}></Image>
             </Box>
@@ -418,12 +435,12 @@ function BondCard(props: { data: BondCardProps }) {
           <ContentComponent
             title={titleState}
             content={
-              data?.status === "closed" || data?.status === "will be open"
-                ? "N/A"
-                : titleState === "Time Starts"
+              titleState === "Time Starts"
                 ? data?.startDay
                 : titleState === "Time Left"
-                ? timeLeft
+                ? data?.status === "closed" || data?.status === "will be open"
+                  ? "N/A"
+                  : timeLeft
                 : data?.endDay
             }
             ImageSrc={RepeatIcon}
