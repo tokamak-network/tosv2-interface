@@ -133,7 +133,7 @@ function AccountDrawer(props: HeaderProps) {
                 <Text
                 color={'blue.200'}
                   fontSize='12px'
-                  onClick={openSwapModal}
+                  onClick={ openSwapModal}
                   _hover={{cursor:'pointer'}}
                   mr='15px'
                 >

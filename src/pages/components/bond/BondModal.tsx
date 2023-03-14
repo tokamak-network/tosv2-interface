@@ -73,10 +73,21 @@ import BondModal_Input from "./modal/BondModal_Input";
 import BondModal_Period from "./modal/BondModal_Period";
 import { bond_modal, bond_modal_state_defaultValue } from "atom/bond/modal";
 import { isProduction } from "constants/production";
+import { accountBar } from "atom/global/sidebar";
+import CONTRACT_ADDRESS from "services/addresses/contract";
+import { ZERO_ADDRESS } from "constants/index";
+import { selectedToken0, selectedToken1 } from "atom/swap";
 
 function BondModal() {
   const theme = useTheme();
   const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+
+  const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
+  const [hoverWTON, setHoverWTON] = useState(false);
+  const [hoverETH, setHoverETH] = useState(false);
+  const { openModal: openSwapModal } = useModal("swap_interface_modal");
+  const [token0, setToken0] = useRecoilState(selectedToken0);
+  const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
 
   const { colorMode } = useColorMode();
   const { inputValue, setValue, setResetValue } = useInput(
@@ -350,31 +361,49 @@ function BondModal() {
               >
                 <Text>
                   Currently, it is cheaper to purchase TOS from Uniswap V3 (
-                  <Link
-                    isExternal={true}
-                    textDecoration={"underline"}
-                    href={
-                      isProduction()
-                        ? "https://app.uniswap.org/#/swap?inputCurrency=0xc4A11aaf6ea915Ed7Ac194161d2fC9384F15bff2&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
-                        : "https://app.uniswap.org/#/swap?inputCurrency=0xe86fCf5213C785AcF9a8BFfEeDEfA9a2199f7Da6&outputCurrency=0x67F3bE272b1913602B191B3A68F7C238A2D81Bb9"
-                    }
-                    color={colorMode === "dark" ? "white.200" : "gray.800"}
-                  >
-                    WTON
-                  </Link>
+                    <span
+              style={{
+                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
+                textDecoration: "underline",
+                cursor: hoverWTON ? "pointer" : "default",
+              }}
+              // onClick={openSwapModal}
+              onClick={() => {
+                setOpenedAccountBar(true);
+                openSwapModal();
+                setToken0({
+                  name:'WTON',
+                  address:WTON_ADDRESS,
+                  img:'https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png'
+                })
+              }}
+              onMouseEnter={() => setHoverWTON(true)}
+              onMouseLeave={() => setHoverWTON(false)}
+            >
+              WTON
+            </span>
                   ,{" "}
-                  <Link
-                    isExternal={true}
-                    textDecoration={"underline"}
-                    href={
-                      isProduction()
-                        ? "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x409c4D8cd5d2924b9bc5509230d16a61289c8153"
-                        : "https://app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=0x67F3bE272b1913602B191B3A68F7C238A2D81Bb9"
-                    }
-                    color={colorMode === "dark" ? "white.200" : "gray.800"}
-                  >
-                    ETH
-                  </Link>
+                  <span
+              style={{
+                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
+                textDecoration: "underline",
+                cursor: hoverETH ? "pointer" : "default",
+              }}
+              onMouseEnter={() => setHoverETH(true)}
+              onMouseLeave={() => setHoverETH(false)}
+              onClick={() => {
+                setOpenedAccountBar(true);
+                openSwapModal();
+                setToken0({
+                  name:'ETH',
+                  address:ZERO_ADDRESS,
+                  img:''
+                })
+              }}
+            >
+              {" "}
+              ETH
+            </span>
                   )
                 </Text>
                 <Text>

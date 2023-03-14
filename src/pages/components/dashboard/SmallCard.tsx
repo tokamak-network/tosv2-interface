@@ -137,6 +137,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
             <Button
               h={"19px"}
               fontSize={"12px"}
+              borderRadius='4px'
               fontWeight={500}
               _hover={{ cursor: "pointer" }}
               _active={{}}
@@ -150,6 +151,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
             <Button
               h={"19px"}
               fontSize={"12px"}
+              borderRadius='5px'
               w="50%"
               color={unit === "ETH" ? "white.100" : "#64646f"}
               fontWeight={500}

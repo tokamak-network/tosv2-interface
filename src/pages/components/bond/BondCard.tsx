@@ -5,8 +5,11 @@ import {
   useMediaQuery,
   useColorMode,
   Progress,
+  useTheme,
   Box,
+  theme,
 } from "@chakra-ui/react";
+
 import { useWeb3React } from "@web3-react/core";
 import { selectedTxState } from "atom/global/tx";
 import BasicButton from "common/button/BasicButton";
@@ -15,9 +18,8 @@ import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useRecoilState } from "recoil";
 import { BondCardProps } from "types/bond";
-
 import ActiveArrow from "assets/icons/bond/arrow-right2_blue.svg";
 import InactiveArrow from "assets/icons/bond/arrow-right2_disabled.svg";
 import RepeatIcon from "assets/icons/bond/s-repeat.svg";
@@ -27,6 +29,11 @@ import GreenTooltip from "assets/icons/bond/gage_green_arrow.svg";
 import Image from "next/image";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { isProduction } from "constants/production";
+import styled from "@emotion/styled";
+import CONTRACT_ADDRESS from "services/addresses/contract";
+import { accountBar } from "atom/global/sidebar";
+import { ZERO_ADDRESS } from "constants/index";
+import { selectedToken0, selectedToken1 } from "atom/swap";
 
 function getStatusText() {}
 
@@ -109,6 +116,9 @@ function BondCard(props: { data: BondCardProps }) {
   const { data } = props;
   const { openModal } = useModal("bond_bond_modal", data);
   const {} = useMediaView();
+  const theme = useTheme();
+  const [hoverWTON, setHoverWTON] = useState(false);
+  const [hoverETH, setHoverETH] = useState(false);
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
   const { bp700px } = useMediaView();
@@ -116,8 +126,12 @@ function BondCard(props: { data: BondCardProps }) {
     "Time Starts" | "Time Ends" | "Time Left"
   >("Time Starts");
   const [width] = useWindowDimensions();
-
+  const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
   const closed = data?.status === "closed";
+  const { openModal: openSwapModal } = useModal("swap_interface_modal");
+
+  const [token0, setToken0] = useRecoilState(selectedToken0);
+  const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
 
   const timeDiff = data?.endTime - getNowTimeStamp();
   const openTimeDiff = data?.startTime - getNowTimeStamp();
@@ -215,7 +229,15 @@ function BondCard(props: { data: BondCardProps }) {
         </Flex>
         <Flex
           fontSize={12}
-          color={isClosed ? "#8b8b93" : "blue.200"}
+          color={
+            colorMode === "dark"
+              ? isClosed
+                ? "#8b8b93"
+                : "blue.200"
+              : isClosed
+              ? "gray.1000"
+              : "gray.800"
+          }
           textAlign={"right"}
           alignItems={"flex-end"}
           flexDir={"column"}
@@ -223,7 +245,17 @@ function BondCard(props: { data: BondCardProps }) {
         >
           {data?.isHighest && <Text>Highest</Text>}
           <Text
-            color={isNotOpen ? "#5eea8d" : isClosed ? "gray.100" : "white.200"}
+            color={
+              isNotOpen
+                ? "#5eea8d"
+                : colorMode === "dark"
+                ? isClosed
+                  ? "gray.100"
+                  : "white.200"
+                : isClosed
+                ? "#8b8b93"
+                : "blue.200"
+            }
             fontSize={14}
           >
             {data?.status === "will be open"
@@ -242,7 +274,8 @@ function BondCard(props: { data: BondCardProps }) {
         w={"100%"}
         minH={"130px"}
         maxH={"130px"}
-        border={"1px solid #313442"}
+        border={"1px solid"}
+        borderColor={colorMode === "dark" ? "#313442" : "#e8edf2"}
         borderRadius={10}
         mb={"11px"}
         alignItems={"center"}
@@ -251,18 +284,65 @@ function BondCard(props: { data: BondCardProps }) {
         flexDir={"column"}
         textAlign={"center"}
       >
-        <Text color={"white.200"} fontSize={20} fontWeight={600}>
+        <Text
+          color={colorMode === "dark" ? "white.200" : "gray.800"}
+          fontSize={20}
+          fontWeight={600}
+        >
           ETH Bond {data?.version} ({isProduction() === false && data?.marketId}
           )
         </Text>
         {data?.isDiscountMinus ? (
           <Text fontSize={12} color={"red.100"}>
             Notice: You can purchase TOS at a lower
-            <br /> price by using Tokamak Network Swap <br />
-            <span style={{ color: "#f1f1f1" }}>(WTON, ETH)</span>
+            <br /> price at Tokamak Network Swap using
+            <br />
+            <span
+              style={{
+                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
+                textDecoration: "underline",
+                cursor: hoverWTON ? "pointer" : "default",
+              }}
+              // onClick={openSwapModal}
+              onClick={() => {
+                setOpenedAccountBar(true);
+                openSwapModal();
+                setToken0({
+                  name:'WTON',
+                  address:WTON_ADDRESS,
+                  img:'https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png'
+                })
+              }}
+              onMouseEnter={() => setHoverWTON(true)}
+              onMouseLeave={() => setHoverWTON(false)}
+            >
+              WTON
+            </span>
+            ,{" "}
+            <span
+              style={{
+                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
+                textDecoration: "underline",
+                cursor: hoverETH ? "pointer" : "default",
+              }}
+              onMouseEnter={() => setHoverETH(true)}
+              onMouseLeave={() => setHoverETH(false)}
+              onClick={() => {
+                setOpenedAccountBar(true);
+                openSwapModal();
+                setToken0({
+                  name:'ETH',
+                  address:ZERO_ADDRESS,
+                  img:''
+                })
+              }}
+            >
+              {" "}
+              ETH
+            </span>
           </Text>
         ) : (
-          <Text fontSize={12}>
+          <Text fontSize={12} color={"gray.100"}>
             Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
             with your WTON and
             <br /> TOS to improve the liquidity
@@ -272,7 +352,11 @@ function BondCard(props: { data: BondCardProps }) {
       <Flex flexDir={"column"} rowGap={"5px"} mb={"17px"}>
         <Flex justifyContent={"space-between"}>
           <Flex columnGap={"6px"}>
-            <Text fontSize={13} color={"white.200"}>
+            <Text
+              fontSize={13}
+              color={colorMode === "light" ? "#3f536e" : "#dee4ef"}
+              fontWeight={600}
+            >
               Progress
             </Text>
             <Text fontSize={12}>{data?.blueProgress}%</Text>
@@ -291,6 +375,7 @@ function BondCard(props: { data: BondCardProps }) {
             borderRadius={100}
             h={"5px"}
             w={"100%"}
+            // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
             zIndex={100}
           ></Progress>
           {Number(data?.blueProgress) > 0 && (
@@ -303,6 +388,7 @@ function BondCard(props: { data: BondCardProps }) {
             value={Number(data?.currentCapacityProgress)}
             borderRadius={100}
             h={"5px"}
+            // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
             w={"100%"}
             pos={"absolute"}
           ></Progress>
