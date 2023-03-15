@@ -6,6 +6,42 @@ import { useBlockNumber } from "./useBlockNumber";
 import { Contract, ethers, providers } from "ethers";
 import { SupportedToken, SupportedTokenList, TokenNames } from "types/tokens";
 
+type BalanceWei = number | undefined;
+type BalanceCommified = string | undefined;
+
+type T_UserTokenBalance = {
+  ETH: {
+    tokenName: "ETH";
+    balanceWei: BalanceWei;
+    balanceCommified: BalanceCommified;
+  };
+  TON: {
+    tokenName: "TON";
+    balanceWei: BalanceWei;
+    balanceCommified: BalanceCommified;
+  };
+  WTON: {
+    tokenName: "WTON";
+    balanceWei: BalanceWei;
+    balanceCommified: BalanceCommified;
+  };
+  TOS: {
+    tokenName: "TOS";
+    balanceWei: BalanceWei;
+    balanceCommified: BalanceCommified;
+  };
+  sTOS: {
+    tokenName: "sTOS";
+    balanceWei: BalanceWei;
+    balanceCommified: BalanceCommified;
+  };
+  LTOS: {
+    tokenName: "LTOS";
+    balanceWei: BalanceWei;
+    balanceCommified: BalanceCommified;
+  };
+};
+
 class TokenBalance {
   erc20Contract: Contract;
   account: string;
@@ -81,6 +117,10 @@ const useUserBalance = () => {
     undefined
   );
 
+  const [userTokenBalance, setUserTokenBalance] = useState<
+    T_UserTokenBalance | undefined
+  >(undefined);
+
   const tokenContractList: SupportedToken[] = useMemo(() => {
     return [
       {
@@ -143,7 +183,18 @@ const useUserBalance = () => {
           }
         })
       );
-      return result;
+      if (result) {
+        let tokenData = {};
+        result.forEach((el) => {
+          if (el && el?.tokenName) {
+            //@ts-ignore
+            tokenData[el.tokenName] = { ...el };
+            // return { [el.tokenName]: { ...el } };
+          }
+        });
+
+        return setUserTokenBalance(tokenData as T_UserTokenBalance);
+      }
     }
     fetchTokenBalance().catch((e) => console.log(e));
   }, [blockNumber, tokenContractList, account]);
@@ -232,6 +283,7 @@ const useUserBalance = () => {
     userLTOSBalance,
     userSTOSBalance,
     userETHBalanceNum,
+    userTokenBalance,
   };
 };
 

@@ -11,7 +11,7 @@ function useStakeModalCondition() {
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [zeroInputBalance, setZeroInputBalance] = useState<boolean>(false);
 
-  const { userTOSBalance } = useUserBalance();
+  const { userTokenBalance } = useUserBalance();
   const { isModalLoading } = useModal();
   const { inputValue } = useInput("Stake_screen", "stake_modal");
   const inputTosAmount = inputValue.stake_modal_balance;
@@ -32,8 +32,8 @@ function useStakeModalCondition() {
       setZeroInputBalance(true);
       return setInputOver(false);
     }
-    if (userTOSBalance && inputTosAmount) {
-      if (Number(inputTosAmount) > Number(userTOSBalance.replaceAll(",", ""))) {
+    if (userTokenBalance?.TOS.balanceWei && inputTosAmount) {
+      if (Number(inputTosAmount) > userTokenBalance.TOS.balanceWei) {
         setZeroInputBalance(false);
         return setInputOver(true);
       }
@@ -44,7 +44,7 @@ function useStakeModalCondition() {
       setZeroInputBalance(false);
       setInputOver(false);
     };
-  }, [inputTosAmount, userTOSBalance, isModalLoading]);
+  }, [inputTosAmount, userTokenBalance, isModalLoading]);
 
   useEffect(() => {
     if (

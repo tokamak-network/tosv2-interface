@@ -80,7 +80,7 @@ function StakeModal() {
   } = useStakeModaldata();
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
-  const { userTOSBalance } = useUserBalance();
+  const { userTOSBalance, userTokenBalance } = useUserBalance();
   const { stakeList, tosAllowance } = useUser();
 
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
@@ -343,7 +343,7 @@ function StakeModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
-                    maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
+                    maxValue={userTokenBalance?.TOS?.balanceWei}
                     isError={zeroInputBalance || inputOver}
                     errorMsg={
                       zeroInputBalance
