@@ -38,17 +38,17 @@ function useBondModal() {
   } = useBondModalInputData();
 
   //calculate maxValue
-  const { userETHBalance, userETHBalanceNum } = useUserBalance();
+  const { userETHBalance, userETHBalanceWei } = useUserBalance();
   const maxValue = useMemo(() => {
-    if (userETHBalanceNum === undefined || maxCapacityValue === undefined) {
+    if (userETHBalanceWei === undefined || maxCapacityValue === undefined) {
       return 0;
     }
-    if (userETHBalanceNum !== undefined && maxCapacityValue !== undefined) {
-      return maxCapacityValue > userETHBalanceNum
-        ? userETHBalanceNum
+    if (userETHBalanceWei !== undefined && maxCapacityValue !== undefined) {
+      return maxCapacityValue > userETHBalanceWei
+        ? userETHBalanceWei
         : maxCapacityValue;
     }
-  }, [userETHBalanceNum, maxCapacityValue]);
+  }, [userETHBalanceWei, maxCapacityValue]);
 
   //modal condition
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
@@ -61,7 +61,7 @@ function useBondModal() {
       case "ETH":
         return {
           balacne: userETHBalance,
-          balanceNum: userETHBalanceNum,
+          balanceNum: userETHBalanceWei,
           name: "ETH",
           maxValue,
         };
@@ -73,7 +73,7 @@ function useBondModal() {
           maxValue: 0,
         };
     }
-  }, [tempTokenType, userETHBalance, userETHBalanceNum, maxValue]);
+  }, [tempTokenType, userETHBalance, userETHBalanceWei, maxValue]);
 
   return {
     sTos: {

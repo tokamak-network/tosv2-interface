@@ -93,11 +93,6 @@ export default function BondModal_Input() {
             .sub(gasEstimate)
             .sub(42000);
 
-          console.log(subtractedMaxAmount.toString());
-          console.log(
-            ethers.utils.formatUnits(subtractedMaxAmount.toString()).toString()
-          );
-
           return setActualMaxValue(
             ethers.utils.formatUnits(subtractedMaxAmount.toString())
           );
@@ -140,7 +135,7 @@ export default function BondModal_Input() {
   }, [inputValue, actualMaxValue, setValue]);
 
   useEffect(() => {
-    if (maxValue) {
+    if (actualMaxValue) {
       setValue({
         ...inputValue,
         bond_modal_balance: actualMaxValue,
@@ -185,7 +180,9 @@ export default function BondModal_Input() {
             pageKey={"Bond_screen"}
             recoilKey={"bond_modal"}
             atomKey={"bond_modal_balance"}
-            isError={maxValue !== undefined && (zeroInputBalance || inputOver)}
+            isError={
+              actualMaxValue !== undefined && (zeroInputBalance || inputOver)
+            }
             errorMsg={
               zeroInputBalance
                 ? errMsg.bondZeroInput

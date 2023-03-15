@@ -135,7 +135,7 @@ const InputPeriod = (props: InputProp) => {
     <Flex flexDir={"column"} pos={"relative"} {...style}>
       <InputGroup>
         <Input
-          isInvalid={isError}
+          // isInvalid={isError}
           isDisabled={isDisabled}
           _disabled={{
             borderColor: colorMode === "light" ? "#e8edf2" : "#2C2C35",

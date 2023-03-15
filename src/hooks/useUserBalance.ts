@@ -60,6 +60,7 @@ class TokenBalance {
 
   private async fetchBalanceWei(): Promise<number> {
     const balanceBN = await this.erc20Contract.balanceOf(this.account);
+
     const balanceWei = ethers.utils.formatUnits(balanceBN, this.decimals);
 
     return Number(balanceWei.slice(0, 20));
@@ -198,13 +199,6 @@ const useUserBalance = () => {
     fetchTokenBalance().catch((e) => console.log(e));
   }, [blockNumber, tokenContractList, account]);
 
-  const userETHBalanceNum: number | undefined = useMemo(() => {
-    if (userETHBalance) {
-      return Number(userETHBalance.replaceAll(",", ""));
-    }
-    return undefined;
-  }, [userETHBalance]);
-
   useEffect(() => {
     async function fetchBalance() {
       if (
@@ -256,6 +250,9 @@ const useUserBalance = () => {
       setUserETHBalance(convertedEth || "-");
       setUserLTOSBalance(convertedLTOS || "-");
       setUserSTOSBalance(convertedSTOS || "-");
+
+      const ETHBalanceWei = ethers.utils.formatUnits(eth);
+      setUserETHBalanceWei(Number(ETHBalanceWei));
     }
     if (account) {
       fetchBalance().catch((e) => {
@@ -281,7 +278,7 @@ const useUserBalance = () => {
     userETHBalance,
     userLTOSBalance,
     userSTOSBalance,
-    userETHBalanceNum,
+    userETHBalanceWei,
     userTokenBalance,
   };
 };
