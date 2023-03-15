@@ -38,9 +38,10 @@ type SwapButtonProps = {
   maxError: boolean;
   approved: string;
   closeThisModal: () => void;
+  submitDisable: boolean;
 };
 const SwapButton: React.FC<SwapButtonProps> = (props) => {
-  const { maxError, approved, closeThisModal } = props;
+  const { maxError, approved, closeThisModal,submitDisable } = props;
   const { account, library } = useWeb3React();
   const { colorMode } = useColorMode();
   const tx = useRecoilValue(swapTX_state);
@@ -428,18 +429,7 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
       }}
       _hover={{}}
       _active={{}}
-      isDisabled={
-        tx.tx === true ||
-        token0.address === "" ||
-        Number(token0Balance) === 0 ||
-        tx.data.name === "approve"||
-        maxError ||
-        token1.address === "" ||
-        Number(approved) < Number(fromAmount) ||
-        (Number(fromAmount) === 0 && Number(toAmount) === 0) ||
-        token0.address === token1.address ||
-        Number(fromAmount) > Number(token0Balance)
-      }
+      isDisabled={submitDisable}
       onClick={
         focused === "input1" ? () => swapExactInput() : () => swapExactOutput()
       }

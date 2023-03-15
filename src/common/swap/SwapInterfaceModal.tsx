@@ -82,8 +82,13 @@ function SwapInterfaceModal() {
   const [slippage, setSlippage] = useRecoilState(slip);
   const { account, library } = useWeb3React();
   const { token0Balance, token1Balance } = useBalance();
-  const { TON_ADDRESS, WTON_ADDRESS,TOS_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
-    CONTRACT_ADDRESS;
+  const {
+    TON_ADDRESS,
+    WTON_ADDRESS,
+    TOS_ADDRESS,
+    WETH_ADDRESS,
+    SwapperV2Proxy,
+  } = CONTRACT_ADDRESS;
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal();
   const {
@@ -93,26 +98,19 @@ function SwapInterfaceModal() {
     formattedAmountOutResult,
   } = useExpectedOutput();
 
-  const {
-    formattedResultI,
-    err,
-    minimumAmountOutResultI,
-  } = useExpectedInput();
+  const { formattedResultI, err, minimumAmountOutResultI } = useExpectedInput();
   const [focused, setFocused] = useRecoilState(focus);
   const [expected, setExpected] = useState<string>("0");
   const [maxError, setMaxError] = useState<boolean>(false);
   const approved = useCheckApproved();
-  const {
-    ERC20_CONTRACT: Token0Contract,
-    WTON_CONTRACT,
-  } = useCallContract(
+  const { ERC20_CONTRACT: Token0Contract, WTON_CONTRACT } = useCallContract(
     token0.address !== ZERO_ADDRESS ? token0.address : undefined
   );
 
   const formatNumberWithCommas = (num: string) => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-  
+
   const closeThisModal = useCallback(() => {
     setToken0({
       name: "",
@@ -121,9 +119,8 @@ function SwapInterfaceModal() {
     });
     setToken1({
       name: "TOS",
-    address:TOS_ADDRESS,
-    img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/tos-symbol%403x.png",
-  
+      address: TOS_ADDRESS,
+      img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/tos-symbol%403x.png",
     });
     setToAmount("0");
     setFromAmount("0");
@@ -131,7 +128,6 @@ function SwapInterfaceModal() {
     setFocused("input1");
     setExpected("0");
     closeModal();
-   
   }, [
     closeModal,
     setToAmount,
@@ -154,6 +150,31 @@ function SwapInterfaceModal() {
     setToken1(newToken1);
   };
 
+  const approveDisable = useMemo(() => {
+    const condition =
+      token0.address === "" ||
+      tx.tx === true ||
+      !account ||
+      Number(approved) > Number(fromAmount) ||
+      token0.address === ZERO_ADDRESS;
+      return condition
+  }, [account, approved, fromAmount, token0.address, tx.tx]);
+
+
+  const submitDisable = useMemo(()=> {
+    const condition =  tx.tx === true ||
+    token0.address === "" ||
+    Number(token0Balance) === 0 ||
+    tx.data.name === "approve"||
+    maxError ||
+    token1.address === "" ||
+    Number(approved) < Number(fromAmount) ||
+    (Number(fromAmount) === 0 && Number(toAmount) === 0) ||
+    token0.address === token1.address ||
+    Number(fromAmount) > Number(token0Balance)
+    return condition
+  },[approved, fromAmount, maxError, toAmount, token0.address, token0Balance, token1.address, tx.data.name, tx.tx])
+
   const approve = useCallback(async () => {
     if (library && account && WTON_CONTRACT && Token0Contract) {
       let contract;
@@ -169,7 +190,7 @@ function SwapInterfaceModal() {
         const totalSupply = await contract?.totalSupply();
         const receipt = await contract?.approve(SwapperV2Proxy, totalSupply);
         setTX({ tx: true, data: { name: "approve" } });
-  
+
         if (receipt) {
           await receipt.wait();
           setTX({ tx: false, data: { name: "approve" } });
@@ -204,8 +225,18 @@ function SwapInterfaceModal() {
         ? setToAmount(formattedResult)
         : setFromAmount(formattedResult);
     }
-  }, [token0.address, fromAmount, formattedResult, minimumAmountOutResult, amountInResult, formattedAmountOutResult, focused, setToAmount, setFromAmount]);
-  
+  }, [
+    token0.address,
+    fromAmount,
+    formattedResult,
+    minimumAmountOutResult,
+    amountInResult,
+    formattedAmountOutResult,
+    focused,
+    setToAmount,
+    setFromAmount,
+  ]);
+
   const getExpectedIn = useCallback(() => {
     if (token0.address && toAmount !== "" && toAmount !== "0") {
       if (err) {
@@ -218,8 +249,16 @@ function SwapInterfaceModal() {
           : setToAmount(formattedResultI || "");
       }
     }
-  }, [token0.address, toAmount, err, formattedResultI, focused, setToAmount, setFromAmount]);
-  
+  }, [
+    token0.address,
+    toAmount,
+    err,
+    formattedResultI,
+    focused,
+    setToAmount,
+    setFromAmount,
+  ]);
+
   useEffect(() => {
     if (focused && focused === "input1") {
       getExpectedOut();
@@ -266,7 +305,7 @@ function SwapInterfaceModal() {
                 flexDir={"column"}
                 px="20px"
               >
-                <SelectToken tokenType={0} />
+                <SelectToken tokenType={0} approveDisable={approveDisable} submitDisable={submitDisable}/>
                 <Flex
                   justifyContent={"space-between"}
                   alignItems="center"
@@ -331,7 +370,7 @@ function SwapInterfaceModal() {
                     </Flex>
                   </Button>
                 </Flex>
-                <SelectToken tokenType={1} />
+                <SelectToken tokenType={1} approveDisable={approveDisable} submitDisable={submitDisable}/>
                 <Text
                   mt="18px"
                   mb="8px"
@@ -341,7 +380,11 @@ function SwapInterfaceModal() {
                 >
                   Balance: {formatNumberWithCommas(token1Balance)}
                 </Text>
-                <InputComponent maxError={maxError} expected={expected} inputNum={"2"} />
+                <InputComponent
+                  maxError={maxError}
+                  expected={expected}
+                  inputNum={"2"}
+                />
                 {maxError && (
                   <Text
                     color={"#e53e3e"}
@@ -380,13 +423,7 @@ function SwapInterfaceModal() {
                     }}
                     _hover={{}}
                     _active={{}}
-                    isDisabled={
-                      token0.address === "" ||
-                      tx.tx === true ||
-                      !account ||
-                      Number(approved) > Number(fromAmount) ||
-                      token0.address === ZERO_ADDRESS
-                    }
+                    isDisabled={approveDisable}
                     onClick={() => approve()}
                   >
                     {tx.tx === true && tx.data.name === "approve" ? (
@@ -405,12 +442,17 @@ function SwapInterfaceModal() {
                 <ConversionComponent
                   expectedAmnt={expected}
                   slippage={slippage}
-                  minAmount={formattedAmountOutResult || ''}
+                  minAmount={formattedAmountOutResult || ""}
                   focused={focused}
                   swapFromAmt2={toAmount}
                 />
                 <SettingsComponent />
-                <SwapButton maxError={maxError} approved={approved} closeThisModal={closeThisModal} />
+                <SwapButton
+                  maxError={maxError}
+                  approved={approved}
+                  submitDisable={submitDisable}
+                  closeThisModal={closeThisModal}
+                />
               </Flex>
             </Flex>
           </Flex>
