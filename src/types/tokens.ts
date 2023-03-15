@@ -21,4 +21,13 @@ export type SupportedToken = {
   decimals: TokenDecimals;
   contract?: Contract;
 };
-export type SupportedTokenList = SupportedToken[];
+
+// export type UserTokenBalance
+
+export type SupportedTokenList = {
+  ETH: {
+    tokenName: "ETH";
+    decimals: 18;
+    contract: Contract;
+  };
+};

@@ -189,7 +189,6 @@ const useUserBalance = () => {
           if (el && el?.tokenName) {
             //@ts-ignore
             tokenData[el.tokenName] = { ...el };
-            // return { [el.tokenName]: { ...el } };
           }
         });
 
