@@ -117,6 +117,8 @@ function BondCard(props: { data: BondCardProps }) {
   const { openModal } = useModal("bond_bond_modal", data);
   const {} = useMediaView();
   const theme = useTheme();
+  const [hoverWTON, setHoverWTON] = useState(false);
+  const [hoverETH, setHoverETH] = useState(false);
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
   const { bp700px } = useMediaView();
@@ -198,13 +200,13 @@ function BondCard(props: { data: BondCardProps }) {
       const totalSoldChildNode = soldoutProgressRef.current.childNodes;
       if (isClosed) {
         //@ts-ignore
-        totalSoldChildNode[0].style.backgroundColor = "#64646f";
+        totalSoldChildNode[0].style.backgroundColor = colorMode === 'light'? "#c6cbd9": '#64646f';
       } else {
         //@ts-ignore
         totalSoldChildNode[0].style.backgroundColor = "#2775ff";
       }
     }
-  }, [soldoutProgressRef, isClosed]);
+  }, [soldoutProgressRef, isClosed,colorMode]);
 
   //change colorScheme for green progress(currentCapacity / totalCapacity)
   useEffect(() => {
@@ -317,6 +319,7 @@ function BondCard(props: { data: BondCardProps }) {
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                 textDecoration: "underline",
+                // cursor: hoverWTON ? "pointer" : "default",
                 cursor: "pointer",
               }}
               // onClick={openSwapModal}
@@ -329,6 +332,7 @@ function BondCard(props: { data: BondCardProps }) {
                   img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
                 });
               }}
+            
             >
               WTON
             </span>
@@ -341,8 +345,9 @@ function BondCard(props: { data: BondCardProps }) {
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                 textDecoration: "underline",
-                cursor: "pointer",
+                cursor: "pointer" ,
               }}
+             
               onClick={() => {
                 setOpenedAccountBar(true);
                 openSwapModal();
@@ -358,14 +363,10 @@ function BondCard(props: { data: BondCardProps }) {
             <span>)</span>
           </Text>
         ) : (
-          <Text
-            fontSize={12}
-            color={colorMode === "dark" ? "gray.100" : "#8b8b93"}
-          >
+          <Text fontSize={12} color={colorMode === "dark" ? "gray.100" : "#8b8b93"}>
             Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
-            with your WTON
-            <br />
-            and TOS to improve the liquidity
+            with your WTON 
+            <br /> and TOS to improve the liquidity
           </Text>
         )}
       </Flex>
@@ -406,7 +407,9 @@ function BondCard(props: { data: BondCardProps }) {
             borderRadius={100}
             h={"5px"}
             w={"100%"}
-            bg={'transparent'}
+         
+            bg={isClosed? colorMode === 'dark'? '#353d48' :'#e7edf3' :'transparent'}
+            // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
             zIndex={100}
           ></Progress>
           {Number(data?.blueProgress) > 0 && !isClosed && (
@@ -414,18 +417,18 @@ function BondCard(props: { data: BondCardProps }) {
               <Image src={BlueTooltip} alt={"BlueTooltip"}></Image>
             </Box>
           )}
-          <Progress
-            ref={currentCapacityProgressRef}
-            value={Number(data?.currentCapacityProgress)}
-            borderRadius={100}
-            h={"5px"}
-            bg={colorMode === "dark" ? "#353d48" : "#e7edf3"}
-            w={"100%"}
-            pos={"absolute"}
-         
-
-          ></Progress>
-          {Number(data?.currentCapacityProgress) > 0 && (
+          {!isClosed && (
+            <Progress
+              ref={currentCapacityProgressRef}
+              value={Number(data?.currentCapacityProgress)}
+              borderRadius={100}
+              h={"5px"}
+              bg={colorMode === "dark" ? "#353d48" : "#e7edf3"}
+              w={"100%"}
+              pos={"absolute"}
+            ></Progress>
+          )}
+          {Number(data?.currentCapacityProgress) > 0 && !isClosed && (
             <Box pos={"absolute"} w={"100%"} left={greenTooltipW} top={"-5px"}>
               <Image src={GreenTooltip} alt={"GreenTooltip"}></Image>
             </Box>
