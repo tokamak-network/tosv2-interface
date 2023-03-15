@@ -86,6 +86,8 @@ const TextInput: React.FC<InputProp> = (props) => {
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("go?");
+
     return setValue({
       ...inputValue,
       [atomKey]: event.target.value,
@@ -223,7 +225,10 @@ function BalanceInput(props: NumberInputProp) {
 
   useEffect(() => {
     if (maxValue && atomKey) {
-      return setValue({ ...inputValue, [atomKey]: String(maxValue) });
+      console.log("go");
+      console.log(atomKey);
+      console.log(maxValue);
+      setValue({ ...inputValue, [atomKey]: String(maxValue) });
     }
   }, [maxValue, selectedModal, atomKey, setValue]);
 

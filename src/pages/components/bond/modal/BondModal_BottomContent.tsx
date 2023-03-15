@@ -49,7 +49,7 @@ function BondModal_BottomContent(props: {
         secondContent: `${fiveDaysLockup ? "0" : stosReward} sTOS`,
         thirdContent: `(${bondDiscount}% discount)`,
         tooltip:
-          "You get LTOS based on what you gi  ve and sTOS is also based on the lock-up period.",
+          "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
         secondTooltip: `Currently worth ${originalTosAmount} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         // thirdTooltip:
         //   "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
