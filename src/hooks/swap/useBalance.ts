@@ -12,7 +12,7 @@ import CONTRACT_ADDRESS from "services/addresses/contract";
 import { convertNumber } from "utils/number";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import { ZERO_ADDRESS } from "constants/index";
-
+import { ethers } from "ethers";
 const useBalance = () => {
   const { account, library } = useWeb3React();
   const token0 = useRecoilValue(selectedToken0_state);
@@ -41,10 +41,7 @@ const useBalance = () => {
       ) {
         const eth0 = await library?.getBalance(account);
 
-        const convertedEth = convertNumber({
-          amount: eth0.toString(),
-          localeString: false,
-        });
+        const convertedEth = ethers.utils.formatUnits(eth0, 18) 
         setToken0Balance(convertedEth || "0");
         const contract1 =
           token1.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase()
@@ -53,25 +50,15 @@ const useBalance = () => {
         const balance1 = await contract1?.balanceOf(account);
         const converted1 =
           token1.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase()
-            ? convertNumber({
-                type: "ray",
-                amount: balance1.toString(),
-                localeString: false,
-              })
-            : convertNumber({
-                amount: balance1.toString(),
-                localeString: false,
-              });
+            ? ethers.utils.formatUnits(balance1, 27)
+            :ethers.utils.formatUnits(balance1, 18) 
         setToken1Balance(converted1 || "0");
       } else if (
         token1.address.toLowerCase() === ZERO_ADDRESS.toLowerCase() &&
         token0.address.toLowerCase() !== ZERO_ADDRESS.toLowerCase()
       ) {
         const eth1 = await library?.getBalance(account);
-        const convertedEth = convertNumber({
-          amount: eth1.toString(),
-          localeString: false,
-        });
+        const convertedEth =  ethers.utils.formatUnits(eth1, 18) 
 
         setToken1Balance(convertedEth || "0");
         const contract0 =
@@ -81,15 +68,8 @@ const useBalance = () => {
         const balance0 = await contract0?.balanceOf(account);
         const converted0 =
           token0.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase()
-            ? convertNumber({
-                type: "ray",
-                amount: balance0.toString(),
-                localeString: false,
-              })
-            : convertNumber({
-                amount: balance0.toString(),
-                localeString: false,
-              });
+            ? ethers.utils.formatUnits(balance0, 27) 
+            : ethers.utils.formatUnits(balance0, 18) 
         setToken0Balance(converted0 || "0");
       } else {
         const contract0 =
@@ -104,30 +84,15 @@ const useBalance = () => {
         const balance1 = await contract1?.balanceOf(account);
         const converted1 =
         token1.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase()
-          ? convertNumber({
-              type: "ray",
-              amount: balance1.toString(),
-              localeString: false,
-            })
-          : convertNumber({
-              amount: balance1.toString(),
-              localeString: false,
-            });
+          ? ethers.utils.formatUnits(balance1, 27) 
+          :  ethers.utils.formatUnits(balance1, 18) 
 
 
       setToken1Balance(converted1 || "0");
         const converted0 =
           token0.address.toLowerCase() === WTON_ADDRESS.toLocaleLowerCase()
-            ? convertNumber({
-                type: "ray",
-                amount: balance0.toString(),
-                localeString: false,
-              })
-            : convertNumber({
-                amount: balance0.toString(),
-                localeString: false,
-              });
-
+            ? ethers.utils.formatUnits(balance0, 27)
+            : ethers.utils.formatUnits(balance0, 18) 
         setToken0Balance(converted0 || "0");
 
        

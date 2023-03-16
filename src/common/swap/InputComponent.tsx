@@ -50,7 +50,7 @@ function InputComponent(props: { expected: string; inputNum: string, maxError: b
         invalidInput || (focused === 'input2' && maxError) ? "#e53e3e" : colorMode === "dark" ? "#313442" : "#dfe4ee"
       }
       height={"56px"}
-      w={"310px"}
+      w={"100%"}
       flexDir={"row"}
       borderRadius={"4px"}
       justifyContent={"space-between"}
@@ -60,7 +60,7 @@ function InputComponent(props: { expected: string; inputNum: string, maxError: b
         
       <NumberInput
         height={"56px"}
-        w={"230px"}
+        w={"270px"}
         color={colorMode === "dark" ? "#f1f1f1" : "#86929d"}
         pl={"24px"}
         border={"none"}

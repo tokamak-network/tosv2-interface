@@ -223,6 +223,13 @@ function BalanceInput(props: NumberInputProp) {
 
   useEffect(() => {
     if (maxValue && atomKey) {
+
+      // console.log("go");
+      // console.log(atomKey);
+      // console.log(maxValue);
+      // console.log(inputValue);
+
+
       setValue({ ...inputValue, [atomKey]: String(maxValue) });
     }
   }, [maxValue, selectedModal, atomKey, setValue]);
