@@ -323,7 +323,7 @@ function BondModal() {
                   </Text>
                   <Text>
                     The amount may change slightly based on the slippage
-                    (0.034%).
+                    (0.05%).
                   </Text>
                 </Flex>
                 <Text>If the price slips any further, txn will revert.</Text>
