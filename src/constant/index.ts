@@ -13,14 +13,21 @@ const constant = {
   //285,753 → 279,458
   minBondGasPrice: "279458",
   errMsg: {
-    balanceExceed: "Input has exceeded your balance",
-    bondZeroInput: "ETH has to be greater than 0",
-    periodExceed: "Must be between 1 and 155",
-    stakePeriodExceed: "Must be between 0 and 155",
-    managePeriodExceed:
-      "New lock-up period must be equal or greater than the existing lock-up period",
-    zeroInput: "Input has to be equal to or greater than 0",
-    periodExceedThanMaximum: "Must be less than 156 weeks",
+    bond: {
+      balanceIsOver: "Insufficient ETH amount",
+      inputIsZero: "ETH has to be greater than 0",
+      bondableAmountIsOver: "Exceeded current bondable",
+      periodIsOver: "Must be between 0 and 155",
+    },
+    stake: {
+      tosBalanceIsOver: "Insufficient TOS amount",
+      inputIsZero: `Can't be 0`,
+      newLockupPeriodIsSmaller: `Can't be less than current lock-up period (70 weeks)`,
+      amountAndPeriodErr: "Increase TOS or lock-up period",
+      periodIsOver: `Can't be more than 156 weeks`,
+      ltosBalanceIsOver: "Insufficient LTOS amount",
+      periodIsEmpty: "Must be between 0 and 155",
+    },
   },
 };
 

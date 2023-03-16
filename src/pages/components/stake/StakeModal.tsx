@@ -347,8 +347,8 @@ function StakeModal() {
                     isError={zeroInputBalance || inputOver}
                     errorMsg={
                       zeroInputBalance
-                        ? errMsg.bondZeroInput
-                        : errMsg.balanceExceed
+                        ? undefined
+                        : errMsg.stake.tosBalanceIsOver
                     }
                     rightUnit={"TOS"}
                   ></BalanceInput>
@@ -419,7 +419,11 @@ function StakeModal() {
                       isDisabled={fiveDaysLockup}
                       maxValue={modalMaxWeeks}
                       isError={inputPeriodOver}
-                      errorMsg={errMsg.stakePeriodExceed}
+                      errorMsg={
+                        inputValue.stake_modal_period === ""
+                          ? errMsg.stake.periodIsEmpty
+                          : errMsg.stake.periodIsOver
+                      }
                       leftDays={fiveDaysLockup ? undefined : leftDays}
                       leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
                       endTime={

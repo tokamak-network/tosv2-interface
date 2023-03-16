@@ -342,8 +342,9 @@ function BondModal() {
                 px={bp700px ? "20px" : 0}
               >
                 <Text>
-                  Currently, it is cheaper to purchase TOS from Tokamak Network
-                  Swap (
+                  You can purchase TOS for a lower price at Tokamak Network Swap
+                  <br />
+                  using{" "}
                   <span
                     style={{
                       color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
@@ -368,7 +369,8 @@ function BondModal() {
                       color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                     }}
                   >
-                    ,{" "}
+                    {" "}
+                    &{" "}
                   </span>
                   <span
                     style={{
@@ -388,10 +390,7 @@ function BondModal() {
                   >
                     {" "}
                     ETH
-                  </span>
-                  )
-                </Text>
-                <Text>
+                  </span>{" "}
                   and{" "}
                   <Link
                     isExternal={true}
@@ -405,9 +404,8 @@ function BondModal() {
                   >
                     stake
                   </Link>{" "}
-                  them for LTOS. You can continue bonding
+                  them for LTOS
                 </Text>
-                <Text>to get LTOS without impacting the price.</Text>
               </Flex>
             )}
           </Flex>

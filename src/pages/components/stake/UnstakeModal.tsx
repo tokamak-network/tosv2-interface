@@ -43,6 +43,7 @@ import { StakeCardProps } from "types/stake";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import useRebaseTime from "hooks/useRebaseTime";
 import useMediaView from "hooks/useMediaView";
+import constant from "constant";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -90,6 +91,7 @@ function UnstakeModal() {
 
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
+  const { errMsg } = constant;
 
   const contentList = [
     {
@@ -105,6 +107,12 @@ function UnstakeModal() {
         : `${youWillGetMax || "0"} TOS`,
     },
   ];
+
+  const isOverBlanace =
+    inputValue.stake_unstakeModal_balance > Number(unstakeData?.maxValue);
+  const balanceIsZero =
+    inputValue.stake_unstakeModal_balance === "" ||
+    Number(inputValue.stake_unstakeModal_balance) === 0;
 
   const closeThisModal = useCallback(() => {
     setResetValue();
@@ -230,6 +238,12 @@ function UnstakeModal() {
                         placeHolder={"Enter an amount of LTOS"}
                         atomKey={"stake_unstakeModal_balance"}
                         maxValue={Number(unstakeData?.maxValue) || 0}
+                        isError={isOverBlanace || balanceIsZero}
+                        errorMsg={
+                          isOverBlanace
+                            ? errMsg.stake.ltosBalanceIsOver
+                            : errMsg.stake.inputIsZero
+                        }
                       ></BalanceInput>
                     </Flex>
                     <Flex
@@ -270,13 +284,7 @@ function UnstakeModal() {
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}
-                isDisabled={
-                  isModalLoading ||
-                  (unstakeData?.maxValue
-                    ? inputValue.stake_unstakeModal_balance >
-                      Number(unstakeData.maxValue)
-                    : false)
-                }
+                isDisabled={isModalLoading || isOverBlanace || balanceIsZero}
               ></SubmitButton>
             </Flex>
           </Flex>

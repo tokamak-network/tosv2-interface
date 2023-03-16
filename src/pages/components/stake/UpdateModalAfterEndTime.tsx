@@ -103,53 +103,6 @@ function UpdateModalAfterEndTime() {
     undefined
   );
 
-  // const { newBalanceStos } = useStosRelock(addTos);
-
-  // const contentList = [
-  //   {
-  //     title: "You Give",
-  //     content: addTos
-  //       ? {
-  //           ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
-  //           tos: inputValue.stake_relockModal_tos_balance ?? "-",
-  //         }
-  //       : {
-  //           ltos: inputValue.stake_relockModal_ltos_balance ?? "-",
-  //         },
-  //     tooltip: true,
-  //     tooltipMessage: "Amount of LTOS and TOS used for staking.",
-  //     secondTooltip: `Currently worth ${
-  //       tosValue || "-"
-  //     } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-  //   },
-  //   {
-  //     title: "You Will Get",
-  //     content: addTos
-  //       ? {
-  //           ltos: newBalance.ltos,
-  //           stos: commafy(newBalanceStos),
-  //           tos: undefined,
-  //         }
-  //       : {
-  //           ltos: inputValue.stake_relockModal_ltos_balance,
-  //           stos: commafy(newBalanceStos),
-  //           tos: newBalance.tos,
-  //         },
-  //     tooltip: true,
-  //     tooltipMessage:
-  //       "Amount of LTOS, sTOS, and TOS you will get after the update. ",
-  //     secondTooltip: `Currently worth ${tosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-  //     thirdTooltip:
-  //       "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-  //   },
-  //   {
-  //     title: "New End Time",
-  //     content: newEndTime,
-  //     tooltip: true,
-  //     tooltipMessage: "LTOS can be unstaked after this time.",
-  //   },
-  // ];
-
   const closeThisModal = useCallback(() => {
     setResetValue();
     setAddTos(false);
@@ -245,22 +198,6 @@ function UpdateModalAfterEndTime() {
       return setIsAllowance(false);
     }
   }, [tosAllowance, inputValue.stake_relockModal_tos_balance]);
-
-  // useEffect(() => {
-  //   if (userTOSBalance) {
-  //     setTimeout(() => {
-  //       setMaxStosValue(Number(userTOSBalance.replaceAll(",", "")));
-  //     }, 2000);
-  //   }
-  // }, [userTOSBalance]);
-
-  // useEffect(() => {
-  //   if (ltosAmount) {
-  //     setTimeout(() => {
-  //       setMaxLtosValue(Number(ltosAmount.replaceAll(",", "")));
-  //     }, 2000);
-  //   }
-  // }, [ltosAmount]);
 
   useEffect(() => {
     if (ltosAmount && userTOSBalance) {
@@ -384,8 +321,8 @@ function UpdateModalAfterEndTime() {
                       }
                       errorMsg={
                         zeroInputBalance
-                          ? errMsg.bondZeroInput
-                          : errMsg.balanceExceed
+                          ? errMsg.stake.inputIsZero
+                          : errMsg.stake.ltosBalanceIsOver
                       }
                       rightUnit={"LTOS"}
                     ></BalanceInput>
@@ -417,8 +354,8 @@ function UpdateModalAfterEndTime() {
                         isError={zeroInputBalance || inputOver}
                         errorMsg={
                           addTos && zeroInputBalance
-                            ? errMsg.bondZeroInput
-                            : errMsg.balanceExceed
+                            ? errMsg.stake.inputIsZero
+                            : errMsg.stake.tosBalanceIsOver
                         }
                         rightUnit={"TOS"}
                       ></BalanceInput>
@@ -460,7 +397,7 @@ function UpdateModalAfterEndTime() {
                     style={bp700px ? {} : { marginLeft: "auto" }}
                     maxValue={modalMaxWeeks}
                     isError={inputPeriodOver}
-                    errorMsg={errMsg.stakePeriodExceed}
+                    errorMsg={errMsg.stake.periodIsOver}
                     isDisabled={false}
                     leftDays={leftDays}
                     leftTime={leftHourAndMin}

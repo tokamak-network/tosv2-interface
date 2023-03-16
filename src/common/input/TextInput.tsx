@@ -86,8 +86,6 @@ const TextInput: React.FC<InputProp> = (props) => {
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("go?");
-
     return setValue({
       ...inputValue,
       [atomKey]: event.target.value,
@@ -251,10 +249,6 @@ function BalanceInput(props: NumberInputProp) {
       return `${inputRef.current.value.length * 9 + 17}px`;
     }
   }, [inputRef?.current?.value]);
-
-  const test = useMemo(() => {
-    console.log(value);
-  }, [value]);
 
   return (
     <Flex flexDir={"column"} w={w || 270} {...style}>

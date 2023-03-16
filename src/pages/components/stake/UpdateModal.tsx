@@ -324,10 +324,10 @@ function UpdateModal() {
                     }
                     errorMsg={
                       bothConditionsErr
-                        ? undefined
+                        ? errMsg.stake.amountAndPeriodErr
                         : zeroInputBalance
-                        ? errMsg.zeroInput
-                        : errMsg.balanceExceed
+                        ? errMsg.stake.inputIsZero
+                        : errMsg.stake.tosBalanceIsOver
                     }
                     rightUnit={"TOS"}
                   ></BalanceInput>
@@ -411,8 +411,8 @@ function UpdateModal() {
                       bothConditionsErr
                         ? undefined
                         : Number(inputValue.stake_updateModal_period) > 155
-                        ? errMsg.periodExceedThanMaximum
-                        : errMsg.managePeriodExceed
+                        ? errMsg.stake.periodIsOver
+                        : errMsg.stake.newLockupPeriodIsSmaller
                     }
                     minValue={leftWeeks}
                     leftDays={leftDays}

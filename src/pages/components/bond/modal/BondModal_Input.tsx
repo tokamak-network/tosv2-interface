@@ -184,9 +184,11 @@ export default function BondModal_Input() {
               actualMaxValue !== undefined && (zeroInputBalance || inputOver)
             }
             errorMsg={
-              zeroInputBalance
-                ? errMsg.bondZeroInput
-                : "Input has exceeded maximum bondable amount per 1 transaction"
+              inputOver
+                ? errMsg.bond.bondableAmountIsOver
+                : zeroInputBalance
+                ? errMsg.bond.inputIsZero
+                : errMsg.bond.balanceIsOver
             }
             fontSize={18}
             inputContainerStyle={{
