@@ -4,7 +4,7 @@ import { bond_modal } from "atom/bond/modal";
 import { BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import constant from "constant";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import useBondModal from "hooks/bond/useBondModal";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
@@ -41,7 +41,7 @@ function TokenImageContrainer(props: { tokenTypes: TokenTypes; name: string }) {
 export default function BondModal_Input() {
   const { errMsg } = constant;
   const { modalCondition, userTokenBalance } = useBondModal();
-  const { zeroInputBalance, inputOver } = modalCondition;
+  const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
   const { maxValue, balacne, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
   const { bondDiscount, isMinusDiscount, minimumTosPrice } =
@@ -79,6 +79,7 @@ export default function BondModal_Input() {
         const inputAmount = String(maxValue)
           .replaceAll(",", "")
           .replaceAll(" ", "");
+
         const parseInputAmount = ethers.utils.parseUnits(inputAmount, 18);
         const periodWeeks = inputValue.bond_modal_period + 1;
 
@@ -95,15 +96,24 @@ export default function BondModal_Input() {
               periodWeeks,
               { value: convertToWei(inputAmount) }
             );
-         
+          const feeData =
+            await BondDepositoryProxy_CONTRACT.provider.getFeeData();
+          const { maxFeePerGas } = feeData;
 
-          const subtractedMaxAmount = parseInputAmount
-            .sub(gasEstimate)
-            .sub(txGasPrice);
+          if (maxFeePerGas) {
+            const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
+            const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
+            const gasPrice = gasEstimate.add(42000).mul(maxFeePerGas);
+            const subtractedMaxAmount = parseInputAmount.sub(gasPrice);
 
-          return setActualMaxValue(
-            ethers.utils.formatUnits(subtractedMaxAmount.toString())
-          );
+            console.log("maxFeePerGas(wei) : ", maxFeePerGas.toString());
+            console.log("gasEstimate : ", gasEstimate.toString());
+            console.log("bufferGasFee : ", bufferPrice.toString());
+
+            return setActualMaxValue(
+              ethers.utils.formatUnits(subtractedMaxAmount.toString())
+            );
+          }
         }
 
         const gasEstimate =
@@ -167,7 +177,8 @@ export default function BondModal_Input() {
       <Flex
         borderWidth={"1px"}
         borderColor={
-          maxValue !== undefined && (zeroInputBalance || inputOver)
+          maxValue !== undefined &&
+          (zeroInputBalance || inputOver || inputBalanceisEmpty)
             ? "#e23738"
             : colorMode === "dark"
             ? "#313442"
@@ -189,10 +200,13 @@ export default function BondModal_Input() {
             recoilKey={"bond_modal"}
             atomKey={"bond_modal_balance"}
             isError={
-              actualMaxValue !== undefined && (zeroInputBalance || inputOver)
+              actualMaxValue !== undefined &&
+              (zeroInputBalance || inputOver || inputBalanceisEmpty)
             }
             errorMsg={
-              inputOver
+              inputBalanceisEmpty
+                ? undefined
+                : inputOver
                 ? errMsg.bond.bondableAmountIsOver
                 : zeroInputBalance
                 ? errMsg.bond.inputIsZero

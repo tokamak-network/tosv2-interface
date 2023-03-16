@@ -223,12 +223,10 @@ function BalanceInput(props: NumberInputProp) {
 
   useEffect(() => {
     if (maxValue && atomKey) {
-
       // console.log("go");
       // console.log(atomKey);
       // console.log(maxValue);
       // console.log(inputValue);
-
 
       setValue({ ...inputValue, [atomKey]: String(maxValue) });
     }
@@ -339,14 +337,14 @@ function BalanceInput(props: NumberInputProp) {
           </InputRightElement>
         )}
       </InputGroup>
-      {isError && (
+      {isError && errorMsg && (
         <Flex
           fontSize={12}
           color={"#e23738"}
           justifyContent={"flex-start"}
-          ml={selectedModal === "bond_bond_modal" ? "-5px" : ""}
-          pl={selectedModal === "bond_bond_modal" ? "" : "6px"}
-          mt={selectedModal === "bond_bond_modal" ? "45px" : ""}
+          ml={selectedModal === "bond_bond_modal" ? "-5px" : "px"}
+          pl={selectedModal === "bond_bond_modal" ? "6px" : "16px"}
+          mt={selectedModal === "bond_bond_modal" ? "45px" : "6px"}
         >
           <Text>{errorMsg}</Text>
         </Flex>

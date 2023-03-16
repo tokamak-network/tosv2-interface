@@ -45,6 +45,7 @@ function ContentComponent(props: {
   setStateTitleAction?: () => void;
   isHighest?: boolean;
   isMinus?: boolean;
+  isClosed?: boolean;
 }) {
   const {
     title,
@@ -54,6 +55,7 @@ function ContentComponent(props: {
     setStateTitleAction,
     isHighest,
     isMinus,
+    isClosed,
   } = props;
   const { colorMode } = useColorMode();
 
@@ -97,7 +99,7 @@ function ContentComponent(props: {
         color={
           isHighest
             ? "blue.200"
-            : isMinus
+            : isMinus && !isClosed
             ? "red.100"
             : colorMode === "dark"
             ? "white.200"
@@ -200,13 +202,14 @@ function BondCard(props: { data: BondCardProps }) {
       const totalSoldChildNode = soldoutProgressRef.current.childNodes;
       if (isClosed) {
         //@ts-ignore
-        totalSoldChildNode[0].style.backgroundColor = colorMode === 'light'? "#c6cbd9": '#64646f';
+        totalSoldChildNode[0].style.backgroundColor =
+          colorMode === "light" ? "#c6cbd9" : "#64646f";
       } else {
         //@ts-ignore
         totalSoldChildNode[0].style.backgroundColor = "#2775ff";
       }
     }
-  }, [soldoutProgressRef, isClosed,colorMode]);
+  }, [soldoutProgressRef, isClosed, colorMode]);
 
   //change colorScheme for green progress(currentCapacity / totalCapacity)
   useEffect(() => {
@@ -309,12 +312,12 @@ function BondCard(props: { data: BondCardProps }) {
           ETH Bond {data?.version} ({isProduction() === false && data?.marketId}
           )
         </Text>
-        {data?.isDiscountMinus ? (
+        {data?.isDiscountMinus && !isClosed ? (
           <Text fontSize={12} color={"red.100"}>
-            Notice: You can purchase TOS at a lower
-            <br /> price by using Tokamak Network Swap
+            Notice: You can purchase TOS for a lower price
             <br />
-            <span>(</span>
+            at Tokamak Network Swap using
+            <br />
             <span
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
@@ -332,22 +335,21 @@ function BondCard(props: { data: BondCardProps }) {
                   img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
                 });
               }}
-            
             >
               WTON
             </span>
             <span
               style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c" }}
             >
-              ,{" "}
+              {" "}
+              &{" "}
             </span>
             <span
               style={{
                 color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
                 textDecoration: "underline",
-                cursor: "pointer" ,
+                cursor: "pointer",
               }}
-             
               onClick={() => {
                 setOpenedAccountBar(true);
                 openSwapModal();
@@ -360,13 +362,14 @@ function BondCard(props: { data: BondCardProps }) {
             >
               ETH
             </span>
-            <span>)</span>
           </Text>
         ) : (
-          <Text fontSize={12} color={colorMode === "dark" ? "gray.100" : "#8b8b93"}>
+          <Text
+            fontSize={12}
+            color={colorMode === "dark" ? "gray.100" : "#8b8b93"}
+          >
             Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
-            with your WTON 
-            <br /> and TOS to improve the liquidity
+            with your ETH
           </Text>
         )}
       </Flex>
@@ -407,8 +410,13 @@ function BondCard(props: { data: BondCardProps }) {
             borderRadius={100}
             h={"5px"}
             w={"100%"}
-         
-            bg={isClosed? colorMode === 'dark'? '#353d48' :'#e7edf3' :'transparent'}
+            bg={
+              isClosed
+                ? colorMode === "dark"
+                  ? "#353d48"
+                  : "#e7edf3"
+                : "transparent"
+            }
             // bg={colorMode === "dark" ? "gray.800" : "gray.200"}
             zIndex={100}
           ></Progress>
@@ -452,9 +460,10 @@ function BondCard(props: { data: BondCardProps }) {
           <ContentComponent
             title="Discount"
             //remove tilda(~) when it's on minus status
-            content={discountRate}
+            content={isClosed && data?.isDiscountMinus ? "-" : discountRate}
             isHighest={data?.isHighest}
             isMinus={data?.isDiscountMinus}
+            isClosed={isClosed}
           ></ContentComponent>
           <ContentComponent
             title="Bond Price"

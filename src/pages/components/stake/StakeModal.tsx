@@ -104,8 +104,13 @@ function StakeModal() {
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const { setTx } = useCustomToast();
-  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
-    useStakeModalCondition();
+  const {
+    inputOver,
+    inputPeriodOver,
+    btnDisabled,
+    zeroInputBalance,
+    inputBalanceIsEmpty,
+  } = useStakeModalCondition();
   const { errMsg, modalMaxWeeks } = constant;
 
   const contentList = fiveDaysLockup
@@ -344,10 +349,14 @@ function StakeModal() {
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
                     maxValue={userTokenBalance?.TOS?.balanceWei}
-                    isError={zeroInputBalance || inputOver}
+                    isError={
+                      zeroInputBalance || inputOver || inputBalanceIsEmpty
+                    }
                     errorMsg={
-                      zeroInputBalance
-                        ? undefined
+                      inputBalanceIsEmpty
+                        ? ""
+                        : zeroInputBalance
+                        ? errMsg.stake.inputIsZero
                         : errMsg.stake.tosBalanceIsOver
                     }
                     rightUnit={"TOS"}
@@ -421,7 +430,7 @@ function StakeModal() {
                       isError={inputPeriodOver}
                       errorMsg={
                         inputValue.stake_modal_period === ""
-                          ? errMsg.stake.periodIsEmpty
+                          ? undefined
                           : errMsg.stake.periodIsOver
                       }
                       leftDays={fiveDaysLockup ? undefined : leftDays}
