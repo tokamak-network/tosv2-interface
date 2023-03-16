@@ -28,14 +28,6 @@ const constant = {
       ltosBalanceIsOver: "Insufficient LTOS amount",
       periodIsEmpty: "Must be between 0 and 155",
     },
-
-    balanceExceed: "Insufficient ETH amount",
-    bondZeroInput: "ETH has to be greater than 0",
-
-    managePeriodExceed:
-      "New lock-up period must be equal or greater than the existing lock-up period",
-    zeroInput: "Input has to be equal to or greater than 0",
-    periodExceedThanMaximum: "Must be less than 156 weeks",
   },
 };
 
