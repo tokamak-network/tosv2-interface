@@ -19,7 +19,14 @@ const constant = {
       bondableAmountIsOver: "Exceeded current bondable",
       periodIsOver: "Must be between 0 and 155",
     },
-    stake: {},
+    stake: {
+      tosBalanceIsOver: "Insufficient TOS amount",
+      inputIsZero: `Can't be 0`,
+      newLockupPeriodIsSmaller: `Can't be less than current lock-up period (70 weeks)`,
+      amountAndPeriodErr: "Increase TOS or lock-up period",
+      periodIsOver: `Can't be more than 156 weeks`,
+    },
+
     balanceExceed: "Insufficient ETH amount",
     bondZeroInput: "ETH has to be greater than 0",
 
