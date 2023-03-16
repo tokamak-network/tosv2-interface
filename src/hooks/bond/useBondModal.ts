@@ -51,8 +51,13 @@ function useBondModal() {
   }, [userETHBalanceWei, maxCapacityValue]);
 
   //modal condition
-  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
-    useBondModalCondition(maxValue);
+  const {
+    inputOver,
+    inputPeriodOver,
+    btnDisabled,
+    zeroInputBalance,
+    inputPeriodIsEmpty,
+  } = useBondModalCondition(maxValue);
 
   //maxValue for each case(token type)
   let tempTokenType: TokenTypes = "ETH";
@@ -86,6 +91,7 @@ function useBondModal() {
       inputPeriodOver,
       btnDisabled,
       zeroInputBalance,
+      inputPeriodIsEmpty,
     },
     bondModalInputData: {
       youWillGet,

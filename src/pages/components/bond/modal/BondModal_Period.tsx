@@ -27,7 +27,7 @@ export default function BondModal_Period() {
 
   const { sTos, modalCondition, bondModalInputData } = useBondModal();
   const { leftHourAndMin, leftDays } = sTos;
-  const { inputPeriodOver } = modalCondition;
+  const { inputPeriodOver, inputPeriodIsEmpty } = modalCondition;
   const { endTime } = bondModalInputData;
 
   return (
@@ -95,8 +95,8 @@ export default function BondModal_Period() {
             rightUnit={"Weeks"}
             maxValue={LOCKTOS_maxWeeks}
             minValue={1}
-            isError={inputPeriodOver}
-            errorMsg={errMsg.bond.periodIsOver}
+            isError={inputPeriodOver || inputPeriodIsEmpty}
+            errorMsg={inputPeriodOver ? errMsg.bond.periodIsOver : ""}
             leftTime={leftHourAndMin}
             leftDays={leftDays}
             endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}

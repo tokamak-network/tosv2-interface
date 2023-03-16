@@ -7,12 +7,13 @@ import { BondModalInput } from "types/bond";
 function useBondModalCondition(maxValue: number | undefined) {
   const [inputOver, setInputOver] = useState<boolean>(true);
   const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(true);
+  const [inputPeriodIsEmpty, setInputPeriodIsEmpty] = useState<boolean>(true);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [zeroInputBalance, setZeroInputBalance] = useState<boolean>(false);
 
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const inputBalance = inputValue.bond_modal_balance;
-  const inputPeriod = 155;
+  const inputPeriod = inputValue.bond_modal_period;
   const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
   const { isModalLoading } = useModal();
 
@@ -40,15 +41,19 @@ function useBondModalCondition(maxValue: number | undefined) {
   }, [inputBalance, maxValue, isModalLoading]);
 
   useEffect(() => {
-    if (Number(inputPeriod) > LOCKTOS_maxWeeks || Number(inputPeriod) < 1) {
+    if (Number(inputPeriod) > LOCKTOS_maxWeeks) {
       return setInputPeriodOver(true);
     }
+    if (String(inputPeriod) === "") {
+      return setInputPeriodIsEmpty(true);
+    }
+    setInputPeriodIsEmpty(false);
     return setInputPeriodOver(false);
   }, [inputPeriod, LOCKTOS_maxWeeks]);
 
   useEffect(() => {
-    setBtnDisabled(inputOver || inputPeriodOver);
-  }, [inputOver, inputPeriodOver]);
+    setBtnDisabled(inputOver || inputPeriodOver || inputPeriodIsEmpty);
+  }, [inputOver, inputPeriodOver, inputPeriodIsEmpty]);
 
   return {
     inputOver,
@@ -56,6 +61,7 @@ function useBondModalCondition(maxValue: number | undefined) {
     inputPeriodOver,
     btnDisabled,
     zeroInputBalance,
+    inputPeriodIsEmpty,
   };
 }
 
