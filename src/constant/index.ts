@@ -26,13 +26,12 @@ const constant = {
       amountAndPeriodErr: "Increase TOS or lock-up period",
       periodIsOver: `Can't be more than 156 weeks`,
       ltosBalanceIsOver: "Insufficient LTOS amount",
+      periodIsEmpty: "Must be between 0 and 155",
     },
 
     balanceExceed: "Insufficient ETH amount",
     bondZeroInput: "ETH has to be greater than 0",
 
-    periodExceed: "Must be between 1 and 155",
-    stakePeriodExceed: "Must be between 0 and 155",
     managePeriodExceed:
       "New lock-up period must be equal or greater than the existing lock-up period",
     zeroInput: "Input has to be equal to or greater than 0",
