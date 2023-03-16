@@ -25,6 +25,7 @@ const constant = {
       newLockupPeriodIsSmaller: `Can't be less than current lock-up period (70 weeks)`,
       amountAndPeriodErr: "Increase TOS or lock-up period",
       periodIsOver: `Can't be more than 156 weeks`,
+      ltosBalanceIsOver: "Insufficient LTOS amount",
     },
 
     balanceExceed: "Insufficient ETH amount",
