@@ -240,7 +240,9 @@ function UnstakeModal() {
                         maxValue={Number(unstakeData?.maxValue) || 0}
                         isError={isOverBlanace || balanceIsZero}
                         errorMsg={
-                          isOverBlanace
+                          inputValue.stake_unstakeModal_balance === ""
+                            ? undefined
+                            : isOverBlanace
                             ? errMsg.stake.ltosBalanceIsOver
                             : errMsg.stake.inputIsZero
                         }

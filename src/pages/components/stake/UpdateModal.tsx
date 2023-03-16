@@ -323,8 +323,10 @@ function UpdateModal() {
                       inputOver
                     }
                     errorMsg={
-                      bothConditionsErr
-                        ? errMsg.stake.amountAndPeriodErr
+                      inputValue?.stake_updateModal_tos_balance === ""
+                        ? undefined
+                        : bothConditionsErr
+                        ? undefined
                         : zeroInputBalance
                         ? errMsg.stake.inputIsZero
                         : errMsg.stake.tosBalanceIsOver
@@ -410,6 +412,8 @@ function UpdateModal() {
                     errorMsg={
                       bothConditionsErr
                         ? undefined
+                        : inputValue.stake_updateModal_period === ""
+                        ? undefined
                         : Number(inputValue.stake_updateModal_period) > 155
                         ? errMsg.stake.periodIsOver
                         : errMsg.stake.newLockupPeriodIsSmaller
@@ -489,8 +493,7 @@ function UpdateModal() {
             {bothConditionsErr && (
               <Flex fontSize={11} textAlign="center" w={"100%"} mb={"24px"}>
                 <Text w={"100%"} color={"red.100"} fontWeight={"bold"}>
-                  You have to lock additional TOS or/and increase the lock-up
-                  period by at least 1 week.
+                  {errMsg.stake.amountAndPeriodErr}
                 </Text>
               </Flex>
             )}
