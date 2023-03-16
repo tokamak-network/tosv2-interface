@@ -290,7 +290,8 @@ function SwapInterfaceModal() {
           maxOut &&
           Number(token0Balance) > Number(fromAmount)
         ) {
-            
+          const gas = await library.getGasPrice();
+          const txGasPrice = gas.mul(42000);     
                
           const estimate = await SwapperV2Proxy_CONTRACT.estimateGas.exactInput(
             getExactInputParams,
@@ -302,9 +303,11 @@ function SwapInterfaceModal() {
               value: parseInputAmount,
             }
           ); 
-          const gas = await library.getGasPrice();
-          const txGasPrice = gas.mul(42000); 
-          const subtracted = parseInputAmount.sub(estimate).sub(txGasPrice)
+
+      
+          const remove =  (estimate.add(42000)).mul(gas)
+         
+          const subtracted = parseInputAmount.sub(remove)
           setFromAmount(
             max !== "0" ? ethers.utils.formatEther(subtracted) : "0"
           ); //if the input token is ETH then automatically set the input amount to max amount when output token changes
