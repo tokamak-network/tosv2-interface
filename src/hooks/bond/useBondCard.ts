@@ -157,9 +157,11 @@ export function useBondCard() {
       //   isHighest: discountArr[biggestElementIndex] > 0 ? true : false,
       // };
 
-      const openList = bondcardDatas.filter(
-        (bondData: BondCardProps) => bondData.status === "open"
-      );
+      const openList = bondcardDatas
+        .filter((bondData: BondCardProps) => bondData.status === "open")
+        .sort((a, b) => {
+          return Number(b.discountRate) - Number(a.discountRate);
+        });
       const futureList = bondcardDatas.filter(
         (bondData: BondCardProps) => bondData.status === "will be open"
       );
