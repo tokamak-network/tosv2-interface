@@ -40,7 +40,7 @@ function TokenImageContrainer(props: { tokenTypes: TokenTypes; name: string }) {
 export default function BondModal_Input() {
   const { errMsg } = constant;
   const { modalCondition, userTokenBalance } = useBondModal();
-  const { zeroInputBalance, inputOver } = modalCondition;
+  const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
   const { maxValue, balacne, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
   const { bondDiscount, isMinusDiscount, minimumTosPrice } =
@@ -143,6 +143,8 @@ export default function BondModal_Input() {
     }
   }, [actualMaxValue]);
 
+  console.log(inputBalanceisEmpty);
+
   return (
     <Flex flexDir={"column"} px={"70px"} rowGap={"10px"}>
       <Flex fontSize={12} fontWeight={"bold"}>
@@ -159,7 +161,8 @@ export default function BondModal_Input() {
       <Flex
         borderWidth={"1px"}
         borderColor={
-          maxValue !== undefined && (zeroInputBalance || inputOver)
+          maxValue !== undefined &&
+          (zeroInputBalance || inputOver || inputBalanceisEmpty)
             ? "#e23738"
             : colorMode === "dark"
             ? "#313442"
@@ -181,10 +184,13 @@ export default function BondModal_Input() {
             recoilKey={"bond_modal"}
             atomKey={"bond_modal_balance"}
             isError={
-              actualMaxValue !== undefined && (zeroInputBalance || inputOver)
+              actualMaxValue !== undefined &&
+              (zeroInputBalance || inputOver || inputBalanceisEmpty)
             }
             errorMsg={
-              inputOver
+              inputBalanceisEmpty
+                ? undefined
+                : inputOver
                 ? errMsg.bond.bondableAmountIsOver
                 : zeroInputBalance
                 ? errMsg.bond.inputIsZero

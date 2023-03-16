@@ -12,6 +12,8 @@ function useStakeModalCondition() {
   const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(false);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [zeroInputBalance, setZeroInputBalance] = useState<boolean>(false);
+  const [inputBalanceIsEmpty, setInputBalanceIsEmpty] =
+    useState<boolean>(false);
 
   const { userTokenBalance } = useUserBalance();
   const { isModalLoading } = useModal();
@@ -24,15 +26,13 @@ function useStakeModalCondition() {
   useEffect(() => {
     if (isModalLoading) {
       setInputOver(false);
-      return setZeroInputBalance(false);
+      setZeroInputBalance(false);
+      return setInputBalanceIsEmpty(false);
     }
-    if (
-      inputTosAmount === undefined ||
-      inputTosAmount.length === 0 ||
-      Number(inputTosAmount) <= 0
-    ) {
-      setZeroInputBalance(true);
-      return setInputOver(false);
+    if (inputTosAmount === undefined || inputTosAmount === "") {
+      setZeroInputBalance(false);
+      setInputOver(false);
+      return setInputBalanceIsEmpty(true);
     }
     if (userTokenBalance?.TOS.balanceWei && inputTosAmount) {
       // const inputTosAmountIsGt = compareBN(
@@ -42,16 +42,25 @@ function useStakeModalCondition() {
       //   )
       // );
 
+      if (Number(inputTosAmount) === 0) {
+        setZeroInputBalance(true);
+        setInputOver(false);
+        return setInputBalanceIsEmpty(false);
+      }
+
       if (Number(inputTosAmount) > Number(userTokenBalance.TOS.balanceWei)) {
         setZeroInputBalance(false);
-        return setInputOver(true);
+        setInputOver(true);
+        return setInputBalanceIsEmpty(false);
       }
       setZeroInputBalance(false);
-      return setInputOver(false);
+      setInputOver(false);
+      return setInputBalanceIsEmpty(false);
     }
     return () => {
       setZeroInputBalance(false);
       setInputOver(false);
+      setInputBalanceIsEmpty(false);
     };
   }, [inputTosAmount, userTokenBalance, isModalLoading]);
 
@@ -70,7 +79,13 @@ function useStakeModalCondition() {
     setBtnDisabled(inputOver || inputPeriodOver || zeroInputBalance);
   }, [inputOver, inputPeriodOver, zeroInputBalance]);
 
-  return { inputOver, inputPeriodOver, zeroInputBalance, btnDisabled };
+  return {
+    inputOver,
+    inputPeriodOver,
+    zeroInputBalance,
+    btnDisabled,
+    inputBalanceIsEmpty,
+  };
 }
 
 export default useStakeModalCondition;

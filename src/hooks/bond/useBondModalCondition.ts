@@ -10,6 +10,8 @@ function useBondModalCondition(maxValue: number | undefined) {
   const [inputPeriodIsEmpty, setInputPeriodIsEmpty] = useState<boolean>(true);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [zeroInputBalance, setZeroInputBalance] = useState<boolean>(false);
+  const [inputBalanceisEmpty, setInputBalanceisEmpty] =
+    useState<boolean>(false);
 
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const inputBalance = inputValue.bond_modal_balance;
@@ -20,21 +22,26 @@ function useBondModalCondition(maxValue: number | undefined) {
   useEffect(() => {
     if (isModalLoading) {
       setZeroInputBalance(false);
+      setInputBalanceisEmpty(false);
       return setInputOver(false);
     }
     if (inputBalance === undefined || inputBalance === "") {
-      setZeroInputBalance(true);
-      return setInputOver(true);
+      setInputBalanceisEmpty(true);
+      setZeroInputBalance(false);
+      return setInputOver(false);
     }
     if (maxValue && inputBalance) {
       if (Number(inputBalance) > maxValue) {
         setZeroInputBalance(false);
+        setInputBalanceisEmpty(false);
         return setInputOver(true);
       }
-      if (Number(inputBalance) <= 0) {
+      if (Number(inputBalance) === 0) {
         setZeroInputBalance(true);
-        return setInputOver(true);
+        setInputBalanceisEmpty(false);
+        return setInputOver(false);
       }
+      setInputBalanceisEmpty(false);
       setZeroInputBalance(false);
       return setInputOver(false);
     }
@@ -52,6 +59,8 @@ function useBondModalCondition(maxValue: number | undefined) {
   }, [inputPeriod, LOCKTOS_maxWeeks]);
 
   useEffect(() => {
+    console.log(inputOver, inputPeriodOver, inputPeriodIsEmpty);
+
     setBtnDisabled(inputOver || inputPeriodOver || inputPeriodIsEmpty);
   }, [inputOver, inputPeriodOver, inputPeriodIsEmpty]);
 
@@ -62,6 +71,7 @@ function useBondModalCondition(maxValue: number | undefined) {
     btnDisabled,
     zeroInputBalance,
     inputPeriodIsEmpty,
+    inputBalanceisEmpty,
   };
 }
 

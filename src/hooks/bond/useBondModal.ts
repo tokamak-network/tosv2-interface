@@ -57,6 +57,7 @@ function useBondModal() {
     btnDisabled,
     zeroInputBalance,
     inputPeriodIsEmpty,
+    inputBalanceisEmpty,
   } = useBondModalCondition(maxValue);
 
   //maxValue for each case(token type)
@@ -92,6 +93,7 @@ function useBondModal() {
       btnDisabled,
       zeroInputBalance,
       inputPeriodIsEmpty,
+      inputBalanceisEmpty,
     },
     bondModalInputData: {
       youWillGet,
