@@ -45,6 +45,7 @@ function ContentComponent(props: {
   setStateTitleAction?: () => void;
   isHighest?: boolean;
   isMinus?: boolean;
+  isClosed?: boolean;
 }) {
   const {
     title,
@@ -54,6 +55,7 @@ function ContentComponent(props: {
     setStateTitleAction,
     isHighest,
     isMinus,
+    isClosed,
   } = props;
   const { colorMode } = useColorMode();
 
@@ -97,7 +99,7 @@ function ContentComponent(props: {
         color={
           isHighest
             ? "blue.200"
-            : isMinus
+            : isMinus && !isClosed
             ? "red.100"
             : colorMode === "dark"
             ? "white.200"
@@ -310,7 +312,7 @@ function BondCard(props: { data: BondCardProps }) {
           ETH Bond {data?.version} ({isProduction() === false && data?.marketId}
           )
         </Text>
-        {data?.isDiscountMinus ? (
+        {data?.isDiscountMinus && !isClosed ? (
           <Text fontSize={12} color={"red.100"}>
             Notice: You can purchase TOS for a lower price
             <br />
@@ -367,8 +369,7 @@ function BondCard(props: { data: BondCardProps }) {
             color={colorMode === "dark" ? "gray.100" : "#8b8b93"}
           >
             Buy TOS for up to {String(data?.discountRate).split(".")[0]}% off
-            with your WTON
-            <br /> and TOS to improve the liquidity
+            with your ETH
           </Text>
         )}
       </Flex>
@@ -459,9 +460,10 @@ function BondCard(props: { data: BondCardProps }) {
           <ContentComponent
             title="Discount"
             //remove tilda(~) when it's on minus status
-            content={discountRate}
+            content={isClosed && data?.isDiscountMinus ? "-" : discountRate}
             isHighest={data?.isHighest}
             isMinus={data?.isDiscountMinus}
+            isClosed={isClosed}
           ></ContentComponent>
           <ContentComponent
             title="Bond Price"
