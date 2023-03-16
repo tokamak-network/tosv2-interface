@@ -6,7 +6,7 @@ import { useBlockNumber } from "./useBlockNumber";
 import { Contract, ethers, providers } from "ethers";
 import { SupportedToken, SupportedTokenList, TokenNames } from "types/tokens";
 
-type BalanceWei = number | undefined;
+type BalanceWei = string | undefined;
 type BalanceCommified = string | undefined;
 
 type T_UserTokenBalance = {
@@ -46,7 +46,7 @@ class TokenBalance {
   erc20Contract: Contract;
   account: string;
   decimals?: number;
-  balanceWei: Promise<number>;
+  balanceWei: Promise<string>;
   balanceCommified: Promise<string>;
 
   constructor(erc20Contract: Contract, account: string, decimals?: number) {
@@ -58,12 +58,11 @@ class TokenBalance {
     this.balanceCommified = this.fetchBalanceCommified();
   }
 
-  private async fetchBalanceWei(): Promise<number> {
+  private async fetchBalanceWei(): Promise<string> {
     const balanceBN = await this.erc20Contract.balanceOf(this.account);
-
     const balanceWei = ethers.utils.formatUnits(balanceBN, this.decimals);
 
-    return Number(balanceWei.slice(0, 20));
+    return balanceWei;
   }
 
   private async fetchBalanceCommified(): Promise<string> {

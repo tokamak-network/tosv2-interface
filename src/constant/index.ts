@@ -13,8 +13,16 @@ const constant = {
   //285,753 → 279,458
   minBondGasPrice: "279458",
   errMsg: {
-    balanceExceed: "Input has exceeded your balance",
+    bond: {
+      balanceIsOver: "Insufficient ETH amount",
+      inputIsZero: "ETH has to be greater than 0",
+      bondableAmountIsOver: "Exceeded current bondable",
+      periodIsOver: "Must be between 0 and 155",
+    },
+    stake: {},
+    balanceExceed: "Insufficient ETH amount",
     bondZeroInput: "ETH has to be greater than 0",
+
     periodExceed: "Must be between 1 and 155",
     stakePeriodExceed: "Must be between 0 and 155",
     managePeriodExceed:

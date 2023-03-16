@@ -28,6 +28,8 @@ function StakeScreenBottom(props: {
     }
   }, [pageSize]);
 
+  console.log(pageButtonList);
+
   return (
     <Flex h={"40px"} mt={"27px"} mb={"3px"}>
       <Flex>

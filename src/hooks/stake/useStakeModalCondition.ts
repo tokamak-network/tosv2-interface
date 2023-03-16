@@ -1,4 +1,6 @@
+import { compareBN } from "@/utils/bigNumber";
 import constant from "constant";
+import { BigNumber, ethers } from "ethers";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
 import useUserBalance from "hooks/useUserBalance";
@@ -33,7 +35,14 @@ function useStakeModalCondition() {
       return setInputOver(false);
     }
     if (userTokenBalance?.TOS.balanceWei && inputTosAmount) {
-      if (Number(inputTosAmount) > userTokenBalance.TOS.balanceWei) {
+      // const inputTosAmountIsGt = compareBN(
+      //   BigNumber.from(inputTosAmount.toString()),
+      //   BigNumber.from(
+      //     ethers.utils.formatUnits(userTokenBalance.TOS.balanceWei)
+      //   )
+      // );
+
+      if (Number(inputTosAmount) > Number(userTokenBalance.TOS.balanceWei)) {
         setZeroInputBalance(false);
         return setInputOver(true);
       }

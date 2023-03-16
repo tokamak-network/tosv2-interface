@@ -49,7 +49,7 @@ export default function BondModal_Period() {
             mb={"9px"}
           >
             <Text
-            fontWeight={600}
+              fontWeight={600}
               mr={"6px"}
               color={colorMode === "light" ? "gray.800" : "white.200"}
             >
@@ -71,7 +71,11 @@ export default function BondModal_Period() {
                   });
                 }}
               ></Checkbox>
-              <Text ml={"6px"} mr="3px" color={colorMode === 'dark'? 'gray.100':'gray.1000'}>
+              <Text
+                ml={"6px"}
+                mr="3px"
+                color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+              >
                 5 Days Lock-Up
               </Text>
 
@@ -92,7 +96,7 @@ export default function BondModal_Period() {
             maxValue={LOCKTOS_maxWeeks}
             minValue={1}
             isError={inputPeriodOver}
-            errorMsg={errMsg.periodExceed}
+            errorMsg={errMsg.bond.periodIsOver}
             leftTime={leftHourAndMin}
             leftDays={leftDays}
             endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
