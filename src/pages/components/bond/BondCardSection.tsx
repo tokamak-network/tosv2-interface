@@ -16,13 +16,17 @@ import { useRecoilValue } from "recoil";
 import { bond_filter_sort_state } from "atom/bond/filter";
 import useMediaView from "hooks/useMediaView";
 import { useBondCard } from "hooks/bond/useBondCard";
-
+import usePagination from "hooks/usePagination";
+import BondScreenBottom from "./BondScreenBottom";
 function BondCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
   const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
   const { cardList } = useBondCard();
-
+  const { pageSize, currentPage, currentPageList, setCurrentPage } =
+    usePagination(cardList);
+    
   return (
+    <Flex flexDir={"column"}>
     <Grid
       // columns={3} gridRowGap={"24px"} columnGap={"25px"}
       columnGap={"2.2%"}
@@ -31,7 +35,7 @@ function BondCardSection() {
       justifyContent={isSmallerThan750 ? "center" : ""}
       flexWrap={"wrap"}
     >
-      {cardList?.map((cardData: BondCardProps, index) =>
+      {/* {cardList?.map((cardData: BondCardProps, index) =>
         //need to check displaying one vault which was a test vault on the mainnet
         isProduction() ? (
           index === cardList.length - 1
@@ -41,8 +45,25 @@ function BondCardSection() {
             key={cardData.bondCapacity + index}
           ></BondCard>
         )
-      )}
+      )} */}
+
+      {currentPageList.length > 0? (
+        currentPageList?.map((cardData:BondCardProps, index:number) => {
+          if (cardData) {
+            return (
+              <BondCard
+            data={cardData}
+            key={cardData.bondCapacity + index}
+          ></BondCard>
+            )
+          }
+        })
+      ):<></>}
     </Grid>
+    <BondScreenBottom  pageSize={pageSize}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}/>
+    </Flex>
   );
 }
 
