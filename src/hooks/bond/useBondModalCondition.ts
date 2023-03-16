@@ -59,8 +59,6 @@ function useBondModalCondition(maxValue: number | undefined) {
   }, [inputPeriod, LOCKTOS_maxWeeks]);
 
   useEffect(() => {
-    console.log(inputOver, inputPeriodOver, inputPeriodIsEmpty);
-
     setBtnDisabled(inputOver || inputPeriodOver || inputPeriodIsEmpty);
   }, [inputOver, inputPeriodOver, inputPeriodIsEmpty]);
 
