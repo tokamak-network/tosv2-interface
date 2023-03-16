@@ -4,7 +4,7 @@ import { bond_modal } from "atom/bond/modal";
 import { BalanceInput } from "common/input/TextInput";
 import TokenSymbol from "common/token/TokenSymol";
 import constant from "constant";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import useBondModal from "hooks/bond/useBondModal";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
@@ -77,6 +77,7 @@ export default function BondModal_Input() {
         const inputAmount = String(maxValue)
           .replaceAll(",", "")
           .replaceAll(" ", "");
+
         const parseInputAmount = ethers.utils.parseUnits(inputAmount, 18);
         const periodWeeks = inputValue.bond_modal_period + 1;
 
@@ -89,13 +90,24 @@ export default function BondModal_Input() {
               periodWeeks,
               { value: convertToWei(inputAmount) }
             );
-          const subtractedMaxAmount = parseInputAmount
-            .sub(gasEstimate)
-            .sub(42000);
+          const feeData =
+            await BondDepositoryProxy_CONTRACT.provider.getFeeData();
+          const { maxFeePerGas } = feeData;
 
-          return setActualMaxValue(
-            ethers.utils.formatUnits(subtractedMaxAmount.toString())
-          );
+          if (maxFeePerGas) {
+            const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
+            const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
+            const gasPrice = gasEstimate.add(42000).mul(maxFeePerGas);
+            const subtractedMaxAmount = parseInputAmount.sub(gasPrice);
+
+            console.log("maxFeePerGas(wei) : ", maxFeePerGas.toString());
+            console.log("gasEstimate : ", gasEstimate.toString());
+            console.log("bufferGasFee : ", bufferPrice.toString());
+
+            return setActualMaxValue(
+              ethers.utils.formatUnits(subtractedMaxAmount.toString())
+            );
+          }
         }
         const gasEstimate =
           await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
@@ -142,8 +154,6 @@ export default function BondModal_Input() {
       });
     }
   }, [actualMaxValue]);
-
-  console.log(inputBalanceisEmpty);
 
   return (
     <Flex flexDir={"column"} px={"70px"} rowGap={"10px"}>
