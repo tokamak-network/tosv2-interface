@@ -30,7 +30,7 @@ const useBalance = () => {
   const [token1Balance, setToken1Balance] = useState("0");
 
   const fetchBalance = useCallback(async () => {
-    if (token0.address === "" && token1.address === "") {
+    if (token0.address === "" ) {
       setToken1Balance("0");
       setToken0Balance("0");
     }

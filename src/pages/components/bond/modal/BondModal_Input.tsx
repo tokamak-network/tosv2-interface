@@ -15,6 +15,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { TokenTypes } from "types";
 import { BondCardProps } from "types/bond";
+import { useWeb3React } from "@web3-react/core";
 
 let bondTokenType = "ETH";
 
@@ -53,6 +54,7 @@ export default function BondModal_Input() {
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
+  const { account, library } = useWeb3React();
 
   const { selectedModalData } = useModal<BondCardProps>();
   const marketId = selectedModalData?.index;
@@ -73,12 +75,16 @@ export default function BondModal_Input() {
 
   useEffect(() => {
     async function fetchActualMaxValue() {
-      if (BondDepositoryProxy_CONTRACT && maxValue && minimumTosPrice) {
+      if (BondDepositoryProxy_CONTRACT && maxValue && minimumTosPrice && library) {
         const inputAmount = String(maxValue)
           .replaceAll(",", "")
           .replaceAll(" ", "");
         const parseInputAmount = ethers.utils.parseUnits(inputAmount, 18);
         const periodWeeks = inputValue.bond_modal_period + 1;
+
+        const gas = await library.getGasPrice();
+        const txGasPrice = gas.mul(42000); 
+
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           const gasEstimate =
@@ -89,14 +95,17 @@ export default function BondModal_Input() {
               periodWeeks,
               { value: convertToWei(inputAmount) }
             );
+         
+
           const subtractedMaxAmount = parseInputAmount
             .sub(gasEstimate)
-            .sub(42000);
+            .sub(txGasPrice);
 
           return setActualMaxValue(
             ethers.utils.formatUnits(subtractedMaxAmount.toString())
           );
         }
+
         const gasEstimate =
           await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
             marketId,
@@ -107,8 +116,7 @@ export default function BondModal_Input() {
 
         const subtractedMaxAmount = parseInputAmount
           .sub(gasEstimate)
-          .sub(42000);
-
+          .sub(txGasPrice);
         return setActualMaxValue(
           ethers.utils.formatUnits(subtractedMaxAmount.toString())
         );
