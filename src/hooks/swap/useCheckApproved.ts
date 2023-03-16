@@ -74,6 +74,7 @@ const useCheckApproved = () => {
     WTON_ADDRESS,
     account,
     SwapperV2Proxy,
+    token0Balance,
   ]);
 
   return approved;

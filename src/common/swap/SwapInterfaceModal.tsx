@@ -268,11 +268,13 @@ function SwapInterfaceModal() {
         token0Balance &&
         token0Balance !== "0"
       ) {
+        const formatted = ethers.utils.parseUnits(token0Balance, 18);
+        const formatted2 = convertNumber({ amount: formatted.toString() });
 
-        const formatted  = ethers.utils.parseUnits(token0Balance, 18)
-        const formatted2 = convertNumber({amount: formatted.toString()})        
-     
-        const parseInputAmount = ethers.utils.parseUnits(formatted2 ? formatted2: '0', 18);
+        const parseInputAmount = ethers.utils.parseUnits(
+          formatted2 ? formatted2 : "0",
+          18
+        );
 
         const getExactInputParams = {
           recipient: account,
@@ -299,18 +301,14 @@ function SwapInterfaceModal() {
             }
           );
 
-       
-          // console.log('token0Balance',token0Balance);
-         
-          // console.log('parseInputAmount',parseInputAmount);
-          
-          const numEstimate = ethers.utils.formatEther(estimate);
-          const numBalance = ethers.utils.formatEther(parseInputAmount);
-          // console.log('estimate',numEstimate);
+          // const numEstimate = ethers.utils.formatEther(estimate);
+          // const numBalance = ethers.utils.formatEther(parseInputAmount);
+
           const substracted = parseInputAmount.sub(estimate).sub(42000);
-          // console.log('substracted',ethers.utils.formatEther(substracted));
+          setFromAmount(
+            max !== "0" ? ethers.utils.formatEther(substracted) : "0"
+          );   //if the input token is ETH then automatically set the input amount to max amount when output token changes
           setMax(ethers.utils.formatEther(substracted));
-         
         } else {
         }
       }
@@ -410,10 +408,11 @@ function SwapInterfaceModal() {
                   fontSize="14px"
                 >
                   <Text mt="18px" mb="8px" textAlign={"left"}>
-                    Balance: {Number(token0Balance).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits:2,
-                  })}
+                    Balance:{" "}
+                    {Number(token0Balance).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
                   </Text>
                   <Text
                     fontSize={"14px"}
@@ -484,9 +483,10 @@ function SwapInterfaceModal() {
                   color={colorMode === "dark" ? "#f1f1f1" : "#3d495d"}
                   fontSize="14px"
                 >
-                  Balance: {Number(token1Balance).toLocaleString(undefined, {
+                  Balance:{" "}
+                  {Number(token1Balance).toLocaleString(undefined, {
                     minimumFractionDigits: 2,
-                    maximumFractionDigits:2,
+                    maximumFractionDigits: 2,
                   })}
                 </Text>
                 <InputComponent
