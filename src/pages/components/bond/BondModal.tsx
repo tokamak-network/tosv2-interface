@@ -315,18 +315,18 @@ function BondModal() {
                 flexDir={"column"}
                 // color={colorMode === "dark" ? "white.200" : "gray.700"}
                 color={"#8b8b93"}
-                px={bp700px ? "20px" : 0}
+                px={bp700px ? "15px" : 0}
               >
-                <Flex alignItems={"center"} justifyContent={"center"}>
-                  <Text color={"#e23738"} mr={"2px"}>
-                    *
-                  </Text>
-                  <Text>
+                <Flex alignItems={"center"} justifyContent={"center"} >
+                  <Text w={bp700px?'318px':"370px"}>
+                   <span style={{color:'#e23738', marginRight:'2px'}}>*</span>
+                
+                 
                     The amount may change slightly based on the slippage
-                    (0.034%).
+                    (0.034%). If the price slips any further, txn will revert.
                   </Text>
                 </Flex>
-                <Text>If the price slips any further, txn will revert.</Text>
+
               </Flex>
             )}
             {isMinusDiscount && (
