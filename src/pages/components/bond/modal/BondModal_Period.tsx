@@ -39,7 +39,7 @@ export default function BondModal_Period() {
           alignItems="center"
           mt="10px"
           w={"100%"}
-          px={"70px"}
+          px={bp700px? '0px':"70px"}
         >
           <Flex
             w={"100%"}
@@ -103,7 +103,7 @@ export default function BondModal_Period() {
           ></InputPeriod>
         </Flex>
       </Flex>
-      <Flex w={"600px"} px={bp700px ? "30px" : ""}>
+      <Flex px={bp700px ? "10px" : ""} mb={"30px"}>
         <StakeGraph
           pageKey={"Bond_screen"}
           subKey={"bond_modal"}

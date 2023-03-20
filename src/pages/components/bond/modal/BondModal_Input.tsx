@@ -15,6 +15,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { TokenTypes } from "types";
 import { BondCardProps } from "types/bond";
+import { useWeb3React } from "@web3-react/core";
+import useMediaView from "hooks/useMediaView";
 
 let bondTokenType = "ETH";
 
@@ -53,6 +55,8 @@ export default function BondModal_Input() {
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
+  const { account, library } = useWeb3React();
+  const { bp700px } = useMediaView();
 
   const { selectedModalData } = useModal<BondCardProps>();
   const marketId = selectedModalData?.index;
@@ -73,13 +77,17 @@ export default function BondModal_Input() {
 
   useEffect(() => {
     async function fetchActualMaxValue() {
-      if (BondDepositoryProxy_CONTRACT && maxValue && minimumTosPrice) {
+      if (BondDepositoryProxy_CONTRACT && maxValue && minimumTosPrice && library) {
         const inputAmount = String(maxValue)
           .replaceAll(",", "")
           .replaceAll(" ", "");
 
         const parseInputAmount = ethers.utils.parseUnits(inputAmount, 18);
         const periodWeeks = inputValue.bond_modal_period + 1;
+
+        const gas = await library.getGasPrice();
+        const txGasPrice = gas.mul(42000); 
+
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           const gasEstimate =
@@ -109,6 +117,7 @@ export default function BondModal_Input() {
             );
           }
         }
+
         const gasEstimate =
           await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
             marketId,
@@ -119,8 +128,7 @@ export default function BondModal_Input() {
 
         const subtractedMaxAmount = parseInputAmount
           .sub(gasEstimate)
-          .sub(42000);
-
+          .sub(txGasPrice);
         return setActualMaxValue(
           ethers.utils.formatUnits(subtractedMaxAmount.toString())
         );
@@ -156,7 +164,7 @@ export default function BondModal_Input() {
   }, [actualMaxValue]);
 
   return (
-    <Flex flexDir={"column"} px={"70px"} rowGap={"10px"}>
+    <Flex flexDir={"column"} px={bp700px?'0px' :"70px"} rowGap={"10px"} >
       <Flex fontSize={12} fontWeight={"bold"}>
         <Text
           color={colorMode === "dark" ? "white.200" : "gray.800"}
@@ -178,7 +186,7 @@ export default function BondModal_Input() {
             ? "#313442"
             : "#e8edf2"
         }
-        w={"460px"}
+        w={bp700px? '310px':"460px"}
         h={"78px"}
         bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
         px={"20px"}
@@ -207,6 +215,7 @@ export default function BondModal_Input() {
                 : errMsg.bond.balanceIsOver
             }
             fontSize={18}
+            w={bp700px? '190px':"270px"}
             inputContainerStyle={{
               borderRadius: 0,
               borderWidth: 0,
