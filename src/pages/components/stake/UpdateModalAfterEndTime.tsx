@@ -109,6 +109,8 @@ function UpdateModalAfterEndTime() {
     closeModal();
   }, [setResetValue, closeModal]);
 
+  console.log(inputValue);
+
   const callUpdate = useCallback(async () => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312
@@ -320,7 +322,9 @@ function UpdateModalAfterEndTime() {
                         addTos === false && (zeroInputBalance || inputOver)
                       }
                       errorMsg={
-                        zeroInputBalance
+                        inputValue.stake_relockModal_ltos_balance === ""
+                          ? undefined
+                          : zeroInputBalance
                           ? errMsg.stake.inputIsZero
                           : errMsg.stake.ltosBalanceIsOver
                       }
@@ -351,9 +355,16 @@ function UpdateModalAfterEndTime() {
                         recoilKey={"relock_modal"}
                         atomKey={"stake_relockModal_tos_balance"}
                         maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
-                        isError={zeroInputBalance || inputOver}
+                        isError={
+                          zeroInputBalance ||
+                          inputOver ||
+                          inputValue.stake_relockModal_tos_balance === ""
+                        }
                         errorMsg={
-                          addTos && zeroInputBalance
+                          addTos &&
+                          inputValue.stake_relockModal_tos_balance === ""
+                            ? undefined
+                            : addTos && zeroInputBalance
                             ? errMsg.stake.inputIsZero
                             : errMsg.stake.tosBalanceIsOver
                         }
@@ -397,7 +408,11 @@ function UpdateModalAfterEndTime() {
                     style={bp700px ? {} : { marginLeft: "auto" }}
                     maxValue={modalMaxWeeks}
                     isError={inputPeriodOver}
-                    errorMsg={errMsg.stake.periodIsOver}
+                    errorMsg={
+                      inputValue.stake_relockModal_period === ""
+                        ? undefined
+                        : errMsg.stake.periodIsOver
+                    }
                     isDisabled={false}
                     leftDays={leftDays}
                     leftTime={leftHourAndMin}
