@@ -375,7 +375,9 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
                       ></Image>
                     </Box>
                   </Flex>
-                  <Text>{capitalLinkName}</Text>
+                  <Text minW={capitalLinkName.length > 8 ? "80px" : ""}>
+                    {capitalLinkName}
+                  </Text>
                 </Flex>
               )}
             </Flex>

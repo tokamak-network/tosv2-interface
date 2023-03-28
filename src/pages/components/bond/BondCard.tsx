@@ -266,7 +266,7 @@ function BondCard(props: { data: BondCardProps }) {
           {data?.isHighest && <Text>Highest</Text>}
           <Text
             color={
-              isNotOpen
+              isNotOpen && !closed
                 ? "#5eea8d"
                 : colorMode === "dark"
                 ? isClosed
