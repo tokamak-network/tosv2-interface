@@ -45,7 +45,7 @@ export default function BondModal_Input() {
   const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
   const { maxValue, balacne, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
-  const { bondDiscount, isMinusDiscount, minimumTosPrice } =
+  const { bondDiscount, isMinusDiscount, minimumTosPrice, roi, isMinusROI } =
     useBondModalInputData();
   const { colorMode } = useColorMode();
   const [actualMaxValue, setActualMaxValue] = useState<string | undefined>(
@@ -77,7 +77,12 @@ export default function BondModal_Input() {
 
   useEffect(() => {
     async function fetchActualMaxValue() {
-      if (BondDepositoryProxy_CONTRACT && maxValue && minimumTosPrice && library) {
+      if (
+        BondDepositoryProxy_CONTRACT &&
+        maxValue &&
+        minimumTosPrice &&
+        library
+      ) {
         const inputAmount = String(maxValue)
           .replaceAll(",", "")
           .replaceAll(" ", "");
@@ -86,8 +91,7 @@ export default function BondModal_Input() {
         const periodWeeks = inputValue.bond_modal_period + 1;
 
         const gas = await library.getGasPrice();
-        const txGasPrice = gas.mul(42000); 
-
+        const txGasPrice = gas.mul(42000);
 
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           const gasEstimate =
@@ -145,6 +149,7 @@ export default function BondModal_Input() {
     fiveDaysLockup,
     marketId,
     maxValue,
+    library,
   ]);
 
   const setMaxValue = useCallback(() => {
@@ -164,17 +169,33 @@ export default function BondModal_Input() {
   }, [actualMaxValue]);
 
   return (
-    <Flex flexDir={"column"} px={bp700px?'0px' :"70px"} rowGap={"10px"} >
-      <Flex fontSize={12} fontWeight={"bold"}>
-        <Text
-          color={colorMode === "dark" ? "white.200" : "gray.800"}
-          mr={"9px"}
-        >
-          Bond Discount
-        </Text>
-        <Text color={isMinusDiscount ? "red.100" : "blue.200"} fontWeight={600}>
-          {bondDiscount}%
-        </Text>
+    <Flex flexDir={"column"} px={bp700px ? "0px" : "70px"} rowGap={"10px"}>
+      <Flex fontSize={12} fontWeight={"bold"} columnGap={"18px"}>
+        <Flex alignItems={"center"}>
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            mr={"9px"}
+          >
+            ROI
+          </Text>
+          <Text color={isMinusROI ? "red.100" : "blue.200"} fontWeight={600}>
+            {roi}%
+          </Text>
+        </Flex>
+        <Flex alignItems={"center"}>
+          <Text
+            color={colorMode === "dark" ? "white.200" : "gray.800"}
+            mr={"9px"}
+          >
+            Bond Discount
+          </Text>
+          <Text
+            color={isMinusDiscount ? "red.100" : "blue.200"}
+            fontWeight={600}
+          >
+            {bondDiscount}%
+          </Text>
+        </Flex>
       </Flex>
       <Flex
         borderWidth={"1px"}
@@ -186,7 +207,7 @@ export default function BondModal_Input() {
             ? "#313442"
             : "#e8edf2"
         }
-        w={bp700px? '310px':"460px"}
+        w={bp700px ? "310px" : "460px"}
         h={"78px"}
         bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
         px={"20px"}
@@ -215,7 +236,7 @@ export default function BondModal_Input() {
                 : errMsg.bond.balanceIsOver
             }
             fontSize={18}
-            w={bp700px? '190px':"270px"}
+            w={bp700px ? "190px" : "270px"}
             inputContainerStyle={{
               borderRadius: 0,
               borderWidth: 0,

@@ -1,4 +1,7 @@
 import { Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
+import { ResponsiveLine } from "@nivo/line";
+import { bond_bondModal_input } from "atom/bond/input";
+
 import {
   bond_modal,
   bond_modal_state,
@@ -14,9 +17,84 @@ import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useStosReward from "hooks/stake/useStosReward";
 import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
-import StakeGraph from "pages/components/common/modal/StakeGraph";
 import { useEffect, useMemo } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import BondLockupGraph from "./BondLockupGraph";
+
+function SliderGraph() {
+  const { colorMode } = useColorMode();
+  const { bond_modal_period } = useRecoilValue(bond_bondModal_input);
+
+  const CustomPoint = (props: any) => {
+    const { currentPoint, borderWidth, borderColor, points, datum } = props;
+    const { dataIndex, id } = datum;
+
+    if (bond_modal_period !== dataIndex) {
+      return null;
+    }
+
+    return (
+      <g>
+        <circle
+          fill="#ffffff"
+          r={3}
+          strokeWidth={borderWidth}
+          stroke={borderColor}
+        />
+        <circle
+          r={2}
+          strokeWidth={borderWidth}
+          stroke={borderColor}
+          fill={id === "ROI" ? "#50d1b2" : "#ec8c56"}
+        />
+      </g>
+    );
+  };
+
+  const roiTestData = [];
+  const bonddiscountTestData = [];
+
+  for (let i = 0; i < 53; i++) {
+    roiTestData.push({ x: i, y: -10 + i, dataIndex: i, id: "ROI" });
+    bonddiscountTestData.push({
+      x: i,
+      y: -40 + i,
+      dataIndex: i,
+      id: "BondDiscount",
+    });
+  }
+
+  const testData = [
+    {
+      id: "ROI",
+      data: roiTestData,
+    },
+    {
+      id: "BondDiscount",
+      data: bonddiscountTestData,
+    },
+  ];
+
+  return (
+    <Flex pos={"absolute"} w={"460px"} h={"90px"}>
+      <ResponsiveLine
+        data={testData}
+        colors={["#50d1b2", "#ec8c56"]}
+        xScale={{ type: "point" }}
+        yScale={{ type: "linear", min: -40, max: 50 }}
+        axisTop={null}
+        axisRight={null}
+        axisLeft={null}
+        axisBottom={null}
+        lineWidth={1}
+        pointSymbol={CustomPoint}
+        // enablePoints={true}
+        enableGridX={false}
+        enableGridY={false}
+      ></ResponsiveLine>
+    </Flex>
+  );
+}
 
 export default function BondModal_Period() {
   const { bp700px } = useMediaView();
@@ -39,7 +117,7 @@ export default function BondModal_Period() {
           alignItems="center"
           mt="10px"
           w={"100%"}
-          px={bp700px? '0px':"70px"}
+          px={bp700px ? "0px" : "70px"}
         >
           <Flex
             w={"100%"}
@@ -103,14 +181,37 @@ export default function BondModal_Period() {
           ></InputPeriod>
         </Flex>
       </Flex>
-      <Flex px={bp700px ? "10px" : ""} mb={"30px"}>
-        <StakeGraph
+      <Flex
+        w={"100%"}
+        justifyContent={"center"}
+        px={bp700px ? "10px" : ""}
+        mt={"32px"}
+        mb={"30px"}
+        pos={"relative"}
+      >
+        <Flex
+          pos={"absolute"}
+          top={"5px"}
+          left={7}
+          flexDir={"column"}
+          textAlign={"right"}
+          fontSize={11}
+          color={"#64646f"}
+        >
+          <Text>50%</Text>
+          <Text mt={"34px"} mb={"24px"}>
+            0%
+          </Text>
+          <Text>-40%</Text>
+        </Flex>
+        <SliderGraph />
+        <BondLockupGraph
           pageKey={"Bond_screen"}
           subKey={"bond_modal"}
           periodKey={"bond_modal_period"}
           isSlideDisabled={fiveDaysLockup}
           minValue={1}
-        ></StakeGraph>
+        ></BondLockupGraph>
       </Flex>
     </Flex>
   );

@@ -14,9 +14,11 @@ import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
 import useModal from "hooks/useModal";
 import usePrice from "hooks/usePrice";
+import useStakeV2 from "hooks/contract/useStakeV2";
 import { bond_modal } from "atom/bond/modal";
 import { useBondDepository } from "./useBondDepository";
 import useBondModal from "./useBondModal";
+import { useBlockNumber } from "hooks/useBlockNumber";
 
 function useBondModalInputData() {
   const { selectedModalData } = useModal<BondCardProps>();
@@ -30,6 +32,8 @@ function useBondModalInputData() {
   );
   const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
   const [bondDiscount, setBondDiscount] = useState<string>("-");
+  const [roi, setRoi] = useState<string | undefined>(undefined);
+
   const [minimumTosPrice, setMinimumTosPrice] = useState<BigNumber | undefined>(
     undefined
   );
@@ -48,7 +52,8 @@ function useBondModalInputData() {
 
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const bondInputPeriod = fiveDaysLockup ? 0 : inputValue?.bond_modal_period;
-  const { newEndTime } = useStosReward(Number(inputTosAmount), bondInputPeriod);
+  const { newEndTime, newEndTimeStamp, newEndTimeStampWithoutStos } =
+    useStosReward(Number(inputTosAmount), bondInputPeriod);
   const { newBalanceStos } = useStosBond(Number(inputTosAmount));
 
   const { priceData } = usePrice();
@@ -56,6 +61,8 @@ function useBondModalInputData() {
   const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
 
   const { bondingPrice } = useBondDepository();
+  const { rebasePerEpoch } = useStakeV2();
+  const { blockTimeStamp } = useBlockNumber();
 
   useEffect(() => {
     async function fetchBondModalInputData() {
@@ -215,6 +222,51 @@ function useBondModalInputData() {
   ]);
 
   useEffect(() => {
+    async function fetchROI() {
+      if (
+        marketId &&
+        rebasePerEpoch &&
+        endTime &&
+        newEndTimeStamp &&
+        newEndTimeStampWithoutStos &&
+        blockTimeStamp &&
+        bondDiscount
+      ) {
+        const discountRate = Math.floor(Number(bondDiscount) / 100);
+        console.log(discountRate);
+        const LTOSInterest =
+          (1 + 87045050000000 / 1e18) **
+          ((newEndTimeStamp - blockTimeStamp + 12) /
+            constant.rebase.epochLength);
+        const ROI = (1 + LTOSInterest) / 1 - Number(discountRate) - 1;
+        console.log("ROI");
+        console.log(
+          rebasePerEpoch,
+          newEndTimeStamp,
+          blockTimeStamp + 12,
+          constant.rebase.epochLength,
+          LTOSInterest,
+          bondDiscount
+        );
+        console.log(ROI);
+        setRoi(commafy(ROI));
+      }
+    }
+    fetchROI().catch((e) => {
+      console.log("**fetchBondDiscount err**");
+      console.log(e);
+    });
+  }, [
+    marketId,
+    rebasePerEpoch,
+    endTime,
+    newEndTimeStamp,
+    newEndTimeStampWithoutStos,
+    blockTimeStamp,
+    bondDiscount,
+  ]);
+
+  useEffect(() => {
     async function fetchMaxValue() {
       if (BondDepositoryProxy_CONTRACT && marketId && bondingPrice) {
         const capacity = await BondDepositoryProxy_CONTRACT.possibleMaxCapacity(
@@ -244,6 +296,10 @@ function useBondModalInputData() {
     return Number(bondDiscount) < 0;
   }, [bondDiscount]);
 
+  const isMinusROI = useMemo(() => {
+    return Number(roi) < 0;
+  }, [roi]);
+
   return {
     youWillGet,
     endTime,
@@ -253,6 +309,8 @@ function useBondModalInputData() {
     minimumTosPrice,
     maxCapacityValue,
     isMinusDiscount,
+    roi,
+    isMinusROI,
   };
 }
 

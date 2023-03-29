@@ -18,21 +18,18 @@ import Moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-type UseStosReward = {
-  stosReward: string;
-  originalTosAmount: string;
-  newEndTime: string;
-  newEndTimeWithoutStos: string;
-  maxWeeks: number;
-  leftWeeks: string;
-  leftDays: string;
-  leftHourAndMin: string;
-};
+// type UseStosReward = {
+//   stosReward: string;
+//   originalTosAmount: string;
+//   newEndTime: string;
+//   newEndTimeWithoutStos: string;
+//   maxWeeks: number;
+//   leftWeeks: string;
+//   leftDays: string;
+//   leftHourAndMin: string;
+// };
 
-function useStosReward(
-  inputTosAmount?: number,
-  inputPeriod?: number
-): UseStosReward {
+function useStosReward(inputTosAmount?: number, inputPeriod?: number) {
   const [stosReward, setStosRewards] = useState<string>("0");
   const [originalTosAmount, setOriginalTosAmount] = useState<string>("-");
   const [newEndTime, setNewEndTime] = useState<string>("-");
@@ -42,6 +39,12 @@ function useStosReward(
   const [leftWeeks, setLeftWeeks] = useState<string>("-");
   const [leftDays, setLeftDays] = useState<string>("-");
   const [leftHourAndMin, setLeftHourAndMin] = useState<string>("-");
+  const [newEndTimeStamp, setNewEndTimeStamp] = useState<number | undefined>(
+    undefined
+  );
+  const [newEndTimeStampWithoutStos, setNewEndTimeStampWithoutStos] = useState<
+    number | undefined
+  >(undefined);
 
   const { LockTOS_CONTRACT } = useCallContract();
   const modalContractData = useModalContract();
@@ -118,6 +121,7 @@ function useStosReward(
         setNewEndTimeWithoutStos(
           convertTimeStamp(unlockTimeStamp, "YYYY. MM.DD. HH:mm")
         );
+        setNewEndTimeStampWithoutStos(unlockTimeStamp);
 
         //old script
         const date =
@@ -129,6 +133,7 @@ function useStosReward(
         );
         const endTimeWithTz = endTimeWithTimezone.format("YYYY.MM.DD. HH:mm");
         setNewEndTime(`${endTimeWithTz} (${getTimeZone()})` || "-");
+        setNewEndTimeStamp(date);
 
         const { leftWeeks, leftDays, leftHourAndMin } = getModalTimeleft({
           currentEndTimeStamp: date,
@@ -155,6 +160,8 @@ function useStosReward(
     leftWeeks,
     leftDays,
     leftHourAndMin,
+    newEndTimeStamp,
+    newEndTimeStampWithoutStos,
   };
 }
 

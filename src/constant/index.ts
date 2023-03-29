@@ -2,6 +2,8 @@ const constant = {
   rebase: {
     epochLength: 28800,
     beginEpochEnd: 1668682800,
+    //basePerEpoch is BigNumber(wei)
+    basePerEpoch: 87045050000000,
   },
   LOCKTOS_maxWeeks: 156,
   LOCKTOS_epochUnit: 604800,
