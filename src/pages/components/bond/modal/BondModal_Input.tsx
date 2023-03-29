@@ -159,15 +159,6 @@ export default function BondModal_Input() {
     });
   }, [inputValue, actualMaxValue, setValue]);
 
-  useEffect(() => {
-    if (actualMaxValue) {
-      setValue({
-        ...inputValue,
-        bond_modal_balance: actualMaxValue,
-      });
-    }
-  }, [actualMaxValue]);
-
   return (
     <Flex flexDir={"column"} px={bp700px ? "0px" : "70px"} rowGap={"10px"}>
       <Flex fontSize={12} fontWeight={"bold"} columnGap={"18px"}>

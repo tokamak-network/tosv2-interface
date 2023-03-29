@@ -221,17 +221,6 @@ function BalanceInput(props: NumberInputProp) {
     });
   };
 
-  useEffect(() => {
-    if (maxValue && atomKey) {
-      // console.log("go");
-      // console.log(atomKey);
-      // console.log(maxValue);
-      // console.log(inputValue);
-
-      setValue({ ...inputValue, [atomKey]: String(maxValue) });
-    }
-  }, [maxValue, selectedModal, atomKey, setValue]);
-
   const leftProperty = useMemo(() => {
     // console.log("inputRef");
     //@ts-ignore
@@ -286,11 +275,15 @@ function BalanceInput(props: NumberInputProp) {
           <NumberInputField
             h={"100%"}
             placeholder={placeHolder}
+            borderColor={"transparent !important"}
+            boxShadow={"none !important"}
             onChange={onChange}
             outline={"none"}
             fontSize={fontSize || 14}
-            border={{}}
-            _focus={{ boxShadow: "none" }}
+            _focus={{
+              boxShadow: "none !important",
+              borderColor: "transparent !important",
+            }}
             //@ts-ignore
             ref={inputRef}
             padding={15}
