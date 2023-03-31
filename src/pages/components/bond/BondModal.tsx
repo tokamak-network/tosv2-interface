@@ -92,10 +92,7 @@ function BondModal() {
   const { userTokenBalance } = useBondModal();
 
   const { colorMode } = useColorMode();
-  const { inputValue, setValue, setResetValue } = useInput(
-    "Bond_screen",
-    "bond_modal"
-  );
+  const { inputValue, setResetValue } = useInput("Bond_screen", "bond_modal");
   const { selectedModalData, selectedModal, closeModal } =
     useModal<BondCardProps>();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
@@ -128,7 +125,6 @@ function BondModal() {
     confirmedLink: "Stake_screen",
   });
   const { ltosIndex } = useLtosIndex();
-  const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
 
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
@@ -323,8 +319,7 @@ function BondModal() {
                     *
                   </Text>
                   <Text>
-                    The amount may change slightly based on the slippage
-                    (0.05%).
+                    The amount may change slightly based on the slippage (0.5%).
                   </Text>
                 </Flex>
                 <Text>If the price slips any further, txn will revert.</Text>

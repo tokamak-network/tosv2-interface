@@ -51,7 +51,7 @@ function BondLockupGraph(props: {
     color: "#64646f",
   };
   const { inputValue, value, setValue } = useInput(pageKey, subKey);
-  const [sliderValue, setSliderValue] = useState<number>(0);
+  const [sliderValue, setSliderValue] = useState<number | undefined>(undefined);
   const { colorMode } = useColorMode();
   const [isChanged, setIsChanged] = useState(false);
 
@@ -62,7 +62,7 @@ function BondLockupGraph(props: {
   }, [sliderValue]);
 
   useEffect(() => {
-    if (balanceKey && isChanged) {
+    if (balanceKey && isChanged && sliderValue) {
       if (
         inputValue[balanceKey] === "" ||
         inputValue[balanceKey] === undefined
@@ -84,7 +84,6 @@ function BondLockupGraph(props: {
 
   useEffect(() => {
     if (isSlideDisabled) return setSliderValue(0);
-    return setSliderValue(constant.modalMaxWeeks);
   }, [isSlideDisabled]);
 
   return (

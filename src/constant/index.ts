@@ -7,7 +7,8 @@ const constant = {
   },
   LOCKTOS_maxWeeks: 156,
   LOCKTOS_epochUnit: 604800,
-  modalMaxWeeks: 155,
+  stakeModalMaxWeeks: 155,
+  bondModalMaxWeeks: 52,
   rebasePerEpoch: 0.00008704505,
   rebasePeriod: 60 * 60 * 8, //8Hours
   mainnetGasPrice: "6849315",
@@ -19,7 +20,7 @@ const constant = {
       balanceIsOver: "Insufficient ETH amount",
       inputIsZero: "ETH has to be greater than 0",
       bondableAmountIsOver: "Exceeded current bondable",
-      periodIsOver: "Must be between 0 and 155",
+      periodIsOver: "Must be between 0 and 52",
     },
     stake: {
       tosBalanceIsOver: "Insufficient TOS amount",

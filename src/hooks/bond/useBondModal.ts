@@ -23,9 +23,10 @@ function useBondModal() {
     "Bond_screen",
     "bond_modal"
   );
+
   const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
     inputValue.bond_modal_balance,
-    inputValue.bond_modal_period
+    inputValue.bond_modal_period ?? 0
   );
 
   //need to put marketId

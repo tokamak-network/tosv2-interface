@@ -19,7 +19,7 @@ function useRelockModalCondition(stakedLtosBalance: number) {
   const inputLtosAmount = inputValue.stake_relockModal_ltos_balance;
   //   const inputLTosAmount = inputValue.stake_relockModal_ltos_balance;
   const inputPeriod = inputValue.stake_relockModal_period;
-  const { modalMaxWeeks: LOCKTOS_maxWeeks } = constant;
+  const { stakeModalMaxWeeks } = constant;
   const minimumWeeks = 0;
 
   useEffect(() => {
@@ -78,14 +78,14 @@ function useRelockModalCondition(stakedLtosBalance: number) {
 
   useEffect(() => {
     if (
-      Number(inputPeriod) > LOCKTOS_maxWeeks ||
+      Number(inputPeriod) > stakeModalMaxWeeks ||
       Number(inputPeriod) < minimumWeeks ||
       inputPeriod?.length === 0
     ) {
       return setInputPeriodOver(true);
     }
     return setInputPeriodOver(false);
-  }, [inputPeriod, LOCKTOS_maxWeeks, isModalLoading]);
+  }, [inputPeriod, stakeModalMaxWeeks, isModalLoading]);
 
   useEffect(() => {
     setBtnDisabled(inputOver || inputPeriodOver || zeroInputBalance);

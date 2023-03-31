@@ -15,7 +15,6 @@ import useBondModal from "hooks/bond/useBondModal";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useStosReward from "hooks/stake/useStosReward";
-import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
 import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -101,7 +100,7 @@ export default function BondModal_Period() {
   const { colorMode } = useColorMode();
   const [bondModalState, setBondModalState] = useRecoilState(bond_modal);
   const { fiveDaysLockup, fiveDaysLockupEndTime } = bondModalState;
-  const { modalMaxWeeks: LOCKTOS_maxWeeks, errMsg } = constant;
+  const { bondModalMaxWeeks, errMsg } = constant;
 
   const { sTos, modalCondition, bondModalInputData } = useBondModal();
   const { leftHourAndMin, leftDays } = sTos;
@@ -171,7 +170,7 @@ export default function BondModal_Period() {
             isDisabled={fiveDaysLockup}
             isDisabledText={"5 Days"}
             rightUnit={"Weeks"}
-            maxValue={LOCKTOS_maxWeeks}
+            maxValue={bondModalMaxWeeks}
             minValue={1}
             isError={inputPeriodOver || inputPeriodIsEmpty}
             errorMsg={inputPeriodOver ? errMsg.bond.periodIsOver : ""}

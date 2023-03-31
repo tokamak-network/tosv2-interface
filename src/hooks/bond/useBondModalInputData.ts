@@ -233,21 +233,15 @@ function useBondModalInputData() {
         bondDiscount
       ) {
         const discountRate = Math.floor(Number(bondDiscount) / 100);
-        console.log(discountRate);
         const LTOSInterest =
           (1 + 87045050000000 / 1e18) **
-          ((newEndTimeStamp - blockTimeStamp + 12) /
-            constant.rebase.epochLength);
+            ((newEndTimeStamp - blockTimeStamp + 12) /
+              constant.rebase.epochLength) -
+          1;
         const ROI = (1 + LTOSInterest) / 1 - Number(discountRate) - 1;
-        console.log("ROI");
-        console.log(
-          rebasePerEpoch,
-          newEndTimeStamp,
-          blockTimeStamp + 12,
-          constant.rebase.epochLength,
-          LTOSInterest,
-          bondDiscount
-        );
+        console.log("**ROI TEST**");
+
+        console.log(LTOSInterest);
         console.log(ROI);
         setRoi(commafy(ROI));
       }

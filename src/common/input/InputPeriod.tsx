@@ -173,8 +173,15 @@ const InputPeriod = (props: InputProp) => {
                 }
           }
           outline="none"
+          boxShadow={"none !important"}
           errorBorderColor={isDisabled ? "none" : "#e23738"}
-          value={`${isDisabled ? isDisabledText || "-" : value[atomKey]}`}
+          value={`${
+            isDisabled
+              ? isDisabledText || "-"
+              : value[atomKey] === undefined
+              ? ""
+              : value[atomKey]
+          }`}
           onChange={onChange}
           // onFocus={() => setIsFocus(true)}
           // onBlur={() => setIsFocus(false)}
@@ -270,7 +277,7 @@ const InputPeriod = (props: InputProp) => {
           justifyContent={bp700px ? "flex-start" : ""}
           pl={bp700px ? "" : "17px"}
         >
-          <Text>End Time : {endTime}</Text>
+          <Text>{endTime}</Text>
         </Flex>
       )}
     </Flex>
