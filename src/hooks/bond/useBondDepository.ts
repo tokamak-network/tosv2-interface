@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 
-export function useBondDepository() {
+export function useBondDepository(lockupWeeks?: number) {
   const [basePrice, setBasePrice] = useState<BigNumber | undefined>(undefined);
   const [bondingPrice, setBondingPrice] = useState<BigNumber | undefined>(
     undefined
@@ -22,7 +22,9 @@ export function useBondDepository() {
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
 
-  const _weeks = fiveDaysLockup ? 0 : inputValue?.bond_modal_period + 1;
+  const _weeks = fiveDaysLockup
+    ? 0
+    : lockupWeeks ?? inputValue?.bond_modal_period + 1;
 
   useEffect(() => {
     async function fetchBasePrice() {

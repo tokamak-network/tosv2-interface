@@ -224,9 +224,6 @@ function useBondModalInputData() {
   useEffect(() => {
     async function fetchROI() {
       if (
-        marketId &&
-        rebasePerEpoch &&
-        endTime &&
         newEndTimeStamp &&
         newEndTimeStampWithoutStos &&
         blockTimeStamp &&
@@ -251,9 +248,6 @@ function useBondModalInputData() {
       console.log(e);
     });
   }, [
-    marketId,
-    rebasePerEpoch,
-    endTime,
     newEndTimeStamp,
     newEndTimeStampWithoutStos,
     blockTimeStamp,

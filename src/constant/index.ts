@@ -20,7 +20,7 @@ const constant = {
       balanceIsOver: "Insufficient ETH amount",
       inputIsZero: "ETH has to be greater than 0",
       bondableAmountIsOver: "Exceeded current bondable",
-      periodIsOver: "Must be between 0 and 52",
+      periodIsOver: "Must be between 1 and 52",
     },
     stake: {
       tosBalanceIsOver: "Insufficient TOS amount",

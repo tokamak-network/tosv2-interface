@@ -48,12 +48,15 @@ function useBondModalCondition(maxValue: number | undefined) {
   }, [inputBalance, maxValue, isModalLoading]);
 
   useEffect(() => {
-    if (Number(inputPeriod) > bondModalMaxWeeks) {
-      return setInputPeriodOver(true);
-    }
     if (String(inputPeriod) === "" || inputPeriod === undefined) {
+      setInputPeriodOver(false);
       return setInputPeriodIsEmpty(true);
     }
+    if (Number(inputPeriod) > bondModalMaxWeeks || Number(inputPeriod) < 1) {
+      setInputPeriodIsEmpty(false);
+      return setInputPeriodOver(true);
+    }
+
     setInputPeriodIsEmpty(false);
     return setInputPeriodOver(false);
   }, [inputPeriod, bondModalMaxWeeks]);

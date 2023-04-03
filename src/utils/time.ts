@@ -57,7 +57,7 @@ function getTimeZone() {
   // const timeZone = Moment.tz(Moment.tz.guess()).zoneAbbr();
   const timeZone = Moment.tz(Moment.tz.guess()).format("Z");
 
-  const trimedTimeZone = timeZone.split(":")[0].replaceAll("0", "");
+  const trimedTimeZone = timeZone?.split(":")[0].replace(/0/g, "");
   return `UTC${trimedTimeZone}`;
 }
 
