@@ -15,7 +15,6 @@ function useStakeModalCondition() {
     useState<boolean>(false);
 
   const { userTokenBalance } = useUserBalance();
-  const { isModalLoading } = useModal();
   const { inputValue } = useInput("Stake_screen", "stake_modal");
   const inputTosAmount = inputValue.stake_modal_balance;
   const inputPeriod = inputValue.stake_modal_period;
@@ -23,11 +22,6 @@ function useStakeModalCondition() {
   const minimumWeeks = 0;
 
   useEffect(() => {
-    if (isModalLoading) {
-      setInputOver(false);
-      setZeroInputBalance(false);
-      return setInputBalanceIsEmpty(false);
-    }
     if (inputTosAmount === undefined || inputTosAmount === "") {
       setZeroInputBalance(false);
       setInputOver(false);
@@ -61,7 +55,7 @@ function useStakeModalCondition() {
       setInputOver(false);
       setInputBalanceIsEmpty(false);
     };
-  }, [inputTosAmount, userTokenBalance, isModalLoading]);
+  }, [inputTosAmount, userTokenBalance]);
 
   useEffect(() => {
     if (
@@ -71,7 +65,7 @@ function useStakeModalCondition() {
       return setInputPeriodOver(true);
     }
     return setInputPeriodOver(false);
-  }, [inputPeriod, stakeModalMaxWeeks, isModalLoading]);
+  }, [inputPeriod, stakeModalMaxWeeks]);
 
   const inputPeriodIsEmpty = useMemo(() => {
     if (inputPeriod === undefined || inputPeriod === "") {

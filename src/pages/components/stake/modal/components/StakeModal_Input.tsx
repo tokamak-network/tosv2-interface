@@ -63,7 +63,7 @@ export default function StakeModal_Input(props: StakeModalInput) {
   }, [maxValue, atomKey, inputValue]);
 
   return (
-    <Flex flexDir={"column"} rowGap={"10px"}>
+    <Flex alignItems={"center"} flexDir={"column"} rowGap={"10px"}>
       <Flex
         borderWidth={"1px"}
         borderColor={

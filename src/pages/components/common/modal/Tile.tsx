@@ -22,7 +22,8 @@ function Tile(props: {
   const { title, content, symbol, tooltip, isWarning } = props;
   const { colorMode } = useColorMode();
   const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
-  const { isModalLoading } = useModal();
+  // const { isModalLoading } = useModal();
+  const isModalLoading = false;
 
   return (
     <Box
@@ -49,7 +50,7 @@ function Tile(props: {
       <Flex
         fontWeight={600}
         justifyContent="center"
-        h={smallerThan1024 ? "28px" : "25px"}
+        h={smallerThan1024 ? "28px" : "33px"}
       >
         {isModalLoading ? (
           <Flex w={"100px"} h={"30px"}>
@@ -65,15 +66,16 @@ function Tile(props: {
                   ? "white.100"
                   : "gray.800"
               }
-              fontSize={18}
+              fontSize={24}
               mr={2}
             >
               {content || "-"}
             </Text>
             <Text
               color={colorMode === "dark" ? "white.200" : "gray.800"}
-              fontSize={12}
-              lineHeight={"33px"}
+              fontSize={14}
+              lineHeight={"44px"}
+              verticalAlign={"bottom"}
             >
               {symbol ? symbol : ""}
             </Text>

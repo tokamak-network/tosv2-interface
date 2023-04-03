@@ -46,7 +46,7 @@ export default function StakeModal_Period(props: StakeModalPeriod) {
     : false;
 
   return (
-    <Flex rowGap={"9px"} flexDir={"column"} mb={"30px"}>
+    <Flex rowGap={"9px"} flexDir={"column"} mb={"30px"} alignItems={"center"}>
       <Flex>
         <Flex
           fontSize={12}
@@ -117,7 +117,8 @@ export default function StakeModal_Period(props: StakeModalPeriod) {
           ></InputPeriod>
         </Flex>
       </Flex>
-      <Flex w={"100%"} justifyContent={"center"}>
+      {/* set mt 10px to make a little gap more between the graph and inputComponent for the design(78px gap) */}
+      <Flex w={"600px"} justifyContent={"center"} mt={"10px"}>
         <StakeGraph
           pageKey={pageKey}
           subKey={recoilKey}

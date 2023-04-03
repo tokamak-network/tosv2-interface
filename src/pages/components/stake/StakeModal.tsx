@@ -298,9 +298,9 @@ function StakeModal() {
               {/* Content Area*/}
               <Flex
                 w={"100%"}
-                px={bp700px ? "20px" : "120px"}
+                px={bp700px ? "20px" : ""}
                 flexDir={"column"}
-                mb={"29px"}
+                justifyContent={"center"}
               >
                 <Flex
                   w={"100%"}
@@ -308,6 +308,7 @@ function StakeModal() {
                   mb={bp700px ? "15px" : "9px"}
                   flexDir={bp700px ? "column" : "row"}
                   alignItems={"center"}
+                  columnGap={"75px"}
                 >
                   <Tile
                     title={"Next Rebase"}
