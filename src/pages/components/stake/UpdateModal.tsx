@@ -405,10 +405,10 @@ function UpdateModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     // style={{ marginLeft: "auto" }}
-                    maxValue={constant.modalMaxWeeks}
+                    maxValue={constant.stakeModalMaxWeeks}
                     isError={bothConditionsErr || inputPeriodOver}
-                    isDisabled={leftWeeks === constant.modalMaxWeeks}
-                    isDisabledText={constant.modalMaxWeeks}
+                    isDisabled={leftWeeks === constant.stakeModalMaxWeeks}
+                    isDisabledText={constant.stakeModalMaxWeeks}
                     errorMsg={
                       bothConditionsErr
                         ? undefined

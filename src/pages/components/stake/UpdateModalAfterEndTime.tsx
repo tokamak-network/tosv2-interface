@@ -93,7 +93,7 @@ function UpdateModalAfterEndTime() {
 
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
     useRelockModalCondition(Number(ltosAmount?.replaceAll("", "")));
-  const { errMsg, modalMaxWeeks } = constant;
+  const { errMsg, stakeModalMaxWeeks } = constant;
 
   //maxValues
   const [maxLtosValue, setMaxLtosValue] = useState<number | undefined>(
@@ -404,7 +404,7 @@ function UpdateModalAfterEndTime() {
                     atomKey={"stake_relockModal_period"}
                     placeHolder={"1 Weeks"}
                     style={bp700px ? {} : { marginLeft: "auto" }}
-                    maxValue={modalMaxWeeks}
+                    maxValue={stakeModalMaxWeeks}
                     isError={inputPeriodOver}
                     errorMsg={
                       inputValue.stake_relockModal_period === ""
