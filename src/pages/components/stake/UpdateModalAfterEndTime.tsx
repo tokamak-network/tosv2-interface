@@ -109,8 +109,6 @@ function UpdateModalAfterEndTime() {
     closeModal();
   }, [setResetValue, closeModal]);
 
-  console.log(inputValue);
-
   const callUpdate = useCallback(async () => {
     //Mainnet_maxPeriod = 3years
     //Rinkeby_maxPeriod = 39312

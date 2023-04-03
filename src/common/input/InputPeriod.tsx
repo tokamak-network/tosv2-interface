@@ -175,6 +175,7 @@ const InputPeriod = (props: InputProp) => {
           outline="none"
           boxShadow={"none !important"}
           errorBorderColor={isDisabled ? "none" : "#e23738"}
+          defaultValue={undefined}
           value={`${
             isDisabled
               ? isDisabledText || "-"

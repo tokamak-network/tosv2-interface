@@ -1,6 +1,7 @@
 import {
   stake_relockModal_inputState,
   stake_relockModal_state,
+  stake_stakeModal_defaultValue,
   stake_stakeModal_input,
   stake_stakeModal_state,
   stake_unstakeModal_input,
@@ -8,14 +9,20 @@ import {
   stake_updateModal_inputState,
   stake_updateModal_state,
 } from "atom/stake/input";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import {
+  Resetter,
+  SetterOrUpdater,
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+} from "recoil";
 import { InputKey } from "types/atom";
 
 function useStakeInput(key: InputKey): {
   inputValue: any;
   value: any;
-  setValue: any;
-  resetValue: any;
+  setValue: SetterOrUpdater<any> | undefined;
+  resetValue: Resetter | undefined;
 } {
   const stakeModal_inputValues = useRecoilValue(stake_stakeModal_state);
   const [stakeModalValue, setStakeModalValue] = useRecoilState(

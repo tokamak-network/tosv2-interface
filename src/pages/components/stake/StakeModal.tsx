@@ -60,6 +60,9 @@ import commafy from "@/utils/commafy";
 import { MobileView } from "react-device-detect";
 import StakeModal_BottomContent from "./modal/StakeModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
+import { stake_stakeModal_defaultValue } from "atom/stake/input";
+import StakeModal_Input from "./modal/components/StakeModal_Input";
+import StakeModal_Period from "./modal/components/StakeModal_Period";
 
 function StakeModal() {
   const theme = useTheme();
@@ -67,10 +70,7 @@ function StakeModal() {
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
   const { openModal: openSwapModal } = useModal("swap_interface_modal");
-  const { inputValue, setValue, setResetValue } = useInput(
-    "Stake_screen",
-    "stake_modal"
-  );
+  const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
   const {
     ltos,
     currentBalance,
@@ -98,9 +98,6 @@ function StakeModal() {
   const { newBalanceStos } = useStosStake();
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
-  const [bottomLoading, setBottomLoading] = useRecoilState(
-    modalBottomLoadingState
-  );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const { setTx } = useCustomToast();
@@ -111,7 +108,7 @@ function StakeModal() {
     zeroInputBalance,
     inputBalanceIsEmpty,
   } = useStakeModalCondition();
-  const { errMsg, modalMaxWeeks } = constant;
+  const { errMsg, stakeModalMaxWeeks } = constant;
 
   const contentList = fiveDaysLockup
     ? [
@@ -123,7 +120,7 @@ function StakeModal() {
         },
         {
           title: "You Will Get",
-          content: bottomLoading ? "..." : `${ltos} LTOS`,
+          content: `${ltos} LTOS`,
           tooltip: true,
           tooltipMessage:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
@@ -157,7 +154,7 @@ function StakeModal() {
         {
           title: "You Will Get",
           content: {
-            ltos: bottomLoading ? "..." : ltos,
+            ltos: ltos,
             stos: stosLoading ? "..." : commafy(newBalanceStos),
           },
           tooltip: true,
@@ -181,12 +178,9 @@ function StakeModal() {
     setResetValue();
     setFiveDaysLockup(false);
     closeModal();
-  }, [setResetValue, closeModal]);
+  }, [closeModal]);
 
   const callStake = useCallback(async () => {
-    //Mainnet_maxPeriod = 3years
-    //Rinkeby_maxPeriod = 39312
-
     if (StakingV2Proxy_CONTRACT) {
       if (fiveDaysLockup) {
         console.log("---stake()---");
@@ -262,22 +256,8 @@ function StakeModal() {
     return setFiveDaysLockup(false);
   }, [selectedModalData]);
 
-  useEffect(() => {
-    if (userTOSBalance) {
-      setValue({
-        ...inputValue,
-        stake_modal_balance: String(userTOSBalance.replaceAll(",", "")),
-      });
-    }
-  }, [userTOSBalance, setValue, selectedModal]);
-
-  useEffect(() => {
-    setStosLoading(true);
-  }, [inputValue, setStosLoading]);
-
-  useEffect(() => {
-    setBottomLoading(true);
-  }, [inputValue.stake_modal_balance, setBottomLoading]);
+  // console.log(userTokenBalance);
+  console.log(inputValue);
 
   return (
     <Modal
@@ -340,121 +320,31 @@ function StakeModal() {
                     tooltip="Number of TOS you get when you unstake 1 LTOS. LTOS index increases every 8 hours."
                   />
                 </Flex>
-                <Flex mb={"9px"} w={"100%"}>
-                  <BalanceInput
-                    w={"100%"}
-                    h={45}
-                    placeHolder={"Enter an amount of TOS"}
+                <Flex flexDir={"column"} rowGap={"24px"}>
+                  <StakeModal_Input
+                    defaultValue={undefined}
+                    maxValue={userTokenBalance?.TOS?.balanceWei}
+                    tokenBalance={userTokenBalance?.TOS?.balanceCommified}
+                    inputTokenType={"TOS"}
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
-                    maxValue={userTokenBalance?.TOS?.balanceWei}
-                    isError={
-                      zeroInputBalance || inputOver || inputBalanceIsEmpty
-                    }
-                    errorMsg={
-                      inputBalanceIsEmpty
-                        ? ""
-                        : zeroInputBalance
-                        ? errMsg.stake.inputIsZero
-                        : errMsg.stake.tosBalanceIsOver
-                    }
-                    rightUnit={"TOS"}
-                  ></BalanceInput>
+                    err={{
+                      zeroInputBalance,
+                      inputOver,
+                      inputBalanceIsEmpty,
+                    }}
+                  />
+                  <StakeModal_Period
+                    pageKey={"Stake_screen"}
+                    recoilKey={"stake_modal"}
+                    atomKey={"stake_modal_period"}
+                    periodKey={"stake_modal_period"}
+                    inputPeriodOver={inputPeriodOver}
+                    endTimeInfo={{ leftDays, leftHourAndMin, newEndTime }}
+                    hasFivedaysLockup={true}
+                  />
                 </Flex>
-                <Flex
-                  fontSize={12}
-                  color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                  h={"17px"}
-                  justifyContent={"space-between"}
-                  mb={bp700px ? "22px" : "12px"}
-                  px="6px"
-                >
-                  <Text>Your Balance</Text>
-                  <Flex>
-                    <Text
-                      color={"blue.200"}
-                      fontSize="12px"
-                      onClick={openSwapModal}
-                      _hover={{ cursor: "pointer" }}
-                      mr="5px"
-                    >
-                      Buy More
-                    </Text>
-                    <Text>{userTOSBalance || "-"} TOS</Text>
-                  </Flex>
-                </Flex>
-
-                <Flex flexDir={"column"}>
-                  <Flex
-                    // templateColumns={
-                    //   bp700px ? "repeat(2, 1fr)" : "repeat(3, 1fr)"
-                    // }
-
-                    flexDir={bp700px ? "column" : "row"}
-                    fontSize={12}
-                    alignItems="center"
-                  >
-                    <Flex
-                      justifyContent={"space-between"}
-                      w={bp700px ? "100%" : ""}
-                      mb={bp700px ? "10px" : ""}
-                    >
-                      <Text
-                        mr={"24px"}
-                        color={colorMode === "light" ? "gray.800" : "white.200"}
-                      >
-                        Lock-Up Period
-                      </Text>
-                      <Flex alignSelf={"flex-end"}>
-                        <CustomCheckBox
-                          pageKey="Bond_screen"
-                          value={""}
-                          valueKey={"Bond_Modal"}
-                          state={fiveDaysLockup}
-                          setState={setFiveDaysLockup}
-                        ></CustomCheckBox>
-                        <Text ml={"9px"}>No Lock-Up</Text>
-                      </Flex>
-                    </Flex>
-                    <InputPeriod
-                      w={bp700px ? "310px" : "220px"}
-                      h={"39px"}
-                      pageKey={"Stake_screen"}
-                      recoilKey={"stake_modal"}
-                      atomKey={"stake_modal_period"}
-                      placeHolder={"1 Weeks"}
-                      style={{ marginLeft: "auto" }}
-                      isDisabled={fiveDaysLockup}
-                      maxValue={modalMaxWeeks}
-                      isError={inputPeriodOver}
-                      errorMsg={
-                        inputValue.stake_modal_period === ""
-                          ? undefined
-                          : errMsg.stake.periodIsOver
-                      }
-                      leftDays={fiveDaysLockup ? undefined : leftDays}
-                      leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
-                      endTime={
-                        fiveDaysLockup ||
-                        inputPeriodOver ||
-                        inputOver ||
-                        zeroInputBalance
-                          ? undefined
-                          : newEndTime
-                      }
-                    ></InputPeriod>
-                  </Flex>
-                </Flex>
-              </Flex>
-              <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
-                <StakeGraph
-                  pageKey={"Stake_screen"}
-                  subKey={"stake_modal"}
-                  periodKey={"stake_modal_period"}
-                  isSlideDisabled={fiveDaysLockup}
-                  minValue={0}
-                ></StakeGraph>
               </Flex>
               {/* Content Bottom */}
               <StakeModal_BottomContent fiveDaysLockup={fiveDaysLockup} />

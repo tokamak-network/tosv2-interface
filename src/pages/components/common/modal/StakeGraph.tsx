@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 
-type PeriodKey =
+export type PeriodKey =
   | "bond_modal_period"
   | "stake_modal_period"
   | "stake_updateModal_period"
@@ -50,7 +50,7 @@ function StakeGraph(props: {
     fontSize: "sm",
   };
   const { inputValue, value, setValue } = useInput(pageKey, subKey);
-  const [sliderValue, setSliderValue] = useState<number>(0);
+  const [sliderValue, setSliderValue] = useState<number | undefined>(undefined);
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { colorMode } = useColorMode();
   const [isChanged, setIsChanged] = useState(false);
@@ -62,7 +62,7 @@ function StakeGraph(props: {
   }, [sliderValue]);
 
   useEffect(() => {
-    if (balanceKey && isChanged) {
+    if (balanceKey && isChanged && sliderValue) {
       if (
         inputValue[balanceKey] === "" ||
         inputValue[balanceKey] === undefined
@@ -83,8 +83,7 @@ function StakeGraph(props: {
   }, [inputValue, periodKey]);
 
   useEffect(() => {
-    if (isSlideDisabled) return setSliderValue(0);
-    return setSliderValue(constant.modalMaxWeeks);
+    if (isSlideDisabled) return setSliderValue(undefined);
   }, [isSlideDisabled]);
 
   return (
@@ -94,7 +93,7 @@ function StakeGraph(props: {
         aria-label="slider-ex-1"
         defaultValue={0}
         min={0}
-        max={constant.modalMaxWeeks}
+        max={constant.stakeModalMaxWeeks}
         value={sliderValue}
         onChange={(val: number) => {
           if (minValue && minValue > val) {

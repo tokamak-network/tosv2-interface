@@ -8,6 +8,7 @@ const maxPeriod = constant.stakeModalMaxWeeks;
 const stake_stakeModal_defaultValue = {
   stake_modal_period: undefined,
   stake_modal_balance: undefined,
+  stake_modal_fivedaysLockup: false,
 };
 
 const stake_stakeModal_input = atom({

@@ -2,11 +2,17 @@ import Image from "next/image";
 import ETH_SYMBOL from "assets/icons/eth-symbol.svg";
 import TOKAMAK_SYMBOL from "assets/icons/tokamak-1.svg";
 import TOS_SYMBOL from "assets/icons/TOS.svg";
-import { TokenTypes } from "types";
-import { Flex,useColorMode } from "@chakra-ui/react";
+import { SupportedInputTokenTypes, TokenTypes } from "types";
+import { Flex, useColorMode } from "@chakra-ui/react";
 
-function TokenSymbol(props: { tokenType: TokenTypes; h?: string; w?: string; imageH? :string; imageW?:string }) {
-  const { tokenType, h, w,imageH, imageW } = props;
+function TokenSymbol(props: {
+  tokenType: SupportedInputTokenTypes;
+  h?: string;
+  w?: string;
+  imageH?: string;
+  imageW?: string;
+}) {
+  const { tokenType, h, w, imageH, imageW } = props;
   const { colorMode } = useColorMode();
 
   switch (tokenType) {
@@ -23,8 +29,8 @@ function TokenSymbol(props: { tokenType: TokenTypes; h?: string; w?: string; ima
           <Image
             src={ETH_SYMBOL}
             alt={""}
-            height={imageH|| "30px"}
-            width={ imageW||"30px"}
+            height={imageH || "30px"}
+            width={imageW || "30px"}
           ></Image>
         </Flex>
       );
@@ -60,9 +66,11 @@ function TokenSymbol(props: { tokenType: TokenTypes; h?: string; w?: string; ima
           w={w || "46px"}
           h={h || "46px"}
           borderRadius={25}
-          bgColor={colorMode === 'dark'?"#1f2128":'#ffffff'}   
+          bgColor={colorMode === "dark" ? "#1f2128" : "#ffffff"}
           alignItems={"center"}
-          border={colorMode === 'dark'?"1px solid #313442":"1px solid #e8edf2"}
+          border={
+            colorMode === "dark" ? "1px solid #313442" : "1px solid #e8edf2"
+          }
           justifyContent={"center"}
         >
           <Image src={TOS_SYMBOL} alt={""}></Image>

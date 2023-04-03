@@ -87,3 +87,5 @@ export type BondModalInput = {
 export enum BondPool {
   "TOS-ETH" = "TOS-ETH",
 }
+
+export type SupportedBondToken = "ETH";

@@ -267,7 +267,7 @@ function BalanceInput(props: NumberInputProp) {
             selectedModal === "bond_bond_modal" ? "none" : "#e23738"
           }
           outline="none"
-          defaultValue={maxValue}
+          defaultValue={undefined}
           value={value[atomKey]}
           display={"flex"}
           {...inputContainerStyle}

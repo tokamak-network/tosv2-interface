@@ -14,30 +14,13 @@ import useModal from "hooks/useModal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { TokenTypes } from "types";
+import { SupportedBondToken } from "types/bond/index";
 import { BondCardProps } from "types/bond";
 import { useWeb3React } from "@web3-react/core";
 import useMediaView from "hooks/useMediaView";
+import TokenImageContrainer from "pages/components/common/modal/TokenImageContrainer";
 
-let bondTokenType = "ETH";
-
-function TokenImageContrainer(props: { tokenTypes: TokenTypes; name: string }) {
-  const { colorMode } = useColorMode();
-
-  return (
-    <Flex columnGap={"9px"} alignItems={"center"}>
-      <TokenSymbol
-        tokenType={props.tokenTypes}
-        w={"24px"}
-        h={"24px"}
-        imageW={"8.4px"}
-        imageH={"14.4px"}
-      ></TokenSymbol>
-      <Text color={colorMode === "dark" ? "white.200" : "gray.800"}>
-        {props.name}
-      </Text>
-    </Flex>
-  );
-}
+const bondToken: SupportedBondToken = "ETH";
 
 export default function BondModal_Input() {
   const { errMsg } = constant;
@@ -62,7 +45,7 @@ export default function BondModal_Input() {
   const marketId = selectedModalData?.index;
 
   const tokenImage = useMemo(() => {
-    switch (bondTokenType) {
+    switch (bondToken) {
       case "ETH":
         return (
           <TokenImageContrainer
