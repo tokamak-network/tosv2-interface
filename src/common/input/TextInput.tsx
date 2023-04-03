@@ -335,9 +335,9 @@ function BalanceInput(props: NumberInputProp) {
           fontSize={12}
           color={"#e23738"}
           justifyContent={"flex-start"}
-          ml={selectedModal === "bond_bond_modal" ? "-5px" : "px"}
-          pl={selectedModal === "bond_bond_modal" ? "6px" : "16px"}
-          mt={selectedModal === "bond_bond_modal" ? "45px" : "6px"}
+          ml={"-5px"}
+          pl={"6px"}
+          mt={"45px"}
         >
           <Text>{errorMsg}</Text>
         </Flex>

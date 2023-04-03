@@ -261,16 +261,14 @@ const InputPeriod = (props: InputProp) => {
           pos={"absolute"}
           mt={"40px"}
           textAlign={"right"}
-          pl={selectedModal === "bond_bond_modal" ? "17px" : "17px"}
-          pt={selectedModal === "bond_bond_modal" ? "6px" : "6px"}
-          justifyContent={
-            selectedModal === "bond_bond_modal" ? "left" : "center"
-          }
+          pl={"17px"}
+          pt={"6px"}
+          justifyContent={"left"}
         >
           <Text>{errorMsg}</Text>
         </Flex>
       )}
-      {endTime && (
+      {endTime && !isError && (
         <Flex
           pos={"absolute"}
           top={"48px"}

@@ -91,23 +91,26 @@ function StakeModal() {
 
   const { bp700px } = useMediaView();
 
-  const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
-    Number(inputValue.stake_modal_balance),
-    inputValue.stake_modal_period
-  );
   const { newBalanceStos } = useStosStake();
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
-  const { setTx } = useCustomToast();
+  const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
+    Number(inputValue.stake_modal_balance),
+    inputValue.stake_modal_period ?? 0
+  );
   const {
     inputOver,
     inputPeriodOver,
     btnDisabled,
     zeroInputBalance,
     inputBalanceIsEmpty,
+    inputPeriodIsEmpty,
   } = useStakeModalCondition();
+
+  const { setTx } = useCustomToast();
+
   const { errMsg, stakeModalMaxWeeks } = constant;
 
   const contentList = fiveDaysLockup
@@ -256,7 +259,6 @@ function StakeModal() {
     return setFiveDaysLockup(false);
   }, [selectedModalData]);
 
-  // console.log(userTokenBalance);
   console.log(inputValue);
 
   return (
@@ -341,6 +343,7 @@ function StakeModal() {
                     atomKey={"stake_modal_period"}
                     periodKey={"stake_modal_period"}
                     inputPeriodOver={inputPeriodOver}
+                    inputPeriodIsEmpty={inputPeriodIsEmpty}
                     endTimeInfo={{ leftDays, leftHourAndMin, newEndTime }}
                     hasFivedaysLockup={true}
                   />

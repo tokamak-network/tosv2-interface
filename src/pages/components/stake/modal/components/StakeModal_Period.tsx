@@ -16,6 +16,7 @@ type StakeModalPeriod = {
   atomKey: string;
   periodKey: PeriodKey;
   inputPeriodOver: boolean;
+  inputPeriodIsEmpty: boolean;
   endTimeInfo: {
     leftDays: string | undefined;
     leftHourAndMin: string | undefined;
@@ -31,6 +32,7 @@ export default function StakeModal_Period(props: StakeModalPeriod) {
     atomKey,
     periodKey,
     inputPeriodOver,
+    inputPeriodIsEmpty,
     endTimeInfo: { leftDays, leftHourAndMin, newEndTime },
     hasFivedaysLockup,
   } = props;
@@ -107,12 +109,8 @@ export default function StakeModal_Period(props: StakeModalPeriod) {
             style={{ marginLeft: "auto" }}
             isDisabled={fiveDaysLockup}
             maxValue={stakeModalMaxWeeks}
-            isError={inputPeriodOver}
-            errorMsg={
-              inputValue.stake_modal_period === ""
-                ? undefined
-                : errMsg.stake.periodIsOver
-            }
+            isError={inputPeriodOver || inputPeriodIsEmpty}
+            errorMsg={inputPeriodOver ? errMsg.stake.periodIsOver : ""}
             leftDays={fiveDaysLockup ? undefined : leftDays}
             leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
             endTime={fiveDaysLockup || inputPeriodOver ? undefined : newEndTime}

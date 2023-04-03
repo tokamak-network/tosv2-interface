@@ -4,13 +4,12 @@ import { BigNumber, ethers } from "ethers";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
 import useUserBalance from "hooks/useUserBalance";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { BondModalInput } from "types/bond";
 
 function useStakeModalCondition() {
   const [inputOver, setInputOver] = useState<boolean>(false);
   const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(false);
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [zeroInputBalance, setZeroInputBalance] = useState<boolean>(false);
   const [inputBalanceIsEmpty, setInputBalanceIsEmpty] =
     useState<boolean>(false);
@@ -20,7 +19,7 @@ function useStakeModalCondition() {
   const { inputValue } = useInput("Stake_screen", "stake_modal");
   const inputTosAmount = inputValue.stake_modal_balance;
   const inputPeriod = inputValue.stake_modal_period;
-  const { LOCKTOS_maxWeeks } = constant;
+  const { stakeModalMaxWeeks } = constant;
   const minimumWeeks = 0;
 
   useEffect(() => {
@@ -66,18 +65,39 @@ function useStakeModalCondition() {
 
   useEffect(() => {
     if (
-      Number(inputPeriod) > LOCKTOS_maxWeeks ||
-      Number(inputPeriod) < minimumWeeks ||
-      inputPeriod?.length === 0
+      Number(inputPeriod) > stakeModalMaxWeeks ||
+      Number(inputPeriod) < minimumWeeks
     ) {
       return setInputPeriodOver(true);
     }
     return setInputPeriodOver(false);
-  }, [inputPeriod, LOCKTOS_maxWeeks, isModalLoading]);
+  }, [inputPeriod, stakeModalMaxWeeks, isModalLoading]);
 
-  useEffect(() => {
-    setBtnDisabled(inputOver || inputPeriodOver || zeroInputBalance);
-  }, [inputOver, inputPeriodOver, zeroInputBalance]);
+  const inputPeriodIsEmpty = useMemo(() => {
+    if (inputPeriod === undefined || inputPeriod === "") {
+      return true;
+    }
+    return false;
+  }, [inputPeriod]);
+
+  const btnDisabled = useMemo(() => {
+    if (
+      inputOver ||
+      inputPeriodOver ||
+      zeroInputBalance ||
+      inputBalanceIsEmpty ||
+      inputPeriodIsEmpty
+    ) {
+      return true;
+    }
+    return false;
+  }, [
+    inputOver,
+    inputPeriodOver,
+    zeroInputBalance,
+    inputBalanceIsEmpty,
+    inputPeriodIsEmpty,
+  ]);
 
   return {
     inputOver,
@@ -85,6 +105,7 @@ function useStakeModalCondition() {
     zeroInputBalance,
     btnDisabled,
     inputBalanceIsEmpty,
+    inputPeriodIsEmpty,
   };
 }
 
