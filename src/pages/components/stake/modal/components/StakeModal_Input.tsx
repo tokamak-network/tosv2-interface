@@ -58,6 +58,8 @@ export default function StakeModal_Input(props: StakeModalInput) {
   const { fiveDaysLockup } = bondModalRecoilValue;
   const { bp700px } = useMediaView();
 
+  const { openModal: openSwapModal } = useModal("swap_interface_modal");
+
   const setMaxValue = useCallback(() => {
     if (maxValue) return setValue({ ...inputValue, [atomKey]: maxValue });
   }, [maxValue, atomKey, inputValue]);
@@ -135,6 +137,15 @@ export default function StakeModal_Input(props: StakeModalInput) {
           >
             MAX
           </Button>
+          <Text
+            color={"blue.200"}
+            fontSize="12px"
+            onClick={openSwapModal}
+            _hover={{ cursor: "pointer" }}
+            mr="5px"
+          >
+            Buy More
+          </Text>
         </Flex>
       </Flex>
     </Flex>

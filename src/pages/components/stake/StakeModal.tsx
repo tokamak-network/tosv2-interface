@@ -69,7 +69,6 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
-  const { openModal: openSwapModal } = useModal("swap_interface_modal");
   const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
   const {
     ltos,
@@ -304,7 +303,7 @@ function StakeModal() {
               >
                 <Flex
                   w={"100%"}
-                  justifyContent={bp700px ? "center" : "space-between"}
+                  justifyContent={"center"}
                   mb={bp700px ? "15px" : "9px"}
                   flexDir={bp700px ? "column" : "row"}
                   alignItems={"center"}
