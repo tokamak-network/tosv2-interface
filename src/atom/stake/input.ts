@@ -44,13 +44,13 @@ const stake_unstakeModal_state = selector({
 
 //update modal states
 const stake_updateModal_defaultValue = {
-  stake_updateModal_period: maxPeriod,
+  stake_updateModal_period: undefined,
   stake_updateModal_ltos_balance: undefined,
   stake_updateModal_tos_balance: undefined,
 };
 
 const stake_updateModal_inputState = atom<{
-  stake_updateModal_period: number;
+  stake_updateModal_period: number | undefined;
   stake_updateModal_ltos_balance: number | "" | undefined;
   stake_updateModal_tos_balance: number | "" | undefined;
 }>({
@@ -68,7 +68,7 @@ const stake_updateModal_state = selector({
 
 //relock modal states
 const stake_relockModal_defaultValue = {
-  stake_relockModal_period: maxPeriod,
+  stake_relockModal_period: undefined,
   stake_relockModal_ltos_balance: undefined,
   stake_relockModal_tos_balance: undefined,
 };

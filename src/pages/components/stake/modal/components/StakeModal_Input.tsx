@@ -99,10 +99,8 @@ export default function StakeModal_Input(props: StakeModalInput) {
               inputBalanceIsEmpty
                 ? undefined
                 : inputOver
-                ? errMsg.bond.bondableAmountIsOver
-                : zeroInputBalance
-                ? errMsg.bond.inputIsZero
-                : errMsg.bond.balanceIsOver
+                ? errMsg.stake.tosBalanceIsOver
+                : errMsg.stake.inputIsZero
             }
             fontSize={18}
             w={bp700px ? "190px" : "270px"}

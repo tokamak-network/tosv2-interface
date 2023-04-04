@@ -16,6 +16,4 @@ export type CheckBoxValueType = {
   pageKey: PageKey;
 };
 
-export type InputKey = Pages;
-
 export type CheckBoxValuesType = CheckBoxValueType[] | undefined;

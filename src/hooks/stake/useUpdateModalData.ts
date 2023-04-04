@@ -111,7 +111,7 @@ function useUpdateModalData() {
 
   return {
     currentEndTime,
-    newEndTime,
+    newEndTime: inputValue.stake_updateModal_period ? newEndTime : "-",
     leftWeeks,
     leftDays,
     leftTime,

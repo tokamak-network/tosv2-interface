@@ -1,11 +1,12 @@
 import constant from "constant";
+import { useCheckInput } from "hooks/input/useCheckInput";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
 import useUserBalance from "hooks/useUserBalance";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { BondModalInput } from "types/bond";
 
-function useUpdateModalConditon(leftWeeks: number) {
+function useManageModalConditon(leftWeeks: number) {
   const [inputOver, setInputOver] = useState<boolean>(true);
   const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(true);
   const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
@@ -13,7 +14,7 @@ function useUpdateModalConditon(leftWeeks: number) {
   const [zeroInputPeriod, setZeroInputPeriod] = useState<boolean>(false);
   const [bothConditionsErr, setBothConditionsErr] = useState<boolean>(false);
 
-  const { userTOSBalance } = useUserBalance();
+  const { userTokenBalance } = useUserBalance();
   const { isModalLoading } = useModal();
 
   const { inputValue } = useInput("Stake_screen", "update_modal");
@@ -33,8 +34,8 @@ function useUpdateModalConditon(leftWeeks: number) {
       setZeroInputBalance(true);
       return setInputOver(false);
     }
-    if (userTOSBalance && inputTosAmount) {
-      if (Number(inputTosAmount) > Number(userTOSBalance.replaceAll(",", ""))) {
+    if (userTokenBalance?.TOS && inputTosAmount) {
+      if (Number(inputTosAmount) > Number(userTokenBalance.TOS.balanceWei)) {
         setZeroInputBalance(false);
         return setInputOver(true);
       }
@@ -45,7 +46,7 @@ function useUpdateModalConditon(leftWeeks: number) {
     //   setZeroInputBalance(false);
     //   setInputOver(false);
     // };
-  }, [inputTosAmount, userTOSBalance, isModalLoading]);
+  }, [inputTosAmount, userTokenBalance, isModalLoading]);
 
   useEffect(() => {
     if (
@@ -87,13 +88,18 @@ function useUpdateModalConditon(leftWeeks: number) {
     }
   }, [inputPeriod, inputTosAmount, leftWeeks]);
 
+  const inputBalanceIsEmpty = useCheckInput(inputTosAmount);
+  const inputPeriodIsEmpty = useCheckInput(inputPeriod);
+
   return {
     inputOver,
     inputPeriodOver,
     btnDisabled,
     zeroInputBalance,
     bothConditionsErr,
+    inputBalanceIsEmpty,
+    inputPeriodIsEmpty,
   };
 }
 
-export default useUpdateModalConditon;
+export default useManageModalConditon;

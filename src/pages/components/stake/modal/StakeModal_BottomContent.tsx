@@ -24,7 +24,12 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
     modalBottomLoadingState
   );
   const stosLoading = useRecoilValue(stosLoadingState);
-  const { newBalanceStos } = useStosStake();
+  const { newBalanceStos } = useStosStake(
+    "Stake_screen",
+    "stake_modal",
+    "stake_modal_balance",
+    "stake_modal_period"
+  );
 
   const {
     ltos,

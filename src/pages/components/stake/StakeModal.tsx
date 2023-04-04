@@ -63,6 +63,7 @@ import useMediaView from "hooks/useMediaView";
 import { stake_stakeModal_defaultValue } from "atom/stake/input";
 import StakeModal_Input from "./modal/components/StakeModal_Input";
 import StakeModal_Period from "./modal/components/StakeModal_Period";
+import { UserGuide } from "../common/guide/UserGuide";
 
 function StakeModal() {
   const theme = useTheme();
@@ -87,7 +88,12 @@ function StakeModal() {
 
   const { bp700px } = useMediaView();
 
-  const { newBalanceStos } = useStosStake();
+  const { newBalanceStos } = useStosStake(
+    "Stake_screen",
+    "stake_modal",
+    "stake_modal_balance",
+    "stake_modal_period"
+  );
   const { ltosIndex } = useLtosIndex();
   const rebaseTime = useRebaseTime(":");
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
@@ -213,14 +219,19 @@ function StakeModal() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
-                <Text
-                  color={colorMode === "light" ? "gray.800" : "white.200"}
-                  fontSize={20}
-                  fontWeight={600}
-                >
-                  Stake
-                </Text>
+              <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
+                <Flex flexDir={"column"}>
+                  <Text
+                    color={colorMode === "light" ? "gray.800" : "white.200"}
+                    fontSize={20}
+                    fontWeight={600}
+                    textAlign={"center"}
+                    mb={"6px"}
+                  >
+                    Stake
+                  </Text>
+                  <UserGuide />
+                </Flex>
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}

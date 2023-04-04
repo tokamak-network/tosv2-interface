@@ -61,11 +61,9 @@ import useInput from "hooks/useInput";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
-import ArrowImg from "assets/icons/arrow-right2.svg";
-import ArrowDownImg from "assets/icons/arrow-Down.svg";
 import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
-import useUpdateModalConditon from "hooks/stake/useUpdateModalCondition";
+import useManageModalConditon from "hooks/stake/useManageModalCondition";
 import constant from "constant";
 import InputPeriod from "common/input/InputPeriod";
 import GradientSpinner from "../common/GradientSpinner";
@@ -73,21 +71,24 @@ import useModalContract from "hooks/contract/useModalContract";
 import Notice from "../global/Notice";
 import ManageModal_BottomContent from "./modal/ManageModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
+import StakeModal_Input from "@/stakeComponents/modal/components/StakeModal_Input";
+import StakeModal_Period from "@/stakeComponents/modal/components/StakeModal_Period";
+import { Manage_Period } from "./modal/components/Manage/Manage_Period";
 
-function UpdateModal() {
+function ManageModal() {
   const theme = useTheme();
   const { colorMode } = useColorMode();
   const { selectedModal, closeModal, isModalLoading } = useModal<{
     ltosAmount: string | undefined;
   }>();
   const { stakeV2 } = useStakeV2();
-  const { inputValue, setResetValue, setValue } = useInput(
+  const { inputValue, setResetValue } = useInput(
     "Stake_screen",
     "update_modal"
   );
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
-  const { userTOSBalance } = useUserBalance();
+  const { userTokenBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [btnDisable, setBtnDisable] = useState<boolean>(false);
@@ -107,8 +108,10 @@ function UpdateModal() {
     inputPeriodOver,
     btnDisabled,
     zeroInputBalance,
+    inputBalanceIsEmpty,
+    inputPeriodIsEmpty,
     bothConditionsErr,
-  } = useUpdateModalConditon(leftWeeks);
+  } = useManageModalConditon(leftWeeks);
   const { errMsg } = constant;
 
   const [bottomLoading, setBottomLoading] = useRecoilState(
@@ -179,6 +182,9 @@ function UpdateModal() {
   ]);
 
   useEffect(() => {
+    if (newBalanceType === undefined) {
+      return setIsAllowance(true);
+    }
     if (newBalanceType === 2) {
       return setIsAllowance(true);
     }
@@ -222,18 +228,6 @@ function UpdateModal() {
   }, [inputValue, leftWeeks]);
 
   useEffect(() => {
-    if (userTOSBalance) {
-      const tosBalance = userTOSBalance
-        ?.replaceAll(",", "")
-        .replaceAll(" ", "");
-      setValue({
-        ...inputValue,
-        stake_updateModal_tos_balance: tosBalance,
-      });
-    }
-  }, [userTOSBalance, setValue, selectedModal]);
-
-  useEffect(() => {
     setStosLoading(true);
   }, [inputValue, setStosLoading]);
 
@@ -260,7 +254,30 @@ function UpdateModal() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
+              <Flex
+                w={"100%"}
+                justifyContent={"center"}
+                mb={"33px"}
+                pos={"relative"}
+              >
+                <Flex
+                  pos={"absolute"}
+                  left={0}
+                  pl={"50px"}
+                  alignItems={"center"}
+                  mt={"7px"}
+                >
+                  <Box
+                    w={"4px"}
+                    h={"4px"}
+                    bgColor={"red.100"}
+                    borderRadius={25}
+                    mr={"9px"}
+                  />
+                  <Text color={"red.100"} fontSize={15}>
+                    Locked
+                  </Text>
+                </Flex>
                 <Flex flexDir={"column"} alignItems={"center"}>
                   <Text
                     color={colorMode === "light" ? "gray.800" : "white.200"}
@@ -268,14 +285,6 @@ function UpdateModal() {
                     fontWeight={600}
                   >
                     Manage
-                  </Text>
-                  <Text
-                    height={"21px"}
-                    color={"red.100"}
-                    fontSize={15}
-                    mb={"6px"}
-                  >
-                    Locked
                   </Text>
                   <Text height={"17px"} fontSize={12} color={"gray.100"}>
                     Increase LTOS & sTOS
@@ -304,205 +313,88 @@ function UpdateModal() {
                 >
                   Lock additional TOS
                 </Text>
-                <Flex mb={"9px"}>
-                  <BalanceInput
-                    w={"100%"}
-                    h={45}
-                    placeHolder={"Enter an amount of TOS"}
+                <Flex mb={"24px"}>
+                  <StakeModal_Input
                     pageKey={"Stake_screen"}
                     recoilKey={"update_modal"}
                     atomKey={"stake_updateModal_tos_balance"}
-                    maxValue={Number(
-                      userTOSBalance?.replaceAll(",", "").replaceAll(" ", "")
-                    )}
-                    isError={
-                      bothConditionsErr ||
-                      inputValue?.stake_updateModal_tos_balance === undefined ||
-                      inputValue?.stake_updateModal_tos_balance?.length === 0 ||
-                      (btnDisable === true && zeroInputBalance) ||
-                      inputOver
-                    }
-                    errorMsg={
-                      inputValue?.stake_updateModal_tos_balance === ""
-                        ? undefined
-                        : bothConditionsErr
-                        ? undefined
-                        : zeroInputBalance
-                        ? errMsg.stake.inputIsZero
-                        : errMsg.stake.tosBalanceIsOver
-                    }
-                    rightUnit={"TOS"}
-                  ></BalanceInput>
+                    defaultValue={undefined}
+                    maxValue={userTokenBalance?.TOS?.balanceWei}
+                    inputTokenType={"TOS"}
+                    tokenBalance={userTokenBalance?.TOS?.balanceCommified}
+                    err={{ zeroInputBalance, inputOver, inputBalanceIsEmpty }}
+                  ></StakeModal_Input>
                 </Flex>
-                <Flex
-                  fontSize={12}
-                  color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                  h={"17px"}
-                  justifyContent={"space-between"}
-                  mb={bp700px ? "22px" : "12px"}
-                  px={"6px"}
-                >
-                  <Text>Your Balance</Text>
-                  <Text>{userTOSBalance || "-"} TOS</Text>
-                </Flex>
-                <Text
-                  color={colorMode === "light" ? "gray.800" : "white.200"}
-                  fontSize={12}
-                  mb={"10px"}
-                >
-                  New Lock-Up Period
-                </Text>
-                <Flex
-                  w={bp700px ? "100%" : ""}
-                  justifyContent={bp700px ? "space-between" : ""}
-                  fontSize={12}
-                  alignItems={bp700px ? "" : "center"}
-                  flexDir={bp700px ? "column" : "row"}
-                >
-                  <Flex
-                    w={bp700px ? "100%" : "204px"}
-                    h={"39px"}
-                    border={
-                      colorMode === "dark"
-                        ? "1px solid #313442"
-                        : "1px solid #e8edf2"
-                    }
-                    borderRadius={8}
-                    alignItems={"center"}
-                    pl={"15px"}
-                    fontSize={14}
-                    color={"#64646f"}
-                  >
-                    <Text>
-                      {leftWeeks} {leftWeeks < 2 ? "Week" : "Weeks"}
-                    </Text>
-                    <Text fontSize={12} ml={"9px"} mr={"3px"}>
-                      {leftDays} Days {leftTime}
-                    </Text>
-                    <Flex ml={bp700px ? "auto" : ""} mr={bp700px ? "8px" : ""}>
-                      <BasicTooltip
-                        label={
-                          "This is the current Lock-Up period. The new Lock-Up period has to be equal or greater than this."
-                        }
-                      />
-                    </Flex>
-                  </Flex>
-                  <Flex
-                    mx={"14px"}
-                    my={bp700px ? "9px" : ""}
-                    justifyContent={bp700px ? "center" : ""}
-                  >
-                    <Image
-                      src={bp700px ? ArrowDownImg : ArrowImg}
-                      alt={"ArrowImg"}
-                    ></Image>
-                  </Flex>
-                  <InputPeriod
-                    w={bp700px ? "100%" : "220px"}
-                    h={"39px"}
-                    atomKey={"stake_updateModal_period"}
-                    // placeHolder={"1 Weeks"}
-                    pageKey={"Stake_screen"}
-                    recoilKey={"update_modal"}
-                    // style={{ marginLeft: "auto" }}
-                    maxValue={constant.stakeModalMaxWeeks}
-                    isError={bothConditionsErr || inputPeriodOver}
-                    isDisabled={leftWeeks === constant.stakeModalMaxWeeks}
-                    isDisabledText={constant.stakeModalMaxWeeks}
-                    errorMsg={
-                      bothConditionsErr
-                        ? undefined
-                        : inputValue.stake_updateModal_period === ""
-                        ? undefined
-                        : Number(inputValue.stake_updateModal_period) > 155
-                        ? errMsg.stake.periodIsOver
-                        : errMsg.stake.newLockupPeriodIsSmaller
-                    }
-                    minValue={leftWeeks}
-                    leftDays={leftDays}
-                    leftTime={leftTime}
-                    endTime={
-                      bothConditionsErr ||
-                      Number(inputValue.stake_updateModal_period) < leftWeeks ||
-                      inputValue?.stake_updateModal_period?.length === 0 ||
-                      Number(inputValue.stake_updateModal_period) > 155
-                        ? undefined
-                        : newEndTime
-                    }
-                    isManageModal={true}
-                  ></InputPeriod>
-                </Flex>
+                <Manage_Period />
               </Flex>
-              <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
-                <StakeGraph
-                  pageKey={"Stake_screen"}
-                  subKey={"update_modal"}
-                  periodKey={"stake_updateModal_period"}
-                  balanceKey={"stake_updateModal_tos_balance"}
-                  isSlideDisabled={false}
-                  minValue={leftWeeks}
-                ></StakeGraph>
-              </Flex>
-              {/* Content Bottom */}
-              <ManageModal_BottomContent />
             </Flex>
-            <Flex justifyContent={"center"} mb={"21px"}>
-              {isAllowance ? (
-                <SubmitButton
-                  w={bp700px ? 310 : 460}
-                  h={42}
-                  name="Update"
-                  isDisabled={btnDisabled || isModalLoading}
-                  onClick={callUpdate}
-                ></SubmitButton>
-              ) : (
-                <SubmitButton
-                  w={bp700px ? 310 : 460}
-                  h={42}
-                  isDisabled={
-                    bothConditionsErr === true ||
-                    inputOver ||
-                    Number(userTOSBalance?.replaceAll(",", "")) < 0 ||
-                    inputValue.stake_updateModal_tos_balance === undefined ||
-                    inputValue.stake_updateModal_tos_balance.length === 0 ||
-                    inputPeriodOver ||
-                    isModalLoading
-                  }
-                  name="Approve"
-                  isLoading={isApproving}
-                  onClick={callApprove}
-                ></SubmitButton>
-              )}
+            <Flex px={bp700px ? "30px" : "43px"} mb={"30px"}>
+              <StakeGraph
+                pageKey={"Stake_screen"}
+                subKey={"update_modal"}
+                periodKey={"stake_updateModal_period"}
+                isSlideDisabled={false}
+                minValue={leftWeeks}
+              ></StakeGraph>
             </Flex>
-            {!isAllowance && (
-              <Flex
-                fontSize={11}
-                color={"#64646f"}
-                textAlign="center"
-                w={"100%"}
-                mb={"24px"}
-              >
-                <Text
-                  w={"100%"}
-                  color={colorMode === "dark" ? "gray.200" : "gray.700"}
-                >
-                  Please approve your TOS to use this service
-                </Text>
-              </Flex>
-            )}
-            {bothConditionsErr && (
-              <Flex fontSize={11} textAlign="center" w={"100%"} mb={"24px"}>
-                <Text w={"100%"} color={"red.100"} fontWeight={"bold"}>
-                  {errMsg.stake.amountAndPeriodErr}
-                </Text>
-              </Flex>
+            {/* Content Bottom */}
+            <ManageModal_BottomContent />
+          </Flex>
+          <Flex justifyContent={"center"} mb={"21px"}>
+            {isAllowance ? (
+              <SubmitButton
+                w={bp700px ? 310 : 460}
+                h={42}
+                name="Update"
+                isDisabled={btnDisabled || isModalLoading}
+                onClick={callUpdate}
+              ></SubmitButton>
+            ) : (
+              <SubmitButton
+                w={bp700px ? 310 : 460}
+                h={42}
+                // isDisabled={
+                //   bothConditionsErr === true ||
+                //   inputOver ||
+                //   Number(userTOSBalance?.replaceAll(",", "")) < 0 ||
+                //   inputValue.stake_updateModal_tos_balance === undefined ||
+                //   inputValue.stake_updateModal_tos_balance.length === 0 ||
+                //   inputPeriodOver ||
+                //   isModalLoading
+                // }
+                name="Approve"
+                isLoading={isApproving}
+                onClick={callApprove}
+              ></SubmitButton>
             )}
           </Flex>
+          {!isAllowance && (
+            <Flex
+              fontSize={11}
+              color={"#64646f"}
+              textAlign="center"
+              w={"100%"}
+              mb={"24px"}
+            >
+              <Text
+                w={"100%"}
+                color={colorMode === "dark" ? "gray.200" : "gray.700"}
+              >
+                Please approve your TOS to use this service
+              </Text>
+            </Flex>
+          )}
+          {bothConditionsErr && (
+            <Flex fontSize={11} textAlign="center" w={"100%"} mb={"24px"}>
+              <Text w={"100%"} color={"red.100"} fontWeight={"bold"}>
+                {errMsg.stake.amountAndPeriodErr}
+              </Text>
+            </Flex>
+          )}
         </ModalBody>
       </ModalContent>
-      {/* <Notice></Notice> */}
     </Modal>
   );
 }
 
-export default UpdateModal;
+export default ManageModal;
