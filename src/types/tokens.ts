@@ -1,4 +1,9 @@
 import { Contract } from "ethers";
+import { SupportedInputTokenTypes } from "types";
+import CONTRACT_ADDRESS, {
+  CONTRACT_ADDRESSES_TYPE,
+} from "services/addresses/contract";
+import { SupportedChain } from "./constant";
 
 export type TokensData = {
   chainId: number;
@@ -23,11 +28,36 @@ export type SupportedToken = {
 };
 
 // export type UserTokenBalance
+const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS, StakingV2Proxy } =
+  CONTRACT_ADDRESS;
 
-export type SupportedTokenList = {
-  ETH: {
-    tokenName: "ETH";
-    decimals: 18;
-    contract: Contract;
-  };
-};
+type TokenMap = Readonly<{
+  tokenName: SupportedInputTokenTypes;
+  tokenAddress: CONTRACT_ADDRESSES_TYPE[keyof CONTRACT_ADDRESSES_TYPE] | "0x00";
+  decimals: 18 | 27;
+}>;
+
+export type ChainTokenMap = TokenMap[];
+
+export const SupportedChainTokenMap: ChainTokenMap = [
+  {
+    tokenName: "TON",
+    tokenAddress: TON_ADDRESS,
+    decimals: 18,
+  },
+  {
+    tokenName: "WTON",
+    tokenAddress: WTON_ADDRESS,
+    decimals: 27,
+  },
+  {
+    tokenName: "TOS",
+    tokenAddress: TOS_ADDRESS,
+    decimals: 18,
+  },
+  {
+    tokenName: "LTOS",
+    tokenAddress: StakingV2Proxy,
+    decimals: 18,
+  },
+];

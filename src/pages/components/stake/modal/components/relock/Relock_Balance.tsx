@@ -6,6 +6,7 @@ import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
 import useUserBalance from "hooks/useUserBalance";
+import { useEffect } from "react";
 import StakeModal_Input from "../StakeModal_Input";
 
 export default function Relock_Balance() {
@@ -36,6 +37,21 @@ export default function Relock_Balance() {
     inputLtosBalanceIsEmpty,
     inputTosBalanceIsEmpty,
   } = useRelockModalCondition(Number(ltosWei));
+
+  useEffect(() => {
+    if (addTos && setValue) {
+      return setValue({
+        ...inputValue,
+        stake_relockModal_ltos_balance: ltosWei,
+      });
+    }
+    if (setValue) {
+      return setValue({
+        ...inputValue,
+        stake_relockModal_tos_balance: undefined,
+      });
+    }
+  }, [addTos, setValue, ltosWei]);
 
   return (
     <Grid w={"100%"} p={0} gridRowGap={"6px"}>
@@ -87,6 +103,7 @@ export default function Relock_Balance() {
             maxValue={ltosWei}
             tokenBalance={ltosCommified}
             buyMoreButton={!addTos}
+            isDisabled={addTos}
           ></StakeModal_Input>
         </Flex>
       </Flex>

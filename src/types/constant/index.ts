@@ -2,7 +2,6 @@ export enum SupportedChain {
   L1_mainnet = 1,
   //will be changed to Sepolia
   L1_testnet = 5,
-
   L2_mainnet = 9999999,
   L2_testnet = 5050,
 }

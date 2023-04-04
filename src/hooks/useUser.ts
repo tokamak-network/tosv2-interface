@@ -1,5 +1,6 @@
 import { convertNumber } from "@/utils/number";
 import { useWeb3React } from "@web3-react/core";
+import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import { useBlockNumber } from "./useBlockNumber";
@@ -27,11 +28,14 @@ function useUser(): UseUser {
   useEffect(() => {
     async function fetchUseUser() {
       if (TOS_CONTRACT && account && StakingV2Proxy_CONTRACT) {
-        const allowance = await TOS_CONTRACT.allowance(account, StakingV2Proxy);
+        const allowanceBN = await TOS_CONTRACT.allowance(
+          account,
+          StakingV2Proxy
+        );
         const stakeList = await StakingV2Proxy_CONTRACT.stakingOf(account);
 
         return setUserData({
-          tosAllowance: Number(convertNumber({ amount: allowance.toString() })),
+          tosAllowance: Number(ethers.utils.formatUnits(allowanceBN)),
           stakeList,
           simpleStakingId: stakeList[1]?.toString(),
         });

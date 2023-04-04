@@ -36,6 +36,7 @@ type StakeModalInput = {
     inputBalanceIsEmpty: boolean;
   };
   buyMoreButton?: boolean;
+  isDisabled?: boolean;
 };
 
 export default function StakeModal_Input(props: StakeModalInput) {
@@ -49,6 +50,7 @@ export default function StakeModal_Input(props: StakeModalInput) {
     atomKey,
     err: { zeroInputBalance, inputOver, inputBalanceIsEmpty },
     buyMoreButton,
+    isDisabled,
   } = props;
   const { errMsg } = constant;
   const { inputValue, setValue } = useInput(pageKey, recoilKey);
@@ -60,7 +62,9 @@ export default function StakeModal_Input(props: StakeModalInput) {
   const { fiveDaysLockup } = bondModalRecoilValue;
   const { bp700px } = useMediaView();
 
-  const { openModal: openSwapModal } = useModal("swap_interface_modal");
+  const { openModal: openSwapModal, selectedModal } = useModal(
+    "swap_interface_modal"
+  );
 
   const setMaxValue = useCallback(() => {
     if (maxValue) return setValue({ ...inputValue, [atomKey]: maxValue });
@@ -101,7 +105,9 @@ export default function StakeModal_Input(props: StakeModalInput) {
               inputBalanceIsEmpty
                 ? undefined
                 : inputOver
-                ? errMsg.stake.tosBalanceIsOver
+                ? inputTokenType === "LTOS"
+                  ? errMsg.stake.ltosBalanceIsOver
+                  : errMsg.stake.tosBalanceIsOver
                 : errMsg.stake.inputIsZero
             }
             fontSize={18}
@@ -114,6 +120,7 @@ export default function StakeModal_Input(props: StakeModalInput) {
               height: "25px",
             }}
             inputFieldStyle={{ padding: 0 }}
+            isDisabled={isDisabled}
           ></BalanceInput>
           <TokenImageContrainer
             tokenTypes={inputTokenType}

@@ -75,7 +75,6 @@ function RelockModal() {
     ltosWei: string;
   }>();
   const { stakeV2 } = useStakeV2();
-  const [addTos, setAddTos] = useState<boolean>(false);
   const { inputValue, setResetValue, setValue } =
     useInput<StakeRelockModalInput>("Stake_screen", "relock_modal");
 
@@ -84,6 +83,7 @@ function RelockModal() {
     ""
   );
   const inputWeeks = inputValue?.stake_relockModal_period;
+  const addTos = inputValue?.stake_relockModal_addTos ?? false;
 
   const { bp700px } = useMediaView();
 
@@ -96,8 +96,10 @@ function RelockModal() {
     useUpdateModalAfterEndTime(addTos);
   const { leftDays, leftHourAndMin } = useStosReward(
     Number(ltosBalance),
-    Number(inputWeeks) ?? 0
+    inputWeeks ? Number(inputWeeks) : 0
   );
+
+  console.log(leftDays, leftHourAndMin, inputWeeks);
 
   const { setTx } = useCustomToast();
 
@@ -218,17 +220,6 @@ function RelockModal() {
     }
   }, [tosAllowance, inputValue]);
 
-  // useEffect(() => {
-  //   if (addTos && ltosAmount) {
-  //     setValue({
-  //       ...inputValue,
-  //       stake_relockModal_ltos_balance: ltosAmount.replaceAll(",", ""),
-  //     });
-  //   }
-  // }, [ltosAmount, setValue, addTos]);
-
-  // console.log(inputValue);
-
   return (
     <Modal
       isOpen={selectedModal === "stake_updateAfterEndTime_modal"}
@@ -299,6 +290,7 @@ function RelockModal() {
                 px={bp700px ? "20px" : "120px"}
                 flexDir={"column"}
                 mb={"29px"}
+                rowGap={"14px"}
               >
                 <Relock_Balance />
                 <StakeModal_Period
