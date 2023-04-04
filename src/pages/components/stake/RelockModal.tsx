@@ -82,6 +82,8 @@ function RelockModal() {
     " ",
     ""
   );
+  const inputLtos = inputValue?.stake_relockModal_ltos_balance;
+  const inputTos = inputValue?.stake_relockModal_tos_balance;
   const inputWeeks = inputValue?.stake_relockModal_period;
   const addTos = inputValue?.stake_relockModal_addTos ?? false;
 
@@ -95,11 +97,9 @@ function RelockModal() {
   const { newEndTime, inputTosAmount, tosValue } =
     useUpdateModalAfterEndTime(addTos);
   const { leftDays, leftHourAndMin } = useStosReward(
-    Number(ltosBalance),
+    Number(inputTosAmount),
     inputWeeks ? Number(inputWeeks) : 0
   );
-
-  console.log(leftDays, leftHourAndMin, inputWeeks);
 
   const { setTx } = useCustomToast();
 
@@ -111,19 +111,10 @@ function RelockModal() {
     useRelockModalCondition(Number(ltowWei));
   const { errMsg, stakeModalMaxWeeks } = constant;
 
-  //maxValues
-  const [maxLtosValue, setMaxLtosValue] = useState<number | undefined>(
-    undefined
-  );
-  const [maxStosValue, setMaxStosValue] = useState<number | undefined>(
-    undefined
-  );
-
   const closeThisModal = useCallback(() => {
     if (setResetValue) {
       setResetValue();
     }
-    setAddTos(false);
     closeModal();
   }, [setResetValue, closeModal]);
 
@@ -133,69 +124,45 @@ function RelockModal() {
     if (
       StakingV2Proxy_CONTRACT &&
       stakeId &&
-      String(inputValue?.stake_relockModal_period)?.length > 0
+      inputWeeks &&
+      String(inputWeeks)?.length > 0
     ) {
-      const periodWeeks = inputValue.stake_relockModal_period + 1;
-      if (
-        addTos &&
-        (inputValue.stake_relockModal_tos_balance !== undefined ||
-          inputValue.stake_relockModal_tos_balance?.length > 0) &&
-        ltosAmount
-      ) {
-        const ltosValue = Number(
-          ltosAmount?.replaceAll(",", "").replaceAll(" ", "")
-        );
-        const ltosBN = convertToWei(ltosValue.toString());
+      const periodWeeks = inputWeeks + 1;
+      if (addTos && inputTos && inputTos.length > 0) {
         console.log(
           "resetStakeGetStosAfterLock(uint256,uint256,uint256, uint256)"
         );
-        console.log(
-          stakeId,
-          convertToWei(inputValue.stake_relockModal_tos_balance),
-          ltosBN,
-          periodWeeks
-        );
+        console.log(stakeId, convertToWei(inputTos), ltowWei, periodWeeks);
         const tx = await StakingV2Proxy_CONTRACT[
           "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
-        ](
-          stakeId,
-          convertToWei(inputValue.stake_relockModal_tos_balance),
-          ltosBN,
-          periodWeeks
-        );
+        ](stakeId, convertToWei(inputTos), ltowWei, periodWeeks);
         setTx(tx);
         return closeThisModal();
       }
-      //after endTime
-      //resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks)
-      console.log(
-        "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
-      );
-      console.log(
-        stakeId,
-        0,
-        convertToWei(inputValue.stake_relockModal_ltos_balance),
-        periodWeeks
-      );
-      const tx = await StakingV2Proxy_CONTRACT[
-        "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
-      ](
-        stakeId,
-        0,
-        convertToWei(inputValue.stake_relockModal_ltos_balance),
-        periodWeeks
-      );
-      setTx(tx);
-      return closeThisModal();
+      if (inputLtos) {
+        //after endTime
+        //resetStakeGetStosAfterLock(uint256 _stakeId, uint256 _addAmount, uint256 _claimAmount, uint256 _periodWeeks)
+        console.log(
+          "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
+        );
+        console.log(stakeId, 0, convertToWei(inputLtos), periodWeeks);
+        const tx = await StakingV2Proxy_CONTRACT[
+          "resetStakeGetStosAfterLock(uint256,uint256,uint256,uint256)"
+        ](stakeId, 0, convertToWei(inputLtos), periodWeeks);
+        setTx(tx);
+        return closeThisModal();
+      }
     }
   }, [
     StakingV2Proxy_CONTRACT,
     stakeId,
     addTos,
-    inputValue,
+    inputLtos,
+    inputTos,
+    inputWeeks,
     setTx,
     closeThisModal,
-    ltosAmount,
+    ltowWei,
   ]);
 
   const callApprove = useCallback(async () => {
