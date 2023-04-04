@@ -43,17 +43,19 @@ const stake_unstakeModal_state = selector({
 });
 
 //update modal states
+export type StakeUpdateModalInput = {
+  stake_updateModal_period: number | undefined;
+  stake_updateModal_ltos_balance: number | "" | undefined;
+  stake_updateModal_tos_balance: number | "" | undefined;
+};
+
 const stake_updateModal_defaultValue = {
   stake_updateModal_period: undefined,
   stake_updateModal_ltos_balance: undefined,
   stake_updateModal_tos_balance: undefined,
 };
 
-const stake_updateModal_inputState = atom<{
-  stake_updateModal_period: number | undefined;
-  stake_updateModal_ltos_balance: number | "" | undefined;
-  stake_updateModal_tos_balance: number | "" | undefined;
-}>({
+const stake_updateModal_inputState = atom<StakeUpdateModalInput>({
   key: "stake_updateModal_input",
   default: stake_updateModal_defaultValue,
 });
@@ -67,13 +69,21 @@ const stake_updateModal_state = selector({
 });
 
 //relock modal states
+export type StakeRelockModalInput = {
+  stake_relockModal_period: string | undefined;
+  stake_relockModal_ltos_balance: string | undefined;
+  stake_relockModal_tos_balance: string | undefined;
+  stake_relockModal_addTos: boolean;
+};
+
 const stake_relockModal_defaultValue = {
   stake_relockModal_period: undefined,
   stake_relockModal_ltos_balance: undefined,
   stake_relockModal_tos_balance: undefined,
+  stake_relockModal_addTos: false,
 };
 
-const stake_relockModal_inputState = atom({
+const stake_relockModal_inputState = atom<StakeRelockModalInput>({
   key: "stake_relockModal_input",
   default: stake_relockModal_defaultValue,
 });

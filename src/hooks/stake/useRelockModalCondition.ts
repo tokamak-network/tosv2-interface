@@ -1,24 +1,27 @@
+import { StakeRelockModalInput } from "atom/stake/input";
 import constant from "constant";
+import { useCheckInput } from "hooks/input/useCheckInput";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
 import useUserBalance from "hooks/useUserBalance";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BondModalInput } from "types/bond";
 
 function useRelockModalCondition(stakedLtosBalance: number) {
   const [inputOver, setInputOver] = useState<boolean>(false);
   const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(false);
-  const [btnDisabled, setBtnDisabled] = useState<boolean>(true);
   const [zeroInputBalance, setZeroInputBalance] = useState<boolean>(false);
 
   const { userTOSBalance } = useUserBalance();
   const { isModalLoading } = useModal();
-  const { inputValue } = useInput("Stake_screen", "relock_modal");
+  const { inputValue } = useInput<StakeRelockModalInput>(
+    "Stake_screen",
+    "relock_modal"
+  );
 
-  const inputTosAmount = inputValue.stake_relockModal_tos_balance;
-  const inputLtosAmount = inputValue.stake_relockModal_ltos_balance;
-  //   const inputLTosAmount = inputValue.stake_relockModal_ltos_balance;
-  const inputPeriod = inputValue.stake_relockModal_period;
+  const inputTosAmount = inputValue?.stake_relockModal_tos_balance;
+  const inputLtosAmount = inputValue?.stake_relockModal_ltos_balance;
+  const inputPeriod = inputValue?.stake_relockModal_period;
   const { stakeModalMaxWeeks } = constant;
   const minimumWeeks = 0;
 
@@ -87,11 +90,23 @@ function useRelockModalCondition(stakedLtosBalance: number) {
     return setInputPeriodOver(false);
   }, [inputPeriod, stakeModalMaxWeeks, isModalLoading]);
 
-  useEffect(() => {
-    setBtnDisabled(inputOver || inputPeriodOver || zeroInputBalance);
+  const btnDisabled = useMemo(() => {
+    return inputOver || inputPeriodOver || zeroInputBalance;
   }, [inputOver, inputPeriodOver, zeroInputBalance]);
 
-  return { inputOver, inputPeriodOver, zeroInputBalance, btnDisabled };
+  const inputLtosBalanceIsEmpty = useCheckInput(inputLtosAmount);
+  const inputTosBalanceIsEmpty = useCheckInput(inputTosAmount);
+  const inputPeriodIsEmpty = useCheckInput(inputPeriod);
+
+  return {
+    inputOver,
+    inputPeriodOver,
+    zeroInputBalance,
+    btnDisabled,
+    inputLtosBalanceIsEmpty,
+    inputTosBalanceIsEmpty,
+    inputPeriodIsEmpty,
+  };
 }
 
 export default useRelockModalCondition;

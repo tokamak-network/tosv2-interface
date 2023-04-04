@@ -1,18 +1,27 @@
 import { useEffect } from "react";
+import { Resetter, SetterOrUpdater } from "recoil";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 import useBondInput from "./bond/useBondInput";
 import useStakeInput from "./stake/useStakeInput";
 import useModal from "./useModal";
 
-function useInput(key: PageKey, subKey: InputKey) {
-  const { inputValue, value, setValue, resetValue } = useStakeInput(subKey);
+function useInput<T>(
+  key: PageKey,
+  subKey: InputKey
+): {
+  inputValue: T | undefined;
+  value: any | undefined;
+  setValue: SetterOrUpdater<any> | undefined | undefined;
+  setResetValue: Resetter | undefined;
+} {
+  const { inputValue, value, setValue, resetValue } = useStakeInput<T>(subKey);
   const {
     inputValue: bondInputValue,
     value: bondValue,
     setValue: setBondvalue,
     resetValue: setResetBondValue,
-  } = useBondInput(subKey);
+  } = useBondInput<T>(subKey);
 
   switch (key) {
     case "Stake_screen":
@@ -34,6 +43,7 @@ function useInput(key: PageKey, subKey: InputKey) {
         inputValue: undefined,
         value: undefined,
         setValue: undefined,
+        setResetValue: undefined,
       };
   }
 }

@@ -11,6 +11,7 @@ export type StakeCardProps =
   | {
       staked: {
         ltos: string;
+        ltosWei: string;
         stos: string | undefined;
       };
       principal: string;

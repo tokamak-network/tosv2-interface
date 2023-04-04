@@ -1,12 +1,18 @@
 import { bond_bondModal_input, bond_bondModal_state } from "atom/bond/input";
-import { useRecoilState, useRecoilValue, useResetRecoilState } from "recoil";
+import {
+  Resetter,
+  SetterOrUpdater,
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+} from "recoil";
 import { InputKey, Bond_InputValueType } from "types/atom";
 
-function useBondInput(key: InputKey): {
-  inputValue: any;
-  value: any;
-  setValue: any;
-  resetValue: any;
+function useBondInput<T>(key: InputKey): {
+  inputValue: T;
+  value: T;
+  setValue: SetterOrUpdater<any> | undefined;
+  resetValue: Resetter | undefined;
 } {
   const bondModal_inputValues = useRecoilValue(bond_bondModal_state);
   const [bondModalValue, setBondModalValue] =

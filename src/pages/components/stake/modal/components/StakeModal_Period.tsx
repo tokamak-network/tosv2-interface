@@ -25,7 +25,7 @@ type StakeModalPeriod = {
   hasFivedaysLockup?: boolean;
 };
 
-export default function StakeModal_Period(props: StakeModalPeriod) {
+export default function StakeModal_Period<T>(props: StakeModalPeriod) {
   const {
     pageKey,
     recoilKey,
@@ -42,7 +42,7 @@ export default function StakeModal_Period(props: StakeModalPeriod) {
   const { errMsg, stakeModalMaxWeeks } = constant;
 
   const fiveDaysLockup = hasFivedaysLockup
-    ? inputValue.stake_modal_fivedaysLockup
+    ? inputValue?.stake_modal_fivedaysLockup
     : false;
 
   return (
@@ -102,10 +102,9 @@ export default function StakeModal_Period(props: StakeModalPeriod) {
           <InputPeriod
             w={bp700px ? "310px" : "460px"}
             h={"39px"}
-            pageKey={"Stake_screen"}
-            recoilKey={"stake_modal"}
-            atomKey={"stake_modal_period"}
-            placeHolder={"1 Weeks"}
+            pageKey={pageKey}
+            recoilKey={recoilKey}
+            atomKey={atomKey}
             style={{ marginLeft: "auto" }}
             isDisabled={fiveDaysLockup}
             maxValue={stakeModalMaxWeeks}

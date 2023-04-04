@@ -7,6 +7,7 @@ import {
   stake_filter_sort,
   T_SortValues,
 } from "atom/stake/filter";
+import { ethers } from "ethers";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import useCallContract from "hooks/useCallContract";
 import usePrice from "hooks/usePrice";
@@ -44,7 +45,8 @@ function useStakeList() {
             const stakedInfo = await StakingV2Proxy_CONTRACT.stakeInfo(
               stakedId
             );
-            const LTOSWei = stakedInfo.ltos.toString();
+            const LTOSWeiAmount = stakedInfo.ltos.toString();
+            const ltosWei = ethers.utils.formatUnits(stakedInfo.ltos, 18);
             const principalWei = stakedInfo.deposit.toString();
 
             const principal = `${convertNumber({
@@ -56,7 +58,7 @@ function useStakeList() {
               "YYYY.MM.DD HH:mm"
             );
             const ltos = `${convertNumber({
-              amount: LTOSWei,
+              amount: LTOSWeiAmount,
               localeString: true,
             })} LTOS`;
             const isOver = isTimeOver(stakedInfo.endTime.toString());
@@ -74,6 +76,7 @@ function useStakeList() {
                 staked: {
                   ltos,
                   stos: undefined,
+                  ltosWei,
                 },
                 principal,
                 isOver: false,
@@ -97,6 +100,7 @@ function useStakeList() {
                     staked: {
                       ltos,
                       stos: undefined,
+                      ltosWei,
                     },
                     principal,
                     isOver,
@@ -118,6 +122,7 @@ function useStakeList() {
                       localeString: true,
                       round: false,
                     })} sTOS`,
+                    ltosWei,
                   },
                   principal,
                   isOver,
@@ -137,6 +142,7 @@ function useStakeList() {
                     amount: sTOSwei.toString(),
                     localeString: true,
                   })} sTOS`,
+                  ltosWei,
                 },
                 principal,
                 isOver,

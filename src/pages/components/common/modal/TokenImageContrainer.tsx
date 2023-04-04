@@ -15,8 +15,9 @@ function TokenImageContrainer(props: {
         tokenType={props.tokenTypes}
         w={"24px"}
         h={"24px"}
-        imageW={"8.4px"}
-        imageH={"14.4px"}
+        isTokenInput={true}
+        // imageW={"8.4px"}
+        // imageH={"14.4px"}
       ></TokenSymbol>
       <Text color={colorMode === "dark" ? "white.200" : "gray.800"}>
         {props.name}

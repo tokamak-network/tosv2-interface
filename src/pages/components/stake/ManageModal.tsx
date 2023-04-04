@@ -73,7 +73,8 @@ import ManageModal_BottomContent from "./modal/ManageModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
 import StakeModal_Input from "@/stakeComponents/modal/components/StakeModal_Input";
 import StakeModal_Period from "@/stakeComponents/modal/components/StakeModal_Period";
-import { Manage_Period } from "./modal/components/Manage/Manage_Period";
+import { Manage_Period } from "./modal/components/manage/Manage_Period";
+import { UserGuide } from "../common/guide/UserGuide";
 
 function ManageModal() {
   const theme = useTheme();
@@ -138,7 +139,9 @@ function ManageModal() {
   }, [TOS_CONTRACT, StakingV2Proxy, setTx]);
 
   const closeThisModal = useCallback(() => {
-    setResetValue();
+    if (setResetValue) {
+      setResetValue();
+    }
     closeModal();
   }, [setResetValue, closeModal]);
 
@@ -278,7 +281,7 @@ function ManageModal() {
                     Locked
                   </Text>
                 </Flex>
-                <Flex flexDir={"column"} alignItems={"center"}>
+                <Flex flexDir={"column"} alignItems={"center"} rowGap={"6px"}>
                   <Text
                     color={colorMode === "light" ? "gray.800" : "white.200"}
                     fontSize={20}
@@ -289,6 +292,7 @@ function ManageModal() {
                   <Text height={"17px"} fontSize={12} color={"gray.100"}>
                     Increase LTOS & sTOS
                   </Text>
+                  <UserGuide />
                 </Flex>
                 <Flex
                   pos={"absolute"}

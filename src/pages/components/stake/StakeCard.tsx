@@ -7,7 +7,7 @@ import { useState } from "react";
 import { BondCardProps } from "types/bond";
 import { StakeCardProps } from "types/stake";
 import BondIcon from "assets/icons/bond.svg";
-import BondIconLight from 'assets/icons/bondLight.svg'
+import BondIconLight from "assets/icons/bondLight.svg";
 import Image from "next/image";
 import { selectedTxState } from "atom/global/tx";
 import { useRecoilValue } from "recoil";
@@ -81,6 +81,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
     {
       stakeId: cardData?.stakedId,
       ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
+      ltosWei: cardData?.staked.ltosWei,
     }
   );
   const [smallerThan1040] = useMediaQuery("(max-width: 1040px)");
@@ -135,9 +136,11 @@ function StakeCard(props: { cardData: StakeCardProps }) {
           </Text>
         </Flex>
         <Flex>
-      
           {stakedType === "Bond" && (
-            <Image src={colorMode === 'dark'? BondIcon:BondIconLight} alt={"BondIcon"}></Image>
+            <Image
+              src={colorMode === "dark" ? BondIcon : BondIconLight}
+              alt={"BondIcon"}
+            ></Image>
           )}
           <Flex
             fontSize={12}
@@ -210,7 +213,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             minW={["", "125px", "150px"]}
             maxW={["", "125px", "150px"]}
             h={"33px"}
-            style={{fontWeight:'normal'}}
+            style={{ fontWeight: "normal" }}
             onClick={
               stakedType === "LTOS Staking"
                 ? openModal
@@ -232,7 +235,7 @@ function StakeCard(props: { cardData: StakeCardProps }) {
             isLoading={txPending}
             name={"Unstake"}
             h={"33px"}
-            style={{fontWeight:'normal'}}
+            style={{ fontWeight: "normal" }}
             onClick={openUnstakeModal}
           ></BasicButton>
         </Flex>

@@ -18,9 +18,9 @@ import {
 } from "recoil";
 import { InputKey } from "types/atom";
 
-function useStakeInput(key: InputKey): {
-  inputValue: any;
-  value: any;
+function useStakeInput<T>(key: InputKey): {
+  inputValue: T;
+  value: T;
   setValue: SetterOrUpdater<any> | undefined;
   resetValue: Resetter | undefined;
 } {

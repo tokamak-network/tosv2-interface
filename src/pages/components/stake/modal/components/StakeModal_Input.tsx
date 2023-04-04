@@ -35,6 +35,7 @@ type StakeModalInput = {
     inputOver: boolean;
     inputBalanceIsEmpty: boolean;
   };
+  buyMoreButton?: boolean;
 };
 
 export default function StakeModal_Input(props: StakeModalInput) {
@@ -47,6 +48,7 @@ export default function StakeModal_Input(props: StakeModalInput) {
     recoilKey,
     atomKey,
     err: { zeroInputBalance, inputOver, inputBalanceIsEmpty },
+    buyMoreButton,
   } = props;
   const { errMsg } = constant;
   const { inputValue, setValue } = useInput(pageKey, recoilKey);
@@ -114,8 +116,8 @@ export default function StakeModal_Input(props: StakeModalInput) {
             inputFieldStyle={{ padding: 0 }}
           ></BalanceInput>
           <TokenImageContrainer
-            tokenTypes={"TOS"}
-            name={"TOS"}
+            tokenTypes={inputTokenType}
+            name={inputTokenType}
           ></TokenImageContrainer>
         </Flex>
         <Flex fontSize={12} columnGap={"9px"} alignItems={"center"}>
@@ -135,15 +137,17 @@ export default function StakeModal_Input(props: StakeModalInput) {
           >
             MAX
           </Button>
-          <Text
-            color={"blue.200"}
-            fontSize="12px"
-            onClick={openSwapModal}
-            _hover={{ cursor: "pointer" }}
-            mr="5px"
-          >
-            Buy More
-          </Text>
+          {buyMoreButton !== false && (
+            <Text
+              color={"blue.200"}
+              fontSize="12px"
+              onClick={openSwapModal}
+              _hover={{ cursor: "pointer" }}
+              mr="5px"
+            >
+              Buy More
+            </Text>
+          )}
         </Flex>
       </Flex>
     </Flex>

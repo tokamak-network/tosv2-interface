@@ -1,7 +1,7 @@
 import { BondTopCardProps } from "./bond";
 import { StakeTopCardProps } from "./stake";
 
-export type TokenTypes = "ETH" | "TON" | "WTON" | "TOS";
+export type TokenTypes = "ETH" | "TON" | "WTON" | "TOS" | "LTOS";
 export type SupportedInputTokenTypes = TokenTypes;
 
 export type TopCardList = BondTopCardProps[] | StakeTopCardProps[];
