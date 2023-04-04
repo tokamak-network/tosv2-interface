@@ -83,7 +83,7 @@ export default function StakeModal_Period(props: StakeModalPeriod) {
                     const isChecked = e.target.checked;
                     setValue({
                       ...inputValue,
-                      fiveDaysLockup: isChecked,
+                      stake_modal_fivedaysLockup: isChecked,
                     });
                   }}
                 ></Checkbox>

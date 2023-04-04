@@ -27,7 +27,12 @@ function useStosStake() {
     inputValue.stake_modal_period
   );
 
-  const increaseWeeks = Number(inputValue.stake_modal_period);
+  const increaseWeeks =
+    inputValue.stake_modal_period === undefined ||
+    inputValue.stake_modal_period === ""
+      ? undefined
+      : Number(inputValue.stake_modal_period);
+
   const increaseWeeksDecimal = useMemo(() => {
     if (
       leftDays !== undefined &&
@@ -69,32 +74,6 @@ function useStosStake() {
       return (ltosPrincipalUpdated * increaseWeeksDecimal) / 156;
     }
   }, [ltosPrincipalUpdated, increaseWeeksDecimal]);
-
-  // useEffect(() => {
-  //   console.log("***useStosRelock***");
-  //   console.log(increaseTos);
-
-  //   console.log({
-  //     blockTimeStamp,
-  //     rebasePerEpoch,
-  //     locksInfo,
-  //     rebaseNumber,
-  //     ltosPrincipalUpdated,
-  //     newBalanceStos,
-  //     increaseWeeksDecimal,
-  //   });
-  // }, [
-  //   blockTimeStamp,
-  //   rebasePerEpoch,
-  //   locksInfo,
-  //   ltosPrincipalUpdated,
-  //   newBalanceStos,
-  //   rebaseNumber,
-  //   inputValue,
-  //   increaseWeeksDecimal,
-  //   newBalance,
-  //   increaseTos,
-  // ]);
 
   return { newBalanceStos };
 }

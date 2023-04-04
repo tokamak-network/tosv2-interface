@@ -27,7 +27,6 @@ function useStakeModaldata(): StakeModalBottomContents {
     undefined
   );
   const [newBalance, setNewBalance] = useState<string | undefined>(undefined);
-  const [endTime, setEndTime] = useState<string | undefined>(undefined);
 
   const [currentTosValue, setCurrentTosValue] = useState<string | undefined>(
     undefined
@@ -42,6 +41,10 @@ function useStakeModaldata(): StakeModalBottomContents {
   const { simpleStakingId } = useUser();
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
+  );
+  const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
+    Number(inputValue.stake_modal_balance),
+    inputValue.stake_modal_period ?? 0
   );
 
   useEffect(() => {
@@ -143,6 +146,7 @@ function useStakeModaldata(): StakeModalBottomContents {
     newBalance,
     currentTosValue,
     newBalanceTosValue,
+    newEndTime,
   };
 }
 

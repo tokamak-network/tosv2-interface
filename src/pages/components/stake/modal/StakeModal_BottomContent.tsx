@@ -19,16 +19,6 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
     "Stake_screen",
     "stake_modal"
   );
-
-  const {
-    currentEndTime,
-    newEndTime,
-    leftWeeks,
-    leftDays,
-    leftTime,
-    newLtosBalance,
-    totalTosAmount,
-  } = useUpdateModalData();
   const modalContractData = useModalContract();
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
@@ -42,6 +32,7 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
     newBalance,
     currentTosValue,
     newBalanceTosValue,
+    newEndTime,
   } = useStakeModaldata();
 
   const contentList: IBottomContentProps[] = fiveDaysLockup

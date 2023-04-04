@@ -78,6 +78,9 @@ function StakeGraph(props: {
   }, [sliderValue, periodKey, balanceKey, isChanged]);
 
   useEffect(() => {
+    if (inputValue[periodKey] === undefined || inputValue[periodKey] === "") {
+      return setSliderValue(undefined);
+    }
     if (inputValue[periodKey])
       return setSliderValue(Number(inputValue[periodKey]));
   }, [inputValue, periodKey]);
@@ -94,7 +97,7 @@ function StakeGraph(props: {
         defaultValue={0}
         min={0}
         max={constant.stakeModalMaxWeeks}
-        value={sliderValue}
+        value={sliderValue ?? 0}
         onChange={(val: number) => {
           if (minValue && minValue > val) {
             return setSliderValue(minValue);

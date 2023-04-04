@@ -69,20 +69,17 @@ function StakeModal() {
   const { colorMode } = useColorMode();
   const { selectedModalData, selectedModal, closeModal, isModalLoading } =
     useModal<StakeCardProps>();
-  const { inputValue, setResetValue } = useInput("Stake_screen", "stake_modal");
-  const {
-    ltos,
-    currentBalance,
-    newBalance,
-    currentTosValue,
-    newBalanceTosValue,
-  } = useStakeModaldata();
+  const { inputValue, setValue, setResetValue } = useInput(
+    "Stake_screen",
+    "stake_modal"
+  );
+  const fiveDaysLockup = inputValue.stake_modal_fivedaysLockup;
+
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
   const { userTOSBalance, userTokenBalance } = useUserBalance();
   const { stakeList, tosAllowance } = useUser();
 
-  const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
   const [isApproving, setIsApproving] = useState<boolean>(false);
 
@@ -114,7 +111,6 @@ function StakeModal() {
 
   const closeThisModal = useCallback(() => {
     setResetValue();
-    setFiveDaysLockup(false);
     closeModal();
   }, [closeModal]);
 
@@ -189,9 +185,15 @@ function StakeModal() {
 
   useEffect(() => {
     if (selectedModalData?.stakedType === "LTOS Staking") {
-      return setFiveDaysLockup(true);
+      return setValue({
+        ...inputValue,
+        stake_modal_fivedaysLockup: true,
+      });
     }
-    return setFiveDaysLockup(false);
+    return setValue({
+      ...inputValue,
+      stake_modal_fivedaysLockup: false,
+    });
   }, [selectedModalData]);
 
   return (
