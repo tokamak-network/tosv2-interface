@@ -162,16 +162,12 @@ const InputPeriod = (props: InputProp) => {
             borderColor: colorMode === "light" ? "#c6cbd9" : "#535353",
           }}
           focusBorderColor="none"
-          _focus={
-            isError
-              ? {}
-              : {
-                  outline: "none",
-                  color: colorMode === "light" ? "gray.800" : "#f1f1f1",
-                  boxShadow: "",
-                  borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
-                }
-          }
+          _focus={{
+            outline: "none !important",
+            color: colorMode === "light" ? "gray.800" : "#f1f1f1",
+            boxShadow: "none !important",
+            borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
+          }}
           outline="none"
           boxShadow={"none !important"}
           errorBorderColor={isDisabled ? "none" : "#e23738"}

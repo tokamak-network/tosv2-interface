@@ -27,7 +27,7 @@ const constant = {
       inputIsZero: `Can't be 0`,
       newLockupPeriodIsSmaller: `Can't be less than current lock-up period (70 weeks)`,
       amountAndPeriodErr: "Increase TOS or lock-up period",
-      periodIsOver: `Can't be more than 156 weeks`,
+      periodIsOver: `Can't be more than 155 weeks`,
       ltosBalanceIsOver: "Insufficient LTOS amount",
       periodIsEmpty: "Must be between 0 and 155",
     },

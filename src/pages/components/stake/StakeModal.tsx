@@ -112,70 +112,6 @@ function StakeModal() {
 
   const { errMsg, stakeModalMaxWeeks } = constant;
 
-  const contentList = fiveDaysLockup
-    ? [
-        {
-          title: "You Give",
-          content: `${inputValue.stake_modal_balance || "-"} TOS`,
-          tooltip: false,
-          tooltipMessage: "",
-        },
-        {
-          title: "You Will Get",
-          content: `${ltos} LTOS`,
-          tooltip: true,
-          tooltipMessage:
-            "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-          thirdTooltip:
-            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-        },
-        {
-          title: "Current Balance",
-          content: `${currentBalance || "-"} LTOS`,
-          tooltip: true,
-          tooltipMessage: "Current LTOS balance without Lock-Up period",
-          secondTooltip: `${currentTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-        },
-        {
-          title: "New Balance",
-          content: `${newBalance || "-"} LTOS`,
-          tooltip: true,
-          tooltipMessage:
-            "New LTOS balance without Lock-Up period after staking. ",
-          secondTooltip: `${newBalanceTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-        },
-      ]
-    : [
-        {
-          title: "You Give",
-          content: `${inputValue.stake_modal_balance || "-"} TOS`,
-          tooltip: false,
-          tooltipMessage: "",
-        },
-        {
-          title: "You Will Get",
-          content: {
-            ltos: ltos,
-            stos: stosLoading ? "..." : commafy(newBalanceStos),
-          },
-          tooltip: true,
-          tooltipMessage:
-            "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-          secondTooltip: `${commafy(
-            inputValue.stake_modal_balance
-          )} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-          thirdTooltip:
-            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-        },
-        {
-          title: "End Time",
-          content: `${newEndTime || "-"}`,
-          tooltip: true,
-          tooltipMessage: "LTOS can be unstaked after this time. ",
-        },
-      ];
-
   const closeThisModal = useCallback(() => {
     setResetValue();
     setFiveDaysLockup(false);
@@ -257,8 +193,6 @@ function StakeModal() {
     }
     return setFiveDaysLockup(false);
   }, [selectedModalData]);
-
-  console.log(inputValue);
 
   return (
     <Modal

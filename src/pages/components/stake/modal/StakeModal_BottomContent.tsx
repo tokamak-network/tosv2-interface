@@ -89,7 +89,12 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
         },
         {
           title: "End Time",
-          content: `${newEndTime || "-"}`,
+          content: `${
+            inputValue.stake_modal_period === undefined ||
+            inputValue.stake_modal_period === ""
+              ? "-"
+              : newEndTime || "-"
+          }`,
           tooltip: "LTOS can be unstaked after this time. ",
         },
       ];

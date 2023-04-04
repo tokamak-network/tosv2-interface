@@ -263,9 +263,7 @@ function BalanceInput(props: NumberInputProp) {
             boxShadow: "",
             borderColor: colorMode === "light" ? "#9a9aaf" : "#8a8a98",
           }}
-          errorBorderColor={
-            selectedModal === "bond_bond_modal" ? "none" : "#e23738"
-          }
+          errorBorderColor={"none"}
           outline="none"
           defaultValue={undefined}
           value={value[atomKey]}
