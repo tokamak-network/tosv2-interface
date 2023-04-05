@@ -167,6 +167,7 @@ function SwapInterfaceModal() {
       !account ||
       Number(approved) > Number(fromAmount) ||
       token0.address === ZERO_ADDRESS;
+      
     return condition;
   }, [account, approved, fromAmount, token0.address, tx.tx]);
 
@@ -175,13 +176,14 @@ function SwapInterfaceModal() {
       tx.tx === true ||
       token0.address === "" ||
       Number(token0Balance) === 0 ||
-      tx.data.name === "approve" ||
+      // tx.data.name === "approve" ||
       maxError ||
       token1.address === "" ||
       Number(approved) < Number(fromAmount) ||
       (Number(fromAmount) === 0 && Number(toAmount) === 0) ||
       token0.address === token1.address ||
-      Number(fromAmount) > Number(token0Balance);
+      Number(fromAmount) > Number(token0Balance);      
+      
     return condition;
   }, [
     approved,
@@ -304,7 +306,8 @@ function SwapInterfaceModal() {
           const feeData = await SwapperV2Proxy_CONTRACT.provider.getFeeData();
           const { maxFeePerGas } = feeData;
           if (maxFeePerGas) {
-            const remove = estimate.add(42000).mul(maxFeePerGas);
+            const txFee = BigNumber.from(42000)
+            const remove = estimate.add(txFee).mul(maxFeePerGas);
 
             const subtracted = parseInputAmount.sub(remove);
             // setFromAmount(

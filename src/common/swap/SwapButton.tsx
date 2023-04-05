@@ -74,6 +74,8 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
   } = useCallContract(
     token0.address !== ZERO_ADDRESS ? token0.address : undefined
   );
+
+
   const { TON_ADDRESS, WTON_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
     CONTRACT_ADDRESS;
 
@@ -409,6 +411,7 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
     exactOutputWtonTon,
     exactInputWethEth,
   ]);
+
 
   return (
     <Button
