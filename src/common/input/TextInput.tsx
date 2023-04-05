@@ -197,16 +197,20 @@ function BalanceInput(props: NumberInputProp) {
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = event.target.value;
+
     if (String(newValue).split(".").length >= 3) {
       // const index = newValue.lastIndexOf(".");
       // newValue = newValue.substring(0, index);
       return;
     }
     //@ts-ignore
-    if (isNaN(event.target.value)) {
+    if (isNaN(newValue)) {
       return;
     }
-    if (event.target.value.includes(" ")) {
+    if (newValue === "-") {
+      return;
+    }
+    if (newValue.includes(" ")) {
       return;
     }
     if (newValue === ".") {
