@@ -64,8 +64,18 @@ function StakeCard(props: { cardData: StakeCardProps }) {
   const { openModal: openUnstakeModal } = useModal(
     "stake_unstake_modal",
     cardData && cardData.stakedType === "LTOS Staking"
-      ? { hasInput: true, stakedId: cardData.stakedId }
-      : { hasInput: false, stakedId: cardData?.stakedId }
+      ? {
+          hasInput: true,
+          stakedId: cardData.stakedId,
+          ltosAmount: cardData.staked.ltos.replaceAll("LTOS", ""),
+          ltosWei: cardData.staked.ltosWei,
+        }
+      : {
+          hasInput: false,
+          stakedId: cardData?.stakedId,
+          ltosAmount: cardData?.staked.ltos.replaceAll("LTOS", ""),
+          ltosWei: cardData?.staked.ltosWei,
+        }
   );
   const { openModal } = useModal("stake_stake_modal", cardData);
   const { openModal: openUpdateModal } = useModal("stake_update_modal", {

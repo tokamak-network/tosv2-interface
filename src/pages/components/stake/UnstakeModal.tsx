@@ -11,11 +11,6 @@ import {
   Link,
   Box,
   Input,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
   Tooltip,
   useMediaQuery,
 } from "@chakra-ui/react";
@@ -44,6 +39,8 @@ import useLtosIndex from "hooks/gql/useLtosIndex";
 import useRebaseTime from "hooks/useRebaseTime";
 import useMediaView from "hooks/useMediaView";
 import constant from "constant";
+import StakeModal_Input from "./modal/components/StakeModal_Input";
+import useUnstakeModalCondition from "hooks/stake/modal/useUnstakeModalCondition";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -73,6 +70,8 @@ function UnstakeModal() {
     useModal<{
       hasInput: boolean;
       stakedId: string;
+      ltosAmount: string;
+      ltosWei: string;
     }>();
   const [hasInput, setHasInput] = useState<boolean>(false);
   const { userLTOSBalance } = useUserBalance();
@@ -81,9 +80,8 @@ function UnstakeModal() {
     "unstake_modal"
   );
   const { StakingV2Proxy_CONTRACT } = useCallContract();
-  const { unstakeData, youWillGet, youWillGetMax } = useUnstake(
-    selectedModalData?.stakedId
-  );
+  const { youWillGet, youWillGetMax } = useUnstake(selectedModalData?.stakedId);
+
   const { simpleStakingId } = useUser();
   const { setTx } = useCustomToast();
 
@@ -93,12 +91,18 @@ function UnstakeModal() {
   const rebaseTime = useRebaseTime(":");
   const { errMsg } = constant;
 
+  const maxValue = selectedModalData?.ltosWei;
+  const ltosBalance = selectedModalData?.ltosAmount;
+
+  const { inputBalanceIsEmpty, inputOver, zeroInputBalance, btnDisabled } =
+    useUnstakeModalCondition();
+
   const contentList = [
     {
       title: "You Give",
       content: hasInput
         ? `${commafy(inputValue.stake_unstakeModal_balance) || "0"} LTOS`
-        : `${unstakeData?.maxValue || "0"} LTOS`,
+        : `${"0"} LTOS`,
     },
     {
       title: "You Will Get",
@@ -107,12 +111,6 @@ function UnstakeModal() {
         : `${youWillGetMax || "0"} TOS`,
     },
   ];
-
-  const isOverBlanace =
-    inputValue.stake_unstakeModal_balance > Number(unstakeData?.maxValue);
-  const balanceIsZero =
-    inputValue.stake_unstakeModal_balance === "" ||
-    Number(inputValue.stake_unstakeModal_balance) === 0;
 
   const closeThisModal = useCallback(() => {
     setResetValue();
@@ -230,7 +228,21 @@ function UnstakeModal() {
                 {hasInput && (
                   <Flex flexDir={"column"}>
                     <Flex mb={"9px"}>
-                      <BalanceInput
+                      <StakeModal_Input
+                        pageKey={"Stake_screen"}
+                        atomKey={"stake_unstakeModal_balance"}
+                        recoilKey={"unstake_modal"}
+                        defaultValue={undefined}
+                        inputTokenType={"LTOS"}
+                        tokenBalance={ltosBalance}
+                        maxValue={maxValue}
+                        err={{
+                          inputBalanceIsEmpty,
+                          inputOver,
+                          zeroInputBalance,
+                        }}
+                      />
+                      {/* <BalanceInput
                         w={"100%"}
                         h={45}
                         pageKey={"Stake_screen"}
@@ -246,18 +258,7 @@ function UnstakeModal() {
                             ? errMsg.stake.ltosBalanceIsOver
                             : errMsg.stake.inputIsZero
                         }
-                      ></BalanceInput>
-                    </Flex>
-                    <Flex
-                      fontSize={12}
-                      color={colorMode === "dark" ? "#8b8b93" : "gray.1000"}
-                      h={"17px"}
-                      justifyContent={"space-between"}
-                      px={"6px"}
-                      mb={bp700px ? "24px" : ""}
-                    >
-                      <Text>Your Balance</Text>
-                      <Text>{unstakeData?.maxValue || "0"} LTOS</Text>
+                      ></BalanceInput> */}
                     </Flex>
                   </Flex>
                 )}
@@ -286,7 +287,7 @@ function UnstakeModal() {
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}
-                isDisabled={isModalLoading || isOverBlanace || balanceIsZero}
+                isDisabled={isModalLoading || btnDisabled}
               ></SubmitButton>
             </Flex>
           </Flex>

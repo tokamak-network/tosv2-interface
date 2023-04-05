@@ -80,6 +80,7 @@ import CONTRACT_ADDRESS, {
 import { ZERO_ADDRESS } from "constants/index";
 import { selectedToken0, selectedToken1 } from "atom/swap";
 import { BigNumber, ethers } from "ethers";
+import { BondModalInput } from "atom/bond/input";
 
 function BondModal() {
   const theme = useTheme();
@@ -92,7 +93,13 @@ function BondModal() {
   const { userTokenBalance } = useBondModal();
 
   const { colorMode } = useColorMode();
-  const { inputValue, setResetValue } = useInput("Bond_screen", "bond_modal");
+  const { inputValue, setResetValue } = useInput<BondModalInput>(
+    "Bond_screen",
+    "bond_modal"
+  );
+  const inputBalance = inputValue?.bond_modal_balance;
+  const inputWeeks = inputValue?.bond_modal_period;
+
   const { selectedModalData, selectedModal, closeModal } =
     useModal<BondCardProps>();
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
@@ -115,9 +122,12 @@ function BondModal() {
     maxCapacityValue,
   } = useBondModalInputData();
 
+  console.log(inputValue);
+  
+
   const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
-    inputValue.bond_modal_balance,
-    inputValue.bond_modal_period
+    Number(inputBalance),
+    inputWeeks
   );
 
   const { setTx } = useCustomToast({

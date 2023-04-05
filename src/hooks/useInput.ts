@@ -10,10 +10,10 @@ function useInput<T>(
   key: PageKey,
   subKey: InputKey
 ): {
-  inputValue: T | undefined;
-  value: any | undefined;
-  setValue: SetterOrUpdater<any> | undefined | undefined;
-  setResetValue: Resetter | undefined;
+  inputValue: T | any;
+  value: any | any;
+  setValue: SetterOrUpdater<any> | any;
+  setResetValue: Resetter | any;
 } {
   const { inputValue, value, setValue, resetValue } = useStakeInput<T>(subKey);
   const {

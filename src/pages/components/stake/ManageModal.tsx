@@ -238,6 +238,8 @@ function ManageModal() {
     setBottomLoading(true);
   }, [inputValue.stake_modal_balance, setBottomLoading]);
 
+  console.log(newBalanceType);
+
   return (
     <Modal
       isOpen={selectedModal === "stake_update_modal"}
@@ -326,7 +328,11 @@ function ManageModal() {
                     maxValue={userTokenBalance?.TOS?.balanceWei}
                     inputTokenType={"TOS"}
                     tokenBalance={userTokenBalance?.TOS?.balanceCommified}
-                    err={{ zeroInputBalance, inputOver, inputBalanceIsEmpty }}
+                    err={{
+                      zeroInputBalance: false,
+                      inputOver,
+                      inputBalanceIsEmpty,
+                    }}
                   ></StakeModal_Input>
                 </Flex>
                 <Manage_Period />

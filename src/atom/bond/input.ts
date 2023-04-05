@@ -3,6 +3,11 @@ import { atom, selector } from "recoil";
 //bond max weeks
 const maxPeriod = 53;
 
+export type BondModalInput = {
+  bond_modal_period: number | undefined;
+  bond_modal_balance: string | undefined;
+};
+
 //bond modal states
 const bond_bondModal_defaultValue = {
   bond_modal_period: "",
