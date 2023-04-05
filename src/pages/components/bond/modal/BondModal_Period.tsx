@@ -52,16 +52,31 @@ function SliderGraph() {
 
   const roiTestData = [];
   const bonddiscountTestData = [];
+  const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
-  for (let i = 0; i < 53; i++) {
-    roiTestData.push({ x: i, y: -10 + i, dataIndex: i, id: "ROI" });
-    bonddiscountTestData.push({
-      x: i,
-      y: -40 + i,
-      dataIndex: i,
-      id: "BondDiscount",
-    });
+  if (roiPerWeeks && discountRatePerBondingPrice) {
+    for (let i = 0; i < 53; i++) {
+      roiTestData.push({
+        x: i,
+        y: roiPerWeeks[i],
+        dataIndex: i,
+        id: "ROI",
+      });
+      bonddiscountTestData.push({
+        x: i,
+        y: discountRatePerBondingPrice[i],
+        dataIndex: i,
+        id: "BondDiscount",
+      });
+    }
   }
+
+  console.log("graphData");
+  console.log("roiGraph", roiTestData, bonddiscountTestData);
+  console.log("discountGraph", bonddiscountTestData);
+
+  console.log("roiPerWeeks", roiPerWeeks);
+  console.log("discountPerWeeks", discountRatePerBondingPrice);
 
   const testData = [
     {

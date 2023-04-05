@@ -53,5 +53,19 @@ export function useBondDepository(lockupWeeks?: number) {
     }
   }, [basePrice, _weeks]);
 
-  return { basePrice, bondingPrice };
+  const bondingPricePerWeeks = useMemo(() => {
+    if (basePrice) {
+      let bondPriceArr = [];
+      for (let i = 1; i < 54; i++) {
+        const rate = getDiscountRate(i);
+        const plusValue = basePrice.mul(rate).div(10000);
+        const result = basePrice.add(plusValue);
+        bondPriceArr.push(result);
+      }
+      return bondPriceArr;
+    }
+    return undefined;
+  }, [basePrice]);
+
+  return { basePrice, bondingPrice, bondingPricePerWeeks };
 }

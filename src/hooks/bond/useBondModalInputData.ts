@@ -60,7 +60,7 @@ function useBondModalInputData() {
   const { rebasePeriod } = constant;
   const [isLoading, setLoading] = useRecoilState(modalBottomLoadingState);
 
-  const { bondingPrice } = useBondDepository();
+  const { bondingPrice, bondingPricePerWeeks } = useBondDepository();
   const { rebasePerEpoch } = useStakeV2();
   const { blockTimeStamp } = useBlockNumber();
 
@@ -177,16 +177,66 @@ function useBondModalInputData() {
     });
   }, [newEndTime]);
 
+  //make arr for discountRate
+  const discountRatePerBondingPrice = useMemo(() => {
+    if (
+      priceData &&
+      priceData?.tosPrice &&
+      priceData.ethPrice &&
+      bondingPricePerWeeks
+    ) {
+      const { tosPrice } = priceData;
+
+      return bondingPricePerWeeks.map((bondingPrice) => {
+        const bondingPriceCom = convertNumber({
+          amount: bondingPrice.toString(),
+        });
+        const discunt =
+          priceData.ethPrice /
+          Number(ethers.utils.formatUnits(bondingPrice.toString(), 18)) /
+          1.005;
+        const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
+        const mininmumTosPrice = BigInt(
+          Number(bondingPrice.toString()) / 1.005
+        );
+
+        return Math.floor(discountRate);
+      });
+    }
+    return undefined;
+  }, [priceData, bondingPricePerWeeks]);
+
+  const roiPerWeeks = useMemo(() => {
+    if (
+      newEndTimeStamp &&
+      newEndTimeStampWithoutStos &&
+      blockTimeStamp &&
+      discountRatePerBondingPrice
+    ) {
+      return discountRatePerBondingPrice.map((bondDiscount) => {
+        const discountRate = bondDiscount / 100;
+        const LTOSInterest =
+          (1 + 87045050000000 / 1e18) **
+            ((newEndTimeStamp - blockTimeStamp + 12) /
+              constant.rebase.epochLength) -
+          1;
+        const ROI = ((1 + LTOSInterest) / (1 - discountRate) - 1) * 100;
+        return Math.floor(ROI);
+      });
+    }
+  }, [
+    newEndTimeStamp,
+    newEndTimeStampWithoutStos,
+    blockTimeStamp,
+    discountRatePerBondingPrice,
+  ]);
+
   useEffect(() => {
     async function fetchBondDiscount() {
       if (
-        BondDepositoryProxy_CONTRACT &&
-        marketId &&
-        bondInputPeriod !== "" &&
-        bondInputPeriod !== undefined &&
         priceData &&
         priceData?.tosPrice &&
-        ethPrice &&
+        priceData?.ethPrice &&
         bondingPrice
       ) {
         const { tosPrice } = priceData;
@@ -212,14 +262,7 @@ function useBondModalInputData() {
       console.log("**fetchBondDiscount err**");
       console.log(e);
     });
-  }, [
-    BondDepositoryProxy_CONTRACT,
-    marketId,
-    bondInputPeriod,
-    priceData,
-    bondingPrice,
-    ethPrice,
-  ]);
+  }, [priceData, bondingPrice]);
 
   useEffect(() => {
     async function fetchROI() {
@@ -309,6 +352,8 @@ function useBondModalInputData() {
     isMinusDiscount,
     roi,
     isMinusROI,
+    roiPerWeeks,
+    discountRatePerBondingPrice,
   };
 }
 
