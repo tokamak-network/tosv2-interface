@@ -106,6 +106,7 @@ function SettingsComponent() {
               pl={"24px"}
               border={"none"}
               min={0}
+              max={50}
               fontSize={"18px"}
               borderRadius={"4px"}
               borderColor={"transparent"}
