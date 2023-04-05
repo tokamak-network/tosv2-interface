@@ -105,6 +105,7 @@ function SettingsComponent() {
               color={colorMode === 'dark'? '#64646f': "#3e495c"}
               pl={"24px"}
               border={"none"}
+              min={0}
               fontSize={"18px"}
               borderRadius={"4px"}
               borderColor={"transparent"}
@@ -132,6 +133,11 @@ function SettingsComponent() {
                 outline={"none"}
                 borderColor={"transparent"}
                 pl={"0px"}
+                onKeyDown={(e) => {
+                  if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                    e.preventDefault();
+                  }
+                }}
               />
             </NumberInput>
           </Flex>
