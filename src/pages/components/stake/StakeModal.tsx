@@ -63,7 +63,7 @@ import useMediaView from "hooks/useMediaView";
 import { stake_stakeModal_defaultValue } from "atom/stake/input";
 import StakeModal_Input from "./modal/components/StakeModal_Input";
 import StakeModal_Period from "./modal/components/StakeModal_Period";
-import { UserGuide } from "../common/guide/UserGuide";
+import UserGuide from "../common/guide/UserGuide";
 
 function StakeModal() {
   const theme = useTheme();

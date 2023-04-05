@@ -61,7 +61,7 @@ import InputPeriod from "common/input/InputPeriod";
 import useStos from "hooks/stake/useStos";
 import RelockModal_BottomContent from "./modal/RelockModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
-import { UserGuide } from "../common/guide/UserGuide";
+import UserGuide from "../common/guide/UserGuide";
 import Relock_Balance from "./modal/components/relock/Relock_Balance";
 import StakeModal_Period from "./modal/components/StakeModal_Period";
 

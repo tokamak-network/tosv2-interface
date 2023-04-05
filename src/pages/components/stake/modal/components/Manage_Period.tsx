@@ -10,7 +10,7 @@ import constant from "constant";
 import useManageModalConditon from "hooks/stake/useManageModalCondition";
 import useInput from "hooks/useInput";
 
-export function Manage_Period() {
+export default function Manage_Period() {
   const { colorMode } = useColorMode();
   const { bp700px } = useMediaView();
   const { newEndTime, leftWeeks, leftDays, leftTime } = useUpdateModalData();
