@@ -73,7 +73,7 @@ import ManageModal_BottomContent from "./modal/ManageModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
 import StakeModal_Input from "@/stakeComponents/modal/components/StakeModal_Input";
 import StakeModal_Period from "@/stakeComponents/modal/components/StakeModal_Period";
-import { Manage_Period } from "@/stakeComponents/modal/components/manage/Manage_Period";
+import { Manage_Period } from "@/stakeComponents/modal/components/Manage_Period";
 import { UserGuide } from "../common/guide/UserGuide";
 
 function ManageModal() {
