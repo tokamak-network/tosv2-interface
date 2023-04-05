@@ -22,7 +22,7 @@ import TokenImageContrainer from "pages/components/common/modal/TokenImageContra
 
 const bondToken: SupportedBondToken = "ETH";
 
-export default function BondModal_Input() {
+export default function BondModal_Balance() {
   const { errMsg } = constant;
   const { modalCondition, userTokenBalance } = useBondModal();
   const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
@@ -122,8 +122,8 @@ export default function BondModal_Input() {
       }
     }
     fetchActualMaxValue().catch((e) => {
-      console.log("**fetchActualMaxValue err**");
-      console.log(e);
+      // console.log("**fetchActualMaxValue err**");
+      // console.log(e);
     });
   }, [
     BondDepositoryProxy_CONTRACT,

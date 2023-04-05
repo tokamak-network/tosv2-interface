@@ -9,8 +9,8 @@ import {
 import { InputKey, Bond_InputValueType } from "types/atom";
 
 function useBondInput<T>(key: InputKey): {
-  inputValue: T;
-  value: T;
+  inputValue: T | any;
+  value: T | any;
   setValue: SetterOrUpdater<any> | undefined;
   resetValue: Resetter | undefined;
 } {

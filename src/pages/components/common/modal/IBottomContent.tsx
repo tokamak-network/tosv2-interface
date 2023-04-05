@@ -22,7 +22,8 @@ function IBottomContent(props: IBottomContentProps) {
     hasTitleStar,
   } = props;
   const { colorMode } = useColorMode();
-  const { isModalLoading } = useModal();
+  // const { isModalLoading } = useModal();
+  const isModalLoading = false;
   const { bp700px } = useMediaView();
   return (
     <Flex>

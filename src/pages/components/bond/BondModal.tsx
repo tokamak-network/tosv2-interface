@@ -69,7 +69,7 @@ import useStosReward from "hooks/stake/useStosReward";
 import BondConfirm from "./modal/BondConfirm";
 import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
-import BondModal_Input from "./modal/BondModal_Input";
+import BondModal_Input from "./modal/BondModal_Balance";
 import BondModal_Period from "./modal/BondModal_Period";
 import { bond_modal, bond_modal_state_defaultValue } from "atom/bond/modal";
 import { isProduction } from "constants/production";
@@ -81,6 +81,7 @@ import { ZERO_ADDRESS } from "constants/index";
 import { selectedToken0, selectedToken1 } from "atom/swap";
 import { BigNumber, ethers } from "ethers";
 import { BondModalInput } from "atom/bond/input";
+import BondModal_Balance from "./modal/BondModal_Balance";
 
 function BondModal() {
   const theme = useTheme();
@@ -121,9 +122,6 @@ function BondModal() {
     isMinusDiscount,
     maxCapacityValue,
   } = useBondModalInputData();
-
-  console.log(inputValue);
-  
 
   const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
     Number(inputBalance),
@@ -291,7 +289,7 @@ function BondModal() {
                 {/* Period input */}
                 <BondModal_Period />
                 {/* ETH input */}
-                <BondModal_Input />
+                <BondModal_Balance />
                 {/* end of content middle area */}
               </Flex>
 

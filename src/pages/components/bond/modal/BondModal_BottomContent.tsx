@@ -35,6 +35,8 @@ function BondModal_BottomContent(props: {
     isMinusDiscount,
   } = useBondModalInputData();
 
+  const inputWeeks = inputValue?.bond_modal_period;
+
   const contentList: IBottomContentProps[] = useMemo(() => {
     return [
       {
@@ -62,6 +64,8 @@ function BondModal_BottomContent(props: {
         title: "End Time",
         content: fiveDaysLockup
           ? getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm")
+          : inputWeeks === undefined || inputWeeks === ""
+          ? "-"
           : endTime ?? "-",
         tooltip: "LTOS can be unstaked after this time. ",
       },
@@ -75,6 +79,7 @@ function BondModal_BottomContent(props: {
     isMinusDiscount,
     originalTosAmount,
     youWillGet,
+    inputWeeks,
   ]);
 
   return (

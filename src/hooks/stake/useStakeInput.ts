@@ -19,8 +19,8 @@ import {
 import { InputKey } from "types/atom";
 
 function useStakeInput<T>(key: InputKey): {
-  inputValue: T;
-  value: T;
+  inputValue: T | any;
+  value: T | any;
   setValue: SetterOrUpdater<any> | undefined;
   resetValue: Resetter | undefined;
 } {

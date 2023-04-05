@@ -157,8 +157,10 @@ function BondLockupGraph(props: {
           textAlign="center"
           fontSize={"15px"}
           fontWeight={600}
-          left={"70px"}
-          bottom={"-18px"}
+          left={
+            sliderValue === undefined || sliderValue < 38 ? "70px" : "-70px"
+          }
+          bottom={"-20px"}
           label={
             <Flex
               flexDir={"column"}
