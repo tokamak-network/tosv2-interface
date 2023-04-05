@@ -34,6 +34,7 @@ export default function BondModal_Balance() {
   const [actualMaxValue, setActualMaxValue] = useState<string | undefined>(
     undefined
   );
+  const inputWeeks = inputValue?.bond_modal_period;
 
   const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
@@ -153,7 +154,7 @@ export default function BondModal_Balance() {
             ROI
           </Text>
           <Text color={isMinusROI ? "red.100" : "blue.200"} fontWeight={600}>
-            {roi}%
+            {inputWeeks === undefined || inputWeeks === "" ? "-" : roi}%
           </Text>
         </Flex>
         <Flex alignItems={"center"}>
@@ -167,7 +168,8 @@ export default function BondModal_Balance() {
             color={isMinusDiscount ? "red.100" : "blue.200"}
             fontWeight={600}
           >
-            {bondDiscount}%
+            {inputWeeks === undefined || inputWeeks === "" ? "-" : bondDiscount}
+            %
           </Text>
         </Flex>
       </Flex>
