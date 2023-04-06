@@ -167,7 +167,6 @@ function SwapInterfaceModal() {
       !account ||
       Number(approved) >= Number(fromAmount) ||
       token0.address === ZERO_ADDRESS;
-      console.log(Number(approved),Number(fromAmount));
       
     return condition;
   }, [account, approved, fromAmount, token0.address, tx.tx]);
