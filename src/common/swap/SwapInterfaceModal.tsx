@@ -167,7 +167,7 @@ function SwapInterfaceModal() {
       !account ||
       Number(approved) >= Number(fromAmount) ||
       token0.address === ZERO_ADDRESS;
-      // console.log(Number(approved),Number(fromAmount));
+      console.log(Number(approved),Number(fromAmount));
       
     return condition;
   }, [account, approved, fromAmount, token0.address, tx.tx]);
@@ -211,7 +211,7 @@ function SwapInterfaceModal() {
       }
       try {
         const totalSupply = await contract?.totalSupply();
-        const receipt = await contract?.approve(SwapperV2Proxy, totalSupply);
+        const receipt = await contract?.increaseAllowance(SwapperV2Proxy, totalSupply);
         setTX({ tx: true, data: { name: "approve" } });
 
         if (receipt) {
