@@ -4,7 +4,7 @@ import { convertNumber } from "utils/number";
 import useCallContract from "hooks/useCallContract";
 import { useBlockNumber } from "./useBlockNumber";
 import { Contract, ethers, providers } from "ethers";
-import { SupportedToken, SupportedTokenList, TokenNames } from "types/tokens";
+import { SupportedToken, TokenNames } from "types/tokens";
 
 type BalanceWei = string | undefined;
 type BalanceCommified = string | undefined;
