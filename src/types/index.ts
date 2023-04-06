@@ -1,8 +1,10 @@
 import { BondTopCardProps } from "./bond";
 import { StakeTopCardProps } from "./stake";
 
-export type TokenTypes = "ETH" | "TON" | "WTON" | "TOS" | "LTOS";
+export type TokenTypes = "ETH" | "TON" | "WTON" | "TOS" | "LTOS" | "STOS";
 export type SupportedInputTokenTypes = TokenTypes;
+
+export type SupportedInputTokenPair = "LTOS-STOS";
 
 export type TopCardList = BondTopCardProps[] | StakeTopCardProps[];
 
