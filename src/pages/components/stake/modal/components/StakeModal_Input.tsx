@@ -48,10 +48,14 @@ export default function StakeModal_Input(props: StakeModalInput) {
     pageKey,
     recoilKey,
     atomKey,
-    err: { zeroInputBalance, inputOver, inputBalanceIsEmpty },
+    err,
     buyMoreButton,
     isDisabled,
   } = props;
+  const zeroInputBalance = err?.zeroInputBalance;
+  const inputOver = err?.inputOver;
+  const inputBalanceIsEmpty = err?.inputBalanceIsEmpty;
+
   const { errMsg } = constant;
   const { inputValue, setValue } = useInput(pageKey, recoilKey);
   const { bondDiscount, isMinusDiscount, minimumTosPrice, roi, isMinusROI } =
