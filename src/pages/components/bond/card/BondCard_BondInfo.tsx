@@ -88,7 +88,7 @@ export default function BondCard_BondInfo(props: BondInfoProps) {
   const { bondInfoData } = props;
   return (
     <Flex flexDir={"column"} rowGap={"9px"}>
-      {bondInfoData.map((data, index) => {
+      {bondInfoData?.map((data, index) => {
         return (
           <InfoComponent
             title={data.title}

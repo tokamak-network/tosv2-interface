@@ -30,7 +30,6 @@ import { isProduction } from "constants/production";
 import styled from "@emotion/styled";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import { accountBar } from "atom/global/sidebar";
-import { ZERO_ADDRESS } from "constants/index";
 import { selectedToken0, selectedToken1 } from "atom/swap";
 import { SupportedInputTokenTypes } from "types";
 import BondCard_TokenInfo from "./card/BondCard_TokenInfo";
@@ -42,6 +41,7 @@ import BondCard_BondInfo, {
 } from "./card/BondCard_BondInfo";
 import BondCard_Description from "./card/BondCard_Description";
 import BondCard_Buttons from "./card/BondCard_Buttons";
+import BondCard_Capacity from "./card/BondCard_Capacity";
 
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
@@ -52,10 +52,8 @@ function BondCard(props: { data: BondCardProps }) {
   const { tryActivation } = useWallet();
   const { bp700px } = useMediaView();
   const [width] = useWindowDimensions();
-  const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
   const closed = data?.status === "closed";
 
-  const [token0, setToken0] = useRecoilState(selectedToken0);
   const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
 
   const timeDiff = data?.endTime - getNowTimeStamp();
@@ -109,14 +107,15 @@ function BondCard(props: { data: BondCardProps }) {
       flexDir={"column"}
       w={["100%", "310px", "362px"]}
       h={"545px"}
+      minH={"545px"}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
       borderColor={colorMode === "light" ? "gray.900" : "gray.300"}
       borderRadius={10}
-      pt={"18px"}
+      pt={"25px"}
       bg={colorMode === "light" ? "white.100" : "#1f2128"}
       px={"20px"}
-      pb={"21px"}
+      pb={"24px"}
     >
       <Flex mb={"18px"} justifyContent={"space-between"} alignItems="center">
         <Flex
@@ -148,27 +147,33 @@ function BondCard(props: { data: BondCardProps }) {
         outToken1={"STOS"}
       />
       <BondCard_Progress progress={data?.blueProgress} isNA={false} />
-      <Flex flexDir={"column"} rowGap={"24px"}>
+      <Flex flexDir={"column"} rowGap={"24px"} h={"100%"}>
         <BondCard_BondInfo bondInfoData={bondInfodata} />
-        <BondCard_Description
-          description={
-            "This bond mints TOS, which is staked for LTOS & sTOS. After the lock-up period, LTOS can be unstaked in exchange for TOS."
-          }
-          discountRate={-1}
-        />
-        <BasicButton
-          name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
-          w={["100%", "270px", "150px"]}
-          h={"33px"}
-          style={{
-            alignSelf: "center",
-            marginTop: "9px",
-            fontWeight: "normal",
-          }}
-          isDisabled={bondButtonIsDisabled}
-          isLoading={txPending}
-          onClick={account ? openModal : tryActivation}
-        ></BasicButton>
+        {currentRound === 1 ? (
+          <BondCard_Description
+            description={
+              "This bond mints TOS, which is staked for LTOS & sTOS. After the lock-up period, LTOS can be unstaked in exchange for TOS."
+            }
+            discountRate={-1}
+          />
+        ) : (
+          <BondCard_Capacity ethAmount={"36"} date={"13 days 12:04:03"} />
+        )}
+        {currentRound === 1 && (
+          <BasicButton
+            name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
+            w={["100%", "270px", "150px"]}
+            h={"33px"}
+            style={{
+              alignSelf: "center",
+              marginTop: "9px",
+              fontWeight: "normal",
+            }}
+            isDisabled={bondButtonIsDisabled}
+            isLoading={txPending}
+            onClick={account ? openModal : tryActivation}
+          ></BasicButton>
+        )}
         <BondCard_Buttons
           currentRound={currentRound}
           lastRound={27}
@@ -180,56 +185,3 @@ function BondCard(props: { data: BondCardProps }) {
 }
 
 export default BondCard;
-
-{
-  /* <Text fontSize={12} color={"red.100"}>
-            Notice: You can purchase TOS for a lower price
-            <br />
-            at Tokamak Network Swap using
-            <br />
-            <span
-              style={{
-                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
-                textDecoration: "underline",
-                // cursor: hoverWTON ? "pointer" : "default",
-                cursor: "pointer",
-              }}
-              // onClick={openSwapModal}
-              onClick={() => {
-                setOpenedAccountBar(true);
-                openSwapModal();
-                setToken0({
-                  name: "WTON",
-                  address: WTON_ADDRESS,
-                  img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
-                });
-              }}
-            >
-              WTON
-            </span>
-            <span
-              style={{ color: colorMode === "dark" ? "#f1f1f1" : "#07070c" }}
-            >
-              {" "}
-              &{" "}
-            </span>
-            <span
-              style={{
-                color: colorMode === "dark" ? "#f1f1f1" : "#07070c",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                setOpenedAccountBar(true);
-                openSwapModal();
-                setToken0({
-                  name: "ETH",
-                  address: ZERO_ADDRESS,
-                  img: "",
-                });
-              }}
-            >
-              ETH
-            </span>
-          </Text> */
-}

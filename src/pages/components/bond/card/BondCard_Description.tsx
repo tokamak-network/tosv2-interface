@@ -1,9 +1,23 @@
 import { Flex, Text } from "@chakra-ui/react";
+import { accountBar } from "atom/global/sidebar";
+import { selectedToken0 } from "atom/swap";
+import { ZERO_ADDRESS } from "constants/index";
 import useModal from "hooks/useModal";
+import { useRecoilState } from "recoil";
+import { useRouter } from "next/router";
 
 function WarningComponent(props: { discountRate: number }) {
   const { discountRate } = props;
   const { openModal: openSwapModal } = useModal("swap_interface_modal");
+  const [token0, setToken0] = useRecoilState(selectedToken0);
+  const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
+  const { openModal } = useModal("stake_stake_modal");
+  const router = useRouter();
+
+  const sendToStake = () => {
+    router.push("/stake");
+    openModal();
+  };
 
   return (
     <>
@@ -15,7 +29,33 @@ function WarningComponent(props: { discountRate: number }) {
         <span style={{ fontWeight: "bold", color: "#e23738" }}>
           {discountRate}%
         </span>
-        . Use Tokamak Network Swap for better price &amp; stake.
+        . Use{" "}
+        <span
+          style={{ textDecoration: "underline", cursor: "pointer" }}
+          onClick={() => {
+            setOpenedAccountBar(true);
+            openSwapModal();
+            setToken0({
+              name: "ETH",
+              address: ZERO_ADDRESS,
+              img: "https://tonstarter-symbols.s3.ap-northeast-2.amazonaws.com/wton-symbol%403x.png",
+            });
+          }}
+        >
+          Tokamak Network Swap
+        </span>{" "}
+        for better price &amp;
+        <span
+          style={{
+            textDecoration: "underline",
+            marginLeft: "3px",
+            cursor: "pointer",
+          }}
+          onClick={() => sendToStake()}
+        >
+          stake
+        </span>
+        .
       </Text>
     </>
   );
