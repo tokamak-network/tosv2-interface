@@ -114,9 +114,11 @@ export default function StakeModal_Period<T>(props: StakeModalPeriod) {
             maxValue={stakeModalMaxWeeks}
             isError={inputPeriodOver || inputPeriodIsEmpty}
             errorMsg={inputPeriodOver ? errMsg.stake.periodIsOver : ""}
-            leftDays={fiveDaysLockup ? undefined : leftDays}
-            leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
-            endTime={fiveDaysLockup || inputPeriodOver ? undefined : newEndTime}
+            leftDays={fiveDaysLockup ? undefined : leftDays ?? "0"}
+            leftTime={fiveDaysLockup ? undefined : leftHourAndMin ?? "0"}
+            endTime={
+              fiveDaysLockup || inputPeriodOver ? undefined : newEndTime ?? "0"
+            }
           ></InputPeriod>
         </Flex>
       </Flex>
