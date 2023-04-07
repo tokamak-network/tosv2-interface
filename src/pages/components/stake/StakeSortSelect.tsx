@@ -12,7 +12,6 @@ function StakeSortSelect() {
   return (
     <Select
       minW={["170px", "173px", "173px"]}
-      ml={bp500px ? "" : "30px"}
       h={"45px"}
       bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
       borderWidth={1}

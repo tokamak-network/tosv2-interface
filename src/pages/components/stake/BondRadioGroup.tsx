@@ -24,19 +24,6 @@ function StakeRadioGroup() {
         value={stakeRadioValue}
       >
         <Stack direction="row" columnGap={"34px"} h={"100%"}>
-          <Radio value="All">
-            <Text
-              color={
-                stakeRadioValue === "All"
-                  ? colorMode === "dark"
-                    ? "white.200"
-                    : "gray.800"
-                  : ""
-              }
-            >
-              All
-            </Text>
-          </Radio>
           <Radio value="Bond">
             <Text
               color={
@@ -61,6 +48,19 @@ function StakeRadioGroup() {
               }
             >
               Stake
+            </Text>
+          </Radio>
+          <Radio value="All">
+            <Text
+              color={
+                stakeRadioValue === "All"
+                  ? colorMode === "dark"
+                    ? "white.200"
+                    : "gray.800"
+                  : ""
+              }
+            >
+              All
             </Text>
           </Radio>
         </Stack>

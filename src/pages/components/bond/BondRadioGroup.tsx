@@ -37,19 +37,6 @@ function BondRadioGroup() {
             bp500px ? "space-between" : bp1024px ? "flex-start" : "flex-end"
           }
         >
-          <Radio value="default">
-            <Text
-              color={
-                bondRadioValue === "default"
-                  ? colorMode === "dark"
-                    ? "white.200"
-                    : "gray.800"
-                  : ""
-              }
-            >
-              All
-            </Text>
-          </Radio>
           <Radio value="open">
             <Text
               color={
@@ -73,7 +60,7 @@ function BondRadioGroup() {
                   : ""
               }
             >
-              Future
+              Upcoming
             </Text>
           </Radio>
           <Radio value="closed">
@@ -87,6 +74,19 @@ function BondRadioGroup() {
               }
             >
               Closed
+            </Text>
+          </Radio>
+          <Radio value="default">
+            <Text
+              color={
+                bondRadioValue === "default"
+                  ? colorMode === "dark"
+                    ? "white.200"
+                    : "gray.800"
+                  : ""
+              }
+            >
+              All
             </Text>
           </Radio>
         </Stack>
