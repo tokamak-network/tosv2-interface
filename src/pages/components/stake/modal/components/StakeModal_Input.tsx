@@ -31,9 +31,9 @@ type StakeModalInput = {
   recoilKey: InputKey;
   atomKey: string;
   err: {
-    zeroInputBalance: boolean;
-    inputOver: boolean;
-    inputBalanceIsEmpty: boolean;
+    zeroInputBalance: boolean | undefined;
+    inputOver: boolean | undefined;
+    inputBalanceIsEmpty: boolean | undefined;
   };
   buyMoreButton?: boolean;
   isDisabled?: boolean;
