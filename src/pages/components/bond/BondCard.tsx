@@ -42,6 +42,7 @@ import BondCard_BondInfo, {
 import BondCard_Description from "./card/BondCard_Description";
 import BondCard_Buttons from "./card/BondCard_Buttons";
 import BondCard_Capacity from "./card/BondCard_Capacity";
+import BondCard_Status from "./card/BondCard_Status";
 
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
@@ -117,32 +118,13 @@ function BondCard(props: { data: BondCardProps }) {
       px={"20px"}
       pb={"24px"}
     >
-      <Flex mb={"18px"} justifyContent={"space-between"} alignItems="center">
-        <Flex
-          fontWeight={600}
-          color={"white.200"}
-          h={"28px"}
-          alignItems={"end"}
-          columnGap={"6px"}
-        >
-          <Text fontSize={20}>Minting Bond </Text>
-          <Text fontSize={11} pb={"4px"}>
-            {data?.version}
-          </Text>
-        </Flex>
-        <Flex
-          fontSize={12}
-          textAlign={"right"}
-          alignItems={"flex-end"}
-          flexDir={"column"}
-          fontWeight={data?.status === "open" ? "bold" : ""}
-        >
-          <Text fontSize={13}>Open</Text>
-          <Text fontSize={11}>Until 13 days 12:04:03</Text>
-        </Flex>
-      </Flex>
+      <BondCard_Status
+        version={1.1}
+        status={currentRound !== 1 ? "Add Capacity" : "open"}
+        date={"Until 13 days 12:04:03"}
+      />
       <BondCard_TokenInfo
-        inToken={data.sellTokenType}
+        inToken={data?.sellTokenType}
         outToken0={"LTOS"}
         outToken1={"STOS"}
       />
@@ -166,7 +148,6 @@ function BondCard(props: { data: BondCardProps }) {
             h={"33px"}
             style={{
               alignSelf: "center",
-              marginTop: "9px",
               fontWeight: "normal",
             }}
             isDisabled={bondButtonIsDisabled}

@@ -33,9 +33,13 @@ export default function StakeModal_Period<T>(props: StakeModalPeriod) {
     periodKey,
     inputPeriodOver,
     inputPeriodIsEmpty,
-    endTimeInfo: { leftDays, leftHourAndMin, newEndTime },
+    endTimeInfo,
     hasFivedaysLockup,
   } = props;
+  const leftDays = endTimeInfo?.leftDays;
+  const leftHourAndMin = endTimeInfo?.leftHourAndMin;
+  const newEndTime = endTimeInfo?.newEndTime;
+
   const { colorMode } = useColorMode();
   const { bp700px } = useMediaView();
   const { inputValue, setValue } = useInput(pageKey, recoilKey);

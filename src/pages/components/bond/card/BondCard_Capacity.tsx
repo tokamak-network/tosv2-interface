@@ -13,7 +13,7 @@ export default function BondCard_Capacity(props: {
       justifyContent={"center"}
       flexDir={"column"}
     >
-      <Text>{props.ethAmount} will be added to this market in</Text>
+      <Text>{props.ethAmount} ETH will be added to this market in</Text>
       <Text>{props.date}.</Text>
     </Flex>
   );
