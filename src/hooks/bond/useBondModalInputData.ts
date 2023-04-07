@@ -233,6 +233,9 @@ function useBondModalInputData() {
 
   useEffect(() => {
     async function fetchBondDiscount() {
+      if (bondInputPeriod === undefined || bondInputPeriod === "") {
+        return setBondDiscount("-");
+      }
       if (
         priceData &&
         priceData?.tosPrice &&

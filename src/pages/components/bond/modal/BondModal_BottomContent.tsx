@@ -37,6 +37,8 @@ function BondModal_BottomContent(props: {
 
   const inputWeeks = inputValue?.bond_modal_period;
 
+  console.log(bondDiscount);
+
   const contentList: IBottomContentProps[] = useMemo(() => {
     return [
       {
