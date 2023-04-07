@@ -53,10 +53,19 @@ export function useBondCard() {
           currentCapacity,
           closed,
           ethPrice,
+          capacityUpdatePeriod,
+          periodicCapacity,
         } = bond;
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
+
+        //time
         const startDay = convertTimeStamp(startTime);
         const endDay = convertTimeStamp(endTime);
+        const salePeriod = endTime - getNowTimeStamp();
+        const totalRound = salePeriod / capacityUpdatePeriod;
+
+        // const roundEthCapacity = ;
+
         const bondCapacity = commafy(capacity, 0);
         const totalSoldCom = commafy(totalSold, 0);
 
@@ -88,12 +97,20 @@ export function useBondCard() {
         const endTimeDiff = endTime - getNowTimeStamp();
         const openTimeDiff = startTime - getNowTimeStamp();
 
+        const isClosed = closed || endTimeDiff < 0;
+        const isUpcoming = openTimeDiff > 0;
+        const status: BondCardProps["status"] = isClosed
+          ? "closed"
+          : isUpcoming
+          ? "will be open"
+          : "open";
+
         return {
           bondCapacity,
           totalSold: totalSoldCom,
           blueProgress,
           currentProgressOnCurrentCapacity,
-          bondingPrice: `$ ${commafy(bondPrice)}`,
+          bondingPrice: commafy(bondPrice),
           discountRate: Number(commafy(discount)),
           sellTokenType: "ETH",
           buyTokenType: "TOS",
@@ -109,15 +126,12 @@ export function useBondCard() {
           currentCapacityProgress,
           currentBondable,
           currentCapacity: commafy(currentCapacityTotal, 0),
-          status: closed
-            ? "closed"
-            : openTimeDiff > 0
-            ? "will be open"
-            : endTimeDiff > 0
-            ? "open"
-            : "closed",
+          status,
           marketId: index,
           ethPrice,
+          totalRound,
+          roundEthCapacity: 1,
+          tosPrice: Number(commafy(tosPrice, 2)),
         };
       });
 

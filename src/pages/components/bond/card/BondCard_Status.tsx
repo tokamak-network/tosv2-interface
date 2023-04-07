@@ -19,18 +19,21 @@ function TextWrap(props: {
   );
 }
 
-function SubText(date: string) {
-  return (
-    <Text fontSize={11} color={"gray.100"}>
-      {date}
-    </Text>
-  );
+function SubText(date: string | undefined) {
+  if (date) {
+    return (
+      <Text fontSize={11} color={"gray.100"}>
+        {date}
+      </Text>
+    );
+  }
+  return null;
 }
 
 export default function BondCard_Status(props: {
   version: number;
   status: BondCardProps["status"] | "Add Capacity";
-  date: string;
+  date: string | undefined;
 }) {
   const { version, status, date } = props;
 

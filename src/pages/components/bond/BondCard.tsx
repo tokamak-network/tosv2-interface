@@ -44,6 +44,19 @@ import BondCard_Buttons from "./card/BondCard_Buttons";
 import BondCard_Capacity from "./card/BondCard_Capacity";
 import BondCard_Status from "./card/BondCard_Status";
 
+function getStatusAndDate(status: BondCardProps["status"]) {
+  switch (status) {
+    case "open":
+      return "Until 13 days 12:04:03";
+    case "will be open":
+      return "In 13 days 12:04:03";
+    case "closed":
+      return;
+    default:
+      return;
+  }
+}
+
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
   const { data } = props;
@@ -85,19 +98,43 @@ function BondCard(props: { data: BondCardProps }) {
 
   const bondInfodata: BondInfoDataMap = [
     {
-      title: <TitleComponent title="ROI" tooltip={true} />,
+      title: (
+        <TitleComponent
+          title="ROI"
+          tooltip={true}
+          label={
+            "Return on Investment or ROI is calculated using the bond discount rate and LTOS APY. If the ROI is less than LTOS APY, it is better to buy TOS and stake for LTOS."
+          }
+        />
+      ),
       content: <ContentComponent content="10.1%" />,
     },
     {
       title: (
-        <TitleComponent title="Bond" subTitle="Market Price" tooltip={true} />
+        <TitleComponent
+          title="Bond"
+          subTitle="Market Price"
+          tooltip={true}
+          label={
+            "Bond price represents the cost of purchasing 1 TOS. The discount is calculated relative to the market price of TOS for easy comparison"
+          }
+        />
       ),
       content: (
-        <ContentComponent content="$9.00" subContent="$10.00 (10.0% off)" />
+        <ContentComponent
+          content={`$${data?.bondingPrice}`}
+          subContent={`$${data?.tosPrice} (${data?.discountRate}% off)`}
+        />
       ),
     },
     {
-      title: <TitleComponent title="LTOS APY" tooltip={true} />,
+      title: (
+        <TitleComponent
+          title="LTOS APY"
+          tooltip={true}
+          label={"LTOS Annual Percentage Yield or APY represents amount of TOS"}
+        />
+      ),
       content: <ContentComponent content="10.1%" />,
     },
   ];
@@ -118,10 +155,15 @@ function BondCard(props: { data: BondCardProps }) {
       px={"20px"}
       pb={"24px"}
     >
+      {/* {isProduction() === false && <div>{data?.index}</div>} */}
       <BondCard_Status
         version={1.1}
-        status={currentRound !== 1 ? "Add Capacity" : "open"}
-        date={"Until 13 days 12:04:03"}
+        status={
+          data?.status === "open" && currentRound !== 1
+            ? "Add Capacity"
+            : data?.status
+        }
+        date={getStatusAndDate(data?.status)}
       />
       <BondCard_TokenInfo
         inToken={data?.sellTokenType}
@@ -136,7 +178,7 @@ function BondCard(props: { data: BondCardProps }) {
             description={
               "This bond mints TOS, which is staked for LTOS & sTOS. After the lock-up period, LTOS can be unstaked in exchange for TOS."
             }
-            discountRate={-1}
+            discountRate={data?.discountRate}
           />
         ) : (
           <BondCard_Capacity ethAmount={"36"} date={"13 days 12:04:03"} />

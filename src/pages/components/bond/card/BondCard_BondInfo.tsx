@@ -34,7 +34,7 @@ export function TitleComponent(props: {
       </Flex>
       {tooltip && (
         <Flex pb={"2px"} ml={"3px"}>
-          <BasicTooltip label={label} />
+          <BasicTooltip label={label} placement={"bottom"} />
         </Flex>
       )}
     </Flex>

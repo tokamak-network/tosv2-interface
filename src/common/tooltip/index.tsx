@@ -5,22 +5,24 @@ import {
   Text,
   forwardRef,
   Icon,
+  PlacementWithLogical,
 } from "@chakra-ui/react";
 
 import { QuestionOutlineIcon, AttachmentIcon } from "@chakra-ui/icons";
 
 type tooltipProps = {
   label: string | undefined;
+  placement?: PlacementWithLogical;
 };
 
 const BasicTooltip: React.FC<tooltipProps> = (props) => {
   const { colorMode } = useColorMode();
-  const { label } = props;
+  const { label, placement } = props;
 
   return (
     <Tooltip
       display={label?.length === 0 ? "none" : "flex"}
-      placement={"top"}
+      placement={placement ?? "top"}
       label={label}
       bg={colorMode === "dark" ? "#1f2128" : "#fff"}
       borderRadius={"3px"}

@@ -33,6 +33,9 @@ export type BondCardProps = {
   status: "open" | "closed" | "will be open";
   marketId: number;
   ethPrice: number;
+  totalRound: number;
+  roundEthCapacity: number;
+  tosPrice: number;
 };
 
 export type BondRawdata = {
