@@ -53,7 +53,7 @@ function useBondModalInputData() {
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const bondInputPeriod = fiveDaysLockup ? 0 : inputValue?.bond_modal_period;
   const { newEndTime, newEndTimeStamp, newEndTimeStampWithoutStos } =
-    useStosReward(Number(inputTosAmount), bondInputPeriod);
+    useStosReward(Number(inputTosAmount), 53);
   const { newBalanceStos } = useStosBond(Number(inputTosAmount));
 
   const { priceData } = usePrice();
@@ -188,17 +188,11 @@ function useBondModalInputData() {
       const { tosPrice } = priceData;
 
       return bondingPricePerWeeks.map((bondingPrice) => {
-        const bondingPriceCom = convertNumber({
-          amount: bondingPrice.toString(),
-        });
         const discunt =
           priceData.ethPrice /
           Number(ethers.utils.formatUnits(bondingPrice.toString(), 18)) /
           1.005;
         const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
-        const mininmumTosPrice = BigInt(
-          Number(bondingPrice.toString()) / 1.005
-        );
 
         return Math.floor(discountRate);
       });
@@ -207,29 +201,22 @@ function useBondModalInputData() {
   }, [priceData, bondingPricePerWeeks]);
 
   const roiPerWeeks = useMemo(() => {
-    if (
-      newEndTimeStamp &&
-      newEndTimeStampWithoutStos &&
-      blockTimeStamp &&
-      discountRatePerBondingPrice
-    ) {
+    if (newEndTimeStamp && blockTimeStamp && discountRatePerBondingPrice) {
       return discountRatePerBondingPrice.map((bondDiscount) => {
         const discountRate = bondDiscount / 100;
+
         const LTOSInterest =
           (1 + 87045050000000 / 1e18) **
             ((newEndTimeStamp - blockTimeStamp + 12) /
               constant.rebase.epochLength) -
           1;
+
         const ROI = ((1 + LTOSInterest) / (1 - discountRate) - 1) * 100;
+
         return Math.floor(ROI);
       });
     }
-  }, [
-    newEndTimeStamp,
-    newEndTimeStampWithoutStos,
-    blockTimeStamp,
-    discountRatePerBondingPrice,
-  ]);
+  }, [newEndTimeStamp, blockTimeStamp, discountRatePerBondingPrice]);
 
   useEffect(() => {
     async function fetchBondDiscount() {
@@ -282,20 +269,6 @@ function useBondModalInputData() {
               constant.rebase.epochLength) -
           1;
         const ROI = ((1 + LTOSInterest) / (1 - Number(discountRate)) - 1) * 100;
-        console.log("**ROI TEST**");
-        console.log("bondDiscount", bondDiscount);
-
-        console.log("newEndTimeStamp", newEndTimeStamp);
-        console.log("blockTimeStamp", blockTimeStamp);
-
-        console.log(
-          "newEndTimeStamp - blockTimeStamp + 12",
-          newEndTimeStamp - blockTimeStamp + 12
-        );
-        console.log("discountRate", discountRate);
-        console.log("LTOSInterest", LTOSInterest);
-        console.log("ROI", ROI);
-
         setRoi(commafy(ROI));
       }
     }

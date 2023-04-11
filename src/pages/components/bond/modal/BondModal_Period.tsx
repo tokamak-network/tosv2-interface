@@ -54,6 +54,11 @@ function SliderGraph() {
   const bonddiscountTestData = [];
   const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
+  // console.log("****");
+
+  // console.log(roiPerWeeks);
+  // console.log(discountRatePerBondingPrice);
+
   if (roiPerWeeks && discountRatePerBondingPrice) {
     for (let i = 0; i < 53; i++) {
       roiTestData.push({
@@ -71,12 +76,12 @@ function SliderGraph() {
     }
   }
 
-  console.log("graphData");
-  console.log("roiGraph", roiTestData, bonddiscountTestData);
-  console.log("discountGraph", bonddiscountTestData);
+  // console.log("graphData");
+  // console.log("roiGraph", roiTestData, bonddiscountTestData);
+  // console.log("discountGraph", bonddiscountTestData);
 
-  console.log("roiPerWeeks", roiPerWeeks);
-  console.log("discountPerWeeks", discountRatePerBondingPrice);
+  // console.log("roiPerWeeks", roiPerWeeks);
+  // console.log("discountPerWeeks", discountRatePerBondingPrice);
 
   const testData = [
     {
@@ -88,6 +93,11 @@ function SliderGraph() {
       data: bonddiscountTestData,
     },
   ];
+
+  // console.log("***");
+
+  // console.log(roiTestData);
+  // console.log(bonddiscountTestData);
 
   return (
     <Flex pos={"absolute"} w={"460px"} h={"90px"}>
@@ -218,7 +228,9 @@ export default function BondModal_Period() {
           </Text>
           <Text>-40%</Text>
         </Flex>
-        <SliderGraph />
+        <Flex>
+          <SliderGraph />
+        </Flex>
         <BondLockupGraph
           pageKey={"Bond_screen"}
           subKey={"bond_modal"}
