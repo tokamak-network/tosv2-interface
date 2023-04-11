@@ -2,6 +2,16 @@ import { log } from "console";
 import constant from "constant";
 import moment from "moment";
 import Moment from "moment-timezone";
+import { convertWithDigits } from "@/utils/convertWithDigits";
+
+function putDigit(param: number | string) {
+  const hasOneDigit = String(param).length === 1;
+
+  if (hasOneDigit) {
+    return `0${param}`;
+  }
+  return String(param);
+}
 
 function convertTimeStamp(timeStamp: number, format?: string): string {
   const date = moment.unix(timeStamp).format(format || "YYYY.MM.DD");
@@ -34,7 +44,7 @@ function getTimeLeft(
 function getDuration(
   timeStamp: number,
   format?: string
-): { days: number; hours: number; mins: number; secs: number } {
+): { days: string; hours: string; mins: string; secs: string } {
   const sec = 60;
   const min = 60;
   const hour = 3600;
@@ -46,10 +56,10 @@ function getDuration(
   const secs = timeStamp - day * days - hour * hours - mins * min;
 
   return {
-    days,
-    hours,
-    mins,
-    secs,
+    days: String(days),
+    hours: putDigit(hours),
+    mins: putDigit(mins),
+    secs: putDigit(secs),
   };
 }
 

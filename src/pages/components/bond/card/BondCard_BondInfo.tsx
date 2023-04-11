@@ -44,8 +44,9 @@ export function TitleComponent(props: {
 export function ContentComponent(props: {
   content: string;
   subContent?: string;
+  subContentHighlight?: boolean;
 }) {
-  const { content, subContent } = props;
+  const { content, subContent, subContentHighlight } = props;
   return (
     <Flex
       color={"white.200"}
@@ -59,7 +60,11 @@ export function ContentComponent(props: {
     >
       <Text>{content}</Text>
       {subContent && (
-        <Text fontSize={12} fontWeight={"normal"} ml={"3px"}>
+        <Text
+          fontSize={subContentHighlight ? 14 : 12}
+          fontWeight={subContentHighlight ? 600 : "normal"}
+          ml={"3px"}
+        >
           {" / "}
           {subContent}
         </Text>

@@ -43,19 +43,7 @@ import BondCard_Description from "./card/BondCard_Description";
 import BondCard_Buttons from "./card/BondCard_Buttons";
 import BondCard_Capacity from "./card/BondCard_Capacity";
 import BondCard_Status from "./card/BondCard_Status";
-
-function getStatusAndDate(status: BondCardProps["status"]) {
-  switch (status) {
-    case "open":
-      return "Until 13 days 12:04:03";
-    case "will be open":
-      return "In 13 days 12:04:03";
-    case "closed":
-      return;
-    default:
-      return;
-  }
-}
+import { getCountDown } from "@/utils/bond/card/getCountDown";
 
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
@@ -73,28 +61,52 @@ function BondCard(props: { data: BondCardProps }) {
   const timeDiff = data?.endTime - getNowTimeStamp();
   const openTimeDiff = data?.startTime - getNowTimeStamp();
 
-  const countDown = getDuration(timeDiff);
-  const openCountDown = getDuration(openTimeDiff);
-
   const txPending = useRecoilValue(selectedTxState);
 
   const capacityIsZero = Number(data?.blueProgress) === 100;
-  const discountIsMinus = data?.discountRate < 0;
 
-  const isClosed = closed || capacityIsZero;
-
-  const [isOpen, setIsOpen] = useState(timeDiff >= 0 || !capacityIsZero);
-  const [isNotOpen, setIsNotOpen] = useState(openTimeDiff > 0);
-  const timeLeft = closed
-    ? "0 days 0 hours 0 min"
-    : `${countDown.days} days ${countDown.hours} hours ${countDown.mins} min`;
-  const bondButtonIsDisabled = closed || capacityIsZero || isNotOpen;
+  const bondButtonIsDisabled = closed;
 
   const discountRate = data?.isDiscountMinus
     ? `${data?.discountRate}%`
     : `~ ${data?.discountRate}%`;
 
   const [currentRound, setCurrentRound] = useState<number>(1);
+  const [dateText, setDateText] = useState<string | undefined>(undefined);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (data?.startTime && data?.endTime && data.saleRoundTimeStamp) {
+        const startTimeCountDown = getCountDown(data.startTime);
+        const endTimeCountDown = getCountDown(data.endTime);
+        const nextRoundStart = getCountDown(
+          data.saleRoundTimeStamp[currentRound - 2]
+        );
+
+        const currentRoundDateInfo = `Until ${endTimeCountDown.days} days ${endTimeCountDown.hours}:${endTimeCountDown.mins}:${endTimeCountDown.secs}`;
+        const nextRoundDateInfo = `In ${nextRoundStart.days} days ${nextRoundStart.hours}:${nextRoundStart.mins}:${nextRoundStart.secs}`;
+
+        switch (data?.status) {
+          case "open":
+            return setDateText(
+              currentRound === 1 ? currentRoundDateInfo : nextRoundDateInfo
+            );
+          case "will be open":
+            return setDateText(
+              `In ${startTimeCountDown.days} days ${startTimeCountDown.hours}:${startTimeCountDown.mins}:${startTimeCountDown.secs}`
+            );
+          case "closed":
+            return setDateText(undefined);
+          default:
+            return setDateText(undefined);
+        }
+      }
+    }, 100);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [data, currentRound]);
 
   const bondInfodata: BondInfoDataMap = [
     {
@@ -139,6 +151,27 @@ function BondCard(props: { data: BondCardProps }) {
     },
   ];
 
+  const bondClosedInfoData: BondInfoDataMap = [
+    {
+      title: <TitleComponent title="Bond Sold" />,
+      content: (
+        <ContentComponent
+          content={`${data?.totalSold} TOS`}
+          subContent={`${data?.bondCapacity} TOS`}
+          subContentHighlight={true}
+        />
+      ),
+    },
+    {
+      title: <TitleComponent title="Opened" />,
+      content: <ContentComponent content={`${data?.startDay}`} />,
+    },
+    {
+      title: <TitleComponent title="Closed" />,
+      content: <ContentComponent content={data?.endDay} />,
+    },
+  ];
+
   //vierport ref 1134px
   return (
     <Flex
@@ -155,7 +188,17 @@ function BondCard(props: { data: BondCardProps }) {
       px={"20px"}
       pb={"24px"}
     >
-      {/* {isProduction() === false && <div>{data?.index}</div>} */}
+      {isProduction() === false && (
+        <div
+          style={{
+            position: "absolute",
+            marginLeft: "170px",
+            color: "#2775ff",
+          }}
+        >
+          {data?.index}
+        </div>
+      )}
       <BondCard_Status
         version={1.1}
         status={
@@ -163,29 +206,38 @@ function BondCard(props: { data: BondCardProps }) {
             ? "Add Capacity"
             : data?.status
         }
-        date={getStatusAndDate(data?.status)}
+        date={dateText}
       />
       <BondCard_TokenInfo
         inToken={data?.sellTokenType}
         outToken0={"LTOS"}
         outToken1={"STOS"}
+        roi={data?.roi}
+        ethCapacity={data?.bondEthCapacity}
       />
-      <BondCard_Progress progress={data?.blueProgress} isNA={false} />
+      <BondCard_Progress progress={data?.blueProgress} status={data?.status} />
       <Flex flexDir={"column"} rowGap={"24px"} h={"100%"}>
         <BondCard_BondInfo bondInfoData={bondInfodata} />
-        {currentRound === 1 ? (
+        {currentRound === 1 && !closed ? (
           <BondCard_Description
             description={
               "This bond mints TOS, which is staked for LTOS & sTOS. After the lock-up period, LTOS can be unstaked in exchange for TOS."
             }
             discountRate={data?.discountRate}
           />
+        ) : !closed ? (
+          <BondCard_Capacity
+            ethAmount={data?.roundEthCapacity}
+            date={dateText?.replaceAll("in", "") ?? ""}
+          />
         ) : (
-          <BondCard_Capacity ethAmount={"36"} date={"13 days 12:04:03"} />
+          <Box mt={"9px"}>
+            <BondCard_BondInfo bondInfoData={bondClosedInfoData} />
+          </Box>
         )}
-        {currentRound === 1 && (
+        {!closed && currentRound === 1 && (
           <BasicButton
-            name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
+            name={account ? (!closed ? "Bond" : "Closed") : "Connect Wallet"}
             w={["100%", "270px", "150px"]}
             h={"33px"}
             style={{
@@ -197,11 +249,13 @@ function BondCard(props: { data: BondCardProps }) {
             onClick={account ? openModal : tryActivation}
           ></BasicButton>
         )}
-        <BondCard_Buttons
-          currentRound={currentRound}
-          lastRound={27}
-          setCurrentNumber={setCurrentRound}
-        />
+        {!closed && (
+          <BondCard_Buttons
+            currentRound={currentRound}
+            lastRound={data?.totalRound}
+            setCurrentNumber={setCurrentRound}
+          />
+        )}
       </Flex>
     </Flex>
   );

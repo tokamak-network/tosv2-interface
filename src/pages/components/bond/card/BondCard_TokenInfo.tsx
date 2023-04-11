@@ -9,8 +9,9 @@ type OutTokensType = {
   outToken0: SupportedInputTokenTypes;
   outToken1: SupportedInputTokenTypes;
 };
+type OtherInfo = { roi: number; ethCapacity: number };
 
-export type TokenPairType = InTokenType & OutTokensType;
+export type TokenPairType = InTokenType & OutTokensType & OtherInfo;
 
 function OutTokenPair(props: OutTokensType) {
   const { outToken0, outToken1 } = props;
@@ -75,7 +76,8 @@ function TokenPair(props: TokenPairType) {
   );
 }
 
-function BondInfo(props: InTokenType) {
+function BondInfo(props: InTokenType & OtherInfo) {
+  const { inToken, roi, ethCapacity } = props;
   return (
     <Flex flexDir={"column"} rowGap={"12px"} textAlign={"right"}>
       <Text fontSize={12}>
@@ -84,10 +86,10 @@ function BondInfo(props: InTokenType) {
           style={{
             color: "#2775ff",
             fontSize: "15px",
-            fontWeight: 600,
+            fontWeight: "bold",
           }}
         >
-          10.1
+          {roi}
         </span>
         <span
           style={{
@@ -109,19 +111,21 @@ function BondInfo(props: InTokenType) {
           color="white.200"
           justifyContent={"flex-end"}
           columnGap={"2px"}
-          alignItems={"center"}
+          alignItems={"end"}
         >
-          <Box pb={"2px"} mr={"6px"}>
+          <Box pb={"3px"} mr={"6px"}>
             <TokenSymbol
-              tokenType={props.inToken}
+              tokenType={inToken}
               w={"16px"}
               h={"16px"}
               imageW={"5.6px"}
               imageH={"9.6px"}
             />
           </Box>
-          <Text fontSize={15}>36.00</Text>
-          <Text fontSize={12}>ETH</Text>
+          <Text fontSize={15}>{ethCapacity}</Text>
+          <Text fontSize={12} pb={"1px"}>
+            ETH
+          </Text>
         </Flex>
       </Flex>
     </Flex>
@@ -129,7 +133,7 @@ function BondInfo(props: InTokenType) {
 }
 
 export default function BondCard_TokenInfo(props: TokenPairType) {
-  const { inToken, outToken0, outToken1 } = props;
+  const { inToken, outToken0, outToken1, roi, ethCapacity } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -149,8 +153,10 @@ export default function BondCard_TokenInfo(props: TokenPairType) {
         inToken={inToken}
         outToken0={outToken0}
         outToken1={outToken1}
+        roi={roi}
+        ethCapacity={ethCapacity}
       />
-      <BondInfo inToken={inToken} />
+      <BondInfo inToken={inToken} roi={roi} ethCapacity={ethCapacity} />
     </Flex>
   );
 }

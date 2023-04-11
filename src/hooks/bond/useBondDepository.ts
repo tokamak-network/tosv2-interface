@@ -1,4 +1,4 @@
-import { getDiscountRate } from "@/utils/bond/getDiscountRate";
+import { getDiscountRate } from "@/utils/bond/card/getDiscountRate";
 import { bond_modal } from "atom/bond/modal";
 import { BigNumber } from "ethers";
 import useCallContract from "hooks/useCallContract";

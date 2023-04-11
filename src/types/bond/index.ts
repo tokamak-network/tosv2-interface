@@ -35,7 +35,11 @@ export type BondCardProps = {
   ethPrice: number;
   totalRound: number;
   roundEthCapacity: number;
+  bondEthCapacity: number;
+  roi: number;
+  ltosApy: number;
   tosPrice: number;
+  saleRoundTimeStamp: number[];
 };
 
 export type BondRawdata = {

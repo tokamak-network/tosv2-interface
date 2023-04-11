@@ -1,8 +1,13 @@
+import { getROI } from "@/utils/bond/card/getROI";
+import { getRound } from "@/utils/bond/card/getRound";
+import { getTosCapacityOnEth } from "@/utils/bond/card/getTosCapacityOnEth";
 import commafy from "@/utils/commafy";
 import { convertTimeStamp, getNowTimeStamp } from "@/utils/time";
 import { useQuery } from "@apollo/client";
 import { bond_filter_sort_state } from "atom/bond/filter";
 import { GET_BOND_LIST } from "graphql/bond/getBond";
+import useStosReward from "hooks/stake/useStosReward";
+import { useBlockNumber } from "hooks/useBlockNumber";
 import usePrice from "hooks/usePrice";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -28,13 +33,24 @@ export function useBondCard() {
   const { priceData } = usePrice();
   const sortValue = useRecoilValue(bond_filter_sort_state);
 
+  //get timestamps to calculate roi
+  const { blockTimeStamp } = useBlockNumber();
+  const { newEndTimeStamp } = useStosReward(0, 52);
+
   if (error) {
     console.log("**useBondCard err**");
     console.log(error);
   }
 
   useEffect(() => {
-    if (data && priceData && priceData?.tosPrice && priceData?.ethPrice) {
+    if (
+      data &&
+      priceData &&
+      priceData?.tosPrice &&
+      priceData?.ethPrice &&
+      blockTimeStamp &&
+      newEndTimeStamp
+    ) {
       const bonds = data.getBondList;
       const { ethPrice, tosPrice } = priceData;
 
@@ -59,12 +75,26 @@ export function useBondCard() {
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
 
         //time
-        const startDay = convertTimeStamp(startTime);
-        const endDay = convertTimeStamp(endTime);
+        const startDay = convertTimeStamp(startTime, "YYYY.MM.DD HH:mm:ss");
+        const endDay = convertTimeStamp(endTime, "YYYY.MM.DD HH:mm:ss");
         const salePeriod = endTime - getNowTimeStamp();
-        const totalRound = salePeriod / capacityUpdatePeriod;
+        // const totalRound = salePeriod / capacityUpdatePeriod;
+        const { roundNums, saleRoundTimeStamp } = getRound({
+          startTime,
+          endTime,
+          capacityPeriod: capacityUpdatePeriod,
+        });
 
-        // const roundEthCapacity = ;
+        const bondEthCapacity = getTosCapacityOnEth({
+          tosCapacity: capacity,
+          ethPrice,
+          tosPrice,
+        });
+        const roundEthCapacity = getTosCapacityOnEth({
+          tosCapacity: Math.floor(periodicCapacity),
+          ethPrice,
+          tosPrice,
+        });
 
         const bondCapacity = commafy(capacity, 0);
         const totalSoldCom = commafy(totalSold, 0);
@@ -129,9 +159,13 @@ export function useBondCard() {
           status,
           marketId: index,
           ethPrice,
-          totalRound,
-          roundEthCapacity: 1,
+          totalRound: roundNums,
+          roundEthCapacity,
+          bondEthCapacity,
+          roi: 10.1,
+          ltosApy: 10.1,
           tosPrice: Number(commafy(tosPrice, 2)),
+          saleRoundTimeStamp,
         };
       });
 
@@ -197,7 +231,7 @@ export function useBondCard() {
           break;
       }
     }
-  }, [priceData, data, sortValue]);
+  }, [priceData, data, sortValue, blockTimeStamp, newEndTimeStamp]);
 
   // console.log("--cardList--");
   // console.log(cardList);
