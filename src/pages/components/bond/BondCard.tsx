@@ -65,8 +65,6 @@ function BondCard(props: { data: BondCardProps }) {
 
   const capacityIsZero = Number(data?.blueProgress) === 100;
 
-  const bondButtonIsDisabled = closed;
-
   const discountRate = data?.isDiscountMinus
     ? `${data?.discountRate}%`
     : `~ ${data?.discountRate}%`;
@@ -136,6 +134,7 @@ function BondCard(props: { data: BondCardProps }) {
         <ContentComponent
           content={`$${data?.bondingPrice}`}
           subContent={`$${data?.tosPrice} (${data?.discountRate}% off)`}
+          subContentStyle={{ color: "#e23738" }}
         />
       ),
     },
@@ -245,7 +244,7 @@ function BondCard(props: { data: BondCardProps }) {
               alignSelf: "center",
               fontWeight: "normal",
             }}
-            isDisabled={bondButtonIsDisabled}
+            isDisabled={data?.bondButtonIsDisabled}
             isLoading={txPending}
             onClick={account ? openModal : tryActivation}
           ></BasicButton>

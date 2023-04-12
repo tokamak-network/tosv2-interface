@@ -40,6 +40,7 @@ export type BondCardProps = {
   ltosApy: number;
   tosPrice: number;
   saleRoundTimeStamp: number[];
+  bondButtonIsDisabled: boolean;
 };
 
 export type BondRawdata = {

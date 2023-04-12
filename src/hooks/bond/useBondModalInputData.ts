@@ -19,6 +19,7 @@ import { bond_modal } from "atom/bond/modal";
 import { useBondDepository } from "./useBondDepository";
 import useBondModal from "./useBondModal";
 import { useBlockNumber } from "hooks/useBlockNumber";
+import { log } from "console";
 
 function useBondModalInputData() {
   const { selectedModalData } = useModal<BondCardProps>();
@@ -244,6 +245,13 @@ function useBondModalInputData() {
           Number(bondingPrice.toString()) / 1.005
         );
 
+        console.log("useBondModal");
+        console.log(bondingPrice.toString());
+        console.log(bondingPriceCom);
+        console.log(discunt);
+        console.log(discountRate);
+        console.log(priceData.ethPrice);
+
         setMinimumTosPrice(BigNumber.from(mininmumTosPrice.toString()));
         setBondDiscount(commafy(discountRate));
       }
@@ -252,7 +260,7 @@ function useBondModalInputData() {
       console.log("**fetchBondDiscount err**");
       console.log(e);
     });
-  }, [priceData, bondingPrice]);
+  }, [priceData, bondingPrice, bondInputPeriod]);
 
   useEffect(() => {
     async function fetchROI() {

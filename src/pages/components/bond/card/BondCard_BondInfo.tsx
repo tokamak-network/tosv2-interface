@@ -1,4 +1,4 @@
-import { Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorMode } from "@chakra-ui/react";
 import BasicTooltip from "common/tooltip";
 import Image from "next/image";
 import { ReactNode } from "react";
@@ -45,8 +45,9 @@ export function ContentComponent(props: {
   content: string;
   subContent?: string;
   subContentHighlight?: boolean;
+  subContentStyle?: {};
 }) {
-  const { content, subContent, subContentHighlight } = props;
+  const { content, subContent, subContentHighlight, subContentStyle } = props;
   return (
     <Flex
       color={"white.200"}
@@ -66,7 +67,7 @@ export function ContentComponent(props: {
           ml={"3px"}
         >
           {" / "}
-          {subContent}
+          <Box {...subContentStyle}>{subContent}</Box>
         </Text>
       )}
     </Flex>
