@@ -1,64 +1,33 @@
 import {
   Flex,
   Text,
-  Button,
   Modal,
   ModalOverlay,
   ModalBody,
   ModalContent,
   useTheme,
   useColorMode,
-  Link,
   Box,
-  Input,
-  Grid,
-  GridItem,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  Tooltip,
-  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { selectedModalData, selectedModalState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
-import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { TextInput, BalanceInput } from "common/input/TextInput";
+import { useCallback, useEffect, useState } from "react";
 import useCallContract from "hooks/useCallContract";
-import useInputData from "hooks/bond/useBondModalInputData";
-import { inputBalanceState, inputState } from "atom/global/input";
-import commafy from "@/utils/commafy";
-import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/utils/number";
-import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import CONTRACT_ADDRESS from "services/addresses/contract";
-import { BigNumber } from "ethers";
 import useUser from "hooks/useUser";
-import Tile from "../common/modal/Tile";
-import {
-  StakeRelockModalInput,
-  stake_relockModal_state,
-} from "atom/stake/input";
-import useStakeInput from "hooks/stake/useStakeInput";
+import { StakeRelockModalInput } from "atom/stake/input";
 import useInput from "hooks/useInput";
 import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
-import BasicTooltip from "common/tooltip/index";
 import constant from "constant";
-import StakeGraph from "../common/modal/StakeGraph";
 import useCustomToast from "hooks/useCustomToast";
 import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 import useStosReward from "hooks/stake/useStosReward";
-import InputPeriod from "common/input/InputPeriod";
-import useStos from "hooks/stake/useStos";
 import RelockModal_BottomContent from "./modal/RelockModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
 import UserGuide from "../common/guide/UserGuide";
@@ -75,8 +44,10 @@ function RelockModal() {
     ltosWei: string;
   }>();
   const { stakeV2 } = useStakeV2();
-  const { inputValue, setResetValue, setValue } =
-    useInput<StakeRelockModalInput>("Stake_screen", "relock_modal");
+  const { inputValue, setResetValue, setValue } = useInput(
+    "Stake_screen",
+    "relock_modal"
+  );
 
   const ltosBalance = inputValue?.stake_relockModal_ltos_balance?.replaceAll(
     " ",
@@ -85,7 +56,7 @@ function RelockModal() {
   const inputLtos = inputValue?.stake_relockModal_ltos_balance;
   const inputTos = inputValue?.stake_relockModal_tos_balance;
   const inputWeeks = inputValue?.stake_relockModal_period;
-  const addTos = inputValue?.stake_relockModal_addTos ?? false;
+  const addTos: boolean = inputValue?.stake_relockModal_addTos ?? false;
 
   const { bp700px } = useMediaView();
 
@@ -267,7 +238,9 @@ function RelockModal() {
                   periodKey={"stake_relockModal_period"}
                   inputPeriodOver={inputPeriodOver}
                   inputPeriodIsEmpty={inputPeriodIsEmpty}
-                  endTimeInfo={{ leftDays, leftHourAndMin, newEndTime }}
+                  leftDays={leftDays}
+                  leftHourAndMin={leftHourAndMin}
+                  newEndTime={newEndTime}
                 />
               </Flex>
               <RelockModal_BottomContent addTos={addTos} />

@@ -24,18 +24,20 @@ function BondCardSection() {
   const { cardList } = useBondCard();
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
     usePagination(cardList);
-        
+
   return (
     <Flex flexDir={"column"}>
-    <Grid
-      // columns={3} gridRowGap={"24px"} columnGap={"25px"}
-      columnGap={"2.2%"}
-      templateColumns={isSmallerThan1024 ? "repeat(1, 1fr)" : "repeat(3, 1fr)"}
-      rowGap={"20px"}
-      justifyContent={isSmallerThan750 ? "center" : ""}
-      flexWrap={"wrap"}
-    >
-      {/* {cardList?.map((cardData: BondCardProps, index) =>
+      <Grid
+        // columns={3} gridRowGap={"24px"} columnGap={"25px"}
+        columnGap={"2.2%"}
+        templateColumns={
+          isSmallerThan1024 ? "repeat(1, 1fr)" : "repeat(3, 1fr)"
+        }
+        rowGap={"20px"}
+        justifyContent={isSmallerThan750 ? "center" : ""}
+        flexWrap={"wrap"}
+      >
+        {/* {cardList?.map((cardData: BondCardProps, index) =>
         //need to check displaying one vault which was a test vault on the mainnet
         isProduction() ? (
           index === cardList.length - 1
@@ -47,22 +49,26 @@ function BondCardSection() {
         )
       )} */}
 
-      {currentPageList.length > 0? (
-        currentPageList?.map((cardData:BondCardProps, index:number) => {
-          if (cardData) {
-            return (
-              <BondCard
-            data={cardData}
-            key={cardData.bondCapacity + index}
-          ></BondCard>
-            )
-          }
-        })
-      ):<></>}
-    </Grid>
-    <BondScreenBottom  pageSize={pageSize}
+        {currentPageList.length > 0 ? (
+          currentPageList?.map((cardData: BondCardProps, index: number) => {
+            if (cardData) {
+              return (
+                <BondCard
+                  data={cardData}
+                  key={cardData.bondCapacity + index}
+                ></BondCard>
+              );
+            }
+          })
+        ) : (
+          <></>
+        )}
+      </Grid>
+      <BondScreenBottom
+        pageSize={pageSize}
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}/>
+        setCurrentPage={setCurrentPage}
+      />
     </Flex>
   );
 }

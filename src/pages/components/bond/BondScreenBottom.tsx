@@ -29,7 +29,6 @@ function BondScreenBottom(props: {
     }
   }, [pageSize]);
 
-
   return (
     <Flex h={"40px"} mt={"27px"} mb={"3px"}>
       <Flex>

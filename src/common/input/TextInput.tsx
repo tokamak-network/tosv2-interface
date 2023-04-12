@@ -131,7 +131,7 @@ const TextInput: React.FC<InputProp> = (props) => {
           outline="none"
           errorBorderColor={isDisabled ? "none" : "#e23738"}
           // errorBorderColor={isDisabled === false ? "#e23738" : "#e23738"}
-          value={`${isDisabled ? "-" : value[atomKey]}`}
+          value={`${isDisabled ? "-" : value && value[atomKey]}`}
           onChange={onChange}
         ></Input>
         <InputRightElement mr={"12px"}>
@@ -270,7 +270,7 @@ function BalanceInput(props: NumberInputProp) {
           errorBorderColor={"none"}
           outline="none"
           defaultValue={undefined}
-          value={value[atomKey]}
+          value={value && value[atomKey]}
           display={"flex"}
           {...inputContainerStyle}
         >
@@ -292,7 +292,7 @@ function BalanceInput(props: NumberInputProp) {
             {...inputFieldStyle}
           ></NumberInputField>
         </NumberInput>
-        {value[atomKey] && rightUnit && (
+        {value && value[atomKey] && rightUnit && (
           <Flex
             pos={"absolute"}
             textAlign={"center"}

@@ -17,11 +17,14 @@ type StakeModalPeriod = {
   periodKey: PeriodKey;
   inputPeriodOver: boolean;
   inputPeriodIsEmpty: boolean;
-  endTimeInfo: {
-    leftDays: string | undefined;
-    leftHourAndMin: string | undefined;
-    newEndTime: string | undefined;
-  };
+  // endTimeInfo: {
+  //   leftDays: string | undefined;
+  //   leftHourAndMin: string | undefined;
+  //   newEndTime: string | undefined;
+  // };
+  leftDays: string | undefined;
+  leftHourAndMin: string | undefined;
+  newEndTime: string | undefined;
   hasFivedaysLockup?: boolean;
 };
 
@@ -33,12 +36,14 @@ export default function StakeModal_Period<T>(props: StakeModalPeriod) {
     periodKey,
     inputPeriodOver,
     inputPeriodIsEmpty,
-    endTimeInfo,
+    leftDays,
+    leftHourAndMin,
+    newEndTime,
     hasFivedaysLockup,
   } = props;
-  const leftDays = endTimeInfo?.leftDays;
-  const leftHourAndMin = endTimeInfo?.leftHourAndMin;
-  const newEndTime = endTimeInfo?.newEndTime;
+  // const leftDays = endTimeInfo?.leftDays;
+  // const leftHourAndMin = endTimeInfo?.leftHourAndMin;
+  // const newEndTime = endTimeInfo?.newEndTime;
 
   const { colorMode } = useColorMode();
   const { bp700px } = useMediaView();
@@ -114,11 +119,9 @@ export default function StakeModal_Period<T>(props: StakeModalPeriod) {
             maxValue={stakeModalMaxWeeks}
             isError={inputPeriodOver || inputPeriodIsEmpty}
             errorMsg={inputPeriodOver ? errMsg.stake.periodIsOver : ""}
-            leftDays={fiveDaysLockup ? undefined : leftDays ?? "0"}
-            leftTime={fiveDaysLockup ? undefined : leftHourAndMin ?? "0"}
-            endTime={
-              fiveDaysLockup || inputPeriodOver ? undefined : newEndTime ?? "0"
-            }
+            leftDays={fiveDaysLockup ? undefined : leftDays}
+            leftTime={fiveDaysLockup ? undefined : leftHourAndMin}
+            endTime={fiveDaysLockup || inputPeriodOver ? undefined : newEndTime}
           ></InputPeriod>
         </Flex>
       </Flex>

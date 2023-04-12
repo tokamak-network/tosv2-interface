@@ -65,7 +65,7 @@ function AccountDrawer(props: HeaderProps) {
         setIsOpen(false);
       }}
     >
-      <DrawerOverlay zIndex={1001} className="modalOverlayDrawer"  bg={'none'}  />
+      <DrawerOverlay zIndex={1001} className="modalOverlayDrawer" bg={"none"} />
       <DrawerContent
         bg={colorMode === "dark" ? "#1f2128" : "white.0"}
         px={"23px"}
@@ -129,23 +129,23 @@ function AccountDrawer(props: HeaderProps) {
                     TOS
                   </Flex>
                 </Flex>
-                <Flex justifyContent={'center'} alignItems='center'>
-                <Text
-                color={'blue.200'}
-                  fontSize='12px'
-                  onClick={ openSwapModal}
-                  _hover={{cursor:'pointer'}}
-                  mr='15px'
-                >
-                  Buy More
-                </Text>
-                <SubmitButton
-                  name="Stake"
-                  w={"90px"}
-                  h={"30px"}
-                  style={{ fontSize: "12px" , fontWeight: 'normal'}}
-                  onClick={sendToStake}
-                ></SubmitButton>
+                <Flex justifyContent={"center"} alignItems="center">
+                  <Text
+                    color={"blue.200"}
+                    fontSize="12px"
+                    onClick={openSwapModal}
+                    _hover={{ cursor: "pointer" }}
+                    mr="15px"
+                  >
+                    Buy More
+                  </Text>
+                  <SubmitButton
+                    name="Stake"
+                    w={"90px"}
+                    h={"30px"}
+                    style={{ fontSize: "12px", fontWeight: "normal" }}
+                    onClick={sendToStake}
+                  ></SubmitButton>
                 </Flex>
               </Flex>
             </GridItem>

@@ -106,10 +106,13 @@ const InputPeriod = (props: InputProp) => {
       setWeeksUnit("Week");
       setWeekHighlight(true);
     }
-    return setValue({
-      ...inputValue,
-      [atomKey]: event.target.value,
-    });
+    return (
+      atomKey &&
+      setValue({
+        ...inputValue,
+        [atomKey]: event.target.value,
+      })
+    );
   };
 
   const leftProperty = useMemo(() => {
@@ -175,9 +178,9 @@ const InputPeriod = (props: InputProp) => {
           value={`${
             isDisabled
               ? isDisabledText || "-"
-              : value[atomKey] === undefined
+              : value && value[atomKey] === undefined
               ? ""
-              : value[atomKey]
+              : value && value[atomKey]
           }`}
           onChange={onChange}
           // onFocus={() => setIsFocus(true)}

@@ -21,7 +21,7 @@ function useStosRelock(addTos: boolean) {
     addTos && allLtosToTosBalance
       ? Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")) +
         allLtosToTosBalance
-      : Number(tosValue.replaceAll(",", ""));
+      : Number(tosValue?.replace(/:,:/g, ""));
 
   const { leftDays, leftHourAndMin } = useStosReward(
     0,

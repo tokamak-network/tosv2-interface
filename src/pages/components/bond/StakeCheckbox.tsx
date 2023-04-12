@@ -39,7 +39,6 @@ function StakeCheckbox() {
         onClick={() => openModal()}
       ></BasicButton>
        */}
-    
     </Flex>
   );
 }
