@@ -214,6 +214,7 @@ function BondCard(props: { data: BondCardProps }) {
         outToken1={"STOS"}
         roi={data?.roi}
         ethCapacity={data?.bondEthCapacity}
+        isDiscountMinus={data?.isDiscountMinus}
       />
       <BondCard_Progress progress={data?.blueProgress} status={data?.status} />
       <Flex flexDir={"column"} rowGap={"24px"} h={"100%"}>

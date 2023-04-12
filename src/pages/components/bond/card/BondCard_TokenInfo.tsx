@@ -9,7 +9,7 @@ type OutTokensType = {
   outToken0: SupportedInputTokenTypes;
   outToken1: SupportedInputTokenTypes;
 };
-type OtherInfo = { roi: number; ethCapacity: number };
+type OtherInfo = { roi: number; ethCapacity: number; isDiscountMinus: boolean };
 
 export type TokenPairType = InTokenType & OutTokensType & OtherInfo;
 
@@ -76,33 +76,39 @@ function TokenPair(props: TokenPairType) {
   );
 }
 
-function BondInfo(props: InTokenType & OtherInfo) {
-  const { inToken, roi, ethCapacity } = props;
+function BondInfo(props: TokenPairType) {
+  const { inToken, roi, ethCapacity, isDiscountMinus } = props;
   return (
     <Flex flexDir={"column"} rowGap={"12px"} textAlign={"right"}>
-      <Text fontSize={12}>
-        Earn up to{" "}
-        <span
-          style={{
-            color: "#2775ff",
-            fontSize: "15px",
-            fontWeight: "bold",
-          }}
-        >
-          {roi}
-        </span>
-        <span
-          style={{
-            color: "#2775ff",
-            fontSize: "12px",
-            fontWeight: 600,
-            marginRight: "3px",
-          }}
-        >
-          %
-        </span>
-        ROI
-      </Text>
+      {isDiscountMinus ? (
+        <Text fontSize={12} color={"white.100"}>
+          Negative Discount
+        </Text>
+      ) : (
+        <Text fontSize={12} color={"white.100"}>
+          Earn up to{" "}
+          <span
+            style={{
+              color: "#2775ff",
+              fontSize: "15px",
+              fontWeight: "bold",
+            }}
+          >
+            {roi}
+          </span>
+          <span
+            style={{
+              color: "#2775ff",
+              fontSize: "12px",
+              fontWeight: 600,
+              marginRight: "3px",
+            }}
+          >
+            %
+          </span>
+          ROI
+        </Text>
+      )}
       <Flex flexDir={"column"}>
         <Text fontSize={11} color={"gray.100"}>
           Bond Capacity
@@ -122,8 +128,10 @@ function BondInfo(props: InTokenType & OtherInfo) {
               imageH={"9.6px"}
             />
           </Box>
-          <Text fontSize={15}>{ethCapacity}</Text>
-          <Text fontSize={12} pb={"1px"}>
+          <Text fontSize={15} fontWeight={600}>
+            {ethCapacity}
+          </Text>
+          <Text fontSize={12} pb={"2px"}>
             ETH
           </Text>
         </Flex>
@@ -133,7 +141,6 @@ function BondInfo(props: InTokenType & OtherInfo) {
 }
 
 export default function BondCard_TokenInfo(props: TokenPairType) {
-  const { inToken, outToken0, outToken1, roi, ethCapacity } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -149,14 +156,8 @@ export default function BondCard_TokenInfo(props: TokenPairType) {
       justifyContent={"space-between"}
       px={"15px"}
     >
-      <TokenPair
-        inToken={inToken}
-        outToken0={outToken0}
-        outToken1={outToken1}
-        roi={roi}
-        ethCapacity={ethCapacity}
-      />
-      <BondInfo inToken={inToken} roi={roi} ethCapacity={ethCapacity} />
+      <TokenPair {...props} />
+      <BondInfo {...props} />
     </Flex>
   );
 }
