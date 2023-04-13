@@ -63,6 +63,8 @@ export type BondRawdata = {
   periodicCapacity: number;
   currentCapacity: number;
   ethPrice: number;
+  ROIforLockupWeeks: number;
+  ltosInterstForLockupWeeks: number;
   createdAt: Date;
 };
 

@@ -71,6 +71,7 @@ export function useBondCard() {
           ethPrice,
           capacityUpdatePeriod,
           periodicCapacity,
+          ROIforLockupWeeks,
         } = bond;
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
 
@@ -164,7 +165,7 @@ export function useBondCard() {
           totalRound: roundNums,
           roundEthCapacity,
           bondEthCapacity,
-          roi: 10.1,
+          roi: commafy(ROIforLockupWeeks),
           ltosApy: 10.1,
           tosPrice: Number(commafy(tosPrice, 2)),
           saleRoundTimeStamp,

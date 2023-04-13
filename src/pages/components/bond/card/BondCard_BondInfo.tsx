@@ -45,9 +45,9 @@ export function ContentComponent(props: {
   content: string;
   subContent?: string;
   subContentHighlight?: boolean;
-  subContentStyle?: {};
+  subContentNode?: ReactNode;
 }) {
-  const { content, subContent, subContentHighlight, subContentStyle } = props;
+  const { content, subContent, subContentHighlight, subContentNode } = props;
   return (
     <Flex
       color={"white.200"}
@@ -60,16 +60,16 @@ export function ContentComponent(props: {
       textAlign={"end"}
     >
       <Text>{content}</Text>
-      {subContent && (
-        <Text
-          fontSize={subContentHighlight ? 14 : 12}
-          fontWeight={subContentHighlight ? 600 : "normal"}
-          ml={"3px"}
-        >
-          {" / "}
-          <Box {...subContentStyle}>{subContent}</Box>
-        </Text>
-      )}
+      <Text
+        fontSize={subContentHighlight ? 14 : 12}
+        fontWeight={subContentHighlight ? 600 : "normal"}
+        ml={"3px"}
+        display={"flex"}
+      >
+        {" / "}
+        {subContent && <Box>{subContent}</Box>}
+        {subContentNode}
+      </Text>
     </Flex>
   );
 }

@@ -133,8 +133,14 @@ function BondCard(props: { data: BondCardProps }) {
       content: (
         <ContentComponent
           content={`$${data?.bondingPrice}`}
-          subContent={`$${data?.tosPrice} (${data?.discountRate}% off)`}
-          subContentStyle={{ color: "#e23738" }}
+          subContentNode={
+            <Flex columnGap={"3px"}>
+              <Text>{`$${data?.tosPrice}`}</Text>
+              <Text color={data?.isDiscountMinus ? "red.100" : ""}>
+                ({data?.discountRate}% off)
+              </Text>
+            </Flex>
+          }
         />
       ),
     },
