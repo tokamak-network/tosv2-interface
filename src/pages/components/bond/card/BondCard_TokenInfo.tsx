@@ -79,7 +79,13 @@ function TokenPair(props: TokenPairType) {
 function BondInfo(props: TokenPairType) {
   const { inToken, roi, ethCapacity, isDiscountMinus } = props;
   return (
-    <Flex flexDir={"column"} rowGap={"12px"} textAlign={"right"}>
+    <Flex
+      flexDir={"column"}
+      rowGap={"12px"}
+      textAlign={"right"}
+      verticalAlign={"bottom"}
+      lineHeight={"18px"}
+    >
       {isDiscountMinus ? (
         <Text fontSize={12} color={"white.100"}>
           Negative Discount
@@ -89,29 +95,32 @@ function BondInfo(props: TokenPairType) {
           flexDir={["column", "column", "row"]}
           fontSize={12}
           color={"white.100"}
+          justifyContent={"flex-end"}
         >
           <Text>Earn up to </Text>
-          <Flex>
-            <Text
-              style={{
-                color: "#2775ff",
-                fontSize: "15px",
-                fontWeight: "bold",
-              }}
-            >
-              {roi}
-            </Text>
-            <Text
-              style={{
-                color: "#2775ff",
-                fontSize: "12px",
-                fontWeight: 600,
-                marginRight: "3px",
-              }}
-            >
-              %
-            </Text>
-            ROI
+          <Flex justifyContent={"flex-end"}>
+            <Flex ml={"3px"}>
+              <Text
+                style={{
+                  color: "#2775ff",
+                  fontSize: "15px",
+                  fontWeight: "bold",
+                }}
+              >
+                {roi}
+              </Text>
+              <Text
+                style={{
+                  color: "#2775ff",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  marginRight: "3px",
+                }}
+              >
+                %
+              </Text>
+              ROI
+            </Flex>
           </Flex>
         </Flex>
       )}
@@ -123,9 +132,9 @@ function BondInfo(props: TokenPairType) {
           color="white.200"
           justifyContent={"flex-end"}
           columnGap={"2px"}
-          alignItems={"end"}
+          alignItems={"flex-end"}
         >
-          <Box pb={"3px"} mr={"6px"}>
+          <Box mr={"6px"} pb={"1px"}>
             <TokenSymbol
               tokenType={inToken}
               w={"16px"}
@@ -137,7 +146,7 @@ function BondInfo(props: TokenPairType) {
           <Text fontSize={15} fontWeight={600}>
             {ethCapacity}
           </Text>
-          <Text fontSize={12} pb={"2px"}>
+          <Text fontSize={12} h={"17px"}>
             ETH
           </Text>
         </Flex>

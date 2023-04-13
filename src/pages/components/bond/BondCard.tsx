@@ -1,4 +1,4 @@
-import { Flex, Text, useColorMode, useTheme, Box } from "@chakra-ui/react";
+import { Flex, useColorMode, useTheme, Box, Text } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { selectedTxState } from "atom/global/tx";
 import BasicButton from "common/button/BasicButton";
@@ -31,7 +31,7 @@ function BondCard(props: { data: BondCardProps }) {
   const theme = useTheme();
   const { account } = useWeb3React();
   const { tryActivation } = useWallet();
-  const { bp700px } = useMediaView();
+  const { bp700px, pcView } = useMediaView();
   const [width] = useWindowDimensions();
   const closed = data?.status === "closed";
   const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
@@ -100,14 +100,30 @@ function BondCard(props: { data: BondCardProps }) {
       content: (
         <ContentComponent
           content={`$${data?.bondingPrice}`}
-          subContentNode={
-            <Flex columnGap={"3px"}>
-              <Text>{`$${data?.tosPrice}`}</Text>
-              <Text color={data?.isDiscountMinus ? "red.100" : ""}>
+          customContentNode={
+            <Flex
+              alignItems={"flex-end"}
+              flexDir={pcView ? "row" : "column"}
+              justifyContent={"flex-end"}
+            >
+              <Flex columnGap={"3px"}>
+                <Text>${data?.tosPrice}</Text>
+                <Text>/</Text>
+                <Text fontWeight={"normal"} fontSize={12}>
+                  ${data?.tosPrice}
+                </Text>
+              </Flex>
+              <Text
+                color={data?.isDiscountMinus ? "red.100" : ""}
+                fontWeight={"normal"}
+                fontSize={12}
+                ml={"3px"}
+              >
                 ({data?.discountRate}% off)
               </Text>
             </Flex>
           }
+          style={pcView ? {} : { height: "37px" }}
         />
       ),
     },
@@ -150,12 +166,12 @@ function BondCard(props: { data: BondCardProps }) {
       flexDir={"column"}
       w={["100%", "310px", "362px"]}
       h={"545px"}
-      minH={"545px"}
+      minH={["562px", "562px", "545px"]}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
       borderColor={colorMode === "light" ? "gray.900" : "gray.300"}
       borderRadius={10}
-      pt={"25px"}
+      pt={["20px", "20px", "25px"]}
       bg={colorMode === "light" ? "white.100" : "#1f2128"}
       px={"20px"}
       pb={"24px"}

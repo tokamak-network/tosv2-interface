@@ -99,7 +99,7 @@ export function useBondDepository(lockupWeeks?: number) {
     if (basePrice && bonusRateInfo) {
       let bondPriceArr = [];
       for (let i = 0; i < 54; i++) {
-        const rate = bonusRateInfo[i];
+        const rate = bonusRateInfo[i] ?? bonusRateInfo[i - 1];
         const plusValue = basePrice.mul(rate).div(10000);
         const result = basePrice.add(plusValue);
         bondPriceArr.push(result);

@@ -91,7 +91,12 @@ export default function BondCard_Status(props: {
   }, [status, date]);
 
   return (
-    <Flex mb={"18px"} justifyContent={"space-between"} alignItems="center">
+    <Flex
+      mb={"18px"}
+      justifyContent={"space-between"}
+      alignItems="center"
+      minH={"52.5px"}
+    >
       <Flex
         fontWeight={600}
         color={"white.200"}
