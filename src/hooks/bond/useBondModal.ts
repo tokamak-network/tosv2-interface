@@ -56,7 +56,7 @@ function useBondModal() {
     switch (tempTokenType) {
       case "ETH":
         return {
-          balacne: userETHBalance,
+          balance: userETHBalance,
           balanceNum: userETHBalanceWei,
           name: "ETH",
           maxValue,

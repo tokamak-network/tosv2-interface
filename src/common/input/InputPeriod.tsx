@@ -4,21 +4,14 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  NumberInput,
-  NumberInputField,
   Text,
   useColorMode,
-  useFocusOnPointerDown,
   useTheme,
 } from "@chakra-ui/react";
-import { inputBalanceState, inputState } from "atom/global/input";
-import { selectedModalState } from "atom/global/modal";
 import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
-import { max } from "moment";
-import React, { SetStateAction, useEffect, useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
+import React, { useEffect, useMemo, useState } from "react";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 
@@ -136,7 +129,7 @@ const InputPeriod = (props: InputProp) => {
 
   return (
     <Flex flexDir={"column"} pos={"relative"} {...style}>
-      <InputGroup>
+      <InputGroup w={"100%"}>
         <Input
           isInvalid={isError}
           isDisabled={isDisabled}

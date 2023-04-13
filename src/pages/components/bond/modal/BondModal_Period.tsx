@@ -72,14 +72,8 @@ function SliderGraph() {
       data: bonddiscountTestData,
     },
   ];
-
-  // console.log("***");
-
-  // console.log(roiTestData);
-  // console.log(bonddiscountTestData);
-
   return (
-    <Flex pos={"absolute"} w={"460px"} h={"90px"}>
+    <Flex pos={"absolute"} w={"100%"} h={"90px"}>
       <ResponsiveLine
         data={testData}
         colors={["#50d1b2", "#ec8c56"]}
@@ -112,7 +106,7 @@ export default function BondModal_Period() {
   const { endTime } = bondModalInputData;
 
   return (
-    <Flex rowGap={"9px"} flexDir={"column"} mb={"30px"}>
+    <Flex rowGap={"9px"} flexDir={"column"}>
       <Flex>
         <Flex
           fontSize={12}
@@ -163,60 +157,68 @@ export default function BondModal_Period() {
               <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
             </Flex>
           </Flex>
-          <InputPeriod
-            w={bp700px ? "310px" : "460px"}
-            h={"39px"}
-            pageKey={"Bond_screen"}
-            recoilKey={"bond_modal"}
-            atomKey={"bond_modal_period"}
-            placeHolder={"1 Weeks"}
-            style={{ marginLeft: "auto" }}
-            isDisabled={fiveDaysLockup}
-            isDisabledText={"5 Days"}
-            rightUnit={"Weeks"}
-            maxValue={bondModalMaxWeeks}
-            minValue={1}
-            isError={inputPeriodOver || inputPeriodIsEmpty}
-            errorMsg={inputPeriodOver ? errMsg.bond.periodIsOver : ""}
-            leftTime={leftHourAndMin}
-            leftDays={leftDays}
-            endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
-          ></InputPeriod>
+          <Flex w={"100%"} className={"test"}>
+            <InputPeriod
+              w={bp700px ? "100%" : "460px"}
+              h={"39px"}
+              pageKey={"Bond_screen"}
+              recoilKey={"bond_modal"}
+              atomKey={"bond_modal_period"}
+              placeHolder={"1 Weeks"}
+              style={{ w: "100%" }}
+              isDisabled={fiveDaysLockup}
+              isDisabledText={"5 Days"}
+              rightUnit={"Weeks"}
+              maxValue={bondModalMaxWeeks}
+              minValue={1}
+              isError={inputPeriodOver || inputPeriodIsEmpty}
+              errorMsg={inputPeriodOver ? errMsg.bond.periodIsOver : ""}
+              leftTime={leftHourAndMin}
+              leftDays={leftDays}
+              endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
+            ></InputPeriod>
+          </Flex>
         </Flex>
       </Flex>
       <Flex
         w={"100%"}
         justifyContent={"center"}
-        px={bp700px ? "10px" : ""}
+        // px={bp700px ? "10px" : ""}
         mt={"32px"}
         mb={"30px"}
         pos={"relative"}
+        ml={bp700px ? "" : "-14px"}
+        h={"90px"}
+        maxH={"90px"}
       >
         <Flex
-          pos={"absolute"}
           top={"5px"}
-          left={7}
           flexDir={"column"}
           textAlign={"right"}
           fontSize={11}
           color={"#64646f"}
+          h={"100%"}
+          maxH={"90px"}
+          mr={"5px"}
         >
-          <Text>50%</Text>
-          <Text mt={"34px"} mb={"24px"}>
+          <Text h={"16px"} pt={"3px"}>
+            50%
+          </Text>
+          <Text mt={"40px"} mb={"22px"} h={"16px"}>
             0%
           </Text>
-          <Text>-40%</Text>
+          <Text h={"16px"}>-40%</Text>
         </Flex>
-        <Flex>
+        <Flex pos={"relative"} w={"100%"} maxW={"460px"}>
           <SliderGraph />
+          <BondLockupGraph
+            pageKey={"Bond_screen"}
+            subKey={"bond_modal"}
+            periodKey={"bond_modal_period"}
+            isSlideDisabled={fiveDaysLockup}
+            minValue={1}
+          ></BondLockupGraph>
         </Flex>
-        <BondLockupGraph
-          pageKey={"Bond_screen"}
-          subKey={"bond_modal"}
-          periodKey={"bond_modal_period"}
-          isSlideDisabled={fiveDaysLockup}
-          minValue={1}
-        ></BondLockupGraph>
       </Flex>
     </Flex>
   );

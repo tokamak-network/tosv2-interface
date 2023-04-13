@@ -77,9 +77,9 @@ export function useBondDepository(lockupWeeks?: number) {
         BondDepositoryProxy_CONTRACT &&
         bonusRateInfo
       ) {
-        const rate = bonusRateInfo[_weeks];
-        const plusValue = basePrice.mul(rate).div(10000);
-        const result = basePrice.add(plusValue);
+        const bonusRate = bonusRateInfo[_weeks] ?? bonusRateInfo[_weeks - 1];
+        const bonusValue = basePrice.mul(bonusRate).div(10000);
+        const result = basePrice.add(bonusValue);
         return setBondingPrice(result);
       }
     }

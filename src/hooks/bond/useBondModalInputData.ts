@@ -233,8 +233,7 @@ function useBondModalInputData() {
 
         const discunt =
           priceData.ethPrice /
-          Number(ethers.utils.formatUnits(bondingPrice.toString(), 18)) /
-          1.005;
+          Number(ethers.utils.formatUnits(bondingPrice.toString(), 18));
         const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
 
         const mininmumTosPrice = BigInt(

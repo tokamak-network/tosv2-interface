@@ -16,6 +16,7 @@ import { BondCardProps } from "types/bond";
 import { useWeb3React } from "@web3-react/core";
 import useMediaView from "hooks/useMediaView";
 import TokenImageContrainer from "pages/components/common/modal/TokenImageContrainer";
+import commafy from "@/utils/commafy";
 
 const bondToken: SupportedBondToken = "ETH";
 
@@ -23,7 +24,7 @@ export default function BondModal_Balance() {
   const { errMsg } = constant;
   const { modalCondition, userTokenBalance } = useBondModal();
   const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
-  const { maxValue, balacne, balanceNum, name } = userTokenBalance;
+  const { maxValue, balance, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
   const { bondDiscount, isMinusDiscount, minimumTosPrice, roi, isMinusROI } =
     useBondModalInputData();
@@ -37,7 +38,7 @@ export default function BondModal_Balance() {
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
   const { account, library } = useWeb3React();
-  const { bp700px } = useMediaView();
+  const { bp500px, bp700px } = useMediaView();
 
   const { selectedModalData } = useModal<BondCardProps>();
   const marketId = selectedModalData?.index;
@@ -181,7 +182,7 @@ export default function BondModal_Balance() {
             : "#e8edf2"
         }
         w={bp700px ? "310px" : "460px"}
-        h={"78px"}
+        h={bp700px ? "94px" : "78px"}
         bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
         px={"20px"}
         py={"14px"}
@@ -189,56 +190,92 @@ export default function BondModal_Balance() {
         flexDir={"column"}
         rowGap={"9px"}
       >
-        <Flex justifyContent={"space-between"} h={"25px"}>
-          <BalanceInput
-            placeHolder={"0.00"}
-            pageKey={"Bond_screen"}
-            recoilKey={"bond_modal"}
-            atomKey={"bond_modal_balance"}
-            isError={
-              actualMaxValue !== undefined &&
-              (zeroInputBalance || inputOver || inputBalanceisEmpty)
-            }
-            errorMsg={
-              inputBalanceisEmpty
-                ? undefined
-                : inputOver
-                ? errMsg.bond.bondableAmountIsOver
-                : zeroInputBalance
-                ? errMsg.bond.inputIsZero
-                : errMsg.bond.balanceIsOver
-            }
-            fontSize={18}
-            w={bp700px ? "190px" : "270px"}
-            inputContainerStyle={{
-              borderRadius: 0,
-              borderWidth: 0,
-              margin: 0,
-              fontWeight: 600,
-              height: "25px",
-            }}
-            inputFieldStyle={{ padding: 0 }}
-          ></BalanceInput>
+        <Flex justifyContent={"space-between"} h={"25px"} alignItems={"center"}>
           {tokenImage}
-        </Flex>
-        <Flex fontSize={12} columnGap={"9px"} alignItems={"center"}>
-          <Text>
-            Balance: {balacne} {name}
-          </Text>
-          <Button
-            w={"48px"}
-            h={"20px"}
-            border={
-              colorMode === "dark" ? "1px solid #535353" : "1px solid #e8edf2"
-            }
-            bgColor={"transparent"}
-            fontSize={11}
-            color={"blue.200"}
-            onClick={() => setMaxValue()}
+          <Flex
+            w={"100%"}
+            ml={"20px"}
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+            columnGap={"9px"}
+            h={"22px"}
           >
-            MAX
-          </Button>
+            <BalanceInput
+              w={"100%"}
+              placeHolder={"0.00"}
+              pageKey={"Bond_screen"}
+              recoilKey={"bond_modal"}
+              atomKey={"bond_modal_balance"}
+              isError={
+                actualMaxValue !== undefined &&
+                (zeroInputBalance || inputOver || inputBalanceisEmpty)
+              }
+              errorMsg={
+                inputBalanceisEmpty
+                  ? undefined
+                  : inputOver
+                  ? errMsg.bond.bondableAmountIsOver
+                  : zeroInputBalance
+                  ? errMsg.bond.inputIsZero
+                  : errMsg.bond.balanceIsOver
+              }
+              fontSize={18}
+              // w={bp700px ? "190px" : "270px"}
+              inputContainerStyle={{
+                borderRadius: 0,
+                borderWidth: 0,
+                margin: 0,
+                fontWeight: 600,
+                height: "25px",
+                w: "100%",
+              }}
+              inputFieldStyle={{
+                padding: 0,
+                textAlign: "right",
+                width: "100%",
+              }}
+            ></BalanceInput>
+            <Button
+              w={"48px"}
+              h={"20px"}
+              border={
+                colorMode === "dark" ? "1px solid #535353" : "1px solid #e8edf2"
+              }
+              bgColor={"transparent"}
+              fontSize={11}
+              color={"blue.200"}
+              onClick={() => setMaxValue()}
+            >
+              MAX
+            </Button>
+          </Flex>
         </Flex>
+        {bp700px ? (
+          <Flex
+            w={"100%"}
+            fontSize={12}
+            justifyContent={"center"}
+            alignItems={"flex-end"}
+            flexDir={"column"}
+          >
+            <Text>
+              Balance: {balance} {name}
+            </Text>
+            <Text> Bond Capacity : {commafy(actualMaxValue)} ETH</Text>
+          </Flex>
+        ) : (
+          <Flex
+            w={"100%"}
+            fontSize={12}
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+          >
+            <Text>
+              Balance: {balance} {name} / Bond Capacity:{" "}
+              {commafy(actualMaxValue)} ETH
+            </Text>
+          </Flex>
+        )}
       </Flex>
     </Flex>
   );

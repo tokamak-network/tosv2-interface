@@ -69,8 +69,9 @@ export default function BondCard_Description(props: {
   const isWarning = discountRate < 0;
   return (
     <Flex
-      w={["280px", "280px", "300px"]}
-      maxW={["280px", "280px", "300px"]}
+      // w={["306px", "280px", "300px"]}
+      // maxW={["306px", "280px", "300px"]}
+      w={"100%"}
       textAlign={"center"}
       fontSize={12}
       color={"white.200"}

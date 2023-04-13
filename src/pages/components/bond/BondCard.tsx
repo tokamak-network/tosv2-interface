@@ -5,7 +5,7 @@ import BasicButton from "common/button/BasicButton";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
@@ -160,13 +160,17 @@ function BondCard(props: { data: BondCardProps }) {
     },
   ];
 
+  const mobileH = useMemo(() => {
+    return currentRound === 1 ? "562px" : "487px";
+  }, [currentRound]);
+
   //vierport ref 1134px
   return (
     <Flex
       flexDir={"column"}
       w={["100%", "310px", "362px"]}
       h={"545px"}
-      minH={["562px", "562px", "545px"]}
+      minH={[mobileH, mobileH, "545px"]}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
       borderColor={colorMode === "light" ? "gray.900" : "gray.300"}
