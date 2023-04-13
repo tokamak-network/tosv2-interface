@@ -1,14 +1,12 @@
 import { convertNumber, convertToWei } from "@/utils/number";
-import { BigNumber, ethers, FixedNumber } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import useStosReward from "hooks/stake/useStosReward";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import { useEffect, useMemo, useState } from "react";
-import JSBI from "jsbi";
 import constant from "constant";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { modalBottomLoadingState } from "atom/global/modal";
-import { getTimeZone } from "@/utils/time";
 import useStosBond from "./useStosBond";
 import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
@@ -17,9 +15,7 @@ import usePrice from "hooks/usePrice";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import { bond_modal } from "atom/bond/modal";
 import { useBondDepository } from "./useBondDepository";
-import useBondModal from "./useBondModal";
 import { useBlockNumber } from "hooks/useBlockNumber";
-import { log } from "console";
 
 function useBondModalInputData() {
   const { selectedModalData } = useModal<BondCardProps>();
@@ -244,13 +240,6 @@ function useBondModalInputData() {
         const mininmumTosPrice = BigInt(
           Number(bondingPrice.toString()) / 1.005
         );
-
-        console.log("useBondModal");
-        console.log(bondingPrice.toString());
-        console.log(bondingPriceCom);
-        console.log(discunt);
-        console.log(discountRate);
-        console.log(priceData.ethPrice);
 
         setMinimumTosPrice(BigNumber.from(mininmumTosPrice.toString()));
         setBondDiscount(commafy(discountRate));

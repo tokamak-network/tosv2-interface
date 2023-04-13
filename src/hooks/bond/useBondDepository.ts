@@ -1,13 +1,11 @@
-import { getDiscountRate } from "@/utils/bond/card/getDiscountRate";
 import { bond_modal } from "atom/bond/modal";
-import { BigNumber, Contract } from "ethers";
+import { BigNumber } from "ethers";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
 import { useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
-import BonusRateAbi from "services/abis/BonusRate.json";
 import { getRateInfo } from "@/utils/contract/bond/getRateInfo";
 import { useWeb3React } from "@web3-react/core";
 
@@ -98,10 +96,10 @@ export function useBondDepository(lockupWeeks?: number) {
   ]);
 
   const bondingPricePerWeeks = useMemo(() => {
-    if (basePrice) {
+    if (basePrice && bonusRateInfo) {
       let bondPriceArr = [];
-      for (let i = 1; i < 54; i++) {
-        const rate = getDiscountRate(i);
+      for (let i = 0; i < 54; i++) {
+        const rate = bonusRateInfo[i];
         const plusValue = basePrice.mul(rate).div(10000);
         const result = basePrice.add(plusValue);
         bondPriceArr.push(result);
@@ -109,7 +107,7 @@ export function useBondDepository(lockupWeeks?: number) {
       return bondPriceArr;
     }
     return undefined;
-  }, [basePrice]);
+  }, [basePrice, bonusRateInfo]);
 
   return { basePrice, bondingPrice, bondingPricePerWeeks };
 }

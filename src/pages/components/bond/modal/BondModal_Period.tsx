@@ -1,22 +1,13 @@
 import { Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import { bond_bondModal_input } from "atom/bond/input";
-
-import {
-  bond_modal,
-  bond_modal_state,
-  T_BondModalValues,
-} from "atom/bond/modal";
-import CustomCheckBox from "common/input/CustomCheckBox";
+import { bond_modal } from "atom/bond/modal";
 import InputPeriod from "common/input/InputPeriod";
 import BasicTooltip from "common/tooltip";
 import constant from "constant";
 import useBondModal from "hooks/bond/useBondModal";
-import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
-import useStosReward from "hooks/stake/useStosReward";
 import useMediaView from "hooks/useMediaView";
-import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import BondLockupGraph from "./BondLockupGraph";
 
@@ -54,11 +45,6 @@ function SliderGraph() {
   const bonddiscountTestData = [];
   const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
-  // console.log("****");
-
-  // console.log(roiPerWeeks);
-  // console.log(discountRatePerBondingPrice);
-
   if (roiPerWeeks && discountRatePerBondingPrice) {
     for (let i = 0; i < 53; i++) {
       roiTestData.push({
@@ -75,13 +61,6 @@ function SliderGraph() {
       });
     }
   }
-
-  // console.log("graphData");
-  // console.log("roiGraph", roiTestData, bonddiscountTestData);
-  // console.log("discountGraph", bonddiscountTestData);
-
-  // console.log("roiPerWeeks", roiPerWeeks);
-  // console.log("discountPerWeeks", discountRatePerBondingPrice);
 
   const testData = [
     {

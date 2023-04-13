@@ -85,29 +85,35 @@ function BondInfo(props: TokenPairType) {
           Negative Discount
         </Text>
       ) : (
-        <Text fontSize={12} color={"white.100"}>
-          Earn up to{" "}
-          <span
-            style={{
-              color: "#2775ff",
-              fontSize: "15px",
-              fontWeight: "bold",
-            }}
-          >
-            {roi}
-          </span>
-          <span
-            style={{
-              color: "#2775ff",
-              fontSize: "12px",
-              fontWeight: 600,
-              marginRight: "3px",
-            }}
-          >
-            %
-          </span>
-          ROI
-        </Text>
+        <Flex
+          flexDir={["column", "column", "row"]}
+          fontSize={12}
+          color={"white.100"}
+        >
+          <Text>Earn up to </Text>
+          <Flex>
+            <Text
+              style={{
+                color: "#2775ff",
+                fontSize: "15px",
+                fontWeight: "bold",
+              }}
+            >
+              {roi}
+            </Text>
+            <Text
+              style={{
+                color: "#2775ff",
+                fontSize: "12px",
+                fontWeight: 600,
+                marginRight: "3px",
+              }}
+            >
+              %
+            </Text>
+            ROI
+          </Flex>
+        </Flex>
       )}
       <Flex flexDir={"column"}>
         <Text fontSize={11} color={"gray.100"}>

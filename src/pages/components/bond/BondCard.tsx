@@ -1,37 +1,16 @@
-import { convertTimeStamp, getDuration, getNowTimeStamp } from "@/utils/time";
-import {
-  Flex,
-  Text,
-  useMediaQuery,
-  useColorMode,
-  Progress,
-  useTheme,
-  Box,
-  theme,
-} from "@chakra-ui/react";
-
+import { Flex, Text, useColorMode, useTheme, Box } from "@chakra-ui/react";
 import { useWeb3React } from "@web3-react/core";
 import { selectedTxState } from "atom/global/tx";
 import BasicButton from "common/button/BasicButton";
-import TokenSymbol from "common/token/TokenSymol";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import useWallet from "hooks/useWallet";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
-import RepeatIcon from "assets/icons/bond/s-repeat.svg";
-import BlueTooltip from "assets/icons/bond/gage_blue_arrow.svg";
-import GreenTooltip from "assets/icons/bond/gage_green_arrow.svg";
-
-import Image from "next/image";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { isProduction } from "constants/production";
-import styled from "@emotion/styled";
 import CONTRACT_ADDRESS from "services/addresses/contract";
-import { accountBar } from "atom/global/sidebar";
-import { selectedToken0, selectedToken1 } from "atom/swap";
-import { SupportedInputTokenTypes } from "types";
 import BondCard_TokenInfo from "./card/BondCard_TokenInfo";
 import BondCard_Progress from "./card/BondCard_Progress";
 import BondCard_BondInfo, {
@@ -55,20 +34,8 @@ function BondCard(props: { data: BondCardProps }) {
   const { bp700px } = useMediaView();
   const [width] = useWindowDimensions();
   const closed = data?.status === "closed";
-
   const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
-
-  const timeDiff = data?.endTime - getNowTimeStamp();
-  const openTimeDiff = data?.startTime - getNowTimeStamp();
-
   const txPending = useRecoilValue(selectedTxState);
-
-  const capacityIsZero = Number(data?.blueProgress) === 100;
-
-  const discountRate = data?.isDiscountMinus
-    ? `${data?.discountRate}%`
-    : `~ ${data?.discountRate}%`;
-
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [dateText, setDateText] = useState<string | undefined>(undefined);
 
