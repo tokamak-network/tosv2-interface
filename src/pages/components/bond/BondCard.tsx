@@ -107,7 +107,7 @@ function BondCard(props: { data: BondCardProps }) {
               justifyContent={"flex-end"}
             >
               <Flex columnGap={"3px"}>
-                <Text>${data?.tosPrice}</Text>
+                <Text>${data?.bondingPrice}</Text>
                 <Text>/</Text>
                 <Text fontWeight={"normal"} fontSize={12}>
                   ${data?.tosPrice}

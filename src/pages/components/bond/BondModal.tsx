@@ -275,14 +275,15 @@ function BondModal() {
                 px={bp700px ? "20px" : 0}
               >
                 <Flex alignItems={"center"} justifyContent={"center"}>
-                  <Text color={"#e23738"} mr={"2px"}>
-                    *
-                  </Text>
                   <Text>
-                    The amount may change slightly based on the slippage (0.5%).
+                    <span style={{ color: "#e23738", marginRight: "2px" }}>
+                      *
+                    </span>
+                    The amount may change slightly based on the slippage (0.5%).{" "}
+                    {bp700px ? null : <br />}
+                    If the price slips any further, txn will revert.
                   </Text>
                 </Flex>
-                <Text>If the price slips any further, txn will revert.</Text>
               </Flex>
             )}
             {isMinusDiscount && (

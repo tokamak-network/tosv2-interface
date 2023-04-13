@@ -1,4 +1,3 @@
-import { getROI } from "@/utils/bond/card/getROI";
 import { getRound } from "@/utils/bond/card/getRound";
 import { getTosCapacityOnEth } from "@/utils/bond/card/getTosCapacityOnEth";
 import commafy from "@/utils/commafy";
@@ -165,7 +164,7 @@ export function useBondCard() {
           totalRound: roundNums,
           roundEthCapacity,
           bondEthCapacity,
-          roi: commafy(ROIforLockupWeeks),
+          roi: Number(commafy(ROIforLockupWeeks)),
           ltosApy: 10.1,
           tosPrice: Number(commafy(tosPrice, 2)),
           saleRoundTimeStamp,
