@@ -1,4 +1,4 @@
-import { BondCardProps, BondPool, BondRawdata } from "types/bond";
+import { BondRawdata } from "types/bond";
 
 export function getDummyServerBondData(): BondRawdata[] {
   const dummyServerBondData = [
