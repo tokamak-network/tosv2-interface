@@ -1,7 +1,6 @@
 import { useWeb3React } from "@web3-react/core";
 import { DEFAULT_NETWORK } from "constants/index";
 import { useEffect, useState } from "react";
-import { useActiveWeb3React } from "./useWeb3";
 
 type UseClient = {
   isConnectedToChain: boolean | undefined;

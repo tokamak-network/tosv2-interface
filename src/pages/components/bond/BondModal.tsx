@@ -1,7 +1,6 @@
 import {
   Flex,
   Text,
-  Button,
   Modal,
   ModalOverlay,
   ModalBody,
@@ -9,77 +8,38 @@ import {
   useTheme,
   useColorMode,
   Link,
-  Box,
-  Input,
-  Grid,
-  GridItem,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  Tooltip,
-  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import {
-  modalBottomLoadingState,
-  modalLoadingState,
-  modalLoadingValue,
-  selectedModalData,
-  selectedModalState,
-  stosLoadingState,
-} from "atom//global/modal";
+import { modalBottomLoadingState, stosLoadingState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
-import question from "assets/icons/question.svg";
 import USER_GUIDE from "assets/icons/bond/sicon-user_guide.svg";
 
-import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { TextInput, BalanceInput } from "common/input/TextInput";
-import TokenSymbol from "common/token/TokenSymol";
+import { useCallback, useState } from "react";
 import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
-import useInputData from "hooks/bond/useBondModalInputData";
-import { inputBalanceState, inputState } from "atom/global/input";
-import commafy from "@/utils/commafy";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/utils/number";
-import { useWeb3React } from "@web3-react/core";
-import useUserBalance from "hooks/useUserBalance";
 import useInput from "hooks/useInput";
-import { Bond_BondModal } from "types/atom";
-import StakeGraph from "../common/modal/StakeGraph";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
-import BasicTooltip from "common/tooltip";
-import { getNowTimeStamp, getTimeLeft, convertTimeStamp } from "utils/time";
 import useCustomToast from "hooks/useCustomToast";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import { useRecoilState, useRecoilValue } from "recoil";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
 import constant from "constant";
-import GradientSpinner from "../common/GradientSpinner";
-import Tile from "../common/modal/Tile";
-import BottomContent from "../common/modal/BottomContent";
-import InputPeriod from "common/input/InputPeriod";
 import useStosReward from "hooks/stake/useStosReward";
 import BondConfirm from "./modal/BondConfirm";
 import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
-import BondModal_Input from "./modal/BondModal_Balance";
 import BondModal_Period from "./modal/BondModal_Period";
 import { bond_modal, bond_modal_state_defaultValue } from "atom/bond/modal";
 import { isProduction } from "constants/production";
 import { accountBar } from "atom/global/sidebar";
-import CONTRACT_ADDRESS, {
-  CONTRACT_ADDRESSES_TYPE,
-} from "services/addresses/contract";
+import CONTRACT_ADDRESS from "services/addresses/contract";
 import { ZERO_ADDRESS } from "constants/index";
-import { selectedToken0, selectedToken1 } from "atom/swap";
-import { BigNumber, ethers } from "ethers";
+import { selectedToken0 } from "atom/swap";
 import { BondModalInput } from "atom/bond/input";
 import BondModal_Balance from "./modal/BondModal_Balance";
 
@@ -211,14 +171,6 @@ function BondModal() {
     minimumTosPrice,
   ]);
 
-  // useEffect(() => {
-  //   setStosLoading(true);
-  // }, [inputValue, setBottomLoading, setStosLoading]);
-
-  // useEffect(() => {
-  //   setBottomLoading(true);
-  // }, [inputValue.bond_modal_balance, setBottomLoading]);
-
   return (
     <Modal
       isOpen={selectedModal === "bond_bond_modal"}
@@ -323,14 +275,15 @@ function BondModal() {
                 px={bp700px ? "20px" : 0}
               >
                 <Flex alignItems={"center"} justifyContent={"center"}>
-                  <Text color={"#e23738"} mr={"2px"}>
-                    *
-                  </Text>
                   <Text>
-                    The amount may change slightly based on the slippage (0.5%).
+                    <span style={{ color: "#e23738", marginRight: "2px" }}>
+                      *
+                    </span>
+                    The amount may change slightly based on the slippage (0.5%).{" "}
+                    {bp700px ? null : <br />}
+                    If the price slips any further, txn will revert.
                   </Text>
                 </Flex>
-                <Text>If the price slips any further, txn will revert.</Text>
               </Flex>
             )}
             {isMinusDiscount && (

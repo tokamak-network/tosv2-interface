@@ -45,8 +45,8 @@ const stake_unstakeModal_state = selector({
 //update modal states
 export type StakeUpdateModalInput = {
   stake_updateModal_period: number | undefined;
-  stake_updateModal_ltos_balance: number | "" | undefined;
-  stake_updateModal_tos_balance: number | "" | undefined;
+  stake_updateModal_ltos_balance: number | undefined;
+  stake_updateModal_tos_balance: number | undefined;
 };
 
 const stake_updateModal_defaultValue = {

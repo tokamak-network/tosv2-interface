@@ -18,7 +18,6 @@ import useMediaView from "hooks/useMediaView";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sidebarState } from "atom//header";
 import { useWeb3React } from "@web3-react/core";
-import { useActiveWeb3React } from "hooks/useWeb3";
 import { injected } from "connectors/";
 import { useState } from "react";
 import { selectedTxState } from "atom/global/tx";

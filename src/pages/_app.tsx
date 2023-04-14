@@ -68,7 +68,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                       walletopen={() => handleWalletModalOpen("wallet")}
                     ></AccountDrawer>
                     <NetworkModal />
-                    <SwapInterfaceModal/>
+                    <SwapInterfaceModal />
                     <TermsOfUse />
                     {/* Use when it does need to pop Notice Modal up */}
                     {/* <Notice /> */}

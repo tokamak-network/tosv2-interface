@@ -1,6 +1,5 @@
-import { Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Flex, Text, useColorMode } from "@chakra-ui/react";
 import BasicTooltip from "common/tooltip";
-import Image from "next/image";
 import { ReactNode } from "react";
 
 export type BondInfoDataMap = { title: ReactNode; content: ReactNode }[];
@@ -17,11 +16,9 @@ export function TitleComponent(props: {
     <Flex
       color={"gray.100"}
       fontSize={14}
-      alignItems={"end"}
-      textAlign={"end"}
-      height={"20px"}
-      maxH={"20px"}
+      alignItems={"center"}
       lineHeight={"20px"}
+      h={"100%"}
     >
       <Flex>
         <Text>{title}</Text>
@@ -43,26 +40,45 @@ export function TitleComponent(props: {
 
 export function ContentComponent(props: {
   content: string;
+  customContentNode?: ReactNode;
   subContent?: string;
+  subContentHighlight?: boolean;
+  subContentNode?: ReactNode;
+  style?: {};
 }) {
-  const { content, subContent } = props;
+  const {
+    content,
+    customContentNode,
+    subContent,
+    subContentHighlight,
+    subContentNode,
+    style,
+  } = props;
   return (
     <Flex
       color={"white.200"}
       fontWeight={600}
       fontSize={14}
       height={"20px"}
-      maxH={"20px"}
       lineHeight={"20px"}
       alignItems={"end"}
       textAlign={"end"}
+      {...style}
     >
-      <Text>{content}</Text>
-      {subContent && (
-        <Text fontSize={12} fontWeight={"normal"} ml={"3px"}>
-          {" / "}
-          {subContent}
-        </Text>
+      {customContentNode ?? (
+        <>
+          <Text>{content}</Text>
+          <Text
+            fontSize={subContentHighlight ? 14 : 12}
+            fontWeight={subContentHighlight ? 600 : "normal"}
+            ml={subContent ? "3px" : ""}
+            display={"flex"}
+          >
+            {subContent && " / "}
+            {subContent && <Box>{subContent}</Box>}
+            {subContentNode}
+          </Text>
+        </>
       )}
     </Flex>
   );
@@ -76,7 +92,7 @@ function InfoComponent(props: { title: ReactNode; content: ReactNode }) {
       justifyContent={"space-between"}
       alignItems={"end"}
       fontSize={14}
-      h={"20px"}
+      // h={"20px"}
     >
       {title}
       {content}

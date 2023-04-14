@@ -13,11 +13,12 @@ import StakingV2ProxyAbi from "services/abis/StakingV2Proxy.json";
 import BondDepositoryAbi from "services/abis/BondDepository.json";
 import BondDepositoryProxyAbi from "services/abis/BondDepositoryProxy.json";
 import LockTOSAbi from "services/abis/LockTOS.json";
-import QuoterABI from 'services/abis/Quoter.json'
+import QuoterABI from "services/abis/Quoter.json";
 import useContract from "hooks/useContract";
 import CONTRACT_ADDRESS from "services/addresses/contract";
-import SwapperV2 from 'services/abis/SwapperV2.json';
-import WETHAbi from 'services/abis/WETH.json'
+import SwapperV2 from "services/abis/SwapperV2.json";
+import WETHAbi from "services/abis/WETH.json";
+import BonusRateAbi from "services/abis/BonusRate.json";
 
 const useCallContract = (ERC20_ADDRESS?: string) => {
   const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
@@ -35,14 +36,15 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
     LockTOS,
     Quoter_ADDRESS,
     SwapperV2Proxy,
-    WETH_ADDRESS
+    WETH_ADDRESS,
+    BonusRate_ADDRESS,
   } = CONTRACT_ADDRESS;
 
   const TON_CONTRACT = useContract(TON_ADDRESS, TON.abi);
   const WTON_CONTRACT = useContract(WTON_ADDRESS, WTON.abi);
   const TOS_CONTRACT = useContract(TOS_ADDRESS, ERC20.abi);
   const ERC20_CONTRACT = useContract(ERC20_ADDRESS, ERC20.abi);
-  const WETH_CONTRACT = useContract(WETH_ADDRESS,WETHAbi )
+  const WETH_CONTRACT = useContract(WETH_ADDRESS, WETHAbi);
   //Phase 1
   const TOSValueCalculator_CONTRACT = useContract(
     TOSValueCalculator,
@@ -63,8 +65,10 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
     BondDepositoryAbi.abi
   );
   const LockTOS_CONTRACT = useContract(LockTOS, LockTOSAbi.abi);
-  const QUOTER_CONTRACT = useContract(Quoter_ADDRESS, QuoterABI.abi)
-  const SwapperV2Proxy_CONTRACT = useContract(SwapperV2Proxy,SwapperV2.abi)
+  const QUOTER_CONTRACT = useContract(Quoter_ADDRESS, QuoterABI.abi);
+  const SwapperV2Proxy_CONTRACT = useContract(SwapperV2Proxy, SwapperV2.abi);
+  const BonusRate_CONTRACT = useContract(BonusRate_ADDRESS, BonusRateAbi);
+
   return {
     TON_CONTRACT,
     WTON_CONTRACT,
@@ -82,7 +86,8 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
     LockTOS_CONTRACT,
     QUOTER_CONTRACT,
     SwapperV2Proxy_CONTRACT,
-    WETH_CONTRACT
+    WETH_CONTRACT,
+    BonusRate_CONTRACT,
   };
 };
 

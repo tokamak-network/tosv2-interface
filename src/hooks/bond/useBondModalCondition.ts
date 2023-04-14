@@ -1,8 +1,6 @@
 import constant from "constant";
 import useInput from "hooks/useInput";
-import useModal from "hooks/useModal";
 import { useEffect, useState } from "react";
-import { BondModalInput } from "types/bond";
 
 function useBondModalCondition(maxValue: number | undefined) {
   const [inputOver, setInputOver] = useState<boolean>(true);

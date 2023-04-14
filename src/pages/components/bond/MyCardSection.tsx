@@ -8,7 +8,7 @@ import MyCard from "./MyCard";
 
 function MyCardSection() {
   const { cardList } = useMyHistory();
-console.log(cardList);
+  console.log(cardList);
 
   return (
     <SimpleGrid columns={3} gridRowGap={"24px"} columnGap={"25px"}>

@@ -1,15 +1,4 @@
-import useModal from "hooks/useModal";
-import { useEffect, useMemo, useState } from "react";
-import { BondCardProps, BondRawdata } from "types/bond";
-import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";
-import { useQuery } from "@apollo/client";
-import commafy from "@/utils/commafy";
-import useCallContract from "hooks/useCallContract";
-import { convertNumber, convertToWei } from "@/utils/number";
-import { useWeb3React } from "@web3-react/core";
-import { BigNumber, ethers, utils } from "ethers";
-import usePrice from "hooks/usePrice";
-import constant from "constant";
+import { useMemo } from "react";
 import useBondModalCondition from "./useBondModalCondition";
 import useInput from "hooks/useInput";
 import useStosReward from "hooks/stake/useStosReward";
@@ -67,7 +56,7 @@ function useBondModal() {
     switch (tempTokenType) {
       case "ETH":
         return {
-          balacne: userETHBalance,
+          balance: userETHBalance,
           balanceNum: userETHBalanceWei,
           name: "ETH",
           maxValue,

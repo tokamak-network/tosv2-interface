@@ -35,7 +35,12 @@ export type BondCardProps = {
   ethPrice: number;
   totalRound: number;
   roundEthCapacity: number;
+  bondEthCapacity: number;
+  roi: number;
+  ltosApy: number;
   tosPrice: number;
+  saleRoundTimeStamp: number[];
+  bondButtonIsDisabled: boolean;
 };
 
 export type BondRawdata = {
@@ -58,6 +63,8 @@ export type BondRawdata = {
   periodicCapacity: number;
   currentCapacity: number;
   ethPrice: number;
+  ROIforLockupWeeks: number;
+  ltosInterstForLockupWeeks: number;
   createdAt: Date;
 };
 

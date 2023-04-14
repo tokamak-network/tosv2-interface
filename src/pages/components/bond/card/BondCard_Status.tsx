@@ -1,4 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
+import useMediaView from "hooks/useMediaView";
 import { ReactNode, useMemo } from "react";
 import { BondCardProps } from "types/bond";
 
@@ -38,6 +39,7 @@ export default function BondCard_Status(props: {
   date: string | undefined;
 }) {
   const { version, status, date } = props;
+  const { bp1024px } = useMediaView();
 
   const statusText = useMemo(() => {
     switch (status) {
@@ -91,7 +93,12 @@ export default function BondCard_Status(props: {
   }, [status, date]);
 
   return (
-    <Flex mb={"18px"} justifyContent={"space-between"} alignItems="center">
+    <Flex
+      mb={"18px"}
+      justifyContent={"space-between"}
+      alignItems="center"
+      minH={"52.5px"}
+    >
       <Flex
         fontWeight={600}
         color={"white.200"}
@@ -104,7 +111,7 @@ export default function BondCard_Status(props: {
           v{version}
         </Text>
       </Flex>
-      {statusText}
+      <Flex maxW={["", "80px", ""]}>{statusText}</Flex>
     </Flex>
   );
 }

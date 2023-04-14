@@ -9,8 +9,9 @@ type OutTokensType = {
   outToken0: SupportedInputTokenTypes;
   outToken1: SupportedInputTokenTypes;
 };
+type OtherInfo = { roi: number; ethCapacity: number; isDiscountMinus: boolean };
 
-export type TokenPairType = InTokenType & OutTokensType;
+export type TokenPairType = InTokenType & OutTokensType & OtherInfo;
 
 function OutTokenPair(props: OutTokensType) {
   const { outToken0, outToken1 } = props;
@@ -75,32 +76,54 @@ function TokenPair(props: TokenPairType) {
   );
 }
 
-function BondInfo(props: InTokenType) {
+function BondInfo(props: TokenPairType) {
+  const { inToken, roi, ethCapacity, isDiscountMinus } = props;
   return (
-    <Flex flexDir={"column"} rowGap={"12px"} textAlign={"right"}>
-      <Text fontSize={12}>
-        Earn up to{" "}
-        <span
-          style={{
-            color: "#2775ff",
-            fontSize: "15px",
-            fontWeight: 600,
-          }}
+    <Flex
+      flexDir={"column"}
+      rowGap={"12px"}
+      textAlign={"right"}
+      verticalAlign={"bottom"}
+      lineHeight={"18px"}
+    >
+      {isDiscountMinus ? (
+        <Text fontSize={12} color={"white.100"}>
+          Negative Discount
+        </Text>
+      ) : (
+        <Flex
+          flexDir={["column", "column", "row"]}
+          fontSize={12}
+          color={"white.100"}
+          justifyContent={"flex-end"}
         >
-          10.1
-        </span>
-        <span
-          style={{
-            color: "#2775ff",
-            fontSize: "12px",
-            fontWeight: 600,
-            marginRight: "3px",
-          }}
-        >
-          %
-        </span>
-        ROI
-      </Text>
+          <Text>Earn up to </Text>
+          <Flex justifyContent={"flex-end"}>
+            <Flex ml={"3px"}>
+              <Text
+                style={{
+                  color: "#2775ff",
+                  fontSize: "15px",
+                  fontWeight: "bold",
+                }}
+              >
+                {roi}
+              </Text>
+              <Text
+                style={{
+                  color: "#2775ff",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  marginRight: "3px",
+                }}
+              >
+                %
+              </Text>
+              ROI
+            </Flex>
+          </Flex>
+        </Flex>
+      )}
       <Flex flexDir={"column"}>
         <Text fontSize={11} color={"gray.100"}>
           Bond Capacity
@@ -109,19 +132,23 @@ function BondInfo(props: InTokenType) {
           color="white.200"
           justifyContent={"flex-end"}
           columnGap={"2px"}
-          alignItems={"center"}
+          alignItems={"flex-end"}
         >
-          <Box pb={"2px"} mr={"6px"}>
+          <Box mr={"6px"} pb={"1px"}>
             <TokenSymbol
-              tokenType={props.inToken}
+              tokenType={inToken}
               w={"16px"}
               h={"16px"}
               imageW={"5.6px"}
               imageH={"9.6px"}
             />
           </Box>
-          <Text fontSize={15}>36.00</Text>
-          <Text fontSize={12}>ETH</Text>
+          <Text fontSize={15} fontWeight={600}>
+            {ethCapacity}
+          </Text>
+          <Text fontSize={12} h={"17px"}>
+            ETH
+          </Text>
         </Flex>
       </Flex>
     </Flex>
@@ -129,7 +156,6 @@ function BondInfo(props: InTokenType) {
 }
 
 export default function BondCard_TokenInfo(props: TokenPairType) {
-  const { inToken, outToken0, outToken1 } = props;
   const { colorMode } = useColorMode();
 
   return (
@@ -145,12 +171,8 @@ export default function BondCard_TokenInfo(props: TokenPairType) {
       justifyContent={"space-between"}
       px={"15px"}
     >
-      <TokenPair
-        inToken={inToken}
-        outToken0={outToken0}
-        outToken1={outToken1}
-      />
-      <BondInfo inToken={inToken} />
+      <TokenPair {...props} />
+      <BondInfo {...props} />
     </Flex>
   );
 }

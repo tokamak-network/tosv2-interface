@@ -23,7 +23,7 @@ const GET_DASHBOARD_CARD = gql`
   query GetDashboardCard($period: String!, $limit: Int!) {
     getDashboardCard(period: $period, limit: $limit) {
       tosPrice
-      tosPerEthPrice
+      tosPerEethPrice
       backingPerTos
       backingPerTosEth
       ltosPrice

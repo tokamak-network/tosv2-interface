@@ -1,78 +1,38 @@
 import {
   Flex,
   Text,
-  Button,
   Modal,
   ModalOverlay,
   ModalBody,
   ModalContent,
   useTheme,
   useColorMode,
-  Link,
   Box,
-  Input,
-  Grid,
-  GridItem,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
-  Tooltip,
-  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  modalBottomLoadingState,
-  selectedModalData,
-  selectedModalState,
-  stosLoadingState,
-} from "atom//global/modal";
+import { useRecoilState } from "recoil";
+import { modalBottomLoadingState, stosLoadingState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
-import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState,
-} from "react";
-import { TextInput, BalanceInput } from "common/input/TextInput";
-import TokenSymbol from "common/token/TokenSymol";
-import question from "assets/icons/question.svg";
+import { useCallback, useEffect, useState } from "react";
 import useCallContract from "hooks/useCallContract";
-import { inputBalanceState, inputState } from "atom/global/input";
-import commafy from "@/utils/commafy";
-import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/utils/number";
-import { useWeb3React } from "@web3-react/core";
 import useUserBalance from "hooks/useUserBalance";
 import useStakeV2 from "hooks/contract/useStakeV2";
 import CONTRACT_ADDRESS from "services/addresses/contract";
-import { BigNumber } from "ethers";
 import useUser from "hooks/useUser";
-import Tile from "../common/modal/Tile";
 import useStakeId from "hooks/contract/useStakeId";
 import useInput from "hooks/useInput";
 import useUpdateModalData from "hooks/stake/useUpdateModalData";
-import useStosReward from "hooks/stake/useStosReward";
 import StakeGraph from "../common/modal/StakeGraph";
-import BasicTooltip from "common/tooltip/index";
 import useCustomToast from "hooks/useCustomToast";
 import useManageModalConditon from "hooks/stake/useManageModalCondition";
 import constant from "constant";
-import InputPeriod from "common/input/InputPeriod";
-import GradientSpinner from "../common/GradientSpinner";
-import useModalContract from "hooks/contract/useModalContract";
-import Notice from "../global/Notice";
 import ManageModal_BottomContent from "./modal/ManageModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
 import StakeModal_Input from "@/stakeComponents/modal/components/StakeModal_Input";
-import StakeModal_Period from "@/stakeComponents/modal/components/StakeModal_Period";
 import Manage_Period from "@/stakeComponents/modal/components/Manage_Period";
 import UserGuide from "../common/guide/UserGuide";
 
@@ -329,7 +289,7 @@ function ManageModal() {
                     inputTokenType={"TOS"}
                     tokenBalance={userTokenBalance?.TOS?.balanceCommified}
                     err={{
-                      zeroInputBalance: false,
+                      zeroInputBalance,
                       inputOver,
                       inputBalanceIsEmpty,
                     }}

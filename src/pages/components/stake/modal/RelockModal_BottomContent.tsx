@@ -1,6 +1,5 @@
 import commafy from "@/utils/commafy";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { modalBottomLoadingState, stosLoadingState } from "atom/global/modal";
 import { StakeRelockModalInput } from "atom/stake/input";
 import useModalContract from "hooks/contract/useModalContract";
 import useStosRelock from "hooks/stake/useStosRelock";
@@ -9,7 +8,6 @@ import useUpdateModalData from "hooks/stake/useUpdateModalData";
 import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
-import useUserBalance from "hooks/useUserBalance";
 import IBottomContent from "pages/components/common/modal/IBottomContent";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { IBottomContentProps } from "types/common/modal";
@@ -18,20 +16,13 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
   const { addTos } = props;
   const { bp700px } = useMediaView();
 
-  const { inputValue, setResetValue, setValue } =
-    useInput<StakeRelockModalInput>("Stake_screen", "relock_modal");
+  const { inputValue } = useInput("Stake_screen", "relock_modal");
   const ltosBlanace = inputValue?.stake_relockModal_ltos_balance;
   const tosBlanace = inputValue?.stake_relockModal_tos_balance;
-  const { userTokenBalance } = useUserBalance();
 
   const { newEndTime, tosValue, tosBalance, allLtosBalance } =
     useUpdateModalAfterEndTime(addTos);
   const { newBalanceStos } = useStosRelock(addTos);
-
-  const [bottomLoading, setBottomLoading] = useRecoilState(
-    modalBottomLoadingState
-  );
-  const stosLoading = useRecoilValue(stosLoadingState);
 
   const contentList: IBottomContentProps[] = [
     {
@@ -45,7 +36,7 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
     },
     {
       title: "You Will Get",
-      content: `${addTos ? allLtosBalance : commafy(ltosBlanace)} LTOS`,
+      content: `${addTos ? allLtosBalance ?? "-" : commafy(ltosBlanace)} LTOS`,
       secondContent: `${commafy(newBalanceStos)} sTOS`,
       thirdContent: addTos
         ? `${commafy(tosBlanace)} TOS`
@@ -72,7 +63,7 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
       mb={"30px"}
       px={bp700px ? "20px" : "50px"}
     >
-      {contentList.map((content) => (
+      {contentList?.map((content) => (
         <IBottomContent {...content} key={content.title}></IBottomContent>
       ))}
     </Flex>

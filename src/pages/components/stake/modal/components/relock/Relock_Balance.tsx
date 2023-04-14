@@ -18,7 +18,9 @@ export default function Relock_Balance() {
 
   const addTos = inputValue?.stake_relockModal_addTos;
   const setAddTos = () => {
-    setValue && setValue({ ...inputValue, stake_relockModal_addTos: !addTos });
+    setValue &&
+      addTos &&
+      setValue({ ...inputValue, stake_relockModal_addTos: !addTos });
   };
 
   const { userTokenBalance } = useUserBalance();

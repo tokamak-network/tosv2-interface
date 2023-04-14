@@ -1,18 +1,8 @@
 import {
   Flex,
   Text,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalBody,
-  ModalContent,
-  useTheme,
   useColorMode,
-  Link,
   Box,
-  Input,
-  Grid,
-  GridItem,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -20,7 +10,6 @@ import {
   SliderMark,
   Tooltip,
 } from "@chakra-ui/react";
-import constant from "constant";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 import { PageKey } from "types";
@@ -87,7 +76,7 @@ function BondLockupGraph(props: {
   }, [isSlideDisabled]);
 
   return (
-    <Flex w={"460px"} h="70px" pos="relative">
+    <Flex w={"100%"} h="70px" pos="relative">
       <Slider
         focusThumbOnChange={false}
         aria-label="slider-ex-1"
@@ -191,8 +180,9 @@ function BondLockupGraph(props: {
           }
           isOpen={true}
         >
-          <SliderThumb>
+          <SliderThumb pos={"relative"}>
             <Box
+              pos={"absolute"}
               w={"1px"}
               h={"90px"}
               bg={"white.100"}

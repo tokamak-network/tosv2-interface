@@ -5,10 +5,14 @@ const GET_BOND_LIST = gql`
     getBondList(period: $period, limit: $limit) {
       index
       version
+      minimumTosPrice
       capacity
+      periodicCapacity
+      currentCapacity
       quoteToken
       totalSold
       bondPrice
+      ethPrice
       endTime
       updatedTime
       startTime
@@ -16,12 +20,10 @@ const GET_BOND_LIST = gql`
       capacityUpdatePeriod
       bonusRatesAddress
       bonusRatesId
+      ROIforLockupWeeks
+      ltosInterstForLockupWeeks
       bondType
       closed
-      periodicCapacity
-      currentCapacity
-      ethPrice
-      createdAt
     }
   }
 `;
