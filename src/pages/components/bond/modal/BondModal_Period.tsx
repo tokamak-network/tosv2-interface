@@ -1,4 +1,4 @@
-import { Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import { bond_bondModal_input } from "atom/bond/input";
 import { bond_modal } from "atom/bond/modal";
@@ -10,6 +10,18 @@ import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useMediaView from "hooks/useMediaView";
 import { useRecoilState, useRecoilValue } from "recoil";
 import BondLockupGraph from "./BondLockupGraph";
+
+function DotLine() {
+  return (
+    <Box
+      w={"100%"}
+      h={"1px"}
+      border={"1px solid #313442"}
+      borderStyle={"dotted"}
+      opacity={0.6}
+    ></Box>
+  );
+}
 
 function SliderGraph() {
   const { colorMode } = useColorMode();
@@ -94,6 +106,19 @@ function SliderGraph() {
         enableGridX={false}
         enableGridY={false}
       ></ResponsiveLine>
+      <Flex
+        pos={"absolute"}
+        w={"100%"}
+        h={"100%"}
+        flexDir={"column"}
+        justifyContent={"space-between"}
+        zIndex={-1}
+      >
+        <DotLine />
+        <DotLine />
+        <DotLine />
+        <DotLine />
+      </Flex>
     </Flex>
   );
 }
@@ -160,7 +185,7 @@ export default function BondModal_Period() {
           fontSize={12}
           flexDir={"column"}
           alignItems="center"
-          mt="55px"
+          mt="40px"
           w={"100%"}
           px={bp700px ? "0px" : "70px"}
         >

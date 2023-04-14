@@ -76,7 +76,7 @@ function BondLockupGraph(props: {
   }, [isSlideDisabled]);
 
   return (
-    <Flex w={"100%"} h="70px" pos="relative" mt={"85px"}>
+    <Flex w={"100%"} h="70px" pos="relative" mt={"70px"}>
       <Slider
         focusThumbOnChange={false}
         aria-label="slider-ex-1"
