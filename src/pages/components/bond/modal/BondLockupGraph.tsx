@@ -34,7 +34,7 @@ function BondLockupGraph(props: {
   const { pageKey, subKey, periodKey, balanceKey, isSlideDisabled, minValue } =
     props;
   const labelStyles = {
-    mt: "49px",
+    bottom: "22px",
     ml: "-1",
     fontSize: "11px",
     color: "#64646f",
@@ -76,7 +76,7 @@ function BondLockupGraph(props: {
   }, [isSlideDisabled]);
 
   return (
-    <Flex w={"100%"} h="70px" pos="relative">
+    <Flex w={"100%"} h="70px" pos="relative" mt={"85px"}>
       <Slider
         focusThumbOnChange={false}
         aria-label="slider-ex-1"
@@ -94,7 +94,7 @@ function BondLockupGraph(props: {
         alignSelf={"end"}
         isDisabled={isSlideDisabled}
       >
-        <SliderMark value={0} {...labelStyles}>
+        <SliderMark value={1} {...labelStyles}>
           7d
         </SliderMark>
         <SliderMark value={9} {...labelStyles}>
@@ -184,7 +184,8 @@ function BondLockupGraph(props: {
             <Box
               pos={"absolute"}
               w={"1px"}
-              h={"90px"}
+              h={"139px"}
+              bottom={"9px"}
               bg={"white.100"}
               opacity={0.1}
               zIndex={-100}

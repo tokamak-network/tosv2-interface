@@ -132,7 +132,9 @@ function useStosReward(inputTosAmount?: number, inputPeriod?: number) {
           Moment.tz.guess()
         );
         const endTimeWithTz = endTimeWithTimezone.format("YYYY.MM.DD. HH:mm");
-        setNewEndTime(`${endTimeWithTz} (${getTimeZone()})` || "-");
+        //remove to display timezone
+        // setNewEndTime(`${endTimeWithTz} (${getTimeZone()})` || "-");
+        setNewEndTime(`${endTimeWithTz}`);
         setNewEndTimeStamp(date);
 
         const { leftWeeks, leftDays, leftHourAndMin } = getModalTimeleft({

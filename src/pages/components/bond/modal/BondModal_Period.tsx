@@ -41,19 +41,19 @@ function SliderGraph() {
     );
   };
 
-  const roiTestData = [];
-  const bonddiscountTestData = [];
+  const roiGraphData = [];
+  const bonddiscountGraphData = [];
   const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
   if (roiPerWeeks && discountRatePerBondingPrice) {
     for (let i = 0; i < 53; i++) {
-      roiTestData.push({
+      roiGraphData.push({
         x: i,
         y: roiPerWeeks[i],
         dataIndex: i,
         id: "ROI",
       });
-      bonddiscountTestData.push({
+      bonddiscountGraphData.push({
         x: i,
         y: discountRatePerBondingPrice[i],
         dataIndex: i,
@@ -65,20 +65,25 @@ function SliderGraph() {
   const testData = [
     {
       id: "ROI",
-      data: roiTestData,
+      data: roiGraphData,
     },
     {
       id: "BondDiscount",
-      data: bonddiscountTestData,
+      data: bonddiscountGraphData,
     },
   ];
+
   return (
     <Flex pos={"absolute"} w={"100%"} h={"90px"}>
       <ResponsiveLine
         data={testData}
         colors={["#50d1b2", "#ec8c56"]}
         xScale={{ type: "point" }}
-        yScale={{ type: "linear", min: -40, max: 50 }}
+        yScale={{
+          type: "linear",
+          min: discountRatePerBondingPrice ? discountRatePerBondingPrice[0] : 0,
+          max: roiPerWeeks ? roiPerWeeks[52] : 0,
+        }}
         axisTop={null}
         axisRight={null}
         axisLeft={null}
@@ -104,15 +109,58 @@ export default function BondModal_Period() {
   const { leftHourAndMin, leftDays } = sTos;
   const { inputPeriodOver, inputPeriodIsEmpty } = modalCondition;
   const { endTime } = bondModalInputData;
+  const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
   return (
     <Flex rowGap={"9px"} flexDir={"column"}>
+      <Flex
+        w={"100%"}
+        justifyContent={"center"}
+        // px={bp700px ? "10px" : ""}
+        mt={"32px"}
+        mb={"30px"}
+        pos={"relative"}
+        ml={bp700px ? "" : "-14px"}
+        h={"90px"}
+        maxH={"90px"}
+        minH={"90px"}
+      >
+        <Flex
+          top={"5px"}
+          flexDir={"column"}
+          textAlign={"right"}
+          fontSize={11}
+          color={"#64646f"}
+          h={"100%"}
+          maxH={"90px"}
+          mr={"5px"}
+          mb={"32px"}
+        >
+          <Text h={"16px"} pt={"3px"}>
+            {roiPerWeeks && roiPerWeeks[52]}%
+          </Text>
+          <Text mt={"40px"} mb={"22px"} h={"16px"}></Text>
+          <Text h={"16px"}>
+            {discountRatePerBondingPrice && discountRatePerBondingPrice[0]}%
+          </Text>
+        </Flex>
+        <Flex pos={"relative"} w={"100%"} maxW={"460px"}>
+          <SliderGraph />
+          <BondLockupGraph
+            pageKey={"Bond_screen"}
+            subKey={"bond_modal"}
+            periodKey={"bond_modal_period"}
+            isSlideDisabled={fiveDaysLockup}
+            minValue={1}
+          ></BondLockupGraph>
+        </Flex>
+      </Flex>
       <Flex>
         <Flex
           fontSize={12}
           flexDir={"column"}
           alignItems="center"
-          mt="10px"
+          mt="55px"
           w={"100%"}
           px={bp700px ? "0px" : "70px"}
         >
@@ -121,7 +169,7 @@ export default function BondModal_Period() {
             justifyContent={"space-between"}
             // justifyContent={bp700px ? "space-between" : ""}
             // mb={bp700px ? "10px" : ""}
-            mb={"9px"}
+            mb={"8px"}
           >
             <Text
               fontWeight={600}
@@ -157,7 +205,7 @@ export default function BondModal_Period() {
               <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
             </Flex>
           </Flex>
-          <Flex w={"100%"} className={"test"}>
+          <Flex w={"100%"}>
             <InputPeriod
               w={bp700px ? "100%" : "460px"}
               h={"39px"}
@@ -178,46 +226,6 @@ export default function BondModal_Period() {
               endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
             ></InputPeriod>
           </Flex>
-        </Flex>
-      </Flex>
-      <Flex
-        w={"100%"}
-        justifyContent={"center"}
-        // px={bp700px ? "10px" : ""}
-        mt={"32px"}
-        mb={"30px"}
-        pos={"relative"}
-        ml={bp700px ? "" : "-14px"}
-        h={"90px"}
-        maxH={"90px"}
-      >
-        <Flex
-          top={"5px"}
-          flexDir={"column"}
-          textAlign={"right"}
-          fontSize={11}
-          color={"#64646f"}
-          h={"100%"}
-          maxH={"90px"}
-          mr={"5px"}
-        >
-          <Text h={"16px"} pt={"3px"}>
-            50%
-          </Text>
-          <Text mt={"40px"} mb={"22px"} h={"16px"}>
-            0%
-          </Text>
-          <Text h={"16px"}>-40%</Text>
-        </Flex>
-        <Flex pos={"relative"} w={"100%"} maxW={"460px"}>
-          <SliderGraph />
-          <BondLockupGraph
-            pageKey={"Bond_screen"}
-            subKey={"bond_modal"}
-            periodKey={"bond_modal_period"}
-            isSlideDisabled={fiveDaysLockup}
-            minValue={1}
-          ></BondLockupGraph>
         </Flex>
       </Flex>
     </Flex>

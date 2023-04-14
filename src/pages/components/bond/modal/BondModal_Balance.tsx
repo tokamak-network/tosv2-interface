@@ -17,6 +17,7 @@ import { useWeb3React } from "@web3-react/core";
 import useMediaView from "hooks/useMediaView";
 import TokenImageContrainer from "pages/components/common/modal/TokenImageContrainer";
 import commafy from "@/utils/commafy";
+import BasicTooltip from "common/tooltip";
 
 const bondToken: SupportedBondToken = "ETH";
 
@@ -143,7 +144,12 @@ export default function BondModal_Balance() {
 
   return (
     <Flex flexDir={"column"} px={bp700px ? "0px" : "70px"} rowGap={"10px"}>
-      <Flex fontSize={12} fontWeight={"bold"} columnGap={"18px"}>
+      <Flex
+        fontSize={12}
+        fontWeight={"bold"}
+        columnGap={"18px"}
+        justifyContent={"flex-end"}
+      >
         <Flex alignItems={"center"}>
           <Text
             color={colorMode === "dark" ? "white.200" : "gray.800"}
@@ -151,9 +157,14 @@ export default function BondModal_Balance() {
           >
             ROI
           </Text>
-          <Text color={isMinusROI ? "red.100" : "blue.200"} fontWeight={600}>
+          <Text
+            color={isMinusROI ? "red.100" : "blue.200"}
+            fontWeight={600}
+            mr={"3px"}
+          >
             {inputWeeks === undefined || inputWeeks === "" ? "-" : roi}%
           </Text>
+          <BasicTooltip label="Return on Investment or ROI is calculated using the bond discount rate and LTOS APY. If the ROI is less than LTOS APY, it is better to buy TOS and stake for LTOS."></BasicTooltip>
         </Flex>
         <Flex alignItems={"center"}>
           <Text
@@ -165,10 +176,12 @@ export default function BondModal_Balance() {
           <Text
             color={isMinusDiscount ? "red.100" : "blue.200"}
             fontWeight={600}
+            mr={"3px"}
           >
             {inputWeeks === undefined || inputWeeks === "" ? "-" : bondDiscount}
             %
           </Text>
+          <BasicTooltip label="The bond discount rate represents the price difference between the market price and the bond price for purchasing TOS. A positive discount rate means that buying TOS through bonding is cheaper."></BasicTooltip>
         </Flex>
       </Flex>
       <Flex
