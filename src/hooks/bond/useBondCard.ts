@@ -94,6 +94,13 @@ export function useBondCard() {
             : isNaN(currentCapacity)
             ? "-"
             : `${commafy(currentCapacity, 0)} TOS`;
+
+        const currentEthCapacity = isNaN(currentCapacity)
+          ? "-"
+          : Number(currentCapacity) <= 0
+          ? 0
+          : 0;
+
         const endTimeDiff = endTime - getNowTimeStamp();
         const openTimeDiff = startTime - getNowTimeStamp();
 
@@ -111,7 +118,7 @@ export function useBondCard() {
           blueProgress,
           currentProgressOnCurrentCapacity,
           bondingPrice: commafy(bondPrice),
-          discountRate: Number(commafy(discount)),
+          discountRate: Number(commafy(discount, 1)),
           sellTokenType: "ETH",
           buyTokenType: "TOS",
           endTime,

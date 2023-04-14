@@ -12,6 +12,8 @@ function TextWrap(props: {
       textAlign={"right"}
       alignItems={"flex-end"}
       flexDir={"column"}
+      h={"36px"}
+      justifyContent={"center"}
     >
       {props.TextComponent}
       {props.SubTextComponent}

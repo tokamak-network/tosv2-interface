@@ -179,6 +179,7 @@ function BondCard(props: { data: BondCardProps }) {
               "This bond mints TOS, which is staked for LTOS & sTOS. After the lock-up period, LTOS can be unstaked in exchange for TOS."
             }
             discountRate={data?.discountRate}
+            // discountRate={-10}
           />
         ) : (
           <BondCard_Capacity ethAmount={"36"} date={"13 days 12:04:03"} />
@@ -197,11 +198,13 @@ function BondCard(props: { data: BondCardProps }) {
             onClick={account ? openModal : tryActivation}
           ></BasicButton>
         )}
-        <BondCard_Buttons
-          currentRound={currentRound}
-          lastRound={27}
-          setCurrentNumber={setCurrentRound}
-        />
+        {data?.status !== "closed" && (
+          <BondCard_Buttons
+            currentRound={currentRound}
+            lastRound={27}
+            setCurrentNumber={setCurrentRound}
+          />
+        )}
       </Flex>
     </Flex>
   );
