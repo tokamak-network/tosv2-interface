@@ -193,7 +193,10 @@ function BondLockupGraph(props: {
               >
                 <Box w={"6px"} h={"6px"} borderRadius={25} bg={"#50d1b2"}></Box>
                 <Text>ROI</Text>
-                <Text color={"blue.100"} fontWeight={600}>
+                <Text
+                  color={Number(tooltipInfo.roi) < 0 ? "red.100" : "blue.100"}
+                  fontWeight={600}
+                >
                   {tooltipInfo.roi} %
                 </Text>
               </Flex>
@@ -205,18 +208,27 @@ function BondLockupGraph(props: {
               >
                 <Box w={"6px"} h={"6px"} borderRadius={25} bg={"#ec8c56"}></Box>
                 <Text>Bond Discount</Text>
-                <Text color={"blue.100"} fontWeight={600}>
+                <Text
+                  color={
+                    Number(tooltipInfo.discountRate) < 0
+                      ? "red.100"
+                      : "blue.100"
+                  }
+                  fontWeight={600}
+                >
                   {tooltipInfo.discountRate} %
                 </Text>
               </Flex>
-              <Flex>
-                <Text fontSize={11} color={"#8b8b93"}>
-                  Lock-Up Period :{" "}
-                  <span style={{ color: "#d0d0da", fontWeight: 600 }}>
-                    5 Days
-                  </span>
-                </Text>
-              </Flex>
+              {isSlideDisabled && (
+                <Flex>
+                  <Text fontSize={11} color={"#8b8b93"}>
+                    Lock-Up Period :{" "}
+                    <span style={{ color: "#d0d0da", fontWeight: 600 }}>
+                      5 Days
+                    </span>
+                  </Text>
+                </Flex>
+              )}
             </Flex>
           }
           isOpen={true}
