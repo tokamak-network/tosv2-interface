@@ -85,6 +85,9 @@ function SliderGraph() {
     },
   ];
 
+  // console.log("roiGraphData");
+  // console.log(roiGraphData);
+
   return (
     <Flex pos={"absolute"} w={"100%"} h={"90px"}>
       <ResponsiveLine

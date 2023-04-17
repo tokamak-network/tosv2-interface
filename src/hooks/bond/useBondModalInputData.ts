@@ -187,11 +187,10 @@ function useBondModalInputData() {
       return bondingPricePerWeeks.map((bondingPrice) => {
         const discunt =
           priceData.ethPrice /
-          Number(ethers.utils.formatUnits(bondingPrice.toString(), 18)) /
-          1.005;
+          Number(ethers.utils.formatUnits(bondingPrice.toString(), 18));
         const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
 
-        return Math.floor(discountRate);
+        return Number(commafy(discountRate));
       });
     }
     return undefined;
@@ -210,7 +209,8 @@ function useBondModalInputData() {
 
         const ROI = ((1 + LTOSInterest) / (1 - discountRate) - 1) * 100;
 
-        return Math.floor(ROI);
+        // return Math.floor(ROI);
+        return Number(commafy(ROI));
       });
     }
   }, [newEndTimeStamp, blockTimeStamp, discountRatePerBondingPrice]);
