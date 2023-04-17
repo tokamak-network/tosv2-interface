@@ -166,7 +166,7 @@ function BondLockupGraph(props: {
           placement="top"
           bg={"#1f2128"}
           w={"156px"}
-          h={"53px"}
+          h={isSlideDisabled ? "78px" : "53px"}
           borderRadius={8}
           display="flex"
           alignItems="center"
@@ -181,7 +181,6 @@ function BondLockupGraph(props: {
           label={
             <Flex
               flexDir={"column"}
-              alignItems={"center"}
               fontSize={11}
               rowGap={"3px"}
               fontWeight={"normal"}
@@ -208,6 +207,14 @@ function BondLockupGraph(props: {
                 <Text>Bond Discount</Text>
                 <Text color={"blue.100"} fontWeight={600}>
                   {tooltipInfo.discountRate} %
+                </Text>
+              </Flex>
+              <Flex>
+                <Text fontSize={11} color={"#8b8b93"}>
+                  Lock-Up Period :{" "}
+                  <span style={{ color: "#d0d0da", fontWeight: 600 }}>
+                    5 Days
+                  </span>
                 </Text>
               </Flex>
             </Flex>
