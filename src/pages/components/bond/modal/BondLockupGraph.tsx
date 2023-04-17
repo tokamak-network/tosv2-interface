@@ -1,3 +1,4 @@
+import commafy from "@/utils/commafy";
 import {
   Flex,
   Text,
@@ -12,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useInput from "hooks/useInput";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 
@@ -45,7 +46,31 @@ function BondLockupGraph(props: {
   const { colorMode } = useColorMode();
   const [isChanged, setIsChanged] = useState(false);
 
-  const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
+  const { bondDiscount, roi, roiPerWeeks, discountRatePerBondingPrice } =
+    useBondModalInputData();
+
+  const tooltipInfo = useMemo(() => {
+    if (sliderValue === undefined) {
+      return { roi: "-", discountRate: "-" };
+    }
+    if (isSlideDisabled && bondDiscount && roi) {
+      return { roi: commafy(roi, 1), discountRate: commafy(bondDiscount, 1) };
+    }
+    if (roiPerWeeks && discountRatePerBondingPrice && sliderValue) {
+      return {
+        roi: commafy(roiPerWeeks[sliderValue], 1),
+        discountRate: commafy(discountRatePerBondingPrice[sliderValue], 1),
+      };
+    }
+    return { roi: "-", discountRate: "-" };
+  }, [
+    isSlideDisabled,
+    sliderValue,
+    bondDiscount,
+    roi,
+    roiPerWeeks,
+    discountRatePerBondingPrice,
+  ]);
 
   useEffect(() => {
     if (sliderValue !== 0) {
@@ -140,7 +165,7 @@ function BondLockupGraph(props: {
           color={colorMode === "light" ? "#d0d0da" : "#d0d0da"}
           placement="top"
           bg={"#1f2128"}
-          w={"115px"}
+          w={"156px"}
           h={"53px"}
           borderRadius={8}
           display="flex"
@@ -150,7 +175,7 @@ function BondLockupGraph(props: {
           fontSize={"15px"}
           fontWeight={600}
           left={
-            sliderValue === undefined || sliderValue < 38 ? "70px" : "-70px"
+            sliderValue === undefined || sliderValue < 33 ? "90px" : "-90px"
           }
           bottom={"33px"}
           label={
@@ -169,6 +194,9 @@ function BondLockupGraph(props: {
               >
                 <Box w={"6px"} h={"6px"} borderRadius={25} bg={"#50d1b2"}></Box>
                 <Text>ROI</Text>
+                <Text color={"blue.100"} fontWeight={600}>
+                  {tooltipInfo.roi} %
+                </Text>
               </Flex>
               <Flex
                 alignItems={"center"}
@@ -178,6 +206,9 @@ function BondLockupGraph(props: {
               >
                 <Box w={"6px"} h={"6px"} borderRadius={25} bg={"#ec8c56"}></Box>
                 <Text>Bond Discount</Text>
+                <Text color={"blue.100"} fontWeight={600}>
+                  {tooltipInfo.discountRate} %
+                </Text>
               </Flex>
             </Flex>
           }

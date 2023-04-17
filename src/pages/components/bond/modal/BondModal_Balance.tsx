@@ -144,7 +144,12 @@ export default function BondModal_Balance() {
 
   return (
     <Flex flexDir={"column"} px={bp700px ? "0px" : "70px"} rowGap={"10px"}>
-      <Flex
+      <Flex>
+        <Text fontSize={12} color={"white.100"} fontWeight={600}>
+          Bond Amount
+        </Text>
+      </Flex>
+      {/* <Flex
         fontSize={12}
         fontWeight={"bold"}
         columnGap={"18px"}
@@ -183,7 +188,7 @@ export default function BondModal_Balance() {
           </Text>
           <BasicTooltip label="The bond discount rate represents the price difference between the market price and the bond price for purchasing TOS. A positive discount rate means that buying TOS through bonding is cheaper."></BasicTooltip>
         </Flex>
-      </Flex>
+      </Flex> */}
       <Flex
         borderWidth={"1px"}
         borderColor={

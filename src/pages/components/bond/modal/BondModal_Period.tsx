@@ -9,6 +9,7 @@ import constant from "constant";
 import useBondModal from "hooks/bond/useBondModal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useMediaView from "hooks/useMediaView";
+import { useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import BondLockupGraph from "./BondLockupGraph";
 
@@ -138,6 +139,26 @@ export default function BondModal_Period() {
   const { endTime } = bondModalInputData;
   const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
+  const yLegendText = useMemo(() => {
+    if (roiPerWeeks && discountRatePerBondingPrice) {
+      const range = roiPerWeeks[52] - discountRatePerBondingPrice[0];
+
+      const topLabel = commafy(roiPerWeeks[52], 0);
+      const lastLabel = commafy(discountRatePerBondingPrice[0], 0);
+      const secondLabel = commafy(
+        range * 0.6 + discountRatePerBondingPrice[0],
+        0
+      );
+      const thridLabel = commafy(
+        range * 0.3 + discountRatePerBondingPrice[0],
+        0
+      );
+
+      return { topLabel, secondLabel, thridLabel, lastLabel };
+    }
+    return undefined;
+  }, [roiPerWeeks, discountRatePerBondingPrice]);
+
   return (
     <Flex rowGap={"9px"} flexDir={"column"}>
       <Flex
@@ -153,7 +174,7 @@ export default function BondModal_Period() {
         >
           Lock-Up Period
         </Text>
-        <BasicTooltip label="test" />
+        <BasicTooltip label="Bonding gives LTOS that cannot be unstaked for TOS until the lock-up period ends. The longer the lock-up period, the higher the discount. To maximize ROI, only bond when the discount is positive. Otherwise, it is more profitable to purchase TOS from the open market and stake them for LTOS." />
       </Flex>
       <Flex
         w={"100%"}
@@ -166,9 +187,10 @@ export default function BondModal_Period() {
         maxH={"90px"}
         minH={"90px"}
         pl={"20px"}
+        opacity={fiveDaysLockup ? 0.25 : 1}
       >
         <Flex
-          top={"5px"}
+          top={"-8px"}
           flexDir={"column"}
           textAlign={"right"}
           fontSize={11}
@@ -179,17 +201,12 @@ export default function BondModal_Period() {
           pos={"absolute"}
           alignItems={"flex-end"}
           rowGap={"15px"}
+          w={"35px"}
         >
-          <Box pos={"relative"} w={"100%"}>
-            <Text h={"16px"} pt={"3px"} pos={"absolute"} top={"-16px"}>
-              {roiPerWeeks && roiPerWeeks[52]}%
-            </Text>
-          </Box>
-          <Text>{roiPerWeeks && commafy(roiPerWeeks[52] * 0.75)}%</Text>
-          <Text>{roiPerWeeks && commafy(roiPerWeeks[52] * 0.25)}%</Text>
-          <Text h={"16px"}>
-            {discountRatePerBondingPrice && discountRatePerBondingPrice[0]}%
-          </Text>
+          <Text>{yLegendText?.topLabel}%</Text>
+          <Text>{yLegendText?.secondLabel}%</Text>
+          <Text>{yLegendText?.thridLabel}%</Text>
+          <Text>{yLegendText?.lastLabel}%</Text>
         </Flex>
         <Flex pos={"relative"} w={"100%"} maxW={"460px"}>
           <SliderGraph />

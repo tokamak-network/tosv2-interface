@@ -41,7 +41,7 @@ function BondModal_BottomContent(props: {
     return [
       {
         title: "You Give",
-        content: `${inputValue.bond_modal_balance || "-"} ETH`,
+        content: `${commafy(inputValue.bond_modal_balance) || "-"} ETH`,
         tooltip: "",
         hasTitleStar: true,
       },
