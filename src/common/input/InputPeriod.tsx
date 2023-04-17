@@ -183,7 +183,7 @@ const InputPeriod = (props: InputProp) => {
           pos={"absolute"}
           left={leftProperty}
           textAlign={"center"}
-          lineHeight={"39px"}
+          lineHeight={h || "39px"}
           fontSize={14}
           // color={"white.200"}
         >
@@ -224,7 +224,12 @@ const InputPeriod = (props: InputProp) => {
             )}
         </Flex>
 
-        <InputRightElement mr={"8px"} display="flex" alignItems={"center"}>
+        <InputRightElement
+          mr={"8px"}
+          display="flex"
+          alignItems={"center"}
+          h={"100%"}
+        >
           <Button
             w={"30px"}
             h={"20px"}

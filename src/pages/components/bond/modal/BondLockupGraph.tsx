@@ -10,6 +10,7 @@ import {
   SliderMark,
   Tooltip,
 } from "@chakra-ui/react";
+import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 import { PageKey } from "types";
@@ -43,6 +44,8 @@ function BondLockupGraph(props: {
   const [sliderValue, setSliderValue] = useState<number | undefined>(undefined);
   const { colorMode } = useColorMode();
   const [isChanged, setIsChanged] = useState(false);
+
+  const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
   useEffect(() => {
     if (sliderValue !== 0) {
@@ -149,7 +152,7 @@ function BondLockupGraph(props: {
           left={
             sliderValue === undefined || sliderValue < 38 ? "70px" : "-70px"
           }
-          bottom={"-20px"}
+          bottom={"33px"}
           label={
             <Flex
               flexDir={"column"}

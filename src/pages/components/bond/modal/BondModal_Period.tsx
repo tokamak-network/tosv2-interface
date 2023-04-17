@@ -1,3 +1,4 @@
+import commafy from "@/utils/commafy";
 import { Box, Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import { bond_bondModal_input } from "atom/bond/input";
@@ -85,9 +86,6 @@ function SliderGraph() {
     },
   ];
 
-  // console.log("roiGraphData");
-  // console.log(roiGraphData);
-
   return (
     <Flex pos={"absolute"} w={"100%"} h={"90px"}>
       <ResponsiveLine
@@ -116,6 +114,7 @@ function SliderGraph() {
         flexDir={"column"}
         justifyContent={"space-between"}
         zIndex={-1}
+        maxW={"460px"}
       >
         <DotLine />
         <DotLine />
@@ -142,16 +141,31 @@ export default function BondModal_Period() {
   return (
     <Flex rowGap={"9px"} flexDir={"column"}>
       <Flex
+        columnGap={"3px"}
+        alignItems={"center"}
+        h={"17px"}
+        pl={"73px"}
+        mb={"17.5px"}
+      >
+        <Text
+          fontWeight={600}
+          color={colorMode === "light" ? "gray.800" : "white.200"}
+        >
+          Lock-Up Period
+        </Text>
+        <BasicTooltip label="test" />
+      </Flex>
+      <Flex
         w={"100%"}
         justifyContent={"center"}
         // px={bp700px ? "10px" : ""}
-        mt={"32px"}
         mb={"30px"}
         pos={"relative"}
-        ml={bp700px ? "" : "-14px"}
+        ml={bp700px ? "" : "-10px"}
         h={"90px"}
         maxH={"90px"}
         minH={"90px"}
+        pl={"20px"}
       >
         <Flex
           top={"5px"}
@@ -161,13 +175,18 @@ export default function BondModal_Period() {
           color={"#64646f"}
           h={"100%"}
           maxH={"90px"}
-          mr={"5px"}
-          mb={"32px"}
+          left={"40px"}
+          pos={"absolute"}
+          alignItems={"flex-end"}
+          rowGap={"15px"}
         >
-          <Text h={"16px"} pt={"3px"}>
-            {roiPerWeeks && roiPerWeeks[52]}%
-          </Text>
-          <Text mt={"40px"} mb={"22px"} h={"16px"}></Text>
+          <Box pos={"relative"} w={"100%"}>
+            <Text h={"16px"} pt={"3px"} pos={"absolute"} top={"-16px"}>
+              {roiPerWeeks && roiPerWeeks[52]}%
+            </Text>
+          </Box>
+          <Text>{roiPerWeeks && commafy(roiPerWeeks[52] * 0.75)}%</Text>
+          <Text>{roiPerWeeks && commafy(roiPerWeeks[52] * 0.25)}%</Text>
           <Text h={"16px"}>
             {discountRatePerBondingPrice && discountRatePerBondingPrice[0]}%
           </Text>
@@ -192,21 +211,26 @@ export default function BondModal_Period() {
           w={"100%"}
           px={bp700px ? "0px" : "70px"}
         >
-          <Flex
-            w={"100%"}
-            justifyContent={"space-between"}
-            // justifyContent={bp700px ? "space-between" : ""}
-            // mb={bp700px ? "10px" : ""}
-            mb={"8px"}
-          >
-            <Text
-              fontWeight={600}
-              mr={"6px"}
-              color={colorMode === "light" ? "gray.800" : "white.200"}
-            >
-              Set Lock-Up Period
-            </Text>
-            <Flex>
+          <Flex w={"100%"} columnGap={"21px"}>
+            <InputPeriod
+              w={bp700px ? "100%" : "301px"}
+              h={"45px"}
+              pageKey={"Bond_screen"}
+              recoilKey={"bond_modal"}
+              atomKey={"bond_modal_period"}
+              placeHolder={"1 Weeks"}
+              isDisabled={fiveDaysLockup}
+              isDisabledText={"5 Days"}
+              rightUnit={"Weeks"}
+              maxValue={bondModalMaxWeeks}
+              minValue={1}
+              isError={inputPeriodOver || inputPeriodIsEmpty}
+              errorMsg={inputPeriodOver ? errMsg.bond.periodIsOver : ""}
+              leftTime={leftHourAndMin}
+              leftDays={leftDays}
+              endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
+            ></InputPeriod>
+            <Flex alignItems={"center"}>
               <Checkbox
                 size={"lg"}
                 style={{
@@ -229,30 +253,8 @@ export default function BondModal_Period() {
               >
                 5 Days Lock-Up
               </Text>
-
               <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
             </Flex>
-          </Flex>
-          <Flex w={"100%"}>
-            <InputPeriod
-              w={bp700px ? "100%" : "460px"}
-              h={"39px"}
-              pageKey={"Bond_screen"}
-              recoilKey={"bond_modal"}
-              atomKey={"bond_modal_period"}
-              placeHolder={"1 Weeks"}
-              style={{ w: "100%" }}
-              isDisabled={fiveDaysLockup}
-              isDisabledText={"5 Days"}
-              rightUnit={"Weeks"}
-              maxValue={bondModalMaxWeeks}
-              minValue={1}
-              isError={inputPeriodOver || inputPeriodIsEmpty}
-              errorMsg={inputPeriodOver ? errMsg.bond.periodIsOver : ""}
-              leftTime={leftHourAndMin}
-              leftDays={leftDays}
-              endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
-            ></InputPeriod>
           </Flex>
         </Flex>
       </Flex>
