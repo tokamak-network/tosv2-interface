@@ -1,18 +1,6 @@
 import {
   Flex,
-  Text,
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalBody,
-  ModalContent,
-  useTheme,
   useColorMode,
-  Link,
-  Box,
-  Input,
-  Grid,
-  GridItem,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -145,11 +133,11 @@ function StakeGraph(props: {
         </SliderMark> */}
 
         <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
-          <SliderFilledTrack bg={"#2bb415"} />
+          <SliderFilledTrack bg={"#2775ff"} />
           {minValue && (
             <SliderFilledTrack
               maxW={`${(minValue / 155) * 100}%`}
-              bg={"#2775ff"}
+              bg={"#2bb415"}
             />
           )}
         </SliderTrack>

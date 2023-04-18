@@ -2,7 +2,6 @@ import commafy from "@/utils/commafy";
 import {
   Flex,
   Text,
-  useColorMode,
   Box,
   Slider,
   SliderTrack,
@@ -12,6 +11,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useInput from "hooks/useInput";
 import { useEffect, useMemo, useState } from "react";
 import { PageKey } from "types";
@@ -43,7 +43,7 @@ function BondLockupGraph(props: {
   };
   const { inputValue, value, setValue } = useInput(pageKey, subKey);
   const [sliderValue, setSliderValue] = useState<number | undefined>(undefined);
-  const { colorMode } = useColorMode();
+  const { isDark } = useCustomColorMode();
   const [isChanged, setIsChanged] = useState(false);
 
   const { bondDiscount, roi, roiPerWeeks, discountRatePerBondingPrice } =
@@ -152,19 +152,19 @@ function BondLockupGraph(props: {
           {sliderValue} STOS
         </SliderMark> */}
 
-        <SliderTrack bg={colorMode === "light" ? "#e7edf3" : "#353d48"}>
-          <SliderFilledTrack bg={"#2bb415"} />
+        <SliderTrack bg={isDark ? "#353d48" : "#e7edf3"}>
+          <SliderFilledTrack bg={"#2775ff"} />
           {minValue && (
             <SliderFilledTrack
               maxW={`${(minValue / 155) * 100}%`}
-              bg={"#2775ff"}
+              bg={"#2bb415"}
             />
           )}
         </SliderTrack>
         <Tooltip
-          color={colorMode === "light" ? "#d0d0da" : "#d0d0da"}
+          color={isDark ? "#d0d0da" : "#07070c"}
           placement="top"
-          bg={"#1f2128"}
+          bg={isDark ? "#1f2128" : "#fff"}
           w={"156px"}
           h={isSlideDisabled ? "78px" : "53px"}
           borderRadius={8}
@@ -178,13 +178,14 @@ function BondLockupGraph(props: {
             sliderValue === undefined || sliderValue < 33 ? "90px" : "-90px"
           }
           bottom={"33px"}
-          opacity={"0.75 !important"}
+          // opacity={"0.75 !important"}
           label={
             <Flex
               flexDir={"column"}
               fontSize={11}
               rowGap={"3px"}
               fontWeight={"normal"}
+              // opacity={"1 !important"}
             >
               <Flex
                 alignItems={"center"}
@@ -238,9 +239,9 @@ function BondLockupGraph(props: {
             <Box
               pos={"absolute"}
               w={"1px"}
-              h={"139px"}
+              h={"130px"}
               bottom={"9px"}
-              bg={"white.100"}
+              bg={isDark ? "white.100" : "#9a9aaf"}
               opacity={0.1}
               zIndex={-100}
             ></Box>

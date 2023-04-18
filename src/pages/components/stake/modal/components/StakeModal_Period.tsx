@@ -126,7 +126,7 @@ export default function StakeModal_Period<T>(props: StakeModalPeriod) {
         </Flex>
       </Flex>
       {/* set mt 10px to make a little gap more between the graph and inputComponent for the design(78px gap) */}
-      <Flex w={"600px"} justifyContent={"center"} mt={"10px"}>
+      <Flex w={"100%"} maxW={"600px"} justifyContent={"center"} mt={"10px"}>
         <StakeGraph
           pageKey={pageKey}
           subKey={recoilKey}

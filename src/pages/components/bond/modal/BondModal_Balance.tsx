@@ -1,5 +1,5 @@
 import { convertToWei } from "@/utils/number";
-import { Button, Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { bond_modal } from "atom/bond/modal";
 import { BalanceInput } from "common/input/TextInput";
 import constant from "constant";
@@ -17,7 +17,7 @@ import { useWeb3React } from "@web3-react/core";
 import useMediaView from "hooks/useMediaView";
 import TokenImageContrainer from "pages/components/common/modal/TokenImageContrainer";
 import commafy from "@/utils/commafy";
-import BasicTooltip from "common/tooltip";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 
 const bondToken: SupportedBondToken = "ETH";
 
@@ -25,11 +25,11 @@ export default function BondModal_Balance() {
   const { errMsg } = constant;
   const { modalCondition, userTokenBalance } = useBondModal();
   const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
+  const { isDark } = useCustomColorMode();
   const { maxValue, balance, balanceNum, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
   const { bondDiscount, isMinusDiscount, minimumTosPrice, roi, isMinusROI } =
     useBondModalInputData();
-  const { colorMode } = useColorMode();
   const [actualMaxValue, setActualMaxValue] = useState<string | undefined>(
     undefined
   );
@@ -145,7 +145,11 @@ export default function BondModal_Balance() {
   return (
     <Flex flexDir={"column"} px={bp700px ? "0px" : "70px"} rowGap={"10px"}>
       <Flex>
-        <Text fontSize={12} color={"white.100"} fontWeight={600}>
+        <Text
+          fontSize={12}
+          color={isDark ? "white.100" : "black.300"}
+          fontWeight={600}
+        >
           Bond Amount
         </Text>
       </Flex>
@@ -195,13 +199,13 @@ export default function BondModal_Balance() {
           maxValue !== undefined &&
           (zeroInputBalance || inputOver || inputBalanceisEmpty)
             ? "#e23738"
-            : colorMode === "dark"
+            : isDark
             ? "#313442"
             : "#e8edf2"
         }
         w={bp700px ? "310px" : "460px"}
         h={bp700px ? "94px" : "78px"}
-        bgColor={colorMode === "dark" ? "#1f2128" : "white.100"}
+        bgColor={isDark ? "#1f2128" : "white.100"}
         px={"20px"}
         py={"14px"}
         borderRadius={"10px"}
@@ -256,12 +260,11 @@ export default function BondModal_Balance() {
             <Button
               w={"48px"}
               h={"20px"}
-              border={
-                colorMode === "dark" ? "1px solid #535353" : "1px solid #e8edf2"
-              }
+              border={isDark ? "1px solid #535353" : "1px solid #e8edf2"}
               bgColor={"transparent"}
               fontSize={11}
               color={"blue.200"}
+              _hover={{ backgroundColor: "#257eee", color: "#ffffff" }}
               onClick={() => setMaxValue()}
             >
               MAX

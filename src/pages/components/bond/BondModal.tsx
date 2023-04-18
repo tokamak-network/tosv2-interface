@@ -207,7 +207,10 @@ function BondModal() {
                     fontSize={20}
                     fontWeight={600}
                   >
-                    ETH Bond {selectedModalData?.version}
+                    Minting Bond{" "}
+                    <span style={{ fontSize: "11px" }}>
+                      {selectedModalData?.version}
+                    </span>
                   </Text>
                   <Flex
                     pos={"absolute"}
@@ -237,6 +240,7 @@ function BondModal() {
                 px={bp700px ? "20px" : "50px"}
                 mb={"29px"}
                 rowGap={"30px"}
+                mt={bp700px ? "34px" : ""}
               >
                 {/* Period input */}
                 <BondModal_Period />

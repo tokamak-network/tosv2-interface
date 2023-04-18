@@ -8,17 +8,19 @@ import BasicTooltip from "common/tooltip";
 import constant from "constant";
 import useBondModal from "hooks/bond/useBondModal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useMediaView from "hooks/useMediaView";
 import { useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import BondLockupGraph from "./BondLockupGraph";
 
 function DotLine() {
+  const { isDark } = useCustomColorMode();
   return (
     <Box
       w={"100%"}
       h={"1px"}
-      border={"1px solid #313442"}
+      border={isDark ? "1px solid #313442" : "1px solid #e8edf2"}
       borderStyle={"dotted"}
       opacity={0.6}
     ></Box>
@@ -139,6 +141,35 @@ export default function BondModal_Period() {
   const { endTime } = bondModalInputData;
   const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
+  const FiveDaysLockUpCheckBox = () => (
+    <Flex alignItems={"center"}>
+      <Checkbox
+        size={"lg"}
+        style={{
+          borderRadius: "4px",
+          borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
+        }}
+        isChecked={fiveDaysLockup}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          const isChecked = e.target.checked;
+          setBondModalState({
+            ...bondModalState,
+            fiveDaysLockup: isChecked,
+          });
+        }}
+      ></Checkbox>
+      <Text
+        ml={"6px"}
+        mr="3px"
+        color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+        fontSize={bp700px ? 12 : ""}
+      >
+        5 Days Lock-Up
+      </Text>
+      <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+    </Flex>
+  );
+
   const yLegendText = useMemo(() => {
     if (roiPerWeeks && discountRatePerBondingPrice) {
       const range = roiPerWeeks[52] - discountRatePerBondingPrice[0];
@@ -165,16 +196,21 @@ export default function BondModal_Period() {
         columnGap={"3px"}
         alignItems={"center"}
         h={"17px"}
-        pl={"73px"}
+        pl={bp700px ? "" : "73px"}
         mb={"17.5px"}
+        justifyContent={"space-between"}
       >
-        <Text
-          fontWeight={600}
-          color={colorMode === "light" ? "gray.800" : "white.200"}
-        >
-          Lock-Up Period
-        </Text>
-        <BasicTooltip label="Bonding gives LTOS that cannot be unstaked for TOS until the lock-up period ends. The longer the lock-up period, the higher the discount. To maximize ROI, only bond when the discount is positive. Otherwise, it is more profitable to purchase TOS from the open market and stake them for LTOS." />
+        <Flex>
+          <Text
+            fontWeight={600}
+            color={colorMode === "light" ? "gray.800" : "white.200"}
+            fontSize={bp700px ? "12px" : "16px"}
+          >
+            Lock-Up Period
+          </Text>
+          <BasicTooltip label="Bonding gives LTOS that cannot be unstaked for TOS until the lock-up period ends. The longer the lock-up period, the higher the discount. To maximize ROI, only bond when the discount is positive. Otherwise, it is more profitable to purchase TOS from the open market and stake them for LTOS." />
+        </Flex>
+        {bp700px && <FiveDaysLockUpCheckBox />}
       </Flex>
       <Flex
         w={"100%"}
@@ -197,7 +233,7 @@ export default function BondModal_Period() {
           color={"#64646f"}
           h={"100%"}
           maxH={"90px"}
-          left={"40px"}
+          left={bp700px ? "-20px" : "40px"}
           pos={"absolute"}
           alignItems={"flex-end"}
           rowGap={"15px"}
@@ -231,6 +267,7 @@ export default function BondModal_Period() {
           <Flex w={"100%"} columnGap={"21px"}>
             <InputPeriod
               w={bp700px ? "100%" : "301px"}
+              style={{ width: bp700px ? "100%" : "" }}
               h={"45px"}
               pageKey={"Bond_screen"}
               recoilKey={"bond_modal"}
@@ -247,31 +284,7 @@ export default function BondModal_Period() {
               leftDays={leftDays}
               endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
             ></InputPeriod>
-            <Flex alignItems={"center"}>
-              <Checkbox
-                size={"lg"}
-                style={{
-                  borderRadius: "4px",
-                  borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
-                }}
-                isChecked={fiveDaysLockup}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  const isChecked = e.target.checked;
-                  setBondModalState({
-                    ...bondModalState,
-                    fiveDaysLockup: isChecked,
-                  });
-                }}
-              ></Checkbox>
-              <Text
-                ml={"6px"}
-                mr="3px"
-                color={colorMode === "dark" ? "gray.100" : "gray.1000"}
-              >
-                5 Days Lock-Up
-              </Text>
-              <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
-            </Flex>
+            {!bp700px && <FiveDaysLockUpCheckBox />}
           </Flex>
         </Flex>
       </Flex>
