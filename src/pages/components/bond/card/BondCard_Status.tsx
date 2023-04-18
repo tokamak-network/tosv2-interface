@@ -1,4 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, useColorMode } from "@chakra-ui/react";
+import { useBondCardStyle } from "hooks/style/bond/useBondCardStyle";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useMediaView from "hooks/useMediaView";
 import { ReactNode, useMemo } from "react";
 import { BondCardProps } from "types/bond";
@@ -40,6 +42,7 @@ export default function BondCard_Status(props: {
 }) {
   const { version, status, date } = props;
   const { bp1024px } = useMediaView();
+  const { cardTextColor } = useBondCardStyle();
 
   const statusText = useMemo(() => {
     switch (status) {
@@ -47,7 +50,7 @@ export default function BondCard_Status(props: {
         return (
           <TextWrap
             TextComponent={
-              <Text color={"white.200"} fontWeight={"bold"} fontSize={13}>
+              <Text color={cardTextColor} fontWeight={"bold"} fontSize={13}>
                 Open
               </Text>
             }
@@ -80,7 +83,7 @@ export default function BondCard_Status(props: {
         return (
           <TextWrap
             TextComponent={
-              <Text color={"white.200"} fontWeight={"bold"} fontSize={13}>
+              <Text color={cardTextColor} fontWeight={"bold"} fontSize={13}>
                 Add Capacity
               </Text>
             }
@@ -101,7 +104,7 @@ export default function BondCard_Status(props: {
     >
       <Flex
         fontWeight={600}
-        color={"white.200"}
+        color={cardTextColor}
         h={"28px"}
         alignItems={"end"}
         columnGap={"6px"}

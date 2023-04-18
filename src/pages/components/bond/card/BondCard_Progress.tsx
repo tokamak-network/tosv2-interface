@@ -1,4 +1,5 @@
 import { Flex, Progress, Text } from "@chakra-ui/react";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import { BondCardProps } from "types/bond";
 
 type BondCardProgress = {
@@ -8,10 +9,11 @@ type BondCardProgress = {
 
 export default function BondCard_Progress(props: BondCardProgress) {
   const { progress, status } = props;
+  const { isDark } = useCustomColorMode();
   return (
     <Flex flexDir={"column"} rowGap={"5px"} mb={"17px"}>
       <Flex fontWeight={600} columnGap={"6px"} alignItems={"end"}>
-        <Text fontSize={13} color={"#dee4ef"}>
+        <Text fontSize={13} color={isDark ? "#dee4ef" : "#3f536e"}>
           Bond Sold
         </Text>
         <Text fontSize={12} color={status !== "open" ? "gray.100" : "blue.200"}>

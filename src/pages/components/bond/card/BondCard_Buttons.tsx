@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import { Dispatch, SetStateAction, useState } from "react";
 
 type IconProps = {
@@ -129,6 +130,7 @@ export default function BondCard_Buttons(props: {
   setCurrentNumber: Dispatch<SetStateAction<number>>;
 }) {
   const { currentRound, lastRound, setCurrentNumber } = props;
+  const { isDark } = useCustomColorMode();
   const isFirstRound = currentRound === 1;
   const isLastRound = currentRound === lastRound;
   const prevIconColor = isFirstRound ? "#33353b" : "#64646f";
@@ -168,7 +170,7 @@ export default function BondCard_Buttons(props: {
         isDisabled={isFirstRound}
       />
       <Flex mx={"3px"} color={"gray.100"} fontSize={12}>
-        <Text color={"white.200"} fontWeight={"bold"}>
+        <Text color={isDark ? "white.200" : "#2c2c35"} fontWeight={"bold"}>
           {currentRound}
         </Text>
         <Text ml={"5px"} mr={"3px"}>

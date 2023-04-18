@@ -5,6 +5,7 @@ import { ZERO_ADDRESS } from "constants/index";
 import useModal from "hooks/useModal";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 
 function WarningComponent(props: { discountRate: number }) {
   const { discountRate } = props;
@@ -13,6 +14,7 @@ function WarningComponent(props: { discountRate: number }) {
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
   const { openModal } = useModal("stake_stake_modal");
   const router = useRouter();
+  const { isDark } = useCustomColorMode();
 
   const sendToStake = () => {
     router.push("/stake");
@@ -21,7 +23,7 @@ function WarningComponent(props: { discountRate: number }) {
 
   return (
     <>
-      <Text fontWeight={"bold"}>
+      <Text fontWeight={"bold"} color={isDark ? "" : "gray.800"}>
         NEGATIVE DISCOUNT <span style={{ color: "#e23738" }}>WARNING</span>
       </Text>
       <Text>
@@ -67,6 +69,7 @@ export default function BondCard_Description(props: {
 }) {
   const { description, discountRate } = props;
   const isWarning = discountRate < 0;
+  const { isDark } = useCustomColorMode();
   return (
     <Flex
       // w={["306px", "280px", "300px"]}
@@ -74,7 +77,7 @@ export default function BondCard_Description(props: {
       w={"100%"}
       textAlign={"center"}
       fontSize={12}
-      color={"white.200"}
+      color={isDark ? "white.200" : "gray.100"}
       lineHeight={"18px"}
       flexDir={isWarning ? "column" : "row"}
     >

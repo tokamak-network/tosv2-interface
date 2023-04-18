@@ -3,6 +3,8 @@ import TokenSymbol from "common/token/TokenSymol";
 import Image from "next/image";
 import { SupportedInputTokenTypes } from "types";
 import ActiveArrow from "assets/icons/bond/arrow-right2_blue.svg";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
+import { useBondCardStyle } from "hooks/style/bond/useBondCardStyle";
 
 type InTokenType = { inToken: SupportedInputTokenTypes };
 type OutTokensType = {
@@ -15,6 +17,8 @@ export type TokenPairType = InTokenType & OutTokensType & OtherInfo;
 
 function OutTokenPair(props: OutTokensType) {
   const { outToken0, outToken1 } = props;
+  const { cardTextColor } = useBondCardStyle();
+
   return (
     <Flex pos={"relative"} alignItems={""}>
       <TokenSymbol
@@ -40,7 +44,7 @@ function OutTokenPair(props: OutTokensType) {
         }}
       ></TokenSymbol>
       <Text
-        color={"white.200"}
+        color={cardTextColor}
         fontSize={11}
         pos={"absolute"}
         bottom={0}
@@ -54,6 +58,7 @@ function OutTokenPair(props: OutTokensType) {
 
 function TokenPair(props: TokenPairType) {
   const { inToken, outToken0, outToken1 } = props;
+  const { cardTextColor } = useBondCardStyle();
   return (
     <Flex>
       <Flex flexDir={"column"} alignItems={"center"} rowGap={"8px"}>
@@ -64,7 +69,7 @@ function TokenPair(props: TokenPairType) {
           imageW={"12.6px"}
           imageH={"21.6px"}
         ></TokenSymbol>
-        <Text color={"white.200"} fontSize={11}>
+        <Text color={cardTextColor} fontSize={11}>
           {inToken}
         </Text>
       </Flex>
@@ -78,6 +83,8 @@ function TokenPair(props: TokenPairType) {
 
 function BondInfo(props: TokenPairType) {
   const { inToken, roi, ethCapacity, isDiscountMinus } = props;
+  const { cardTextColor } = useBondCardStyle();
+
   return (
     <Flex
       flexDir={"column"}
@@ -94,7 +101,7 @@ function BondInfo(props: TokenPairType) {
         <Flex
           flexDir={["column", "column", "row"]}
           fontSize={12}
-          color={"white.100"}
+          color={cardTextColor}
           justifyContent={"flex-end"}
         >
           <Text>Earn up to </Text>
@@ -129,7 +136,7 @@ function BondInfo(props: TokenPairType) {
           Bond Capacity
         </Text>
         <Flex
-          color="white.200"
+          color={cardTextColor}
           justifyContent={"flex-end"}
           columnGap={"2px"}
           alignItems={"flex-end"}
@@ -156,7 +163,7 @@ function BondInfo(props: TokenPairType) {
 }
 
 export default function BondCard_TokenInfo(props: TokenPairType) {
-  const { colorMode } = useColorMode();
+  const { isDark } = useCustomColorMode();
 
   return (
     <Flex
@@ -164,7 +171,7 @@ export default function BondCard_TokenInfo(props: TokenPairType) {
       minH={"112px"}
       maxH={"112px"}
       border={"1px solid"}
-      borderColor={colorMode === "dark" ? "#313442" : "#e8edf2"}
+      borderColor={isDark ? "#313442" : "#e8edf2"}
       borderRadius={10}
       mb={"18px"}
       alignItems={"center"}

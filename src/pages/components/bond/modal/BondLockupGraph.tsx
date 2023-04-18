@@ -178,6 +178,7 @@ function BondLockupGraph(props: {
             sliderValue === undefined || sliderValue < 33 ? "90px" : "-90px"
           }
           bottom={"33px"}
+          opacity={"0.75 !important"}
           label={
             <Flex
               flexDir={"column"}

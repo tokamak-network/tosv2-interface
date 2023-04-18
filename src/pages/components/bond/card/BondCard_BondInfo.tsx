@@ -1,5 +1,6 @@
 import { Box, Flex, Text, useColorMode } from "@chakra-ui/react";
 import BasicTooltip from "common/tooltip";
+import { useBondCardStyle } from "hooks/style/bond/useBondCardStyle";
 import { ReactNode } from "react";
 
 export type BondInfoDataMap = { title: ReactNode; content: ReactNode }[];
@@ -54,9 +55,10 @@ export function ContentComponent(props: {
     subContentNode,
     style,
   } = props;
+  const { cardTextColor } = useBondCardStyle();
   return (
     <Flex
-      color={"white.200"}
+      color={cardTextColor}
       fontWeight={600}
       fontSize={14}
       height={"20px"}
