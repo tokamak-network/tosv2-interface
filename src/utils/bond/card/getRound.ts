@@ -14,15 +14,16 @@ export function getRound(params: {
 
   let i = 0;
   let eachSaleRoundTimeStamp: number[] = [];
-  while (i < saleTotalRound) {
+  //plus one
+  while (i < saleTotalRound + 1) {
     const roundStartTimeStamp = startTime + i * capacityPeriod;
     eachSaleRoundTimeStamp.push(
-      i + 1 === saleTotalRound ? endTime : roundStartTimeStamp
+      endTime > roundStartTimeStamp ? roundStartTimeStamp : endTime
     );
     i++;
   }
   const saleRoundTimeStamp = eachSaleRoundTimeStamp.filter(
-    (time) => time > currentTimeStamp
+    (time, index) => time > currentTimeStamp
   );
 
   return { roundNums: saleRoundTimeStamp.length + 1, saleRoundTimeStamp };

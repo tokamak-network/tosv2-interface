@@ -200,7 +200,7 @@ export default function BondModal_Period() {
         mb={"17.5px"}
         justifyContent={"space-between"}
       >
-        <Flex>
+        <Flex columnGap={"3px"}>
           <Text
             fontWeight={600}
             color={colorMode === "light" ? "gray.800" : "white.200"}
