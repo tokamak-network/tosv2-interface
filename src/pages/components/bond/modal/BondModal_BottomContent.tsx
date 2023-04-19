@@ -1,10 +1,9 @@
 import commafy from "@/utils/commafy";
-import { Flex, useMediaQuery } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
 import useModal from "hooks/useModal";
 import IBottomContent from "pages/components/common/modal/IBottomContent";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { BondCardProps } from "types/bond";
 import { IBottomContentProps } from "types/common/modal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";

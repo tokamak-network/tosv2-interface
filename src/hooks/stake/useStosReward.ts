@@ -1,5 +1,4 @@
 import commafy from "@/utils/commafy";
-import { convertNumber } from "@/utils/number";
 import {
   convertTimeStamp,
   getModalTimeleft,
@@ -12,7 +11,6 @@ import Decimal from "decimal.js";
 import useLockTOS from "hooks/contract/useLockTOS";
 import useModalContract from "hooks/contract/useModalContract";
 import useCallContract from "hooks/useCallContract";
-import useInput from "hooks/useInput";
 import moment from "moment";
 import Moment from "moment-timezone";
 import { useEffect, useState } from "react";
@@ -133,8 +131,8 @@ function useStosReward(inputTosAmount?: number, inputPeriod?: number) {
         );
         const endTimeWithTz = endTimeWithTimezone.format("YYYY.MM.DD. HH:mm");
         //remove to display timezone
-        // setNewEndTime(`${endTimeWithTz} (${getTimeZone()})` || "-");
-        setNewEndTime(`${endTimeWithTz}`);
+        setNewEndTime(`${endTimeWithTz} (${getTimeZone()})` || "-");
+        // setNewEndTime(`${endTimeWithTz}`);
         setNewEndTimeStamp(date);
 
         const { leftWeeks, leftDays, leftHourAndMin } = getModalTimeleft({

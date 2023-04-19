@@ -273,7 +273,7 @@ const InputPeriod = (props: InputProp) => {
           justifyContent={bp700px ? "flex-start" : ""}
           pl={bp700px ? "" : "17px"}
         >
-          <Text>{endTime}</Text>
+          <Text>{endTime.split("(UTC")[0]}</Text>
         </Flex>
       )}
     </Flex>
