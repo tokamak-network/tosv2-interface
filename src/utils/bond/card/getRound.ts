@@ -22,9 +22,12 @@ export function getRound(params: {
     );
     i++;
   }
-  const saleRoundTimeStamp = eachSaleRoundTimeStamp.filter(
-    (time, index) => time > currentTimeStamp
-  );
+  const saleRoundTimeStamp = eachSaleRoundTimeStamp.filter((time, index) => {
+    if (index === 0 && time > currentTimeStamp) {
+      return false;
+    }
+    return time > currentTimeStamp;
+  });
 
   return { roundNums: saleRoundTimeStamp.length + 1, saleRoundTimeStamp };
 }
