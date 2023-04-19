@@ -27,11 +27,12 @@ function TextWrap(props: {
 function SubText(date: string | undefined) {
   if (date) {
     return (
-      <Text fontSize={11} color={"gray.100"}>
+      <Text maxW={["55px", "80px", "80px"]} fontSize={11} color={"gray.100"}>
         {date}
       </Text>
     );
   }
+
   return null;
 }
 
@@ -41,7 +42,7 @@ export default function BondCard_Status(props: {
   date: string | undefined;
 }) {
   const { version, status, date } = props;
-  const { customMaxView } = useMediaView(1440);
+  const { pcView } = useMediaView();
   const { cardTextColor } = useBondCardStyle();
 
   const statusText = useMemo(() => {
@@ -83,7 +84,12 @@ export default function BondCard_Status(props: {
         return (
           <TextWrap
             TextComponent={
-              <Text color={cardTextColor} fontWeight={"bold"} fontSize={13}>
+              <Text
+                color={cardTextColor}
+                fontWeight={"bold"}
+                fontSize={13}
+                minW={"95px"}
+              >
                 Add Capacity
               </Text>
             }
@@ -106,15 +112,15 @@ export default function BondCard_Status(props: {
         fontWeight={600}
         color={cardTextColor}
         h={"28px"}
-        alignItems={"end"}
+        alignItems={"center"}
         columnGap={"6px"}
       >
         <Text fontSize={20}>Minting Bond </Text>
         <Text fontSize={11} pb={"4px"}>
           v{version}
         </Text>
-      </Flex>
-      <Flex maxW={customMaxView ? "80px" : ""}>{statusText}</Flex>
+      </Flex>{" "}
+      <Flex>{statusText}</Flex>
     </Flex>
   );
 }

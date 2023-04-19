@@ -36,7 +36,7 @@ function BondLockupGraph(props: {
   const { pageKey, subKey, periodKey, balanceKey, isSlideDisabled, minValue } =
     props;
   const labelStyles = {
-    bottom: "22px",
+    bottom: "26px",
     ml: "-1",
     fontSize: "11px",
     color: "#64646f",
@@ -237,11 +237,13 @@ function BondLockupGraph(props: {
         >
           <SliderThumb pos={"relative"}>
             <Box
+              className="test"
               pos={"absolute"}
               w={"1px"}
               h={"130px"}
               bottom={"9px"}
               bg={isDark ? "white.100" : "#9a9aaf"}
+              maxH={"130px"}
               opacity={0.1}
               zIndex={-100}
             ></Box>

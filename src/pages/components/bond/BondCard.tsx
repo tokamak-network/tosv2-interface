@@ -174,7 +174,7 @@ function BondCard(props: { data: BondCardProps }) {
       flexDir={"column"}
       w={["100%", "310px", "362px"]}
       h={"545px"}
-      minH={[mobileH, mobileH, "545px"]}
+      minH={[mobileH, "562px", "545px"]}
       minW={["336px", "310px", "362px"]}
       borderWidth={1}
       borderColor={colorMode === "light" ? "gray.900" : "gray.300"}

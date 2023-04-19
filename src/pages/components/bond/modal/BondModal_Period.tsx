@@ -236,7 +236,7 @@ export default function BondModal_Period() {
           left={bp700px ? "-20px" : "40px"}
           pos={"absolute"}
           alignItems={"flex-end"}
-          rowGap={"15px"}
+          rowGap={"13px"}
           w={"35px"}
         >
           <Text>{yLegendText?.topLabel}%</Text>
