@@ -105,7 +105,7 @@ export default function BondCard_Status(props: {
     <Flex
       mb={"18px"}
       justifyContent={"space-between"}
-      alignItems="baseline"
+      alignItems="center"
       // minH={"52.5px"}
     >
       <Flex
