@@ -38,6 +38,9 @@ function BondCard(props: { data: BondCardProps }) {
   const txPending = useRecoilValue(selectedTxState);
   const [currentRound, setCurrentRound] = useState<number>(1);
   const [dateText, setDateText] = useState<string | undefined>(undefined);
+  const [nextRoundDateInfo, setNextDateInfo] = useState<string | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -50,6 +53,7 @@ function BondCard(props: { data: BondCardProps }) {
 
         const currentRoundDateInfo = `Until ${endTimeCountDown.days} days ${endTimeCountDown.hours}:${endTimeCountDown.mins}:${endTimeCountDown.secs}`;
         const nextRoundDateInfo = `In ${nextRoundStart.days} days ${nextRoundStart.hours}:${nextRoundStart.mins}:${nextRoundStart.secs}`;
+        setNextDateInfo(nextRoundDateInfo);
 
         switch (data?.status) {
           case "open":
@@ -222,7 +226,7 @@ function BondCard(props: { data: BondCardProps }) {
         ) : !closed ? (
           <BondCard_Capacity
             ethAmount={data?.roundEthCapacity}
-            date={dateText?.replaceAll("in", "") ?? ""}
+            date={nextRoundDateInfo ?? "-"}
           />
         ) : (
           <Box mt={"9px"}>

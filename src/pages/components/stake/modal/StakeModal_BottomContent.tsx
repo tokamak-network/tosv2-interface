@@ -40,6 +40,10 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
     newEndTime,
   } = useStakeModaldata();
 
+  console.log("inputValue.stake_modal_balance");
+  console.log(inputValue.stake_modal_balance);
+  console.log(typeof inputValue.stake_modal_balance);
+
   const contentList: IBottomContentProps[] = fiveDaysLockup
     ? [
         {
@@ -51,19 +55,25 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
           content: `${ltos} LTOS`,
           tooltip:
             "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+          secondTooltip: `${
+            inputValue.stake_modal_balance ?? "-"
+          } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         },
         {
           title: "Current Balance",
-          content: `${currentBalance || "-"} LTOS`,
+          content: `${currentBalance ?? "-"} LTOS`,
           tooltip: "Current LTOS balance without Lock-Up period",
-          secondTooltip: `${currentTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+          secondTooltip: `${
+            currentTosValue ?? "-"
+          } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         },
         {
           title: "New Balance",
           content: `${newBalance || "-"} LTOS`,
           tooltip: "New LTOS balance without Lock-Up period after staking. ",
-          secondTooltip: `${newBalanceTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
+          secondTooltip: `${
+            newBalanceTosValue ?? "-"
+          } TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
         },
       ]
     : [
