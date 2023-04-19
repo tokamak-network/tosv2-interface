@@ -92,9 +92,10 @@ function BondInfo(props: TokenPairType) {
       textAlign={"right"}
       verticalAlign={"bottom"}
       lineHeight={"18px"}
+      alignItems={"end"}
     >
       {isDiscountMinus ? (
-        <Text fontSize={12} color={"white.100"}>
+        <Text fontSize={12} color={"white.100"} maxW={["55px", "55px", ""]}>
           Negative Discount
         </Text>
       ) : (
