@@ -41,7 +41,7 @@ export default function BondCard_Status(props: {
   date: string | undefined;
 }) {
   const { version, status, date } = props;
-  const { bp1024px } = useMediaView();
+  const { customMaxView } = useMediaView(1440);
   const { cardTextColor } = useBondCardStyle();
 
   const statusText = useMemo(() => {
@@ -93,14 +93,14 @@ export default function BondCard_Status(props: {
       default:
         return;
     }
-  }, [status, date]);
+  }, [status, date, cardTextColor]);
 
   return (
     <Flex
       mb={"18px"}
       justifyContent={"space-between"}
-      alignItems="center"
-      minH={"52.5px"}
+      alignItems="baseline"
+      // minH={"52.5px"}
     >
       <Flex
         fontWeight={600}
@@ -114,7 +114,7 @@ export default function BondCard_Status(props: {
           v{version}
         </Text>
       </Flex>
-      <Flex maxW={["", "80px", ""]}>{statusText}</Flex>
+      <Flex maxW={customMaxView ? "80px" : ""}>{statusText}</Flex>
     </Flex>
   );
 }

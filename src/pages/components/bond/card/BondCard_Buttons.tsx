@@ -157,7 +157,7 @@ export default function BondCard_Buttons(props: {
       justifyContent={"center"}
       columnGap={"12px"}
       alignItems={"center"}
-      mt={"auto"}
+      // mt={"auto"}
     >
       <FirstIcon
         filledColor={prevIconColor}

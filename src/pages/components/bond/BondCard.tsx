@@ -179,7 +179,7 @@ function BondCard(props: { data: BondCardProps }) {
       borderWidth={1}
       borderColor={colorMode === "light" ? "gray.900" : "gray.300"}
       borderRadius={10}
-      pt={["20px", "20px", "25px"]}
+      pt={["20px", "20px", "27px"]}
       bg={colorMode === "light" ? "white.100" : "#1f2128"}
       px={"20px"}
       pb={"24px"}
@@ -248,11 +248,13 @@ function BondCard(props: { data: BondCardProps }) {
           ></BasicButton>
         )}
         {!closed && (
-          <BondCard_Buttons
-            currentRound={currentRound}
-            lastRound={data?.totalRound}
-            setCurrentNumber={setCurrentRound}
-          />
+          <Flex mt={currentRound === 0 ? "" : "auto"}>
+            <BondCard_Buttons
+              currentRound={currentRound}
+              lastRound={data?.totalRound}
+              setCurrentNumber={setCurrentRound}
+            />
+          </Flex>
         )}
       </Flex>
     </Flex>
