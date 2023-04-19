@@ -204,7 +204,7 @@ export default function BondModal_Period() {
           <Text
             fontWeight={600}
             color={colorMode === "light" ? "gray.800" : "white.200"}
-            fontSize={bp700px ? "12px" : "16px"}
+            fontSize={"12px"}
           >
             Lock-Up Period
           </Text>
@@ -282,7 +282,7 @@ export default function BondModal_Period() {
               errorMsg={inputPeriodOver ? errMsg.bond.periodIsOver : ""}
               leftTime={leftHourAndMin}
               leftDays={leftDays}
-              endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
+              // endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
             ></InputPeriod>
             {!bp700px && <FiveDaysLockUpCheckBox />}
           </Flex>
