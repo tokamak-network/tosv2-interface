@@ -6,12 +6,14 @@ const maxPeriod = 53;
 export type BondModalInput = {
   bond_modal_period: number | undefined;
   bond_modal_balance: string | undefined;
+  bond_modal_actualMaxValue: number | undefined;
 };
 
 //bond modal states
 const bond_bondModal_defaultValue = {
   bond_modal_period: "",
   bond_modal_balance: undefined,
+  bond_modal_actualMaxValue: undefined,
 };
 
 const bond_bondModal_input = atom({

@@ -33,6 +33,7 @@ export default function BondModal_Balance() {
   const [actualMaxValue, setActualMaxValue] = useState<string | undefined>(
     undefined
   );
+  const inputAmount = inputValue?.bond_modal_balance;
   const inputWeeks = inputValue?.bond_modal_period;
 
   const { BondDepositoryProxy_CONTRACT, BondDepository_CONTRACT } =
@@ -98,9 +99,6 @@ export default function BondModal_Balance() {
               { value: convertToWei(inputAmount) }
             );
 
-          console.log("gasEstimate");
-          console.log(gasEstimate);
-
           if (maxFeePerGas) {
             const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
             const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
@@ -151,6 +149,15 @@ export default function BondModal_Balance() {
     maxValue,
     library,
   ]);
+
+  useEffect(() => {
+    if (actualMaxValue) {
+      setValue({
+        ...inputValue,
+        bond_modal_actualMaxValue: Number(actualMaxValue),
+      });
+    }
+  }, [actualMaxValue]);
 
   const setMaxValue = useCallback(() => {
     setValue({
@@ -273,6 +280,7 @@ export default function BondModal_Balance() {
                 textAlign: "right",
                 width: "100%",
               }}
+              style={{ maxHeight: "27px" }}
             ></BalanceInput>
             <Button
               w={"48px"}
@@ -282,6 +290,10 @@ export default function BondModal_Balance() {
               fontSize={11}
               color={"blue.200"}
               _hover={{ backgroundColor: "#257eee", color: "#ffffff" }}
+              isDisabled={
+                actualMaxValue === undefined ||
+                Number(inputAmount) === Number(actualMaxValue)
+              }
               onClick={() => setMaxValue()}
             >
               MAX

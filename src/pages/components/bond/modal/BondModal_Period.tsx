@@ -196,7 +196,7 @@ export default function BondModal_Period() {
         columnGap={"3px"}
         alignItems={"center"}
         h={"17px"}
-        pl={bp700px ? "" : "73px"}
+        pl={bp700px ? "" : "70px"}
         mb={"17.5px"}
         justifyContent={"space-between"}
       >

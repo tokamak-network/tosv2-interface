@@ -193,7 +193,7 @@ function BalanceInput(props: NumberInputProp) {
   const { inputValue, value, setValue } = useInput(pageKey!, recoilKey);
   const selectedModal = useRecoilValue(selectedModalState);
   const inputRef = useRef<HTMLInputElement>();
-  const [smallerThan700] = useMediaQuery("(max-width: 700px)");
+  const { bp700px } = useMediaView();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = event.target.value;
@@ -337,9 +337,10 @@ function BalanceInput(props: NumberInputProp) {
           fontSize={12}
           color={"#e23738"}
           justifyContent={"flex-start"}
-          ml={"-5px"}
-          pl={"6px"}
-          mt={"45px"}
+          ml={bp700px ? "" : "-5px"}
+          pl={bp700px ? "24px" : "173px"}
+          mt={bp700px ? "84px" : "68px"}
+          pos={"absolute"}
         >
           <Text>{errorMsg}</Text>
         </Flex>

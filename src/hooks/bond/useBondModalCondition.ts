@@ -14,6 +14,7 @@ function useBondModalCondition(maxValue: number | undefined) {
   const { inputValue } = useInput("Bond_screen", "bond_modal");
   const inputBalance = inputValue.bond_modal_balance;
   const inputPeriod = inputValue.bond_modal_period;
+  const actualMaxValue = inputValue?.bond_modal_actualMaxValue;
   const { bondModalMaxWeeks } = constant;
 
   useEffect(() => {
@@ -22,8 +23,8 @@ function useBondModalCondition(maxValue: number | undefined) {
       setZeroInputBalance(false);
       return setInputOver(false);
     }
-    if (maxValue && inputBalance) {
-      if (Number(inputBalance) > maxValue) {
+    if (actualMaxValue && inputBalance) {
+      if (Number(inputBalance) > actualMaxValue) {
         setZeroInputBalance(false);
         setInputBalanceisEmpty(false);
         return setInputOver(true);
@@ -37,7 +38,7 @@ function useBondModalCondition(maxValue: number | undefined) {
       setZeroInputBalance(false);
       return setInputOver(false);
     }
-  }, [inputBalance, maxValue]);
+  }, [inputBalance, actualMaxValue]);
 
   useEffect(() => {
     if (String(inputPeriod) === "" || inputPeriod === undefined) {
