@@ -28,7 +28,7 @@ function RelockModal_BottomContent(props: { addTos: boolean }) {
     {
       title: "You Give",
       content: `${commafy(ltosBlanace) ?? "-"} LTOS`,
-      secondContent: addTos ? `${tosBlanace ?? "-"} TOS` : undefined,
+      secondContent: addTos ? `${commafy(tosBlanace) ?? "-"} TOS` : undefined,
       tooltip: "Amount of LTOS and TOS used for staking.",
       secondTooltip: `Currently worth ${
         tosValue || "-"

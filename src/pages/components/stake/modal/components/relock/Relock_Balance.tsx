@@ -1,4 +1,11 @@
-import { Container, Flex, Grid, Text, useColorMode } from "@chakra-ui/react";
+import {
+  Checkbox,
+  Container,
+  Flex,
+  Grid,
+  Text,
+  useColorMode,
+} from "@chakra-ui/react";
 import { StakeRelockModalInput } from "atom/stake/input";
 import CustomCheckBox from "common/input/CustomCheckBox";
 import BasicTooltip from "common/tooltip";
@@ -17,12 +24,6 @@ export default function Relock_Balance() {
   );
 
   const addTos = inputValue?.stake_relockModal_addTos;
-  const setAddTos = () => {
-    setValue &&
-      addTos &&
-      setValue({ ...inputValue, stake_relockModal_addTos: !addTos });
-  };
-
   const { userTokenBalance } = useUserBalance();
 
   const { selectedModalData, selectedModal, modalSectionMtValue } = useModal<{
@@ -71,10 +72,21 @@ export default function Relock_Balance() {
             Relock LTOS
           </Text>
           <Flex alignItems={"center"}>
-            <CustomCheckBox
-              state={addTos}
-              setState={setAddTos}
-            ></CustomCheckBox>
+            <Checkbox
+              size={"lg"}
+              style={{
+                borderRadius: "4px",
+                borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
+              }}
+              isChecked={addTos}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const isChecked = e.target.checked;
+                setValue({
+                  ...inputValue,
+                  stake_relockModal_addTos: isChecked,
+                });
+              }}
+            ></Checkbox>
             <Text
               ml={"14px"}
               fontSize={12}

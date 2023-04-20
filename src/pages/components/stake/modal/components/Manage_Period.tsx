@@ -13,7 +13,8 @@ import useInput from "hooks/useInput";
 export default function Manage_Period() {
   const { colorMode } = useColorMode();
   const { bp700px } = useMediaView();
-  const { newEndTime, leftWeeks, leftDays, leftTime } = useUpdateModalData();
+  const { newEndTime, leftWeeks, leftDays, leftTime, currentEndTime } =
+    useUpdateModalData();
   const {
     inputOver,
     inputPeriodOver,
@@ -28,8 +29,6 @@ export default function Manage_Period() {
     "Stake_screen",
     "update_modal"
   );
-
-  console.log(inputValue);
 
   return (
     <Flex flexDir={"column"}>
@@ -58,6 +57,7 @@ export default function Manage_Period() {
           pl={"15px"}
           fontSize={14}
           color={"#64646f"}
+          pos={"relative"}
         >
           <Text>
             {leftWeeks} {leftWeeks < 2 ? "Week" : "Weeks"}
@@ -71,6 +71,9 @@ export default function Manage_Period() {
                 "This is the current Lock-Up period. The new Lock-Up period has to be equal or greater than this."
               }
             />
+          </Flex>
+          <Flex pos={"absolute"} mt={"75px"} fontSize={12} color={"#8b8b93"}>
+            {currentEndTime.split("(UTC")[0]}
           </Flex>
         </Flex>
         <Flex

@@ -337,9 +337,23 @@ function BalanceInput(props: NumberInputProp) {
           fontSize={12}
           color={"#e23738"}
           justifyContent={"flex-start"}
-          ml={bp700px ? "" : "-5px"}
-          pl={bp700px ? "24px" : "173px"}
-          mt={bp700px ? "84px" : "68px"}
+          ml={bp700px ? "" : selectedModal === "bond_bond_modal" ? "-5px" : ""}
+          pl={
+            bp700px
+              ? selectedModal === "bond_bond_modal"
+                ? "24px"
+                : ""
+              : selectedModal === "bond_bond_modal"
+              ? "173px"
+              : ""
+          }
+          mt={
+            bp700px
+              ? selectedModal === "bond_bond_modal"
+                ? "84px"
+                : "68px"
+              : "68px"
+          }
           pos={"absolute"}
         >
           <Text>{errorMsg}</Text>

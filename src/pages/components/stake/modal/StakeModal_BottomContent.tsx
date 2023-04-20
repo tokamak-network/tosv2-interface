@@ -40,10 +40,6 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
     newEndTime,
   } = useStakeModaldata();
 
-  console.log("inputValue.stake_modal_balance");
-  console.log(inputValue.stake_modal_balance);
-  console.log(typeof inputValue.stake_modal_balance);
-
   const contentList: IBottomContentProps[] = fiveDaysLockup
     ? [
         {
@@ -79,7 +75,7 @@ function StakeModal_BottomContent(props: { fiveDaysLockup: boolean }) {
     : [
         {
           title: "You Give",
-          content: `${inputValue.stake_modal_balance || "-"} TOS`,
+          content: `${commafy(inputValue.stake_modal_balance) || "-"} TOS`,
         },
         {
           title: "You Will Get",

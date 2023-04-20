@@ -16,12 +16,13 @@ function useStosRelock(addTos: boolean) {
   const { inputValue } = useInput("Stake_screen", "relock_modal");
   const { newEndTime, inputTosAmount, tosValue, allLtosToTosBalance } =
     useUpdateModalAfterEndTime(addTos);
+  // const increaseTos =
+  //   addTos && allLtosToTosBalance
+  //     ? Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")) +
+  //       allLtosToTosBalance
+  //     : Number(tosValue?.replace(/:,:/g, ""));
 
-  const increaseTos =
-    addTos && allLtosToTosBalance
-      ? Number(inputValue?.stake_relockModal_tos_balance?.replaceAll(",", "")) +
-        allLtosToTosBalance
-      : Number(tosValue?.replace(/:,:/g, ""));
+  const increaseTos = Number(tosValue.replaceAll(",", ""));
 
   const { leftDays, leftHourAndMin } = useStosReward(
     0,
@@ -70,32 +71,6 @@ function useStosRelock(addTos: boolean) {
       return (ltosPrincipalUpdated * increaseWeeksDecimal) / 156;
     }
   }, [ltosPrincipalUpdated, increaseWeeksDecimal]);
-
-  // useEffect(() => {
-  //   console.log("***useStosRelock***");
-  //   console.log(increaseTos);
-
-  //   console.log({
-  //     blockTimeStamp,
-  //     rebasePerEpoch,
-  //     locksInfo,
-  //     rebaseNumber,
-  //     ltosPrincipalUpdated,
-  //     newBalanceStos,
-  //     increaseWeeksDecimal,
-  //   });
-  // }, [
-  //   blockTimeStamp,
-  //   rebasePerEpoch,
-  //   locksInfo,
-  //   ltosPrincipalUpdated,
-  //   newBalanceStos,
-  //   rebaseNumber,
-  //   inputValue,
-  //   increaseWeeksDecimal,
-  //   newBalance,
-  //   increaseTos,
-  // ]);
 
   return { newBalanceStos };
 }

@@ -100,9 +100,13 @@ const CustomCheckBox: React.FC<CheckBoxProp> = (props) => {
         borderRadius: "4px",
         borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
       }}
-      isChecked={belongToSelectAll ? checkThisBox : state}
+      isChecked={state}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log("go?");
         const isChecked = e.target.checked;
+        console.log(isChecked);
+        console.log(setState);
+
         if (setState) {
           setState(isChecked);
         } else {

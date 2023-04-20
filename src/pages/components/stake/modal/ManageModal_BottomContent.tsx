@@ -39,7 +39,9 @@ function ManageModal_BottomContent() {
   const contentList: IBottomContentProps[] = [
     {
       title: "You Give",
-      content: `${inputValue.stake_updateModal_tos_balance || "0"} TOS`,
+      content: `${
+        commafy(inputValue.stake_updateModal_tos_balance) || "0"
+      } TOS`,
     },
     {
       title: "Current Balance",

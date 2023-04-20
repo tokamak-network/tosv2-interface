@@ -88,7 +88,8 @@ function useManageModalConditon(leftWeeks: number) {
     }
   }, [inputPeriod, inputTosAmount, leftWeeks]);
 
-  const inputBalanceIsEmpty = useCheckInput(inputTosAmount);
+  const inputBalanceIsEmpty =
+    useCheckInput(inputTosAmount) || bothConditionsErr;
   const inputPeriodIsEmpty = useCheckInput(inputPeriod);
 
   return {
