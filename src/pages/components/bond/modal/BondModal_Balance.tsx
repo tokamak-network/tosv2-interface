@@ -46,6 +46,12 @@ export default function BondModal_Balance() {
   const { selectedModalData } = useModal<BondCardProps>();
   const marketId = selectedModalData?.index;
 
+  const maxBtnDisabled =
+    actualMaxValue === undefined ||
+    inputWeeks === undefined ||
+    inputWeeks === "" ||
+    Number(inputAmount) === Number(actualMaxValue);
+
   const tokenImage = useMemo(() => {
     switch (bondToken) {
       case "ETH":
@@ -177,46 +183,6 @@ export default function BondModal_Balance() {
           Bond Amount
         </Text>
       </Flex>
-      {/* <Flex
-        fontSize={12}
-        fontWeight={"bold"}
-        columnGap={"18px"}
-        justifyContent={"flex-end"}
-      >
-        <Flex alignItems={"center"}>
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            mr={"9px"}
-          >
-            ROI
-          </Text>
-          <Text
-            color={isMinusROI ? "red.100" : "blue.200"}
-            fontWeight={600}
-            mr={"3px"}
-          >
-            {inputWeeks === undefined || inputWeeks === "" ? "-" : roi}%
-          </Text>
-          <BasicTooltip label="Return on Investment or ROI is calculated using the bond discount rate and LTOS APY. If the ROI is less than LTOS APY, it is better to buy TOS and stake for LTOS."></BasicTooltip>
-        </Flex>
-        <Flex alignItems={"center"}>
-          <Text
-            color={colorMode === "dark" ? "white.200" : "gray.800"}
-            mr={"9px"}
-          >
-            Bond Discount
-          </Text>
-          <Text
-            color={isMinusDiscount ? "red.100" : "blue.200"}
-            fontWeight={600}
-            mr={"3px"}
-          >
-            {inputWeeks === undefined || inputWeeks === "" ? "-" : bondDiscount}
-            %
-          </Text>
-          <BasicTooltip label="The bond discount rate represents the price difference between the market price and the bond price for purchasing TOS. A positive discount rate means that buying TOS through bonding is cheaper."></BasicTooltip>
-        </Flex>
-      </Flex> */}
       <Flex
         borderWidth={"1px"}
         borderColor={
@@ -285,15 +251,21 @@ export default function BondModal_Balance() {
             <Button
               w={"48px"}
               h={"20px"}
-              border={isDark ? "1px solid #535353" : "1px solid #e8edf2"}
+              border={
+                maxBtnDisabled
+                  ? "1px solid #535353"
+                  : isDark
+                  ? "1px solid #535353"
+                  : "1px solid #e8edf2"
+              }
               bgColor={"transparent"}
               fontSize={11}
-              color={"blue.200"}
-              _hover={{ backgroundColor: "#257eee", color: "#ffffff" }}
-              isDisabled={
-                actualMaxValue === undefined ||
-                Number(inputAmount) === Number(actualMaxValue)
-              }
+              color={maxBtnDisabled ? "#5a5a5a" : "blue.200"}
+              _hover={{
+                backgroundColor: maxBtnDisabled ? "" : "#257eee",
+                color: maxBtnDisabled ? "" : "#ffffff",
+              }}
+              isDisabled={maxBtnDisabled}
               onClick={() => setMaxValue()}
             >
               MAX
