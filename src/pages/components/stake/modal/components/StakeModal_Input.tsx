@@ -159,7 +159,12 @@ export default function StakeModal_Input(props: StakeModalInput) {
             </Button>
           </Flex>
         </Flex>
-        <Flex fontSize={12} columnGap={"9px"} alignItems={"center"}>
+        <Flex
+          fontSize={12}
+          columnGap={"9px"}
+          alignItems={"center"}
+          justifyContent={"flex-end"}
+        >
           <Text>
             Balance: {tokenBalance} {inputTokenType}
           </Text>
