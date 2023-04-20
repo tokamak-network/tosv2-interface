@@ -26,6 +26,9 @@ export function getRound(params: {
     if (index === 0 && time > currentTimeStamp) {
       return false;
     }
+    if (index === eachSaleRoundTimeStamp.length - 1) {
+      return false;
+    }
     return time > currentTimeStamp;
   });
 

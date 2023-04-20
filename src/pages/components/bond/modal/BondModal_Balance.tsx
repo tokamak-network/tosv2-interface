@@ -35,7 +35,8 @@ export default function BondModal_Balance() {
   );
   const inputWeeks = inputValue?.bond_modal_period;
 
-  const { BondDepositoryProxy_CONTRACT } = useCallContract();
+  const { BondDepositoryProxy_CONTRACT, BondDepository_CONTRACT } =
+    useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
   const { account, library } = useWeb3React();
@@ -73,10 +74,21 @@ export default function BondModal_Balance() {
         const parseInputAmount = ethers.utils.parseUnits(inputAmount, 18);
         const periodWeeks = inputValue.bond_modal_period + 1;
 
-        const gas = await library.getGasPrice();
-        const txGasPrice = gas.mul(42000);
+        const feeData =
+          await BondDepositoryProxy_CONTRACT.provider.getFeeData();
+        const { maxFeePerGas } = feeData;
 
+        //with lockup period
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
+          console.log("params");
+          console.log(
+            marketId,
+            convertToWei(inputAmount),
+            minimumTosPrice,
+            periodWeeks,
+            { value: convertToWei(inputAmount) }
+          );
+
           const gasEstimate =
             await BondDepositoryProxy_CONTRACT.estimateGas.ETHDepositWithSTOS(
               marketId,
@@ -85,9 +97,9 @@ export default function BondModal_Balance() {
               periodWeeks,
               { value: convertToWei(inputAmount) }
             );
-          const feeData =
-            await BondDepositoryProxy_CONTRACT.provider.getFeeData();
-          const { maxFeePerGas } = feeData;
+
+          console.log("gasEstimate");
+          console.log(gasEstimate);
 
           if (maxFeePerGas) {
             const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
@@ -105,25 +117,30 @@ export default function BondModal_Balance() {
           }
         }
 
-        const gasEstimate =
-          await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
-            marketId,
-            convertToWei(inputAmount),
-            minimumTosPrice,
-            { value: convertToWei(inputAmount) }
-          );
+        //5 days lockup
+        if (maxFeePerGas) {
+          const gasEstimate =
+            await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
+              marketId,
+              convertToWei(inputAmount),
+              minimumTosPrice,
+              { value: convertToWei(inputAmount) }
+            );
 
-        const subtractedMaxAmount = parseInputAmount
-          .sub(gasEstimate)
-          .sub(txGasPrice);
-        return setActualMaxValue(
-          ethers.utils.formatUnits(subtractedMaxAmount.toString())
-        );
+          const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
+          const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
+          const gasPrice = gasEstimate.add(42000).mul(maxFeePerGas);
+          const subtractedMaxAmount = parseInputAmount.sub(gasPrice);
+
+          return setActualMaxValue(
+            ethers.utils.formatUnits(subtractedMaxAmount.toString())
+          );
+        }
       }
     }
     fetchActualMaxValue().catch((e) => {
-      // console.log("**fetchActualMaxValue err**");
-      // console.log(e);
+      console.log("**fetchActualMaxValue err**");
+      console.log(e);
     });
   }, [
     BondDepositoryProxy_CONTRACT,
