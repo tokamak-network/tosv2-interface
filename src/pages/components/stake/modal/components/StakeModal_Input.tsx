@@ -95,59 +95,75 @@ export default function StakeModal_Input(props: StakeModalInput) {
         flexDir={"column"}
         rowGap={"9px"}
       >
-        <Flex justifyContent={"space-between"} h={"25px"}>
-          <BalanceInput
-            placeHolder={"0.00"}
-            pageKey={pageKey}
-            recoilKey={recoilKey}
-            atomKey={atomKey}
-            isError={
-              maxValue !== undefined &&
-              (zeroInputBalance || inputOver || inputBalanceIsEmpty)
-            }
-            errorMsg={
-              inputBalanceIsEmpty
-                ? undefined
-                : inputOver
-                ? inputTokenType === "LTOS"
-                  ? errMsg.stake.ltosBalanceIsOver
-                  : errMsg.stake.tosBalanceIsOver
-                : errMsg.stake.inputIsZero
-            }
-            fontSize={18}
-            w={bp700px ? "190px" : "270px"}
-            inputContainerStyle={{
-              borderRadius: 0,
-              borderWidth: 0,
-              margin: 0,
-              fontWeight: 600,
-              height: "25px",
-            }}
-            inputFieldStyle={{ padding: 0 }}
-            isDisabled={isDisabled}
-          ></BalanceInput>
+        <Flex justifyContent={"space-between"} h={"25px"} alignItems={"center"}>
           <TokenImageContrainer
             tokenTypes={inputTokenType}
             name={inputTokenType}
           ></TokenImageContrainer>
+          <Flex
+            w={"100%"}
+            ml={"20px"}
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+            columnGap={"9px"}
+            h={"22px"}
+          >
+            <BalanceInput
+              w={"100%"}
+              placeHolder={"0.00"}
+              pageKey={pageKey}
+              recoilKey={recoilKey}
+              atomKey={atomKey}
+              isError={
+                maxValue !== undefined &&
+                (zeroInputBalance || inputOver || inputBalanceIsEmpty)
+              }
+              errorMsg={
+                inputBalanceIsEmpty
+                  ? undefined
+                  : inputOver
+                  ? inputTokenType === "LTOS"
+                    ? errMsg.stake.ltosBalanceIsOver
+                    : errMsg.stake.tosBalanceIsOver
+                  : errMsg.stake.inputIsZero
+              }
+              fontSize={18}
+              inputContainerStyle={{
+                borderRadius: 0,
+                borderWidth: 0,
+                margin: 0,
+                fontWeight: 600,
+                height: "25px",
+                w: "100%",
+              }}
+              inputFieldStyle={{
+                padding: 0,
+                textAlign: "right",
+                width: "100%",
+              }}
+              style={{ maxHeight: "27px" }}
+              isDisabled={isDisabled}
+            ></BalanceInput>
+            <Button
+              w={"48px"}
+              h={"20px"}
+              border={
+                colorMode === "dark" ? "1px solid #535353" : "1px solid #e8edf2"
+              }
+              bgColor={"transparent"}
+              fontSize={11}
+              color={"blue.200"}
+              onClick={() => setMaxValue()}
+            >
+              MAX
+            </Button>
+          </Flex>
         </Flex>
         <Flex fontSize={12} columnGap={"9px"} alignItems={"center"}>
           <Text>
             Balance: {tokenBalance} {inputTokenType}
           </Text>
-          <Button
-            w={"48px"}
-            h={"20px"}
-            border={
-              colorMode === "dark" ? "1px solid #535353" : "1px solid #e8edf2"
-            }
-            bgColor={"transparent"}
-            fontSize={11}
-            color={"blue.200"}
-            onClick={() => setMaxValue()}
-          >
-            MAX
-          </Button>
+
           {buyMoreButton !== false && (
             <Text
               color={"blue.200"}

@@ -185,9 +185,9 @@ function RelockModal() {
                 <Flex
                   pos={"absolute"}
                   left={0}
-                  pl={"50px"}
+                  pl={bp700px ? "25px" : "50px"}
                   alignItems={"center"}
-                  mt={"7px"}
+                  mt={bp700px ? "5px" : "7px"}
                 >
                   <Box
                     w={"4px"}

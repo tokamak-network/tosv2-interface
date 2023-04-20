@@ -229,7 +229,7 @@ function BondModal() {
                 >
                   <Image src={USER_GUIDE} alt={"USER_GUIDE"}></Image>
                   <Text fontSize={13} color={"gray.100"}>
-                    Bond User Guide
+                    User Guide
                   </Text>
                 </Flex>
               </Flex>
