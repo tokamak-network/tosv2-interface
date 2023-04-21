@@ -176,17 +176,12 @@ function useBondModalInputData() {
 
   //make arr for discountRate
   const discountRatePerBondingPrice = useMemo(() => {
-    if (
-      priceData &&
-      priceData?.tosPrice &&
-      priceData.ethPrice &&
-      bondingPricePerWeeks
-    ) {
+    if (priceData && priceData?.tosPrice && ethPrice && bondingPricePerWeeks) {
       const { tosPrice } = priceData;
 
       return bondingPricePerWeeks.map((bondingPrice) => {
         const discunt =
-          priceData.ethPrice /
+          ethPrice /
           Number(ethers.utils.formatUnits(bondingPrice.toString(), 18));
         const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
 
@@ -220,19 +215,14 @@ function useBondModalInputData() {
       if (bondInputPeriod === undefined || bondInputPeriod === "") {
         return setBondDiscount("-");
       }
-      if (
-        priceData &&
-        priceData?.tosPrice &&
-        priceData?.ethPrice &&
-        bondingPrice
-      ) {
+      if (priceData && priceData?.tosPrice && ethPrice && bondingPrice) {
         const { tosPrice } = priceData;
         const bondingPriceCom = convertNumber({
           amount: bondingPrice.toString(),
         });
 
         const discunt =
-          priceData.ethPrice /
+          ethPrice /
           Number(ethers.utils.formatUnits(bondingPrice.toString(), 18));
         const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
 
