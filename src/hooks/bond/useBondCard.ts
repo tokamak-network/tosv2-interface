@@ -32,26 +32,15 @@ export function useBondCard() {
   const { priceData } = usePrice();
   const sortValue = useRecoilValue(bond_filter_sort_state);
 
-  //get timestamps to calculate roi
-  const { blockTimeStamp } = useBlockNumber();
-  const { newEndTimeStamp } = useStosReward(0, 52);
-
   if (error) {
     console.log("**useBondCard err**");
     console.log(error);
   }
 
   useEffect(() => {
-    if (
-      data &&
-      priceData &&
-      priceData?.tosPrice &&
-      priceData?.ethPrice &&
-      blockTimeStamp &&
-      newEndTimeStamp
-    ) {
+    if (data && priceData?.tosPrice) {
       const bonds = data.getBondList;
-      const { ethPrice, tosPrice } = priceData;
+      const { tosPrice } = priceData;
 
       //test
       // const dummyServerData = getDummyServerBondData();
@@ -240,7 +229,7 @@ export function useBondCard() {
           break;
       }
     }
-  }, [priceData, data, sortValue, blockTimeStamp, newEndTimeStamp]);
+  }, [priceData, data, sortValue]);
 
   // console.log("--cardList--");
   // console.log(cardList);

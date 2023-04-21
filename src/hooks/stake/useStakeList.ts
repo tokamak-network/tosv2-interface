@@ -10,7 +10,6 @@ import {
 import { ethers } from "ethers";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import useCallContract from "hooks/useCallContract";
-import usePrice from "hooks/usePrice";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { StakeCardProps } from "types/stake";

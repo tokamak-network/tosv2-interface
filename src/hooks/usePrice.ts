@@ -1,11 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { GET_DASHBOARD } from "graphql/dashboard/getDashboard";
-import { GET_TOKEN_PRICE } from "graphql/general/getTokenPrice";
 import { useEffect, useState } from "react";
 
 type UsePrice = {
   tosPrice: number;
-  ethPrice: number;
+  // ethPrice: number;
 };
 
 function usePrice() {
@@ -16,21 +15,13 @@ function usePrice() {
       limit: 1,
     },
   });
-  const { data: TokenData } = useQuery(GET_TOKEN_PRICE, {
-    variables: {
-      tokenId: "ethereum",
-    },
-  });
 
   useEffect(() => {
-    if (data && TokenData) {
+    if (data) {
       const tosPrice = data.getDashboard[0]?.tosPrice || "0";
-      const {
-        getTokenPrice: { price: ethPrice },
-      } = TokenData;
-      setPriceData({ tosPrice: Number(tosPrice), ethPrice: Number(ethPrice) });
+      setPriceData({ tosPrice: Number(tosPrice) });
     }
-  }, [data, TokenData]);
+  }, [data]);
 
   return { priceData };
 }
