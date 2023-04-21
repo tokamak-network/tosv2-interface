@@ -75,7 +75,7 @@ export function useBondCard() {
         });
 
         const bondEthCapacity = getTosCapacityOnEth({
-          tosCapacity: capacity,
+          tosCapacity: currentCapacity,
           ethPrice,
           tosPrice,
         });
