@@ -25,7 +25,7 @@ export default function BondCard_Progress(props: BondCardProgress) {
         h={"5px"}
         borderRadius={100}
         value={progress}
-        colorScheme={status === "open" ? "" : "gray"}
+        colorScheme={status === "open" ? "blue" : "gray"}
       />
     </Flex>
   );

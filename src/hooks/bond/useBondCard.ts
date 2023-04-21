@@ -231,8 +231,8 @@ export function useBondCard() {
     }
   }, [priceData, data, sortValue]);
 
-  // console.log("--cardList--");
-  // console.log(cardList);
+  console.log("--cardList--");
+  console.log(cardList);
 
   return { cardList };
 }

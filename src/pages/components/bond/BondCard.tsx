@@ -212,7 +212,10 @@ function BondCard(props: { data: BondCardProps }) {
         ethCapacity={data?.bondEthCapacity}
         isDiscountMinus={data?.isDiscountMinus}
       />
-      <BondCard_Progress progress={data?.blueProgress} status={data?.status} />
+      <BondCard_Progress
+        progress={Number(data?.currentProgressOnCurrentCapacity)}
+        status={data?.status}
+      />
       <Flex flexDir={"column"} rowGap={"24px"} h={"100%"}>
         <BondCard_BondInfo bondInfoData={bondInfodata} />
         {currentRound === 1 && !closed ? (
