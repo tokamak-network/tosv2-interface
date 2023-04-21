@@ -11,9 +11,6 @@ type BondCardProgress = {
 export default function BondCard_Progress(props: BondCardProgress) {
   const { progress, status, currentRound } = props;
   const { isDark } = useCustomColorMode();
-  console.log("currentRound");
-
-  console.log(currentRound);
 
   return (
     <Flex flexDir={"column"} rowGap={"5px"} mb={"17px"}>

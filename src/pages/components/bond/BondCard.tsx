@@ -136,7 +136,9 @@ function BondCard(props: { data: BondCardProps }) {
         <TitleComponent
           title="LTOS APY"
           tooltip={true}
-          label={"LTOS Annual Percentage Yield or APY represents amount of TOS"}
+          label={
+            "LTOS APY is the annualized rate of return on TOS when it is staked for LTOS."
+          }
         />
       ),
       content: <ContentComponent content="10.1%" />,
