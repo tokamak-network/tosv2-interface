@@ -160,7 +160,7 @@ export function useBondCard() {
           totalRound: roundNums,
           roundEthCapacity,
           bondEthCapacity,
-          roi: Number(commafy(ROIforLockupWeeks)),
+          roi: Number(commafy(ROIforLockupWeeks * 100, 1)),
           ltosApy: 10.1,
           tosPrice: Number(commafy(tosPrice, 2)),
           saleRoundTimeStamp,
