@@ -215,6 +215,7 @@ function BondCard(props: { data: BondCardProps }) {
       <BondCard_Progress
         progress={Number(data?.currentProgressOnCurrentCapacity)}
         status={data?.status}
+        currentRound={currentRound}
       />
       <Flex flexDir={"column"} rowGap={"24px"} h={"100%"}>
         <BondCard_BondInfo bondInfoData={bondInfodata} />
