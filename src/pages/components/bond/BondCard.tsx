@@ -211,7 +211,9 @@ function BondCard(props: { data: BondCardProps }) {
         outToken0={"LTOS"}
         outToken1={"STOS"}
         roi={data?.roi}
-        ethCapacity={data?.bondEthCapacity}
+        ethCapacity={
+          currentRound === 1 ? data?.bondEthCapacity : data?.roundEthCapacity
+        }
         isDiscountMinus={data?.isDiscountMinus}
       />
       <BondCard_Progress
