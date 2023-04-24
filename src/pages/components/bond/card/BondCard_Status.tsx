@@ -27,7 +27,7 @@ function TextWrap(props: {
 function SubText(date: string | undefined) {
   if (date) {
     return (
-      <Text maxW={["55px", "80px", "80px"]} fontSize={11} color={"gray.100"}>
+      <Text minW={"80px"} fontSize={11} color={"gray.100"}>
         {date}
       </Text>
     );
