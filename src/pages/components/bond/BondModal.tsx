@@ -42,6 +42,7 @@ import { ZERO_ADDRESS } from "constants/index";
 import { selectedToken0 } from "atom/swap";
 import { BondModalInput } from "atom/bond/input";
 import BondModal_Balance from "./modal/BondModal_Balance";
+import { useBondDepository } from "hooks/bond/useBondDepository";
 
 function BondModal() {
   const theme = useTheme();
@@ -101,6 +102,7 @@ function BondModal() {
 
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
     useBondModalCondition(maxCapacityValue);
+  const { basePrice } = useBondDepository();
   const { errMsg } = constant;
 
   const closeThisModal = useCallback(() => {
@@ -109,12 +111,16 @@ function BondModal() {
     closeModal();
   }, [closeModal, setResetValue, setBondModalRecoilState]);
 
+  console.log("minimumTosPrice");
+  console.log(minimumTosPrice?.toString());
+
   const callBond = useCallback(async () => {
     try {
       if (
         BondDepositoryProxy_CONTRACT &&
         inputValue.bond_modal_balance &&
-        minimumTosPrice
+        minimumTosPrice &&
+        basePrice
       ) {
         const inputAmount = String(inputValue.bond_modal_balance)
           .replaceAll(",", "")
@@ -146,10 +152,16 @@ function BondModal() {
         console.log(`minimumTosPrice : ${minimumTosPrice.toString()}`);
         console.log(`value : ${convertToWei(inputAmount)}`);
 
+        const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+          marketId,
+          0,
+          basePrice
+        );
+
         const tx = await BondDepositoryProxy_CONTRACT.ETHDeposit(
           marketId,
           convertToWei(inputAmount),
-          minimumTosPrice,
+          BigInt(bondingPrice.toString() / 1.005),
           { value: convertToWei(inputAmount) }
         );
         setTx(tx);
@@ -169,6 +181,7 @@ function BondModal() {
     setTx,
     closeThisModal,
     minimumTosPrice,
+    basePrice,
   ]);
 
   return (
