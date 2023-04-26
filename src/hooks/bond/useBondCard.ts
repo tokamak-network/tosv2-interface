@@ -5,7 +5,6 @@ import { convertTimeStamp, getNowTimeStamp } from "@/utils/time";
 import { useQuery } from "@apollo/client";
 import { bond_filter_sort_state } from "atom/bond/filter";
 import { GET_BOND_LIST } from "graphql/bond/getBond";
-import useStosReward from "hooks/stake/useStosReward";
 import { useBlockNumber } from "hooks/useBlockNumber";
 import usePrice from "hooks/usePrice";
 import { useEffect, useState } from "react";

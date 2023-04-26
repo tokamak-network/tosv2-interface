@@ -111,7 +111,7 @@ function useStosReward(inputTosAmount?: number, inputPeriod?: number) {
   useEffect(() => {
     //endTime
     async function calculateUnlockTime() {
-      if (LockTOS_CONTRACT && inputPeriod !== undefined) {
+      if (LockTOS_CONTRACT && inputPeriod !== undefined && epochUnit) {
         const _inputPeriod = inputPeriod + 1;
         const now = getNowTimeStamp();
         const unlockTimeStamp =

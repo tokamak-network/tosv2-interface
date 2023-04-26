@@ -9,6 +9,7 @@ import { IBottomContentProps } from "types/common/modal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import { useMemo } from "react";
 import { getNowTimeStamp, getTimeLeft } from "@/utils/time";
+import useStosReward from "hooks/stake/useStosReward";
 
 function BondModal_BottomContent(props: {
   fiveDaysLockup: boolean;
@@ -21,18 +22,20 @@ function BondModal_BottomContent(props: {
     "Bond_screen",
     "bond_modal"
   );
+  const inputPeriod = inputValue?.bond_modal_period;
+
   const { selectedModalData, selectedModal, closeModal } =
     useModal<BondCardProps>();
   const marketId = selectedModalData?.index;
 
   const {
     youWillGet,
-    endTime,
     stosReward,
     originalTosAmount,
     bondDiscount,
     isMinusDiscount,
   } = useBondModalInputData();
+  const { newEndTime } = useStosReward(0, inputPeriod);
 
   const inputWeeks = inputValue?.bond_modal_period;
 
@@ -65,7 +68,7 @@ function BondModal_BottomContent(props: {
           ? getTimeLeft(getNowTimeStamp(), 5, "YYYY. MM.DD. HH:mm")
           : inputWeeks === undefined || inputWeeks === ""
           ? "-"
-          : endTime ?? "-",
+          : newEndTime ?? "-",
         tooltip: "LTOS can be unstaked after this time. ",
       },
     ];
@@ -74,7 +77,7 @@ function BondModal_BottomContent(props: {
     fiveDaysLockup,
     stosReward,
     bondDiscount,
-    endTime,
+    newEndTime,
     isMinusDiscount,
     originalTosAmount,
     youWillGet,

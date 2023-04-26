@@ -23,7 +23,6 @@ function useBondModalInputData() {
   const ethPrice = selectedModalData?.ethPrice ?? undefined;
 
   const [youWillGet, setYouWillGet] = useState<string | undefined>(undefined);
-  const [endTime, setEndTime] = useState<string | undefined>(undefined);
   const [inputTosAmount, setInputTosAmount] = useState<string | undefined>(
     undefined
   );
@@ -48,9 +47,11 @@ function useBondModalInputData() {
   const { fiveDaysLockup } = bondModalRecoilValue;
 
   const { inputValue } = useInput("Bond_screen", "bond_modal");
-  const bondInputPeriod = fiveDaysLockup ? 0 : inputValue?.bond_modal_period;
+  const inputPeriod = inputValue?.bond_modal_period;
+
+  const bondInputPeriod = fiveDaysLockup ? 0 : inputPeriod;
   const { newEndTime, newEndTimeStamp, newEndTimeStampWithoutStos } =
-    useStosReward(Number(inputTosAmount), 53);
+    useStosReward(0, 53);
   const { newBalanceStos } = useStosBond(Number(inputTosAmount));
 
   const { priceData } = usePrice();
@@ -163,16 +164,6 @@ function useBondModalInputData() {
     bondInputPeriod,
     bondingPrice,
   ]);
-
-  useEffect(() => {
-    async function fetchBondModalInputData() {
-      return setEndTime(`${newEndTime}`);
-    }
-    fetchBondModalInputData().catch((e) => {
-      // console.log("**useBondModalInputData2 err**");
-      // console.log(e);
-    });
-  }, [newEndTime]);
 
   //make arr for discountRate
   const discountRatePerBondingPrice = useMemo(() => {
@@ -304,7 +295,7 @@ function useBondModalInputData() {
 
   return {
     youWillGet,
-    endTime,
+    endTime: newEndTime,
     stosReward: commafy(newBalanceStos),
     originalTosAmount,
     bondDiscount,
