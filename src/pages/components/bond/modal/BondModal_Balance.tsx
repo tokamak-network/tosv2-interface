@@ -68,13 +68,19 @@ export default function BondModal_Balance() {
 
   useEffect(() => {
     async function fetchActualMaxValue() {
-      if (BondDepositoryProxy_CONTRACT && maxValue && minimumTosPrice) {
-        const inputAmount = String(maxValue)
-          .replaceAll(",", "")
-          .replaceAll(" ", "");
-
-        const parseInputAmount = ethers.utils.parseUnits(inputAmount, 18);
+      if (
+        BondDepositoryProxy_CONTRACT &&
+        userTokenBalance &&
+        minimumTosPrice &&
+        maxValue
+      ) {
+        const userEthBalanceWei = userTokenBalance.balanceNum;
+        const parseInputAmount = ethers.utils.parseUnits(
+          String(userEthBalanceWei).replaceAll(",", ""),
+          18
+        );
         const periodWeeks = inputValue.bond_modal_period + 1;
+        const inputToEstimate = convertToWei(String(maxValue));
 
         const feeData =
           await BondDepositoryProxy_CONTRACT.provider.getFeeData();
@@ -83,36 +89,40 @@ export default function BondModal_Balance() {
         //with lockup period
         if (!fiveDaysLockup && inputValue.bond_modal_period) {
           console.log("params");
-          console.log(
-            marketId,
-            convertToWei(inputAmount),
-            minimumTosPrice,
-            periodWeeks,
-            { value: convertToWei(inputAmount) }
-          );
+          console.log(marketId, inputToEstimate, minimumTosPrice, periodWeeks, {
+            value: inputToEstimate,
+          });
 
           const gasEstimate =
             await BondDepositoryProxy_CONTRACT.estimateGas.ETHDepositWithSTOS(
               marketId,
-              convertToWei(inputAmount),
+              inputToEstimate,
               minimumTosPrice,
               periodWeeks,
-              { value: convertToWei(inputAmount) }
+              { value: inputToEstimate }
             );
 
           if (maxFeePerGas) {
             const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
             const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
             const gasPrice = gasEstimate.add(42000).mul(maxFeePerGas);
+            console.log("parseInputAmount");
+            console.log(parseInputAmount);
+            console.log("gasPrice");
+            console.log(gasPrice);
+
             const subtractedMaxAmount = parseInputAmount.sub(gasPrice);
 
             console.log("maxFeePerGas(wei) : ", maxFeePerGas.toString());
             console.log("gasEstimate : ", gasEstimate.toString());
             console.log("bufferGasFee : ", bufferPrice.toString());
 
-            return setActualMaxValue(
-              ethers.utils.formatUnits(subtractedMaxAmount.toString())
-            );
+            const result =
+              Number(subtractedMaxAmount.toString()) > maxValue
+                ? maxValue
+                : subtractedMaxAmount;
+
+            return setActualMaxValue(result.toString());
           }
         }
 
@@ -121,9 +131,9 @@ export default function BondModal_Balance() {
           const gasEstimate =
             await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
               marketId,
-              convertToWei(inputAmount),
+              inputToEstimate,
               minimumTosPrice,
-              { value: convertToWei(inputAmount) }
+              { value: inputToEstimate }
             );
 
           const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
@@ -131,9 +141,12 @@ export default function BondModal_Balance() {
           const gasPrice = gasEstimate.add(42000).mul(maxFeePerGas);
           const subtractedMaxAmount = parseInputAmount.sub(gasPrice);
 
-          return setActualMaxValue(
-            ethers.utils.formatUnits(subtractedMaxAmount.toString())
-          );
+          const result =
+            Number(subtractedMaxAmount.toString()) > maxValue
+              ? maxValue
+              : subtractedMaxAmount;
+
+          return setActualMaxValue(ethers.utils.formatUnits(result.toString()));
         }
       }
     }
@@ -276,7 +289,7 @@ export default function BondModal_Balance() {
             <Text>
               Balance: {balance} {name}
             </Text>
-            <Text> Bond Capacity : {commafy(actualMaxValue)} ETH</Text>
+            <Text> Bond Capacity : {commafy(maxValue)} ETH</Text>
           </Flex>
         ) : (
           <Flex
@@ -286,8 +299,7 @@ export default function BondModal_Balance() {
             alignItems={"center"}
           >
             <Text>
-              Balance: {balance} {name} / Bond Capacity:{" "}
-              {commafy(actualMaxValue)} ETH
+              Balance: {balance} {name} / Bond Capacity: {commafy(maxValue)} ETH
             </Text>
           </Flex>
         )}

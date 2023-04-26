@@ -67,6 +67,7 @@ const InputPeriod = (props: InputProp) => {
   const { selectedModal } = useModal();
 
   const { inputValue, value, setValue } = useInput(pageKey, recoilKey);
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 3) {
       return;
@@ -82,20 +83,14 @@ const InputPeriod = (props: InputProp) => {
       return;
     }
     if (Number(event.target.value) === 0) {
-      // console.log("-1-");
-
       setWeeksUnit("Weeks");
       setWeekHighlight(false);
     }
     if (Number(event.target.value) > 1) {
-      // console.log("-2-");
-
       setWeeksUnit("Weeks");
       setWeekHighlight(true);
     }
-    if (Number(event.target.value) === 1 || value[atomKey] === 1) {
-      // console.log("-3-");
-
+    if (Number(event.target.value) === 1) {
       setWeeksUnit("Week");
       setWeekHighlight(true);
     }
@@ -124,6 +119,10 @@ const InputPeriod = (props: InputProp) => {
       value[atomKey] !== "" &&
       value[atomKey] !== 0
     ) {
+      setWeekHighlight(true);
+    }
+    if (value[atomKey] === 1) {
+      setWeeksUnit("Week");
       return setWeekHighlight(true);
     }
   }, [value, atomKey]);
