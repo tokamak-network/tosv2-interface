@@ -22,6 +22,8 @@ const GET_BOND_LIST = gql`
       bonusRatesId
       ROIforLockupWeeks
       ltosInterstForLockupWeeks
+      tosAPY
+      discountRate
       bondType
       closed
     }

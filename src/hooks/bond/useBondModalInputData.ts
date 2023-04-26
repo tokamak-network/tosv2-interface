@@ -179,12 +179,11 @@ function useBondModalInputData() {
     if (priceData && priceData?.tosPrice && ethPrice && bondingPricePerWeeks) {
       const { tosPrice } = priceData;
 
-      return bondingPricePerWeeks.map((bondingPrice) => {
+      return bondingPricePerWeeks.map((bondingPrice, index) => {
         const discunt =
           ethPrice /
           Number(ethers.utils.formatUnits(bondingPrice.toString(), 18));
         const discountRate = ((tosPrice - discunt) / tosPrice) * 100;
-
         return Number(commafy(discountRate));
       });
     }

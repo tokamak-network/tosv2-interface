@@ -65,6 +65,8 @@ export type BondRawdata = {
   ethPrice: number;
   ROIforLockupWeeks: number;
   ltosInterstForLockupWeeks: number;
+  tosAPY: number;
+  discountRate: number;
   createdAt: Date;
 };
 

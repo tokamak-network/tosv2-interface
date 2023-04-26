@@ -61,12 +61,14 @@ export function useBondCard() {
           capacityUpdatePeriod,
           periodicCapacity,
           ROIforLockupWeeks,
+          tosAPY,
+          discountRate,
         } = bond;
         const endTimeDiff = endTime - getNowTimeStamp();
         const openTimeDiff = startTime - getNowTimeStamp();
         const isClosed = closed || endTimeDiff < 0;
 
-        const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
+        // const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
 
         //time
         const startDay = convertTimeStamp(startTime, "YYYY.MM.DD HH:mm:ss");
@@ -147,7 +149,7 @@ export function useBondCard() {
           ),
           currentProgressOnCurrentCapacity,
           bondingPrice: commafy(bondPrice),
-          discountRate: Number(commafy(discount, 1)),
+          discountRate: Number(commafy(discountRate, 1)),
           sellTokenType: "ETH",
           buyTokenType: "TOS",
           endTime,
@@ -158,7 +160,7 @@ export function useBondCard() {
           endDay,
           minimumBondPrice: "0",
           version,
-          isDiscountMinus: Number(commafy(discount)) < 0,
+          isDiscountMinus: discountRate < 0,
           currentCapacityProgress,
           currentBondable,
           currentCapacity: commafy(currentCapacityTotal, 0),
@@ -170,8 +172,8 @@ export function useBondCard() {
           totalRound: roundNums,
           roundEthCapacity,
           bondEthCapacity,
-          roi: Number(commafy(ROIforLockupWeeks * 100, 1)),
-          ltosApy: 10.1,
+          roi: Number(commafy(ROIforLockupWeeks, 1)),
+          ltosApy: Number(commafy(tosAPY, 1)),
           tosPrice: Number(commafy(tosPrice, 2)),
           saleRoundTimeStamp,
         };
