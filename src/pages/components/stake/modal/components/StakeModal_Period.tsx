@@ -1,6 +1,5 @@
 import { Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
 import InputPeriod from "common/input/InputPeriod";
-import BasicTooltip from "common/tooltip";
 import constant from "constant";
 import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
@@ -101,10 +100,8 @@ export default function StakeModal_Period<T>(props: StakeModalPeriod) {
                   mr="3px"
                   color={colorMode === "dark" ? "gray.100" : "gray.1000"}
                 >
-                  5 Days Lock-Up
+                  No Lock-Up
                 </Text>
-
-                <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
               </Flex>
             )}
           </Flex>

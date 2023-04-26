@@ -93,12 +93,13 @@ const InputPeriod = (props: InputProp) => {
       setWeeksUnit("Weeks");
       setWeekHighlight(true);
     }
-    if (Number(event.target.value) === 1) {
+    if (Number(event.target.value) === 1 || value[atomKey] === 1) {
       // console.log("-3-");
 
       setWeeksUnit("Week");
       setWeekHighlight(true);
     }
+
     return (
       atomKey &&
       setValue({

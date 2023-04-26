@@ -16,7 +16,7 @@ function useStakeTopCards() {
       tooltip: "The total dollar value of all the LTOS.",
     },
     {
-      title: "TOS APY",
+      title: "LTOS APY",
       price: "-",
       priceUnit: "%",
       tooltip:
