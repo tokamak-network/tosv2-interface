@@ -19,6 +19,8 @@ function StakeCardContainer() {
   const { tryActivation } = useWallet();
   const { bp700px, bp500px, customMaxView } = useMediaView(1024);
 
+  console.log(stakeCards);
+
   return (
     <Flex
       mt={customMaxView ? "36px" : "56px"}

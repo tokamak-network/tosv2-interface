@@ -10,7 +10,8 @@ function usePagination(listArr: any[] | undefined) {
   useEffect(() => {
     if (listArr) {
       const pageLength = listArr.length / pageCardSize;
-      const pageNum = Math.floor(pageLength) + 1;
+      const pageNum =
+        pageLength % 1 === 0 ? pageLength : Math.floor(pageLength) + 1;
       setPageSize(pageNum);
     }
   }, [listArr, pageCardSize]);
