@@ -8,18 +8,22 @@ export async function getRateInfo(
   Provider: Web3Provider | JsonRpcSigner
 ): Promise<number[] | undefined> {
   const marketInfo = await BondDepositoryProxy_CONTRACT.viewMarket(marketId);
-
   const bonusInfo = marketInfo?.bonusInfo;
-  if (bonusInfo?.bonusRatesAddress && bonusInfo?.bonusRatesId && Provider) {
-    const BonusRate_CONTRACT = new Contract(
-      bonusInfo.bonusRatesAddress,
-      BonusRateAbi.abi,
-      Provider
-    );
-    const response = await BonusRate_CONTRACT.getRatesInfo(
-      bonusInfo?.bonusRatesId
-    );
-    if (response?.rates) return response.rates as number[];
+  try {
+    if (bonusInfo?.bonusRatesAddress && bonusInfo?.bonusRatesId && Provider) {
+      const BonusRate_CONTRACT = new Contract(
+        bonusInfo.bonusRatesAddress,
+        BonusRateAbi.abi,
+        Provider
+      );
+      const response = await BonusRate_CONTRACT.getRatesInfo(
+        bonusInfo?.bonusRatesId
+      );
+      if (response?.rates) return response.rates as number[];
+    }
+    return undefined;
+  } catch (e) {
+    console.log("**getRateInfo err**");
+    console.log(e);
   }
-  return undefined;
 }

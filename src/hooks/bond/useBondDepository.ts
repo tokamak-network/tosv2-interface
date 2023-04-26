@@ -71,11 +71,11 @@ export function useBondDepository(lockupWeeks?: number) {
   useEffect(() => {
     async function getBondingPriceWithBonusRate() {
       if (
-        basePrice &&
+        basePrice !== undefined &&
         _weeks !== undefined &&
-        marketId &&
-        BondDepositoryProxy_CONTRACT &&
-        bonusRateInfo
+        marketId !== undefined &&
+        BondDepositoryProxy_CONTRACT !== null &&
+        bonusRateInfo !== undefined
       ) {
         const bonusRate = bonusRateInfo[_weeks] ?? bonusRateInfo[_weeks - 1];
         const bonusValue = basePrice.mul(bonusRate).div(10000);

@@ -67,7 +67,7 @@ const useCallContract = (ERC20_ADDRESS?: string) => {
   const LockTOS_CONTRACT = useContract(LockTOS, LockTOSAbi.abi);
   const QUOTER_CONTRACT = useContract(Quoter_ADDRESS, QuoterABI.abi);
   const SwapperV2Proxy_CONTRACT = useContract(SwapperV2Proxy, SwapperV2.abi);
-  const BonusRate_CONTRACT = useContract(BonusRate_ADDRESS, BonusRateAbi);
+  const BonusRate_CONTRACT = useContract(BonusRate_ADDRESS, BonusRateAbi.abi);
 
   return {
     TON_CONTRACT,

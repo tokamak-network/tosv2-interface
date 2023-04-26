@@ -41,7 +41,7 @@ type SwapButtonProps = {
   submitDisable: boolean;
 };
 const SwapButton: React.FC<SwapButtonProps> = (props) => {
-  const { maxError, approved, closeThisModal,submitDisable } = props;
+  const { maxError, approved, closeThisModal, submitDisable } = props;
   const { account, library } = useWeb3React();
   const { colorMode } = useColorMode();
   const tx = useRecoilValue(swapTX_state);
@@ -74,7 +74,6 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
   } = useCallContract(
     token0.address !== ZERO_ADDRESS ? token0.address : undefined
   );
-
 
   const { TON_ADDRESS, WTON_ADDRESS, WETH_ADDRESS, SwapperV2Proxy } =
     CONTRACT_ADDRESS;
@@ -240,7 +239,6 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
 
   const exactInputWethEth = useCallback(async () => {
     if (library && account && WETH_CONTRACT) {
-      // const WETH = new Contract(WETH_ADDRESS, WETHABI, library);
       const amountIn = ethers.utils.parseEther(fromAmount);
 
       if (token0.address.toLowerCase() === ZERO_ADDRESS.toLowerCase()) {
@@ -411,7 +409,6 @@ const SwapButton: React.FC<SwapButtonProps> = (props) => {
     exactOutputWtonTon,
     exactInputWethEth,
   ]);
-
 
   return (
     <Button

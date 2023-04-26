@@ -78,7 +78,7 @@ function SliderGraph() {
     }
   }
 
-  const testData = [
+  const graphData = [
     {
       id: "ROI",
       data: roiGraphData,
@@ -89,10 +89,13 @@ function SliderGraph() {
     },
   ];
 
+  if (roiGraphData.length === 0 || bonddiscountGraphData.length === 0) {
+    return null;
+  }
   return (
     <Flex pos={"absolute"} w={"100%"} h={"90px"}>
       <ResponsiveLine
-        data={testData}
+        data={graphData}
         colors={["#50d1b2", "#ec8c56"]}
         xScale={{ type: "point" }}
         yScale={{

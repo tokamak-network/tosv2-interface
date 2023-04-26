@@ -23,11 +23,11 @@ export type BondCardProps = {
   tooltip?: string;
   minimumBondPrice: string;
   version: string;
-  blueProgress: number;
   isHighest?: boolean;
   isDiscountMinus: boolean;
   currentCapacityProgress: string;
   currentProgressOnCurrentCapacity: string;
+  saleProgressOnTotalCapacity: number;
   currentBondable: string;
   currentCapacity: string;
   status: "open" | "closed" | "will be open";

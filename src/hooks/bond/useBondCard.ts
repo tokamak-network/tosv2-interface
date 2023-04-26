@@ -31,6 +31,7 @@ export function useBondCard() {
   );
   const { priceData } = usePrice();
   const sortValue = useRecoilValue(bond_filter_sort_state);
+  const { blockNumber } = useBlockNumber();
 
   if (error) {
     console.log("**useBondCard err**");
@@ -61,6 +62,10 @@ export function useBondCard() {
           periodicCapacity,
           ROIforLockupWeeks,
         } = bond;
+        const endTimeDiff = endTime - getNowTimeStamp();
+        const openTimeDiff = startTime - getNowTimeStamp();
+        const isClosed = closed || endTimeDiff < 0;
+
         const discount = ((tosPrice - bondPrice) / tosPrice) * 100;
 
         //time
@@ -74,11 +79,16 @@ export function useBondCard() {
           capacityPeriod: capacityUpdatePeriod,
         });
 
-        const bondEthCapacity = getTosCapacityOnEth({
-          tosCapacity: currentCapacity,
-          ethPrice,
-          tosPrice,
-        });
+        //If currentCapacity is less than 100, bond should be disabled
+        const isCurrentThan100 = currentCapacity < 100;
+
+        const bondEthCapacity = isCurrentThan100
+          ? 0
+          : getTosCapacityOnEth({
+              tosCapacity: currentCapacity,
+              ethPrice,
+              tosPrice,
+            });
         const roundEthCapacity = getTosCapacityOnEth({
           tosCapacity: Math.floor(periodicCapacity),
           ethPrice,
@@ -88,15 +98,17 @@ export function useBondCard() {
         const bondCapacity = commafy(capacity, 0);
         const totalSoldCom = commafy(totalSold, 0);
 
-        const blueProgressValue = Number(totalSold) / Number(capacity);
-        const blueProgress = Number(checkProgressNumber(blueProgressValue));
-
+        const saleProgressOnTotalCapacity =
+          Number(totalSold) / Number(capacity);
         const currentProgressOnCurrentCapacityValue =
-          Number(totalSold) / Number(currentCapacity + totalSold);
+          isCurrentThan100 && !isClosed
+            ? 1
+            : Number(totalSold) / Number(currentCapacity + totalSold);
         const currentCapacityProgressValue =
           Number(currentCapacity) / Number(capacity);
         const currentBondableValue =
           Number(currentCapacity) - Number(totalSold);
+        saleProgressOnTotalCapacity;
 
         const currentCapacityTotal = Number(
           Math.floor(currentCapacity) + Math.floor(totalSold)
@@ -120,10 +132,6 @@ export function useBondCard() {
           ? 0
           : 0;
 
-        const endTimeDiff = endTime - getNowTimeStamp();
-        const openTimeDiff = startTime - getNowTimeStamp();
-
-        const isClosed = closed || endTimeDiff < 0;
         const isUpcoming = openTimeDiff > 0;
         const status: BondCardProps["status"] = isClosed
           ? "closed"
@@ -134,7 +142,9 @@ export function useBondCard() {
         return {
           bondCapacity,
           totalSold: totalSoldCom,
-          blueProgress,
+          saleProgressOnTotalCapacity: Number(
+            commafy(saleProgressOnTotalCapacity * 100, 0)
+          ),
           currentProgressOnCurrentCapacity,
           bondingPrice: commafy(bondPrice),
           discountRate: Number(commafy(discount, 1)),
@@ -229,10 +239,10 @@ export function useBondCard() {
           break;
       }
     }
-  }, [priceData, data, sortValue]);
+  }, [priceData, data, sortValue, blockNumber]);
 
-  console.log("--cardList--");
-  console.log(cardList);
+  // console.log("--cardList--");
+  // console.log(cardList);
 
   return { cardList };
 }

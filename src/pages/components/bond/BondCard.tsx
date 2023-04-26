@@ -217,7 +217,11 @@ function BondCard(props: { data: BondCardProps }) {
         isDiscountMinus={data?.isDiscountMinus}
       />
       <BondCard_Progress
-        progress={Number(data?.currentProgressOnCurrentCapacity)}
+        progress={
+          closed
+            ? Number(data?.saleProgressOnTotalCapacity)
+            : Number(data?.currentProgressOnCurrentCapacity)
+        }
         status={data?.status}
         currentRound={currentRound}
       />
