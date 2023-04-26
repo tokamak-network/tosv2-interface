@@ -112,10 +112,12 @@ export default function BondCard_Status(props: {
         fontWeight={600}
         color={cardTextColor}
         h={"28px"}
-        alignItems={"center"}
+        alignItems={"baseline"}
         columnGap={"6px"}
       >
-        <Text fontSize={20}>Minting Bond </Text>
+        <Text fontSize={20} minW={"130.5px"}>
+          Minting Bond{" "}
+        </Text>
         <Text fontSize={11} pb={"4px"}>
           v{version}
         </Text>
