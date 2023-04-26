@@ -111,9 +111,6 @@ function BondModal() {
     closeModal();
   }, [closeModal, setResetValue, setBondModalRecoilState]);
 
-  console.log("minimumTosPrice");
-  console.log(minimumTosPrice?.toString());
-
   const callBond = useCallback(async () => {
     try {
       if (

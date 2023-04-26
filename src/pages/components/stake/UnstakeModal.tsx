@@ -102,7 +102,7 @@ function UnstakeModal() {
       title: "You Give",
       content: hasInput
         ? `${commafy(inputValue.stake_unstakeModal_balance) || "0"} LTOS`
-        : `${"0"} LTOS`,
+        : `${ltosBalance} LTOS`,
     },
     {
       title: "You Will Get",
@@ -287,7 +287,7 @@ function UnstakeModal() {
                 h={42}
                 name="Unstake"
                 onClick={callUnstake}
-                isDisabled={isModalLoading || btnDisabled}
+                isDisabled={hasInput ? btnDisabled : false}
               ></SubmitButton>
             </Flex>
           </Flex>
