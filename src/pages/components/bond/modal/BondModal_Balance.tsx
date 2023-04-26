@@ -40,7 +40,7 @@ export default function BondModal_Balance() {
     useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
-  const { account, library } = useWeb3React();
+  const { account } = useWeb3React();
   const { bp500px, bp700px } = useMediaView();
 
   const { selectedModalData } = useModal<BondCardProps>();
@@ -68,12 +68,7 @@ export default function BondModal_Balance() {
 
   useEffect(() => {
     async function fetchActualMaxValue() {
-      if (
-        BondDepositoryProxy_CONTRACT &&
-        maxValue &&
-        minimumTosPrice &&
-        library
-      ) {
+      if (BondDepositoryProxy_CONTRACT && maxValue && minimumTosPrice) {
         const inputAmount = String(maxValue)
           .replaceAll(",", "")
           .replaceAll(" ", "");
@@ -148,12 +143,10 @@ export default function BondModal_Balance() {
     });
   }, [
     BondDepositoryProxy_CONTRACT,
-    inputValue,
     minimumTosPrice,
     fiveDaysLockup,
     marketId,
     maxValue,
-    library,
   ]);
 
   useEffect(() => {
