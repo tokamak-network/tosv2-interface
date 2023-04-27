@@ -10,7 +10,11 @@ import {
   Link,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import { modalBottomLoadingState, stosLoadingState } from "atom//global/modal";
+import {
+  modalBottomLoadingState,
+  stosLoadingState,
+  subModalState,
+} from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
@@ -46,7 +50,7 @@ import { useBondDepository } from "hooks/bond/useBondDepository";
 
 function BondModal() {
   const theme = useTheme();
-  const [isOpenConfirm, setIsOpenConfirm] = useState<boolean>(false);
+  const [isOpenConfirm, setIsOpenConfirm] = useRecoilState(subModalState);
 
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
   const { openModal: openSwapModal } = useModal("swap_interface_modal");
@@ -168,7 +172,7 @@ function BondModal() {
       // console.log(e);
       // return errToast();
     } finally {
-      setIsOpenConfirm(false);
+      setIsOpenConfirm(null);
     }
   }, [
     inputValue,
@@ -271,7 +275,9 @@ function BondModal() {
                 h={42}
                 name="Bond"
                 onClick={() =>
-                  isMinusDiscount ? setIsOpenConfirm(true) : callBond()
+                  isMinusDiscount
+                    ? setIsOpenConfirm("bond_confirm")
+                    : callBond()
                 }
                 isDisabled={fiveDaysLockup ? inputOver : btnDisabled}
               ></SubmitButton>
@@ -382,11 +388,7 @@ function BondModal() {
           </Flex>
         </ModalBody>
       </ModalContent>
-      <BondConfirm
-        isOpenConfirm={isOpenConfirm}
-        setIsOpenConfirm={setIsOpenConfirm}
-        callBond={callBond}
-      ></BondConfirm>
+      <BondConfirm callBond={callBond}></BondConfirm>
     </Modal>
   );
 }

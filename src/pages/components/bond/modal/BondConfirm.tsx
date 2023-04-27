@@ -18,27 +18,26 @@ import CLOSE_ICON from "assets/icons/close-modal.svg";
 import { useState } from "react";
 import SubmitButton from "common/button/SubmitButton";
 import useMediaView from "hooks/useMediaView";
+import { useRecoilState } from "recoil";
+import { subModalState } from "atom/global/modal";
 
-const BondConfirm = (props: {
-  isOpenConfirm: boolean;
-  setIsOpenConfirm: any;
-  callBond: any;
-}) => {
+const BondConfirm = (props: { callBond: any }) => {
   const theme = useTheme();
-  const { isOpenConfirm, setIsOpenConfirm, callBond } = props;
+  const { callBond } = props;
   const { colorMode } = useColorMode();
   const { bp700px } = useMediaView();
 
+  const [isOpenConfirm, setIsOpenConfirm] = useRecoilState(subModalState);
   const [typeConfirm, setTypeConfirm] = useState<string | undefined>(undefined);
 
   const closeModal = () => {
-    setIsOpenConfirm(false);
+    setIsOpenConfirm(null);
     setTypeConfirm(undefined);
   };
 
   return (
     <Modal
-      isOpen={isOpenConfirm}
+      isOpen={isOpenConfirm === "bond_confirm"}
       //   isOpen={selectedModal === "bond_openConfirm_modal"}
       isCentered
       onClose={() => closeModal()}
@@ -98,10 +97,17 @@ const BondConfirm = (props: {
             <Input
               w={"460px"}
               fontSize={14}
-              color={"#64646f"}
+              color={colorMode === "light" ? "#64646f" : "#f1f1f1"}
               placeholder={"Type “confirm” here"}
               textAlign={"center"}
-              focusBorderColor={"#8a8a98"}
+              // focusBorderColor={"#8a8a98"}
+              // borderWidth={1}
+              boxShadow={""}
+              _focus={{
+                border: "1px solid #8a8a98",
+                boxShadow: "",
+                outline: "none",
+              }}
               onChange={(e) => {
                 setTypeConfirm(e.target.value);
               }}
@@ -111,7 +117,7 @@ const BondConfirm = (props: {
               name="Confirm"
               onClick={() => {
                 callBond();
-                setIsOpenConfirm(false);
+                setIsOpenConfirm(null);
               }}
               isDisabled={typeConfirm !== "confirm"}
             ></SubmitButton>

@@ -66,6 +66,19 @@ const stosLoadingValue = selector({
   },
 });
 
+const subModalState = atom<null | "bond_confirm">({
+  key: "subModalState",
+  default: null,
+});
+
+const subModalValue = selector({
+  key: "subModalValue", // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    const subModalValue = get(subModalState);
+    return subModalValue;
+  },
+});
+
 export {
   modalState,
   modalData,
@@ -77,4 +90,6 @@ export {
   modalBottomLoadingValue,
   stosLoadingState,
   stosLoadingValue,
+  subModalState,
+  subModalValue,
 };

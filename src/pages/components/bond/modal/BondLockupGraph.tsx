@@ -10,10 +10,12 @@ import {
   SliderMark,
   Tooltip,
 } from "@chakra-ui/react";
+import { subModalValue } from "atom/global/modal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useInput from "hooks/useInput";
 import { useEffect, useMemo, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
 
@@ -44,6 +46,7 @@ function BondLockupGraph(props: {
   const { inputValue, value, setValue } = useInput(pageKey, subKey);
   const [sliderValue, setSliderValue] = useState<number | undefined>(undefined);
   const { isDark } = useCustomColorMode();
+  const subModal = useRecoilValue(subModalValue);
   const [isChanged, setIsChanged] = useState(false);
 
   const { bondDiscount, roi, roiPerWeeks, discountRatePerBondingPrice } =
@@ -162,6 +165,7 @@ function BondLockupGraph(props: {
           )}
         </SliderTrack>
         <Tooltip
+          visibility={subModal !== null ? "hidden" : ""}
           color={isDark ? "#d0d0da" : "#07070c"}
           placement="top"
           bg={isDark ? "#1f2128" : "#fff"}
