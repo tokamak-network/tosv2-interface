@@ -271,8 +271,7 @@ function useBondModalInputData() {
         const currentCapacityETH = commafy(currentCapacityETH_BN.toString(), 2);
 
         //apply slippage as dividing 1.005
-        const currentCapacityNum =
-          Number(capacity.currentCapacity.toString()) / 1.005;
+        const currentCapacityNum = Number(capacity.currentCapacity.toString());
         const bondingPriceNum = Number(bondingPrice);
         const capacityMaxValue = currentCapacityNum / bondingPriceNum;
 
