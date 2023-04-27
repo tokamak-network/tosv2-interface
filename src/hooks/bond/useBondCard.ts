@@ -80,8 +80,14 @@ export function useBondCard() {
           capacityPeriod: capacityUpdatePeriod,
         });
 
+        const bondCapacity = commafy(capacity, 0);
+        const totalSoldCom = commafy(totalSold, 0);
+
         //If currentCapacity is less than 100, bond should be disabled
         const isCurrentThan100 = currentCapacity < 100;
+        //If leftAmount after the sale is less than 100, bond progress should be 100%
+        const isLeftAmountLessThan100 =
+          isClosed && Number(bondCapacity) - Number(totalSoldCom) < 100;
 
         const bondEthCapacity = isCurrentThan100
           ? 0
@@ -96,20 +102,15 @@ export function useBondCard() {
           tosPrice,
         });
 
-        const bondCapacity = commafy(capacity, 0);
-        const totalSoldCom = commafy(totalSold, 0);
-
-        const saleProgressOnTotalCapacity =
-          Number(totalSold) / Number(capacity);
+        const saleProgressOnTotalCapacity = isLeftAmountLessThan100
+          ? 1
+          : Number(totalSold) / Number(capacity);
         const currentProgressOnCurrentCapacityValue =
           isCurrentThan100 && !isClosed
             ? 1
             : Number(totalSold) / Number(currentCapacity + totalSold);
         const currentCapacityProgressValue =
           Number(currentCapacity) / Number(capacity);
-        const currentBondableValue =
-          Number(currentCapacity) - Number(totalSold);
-        saleProgressOnTotalCapacity;
 
         const currentCapacityTotal = Number(
           Math.floor(currentCapacity) + Math.floor(totalSold)
@@ -142,7 +143,7 @@ export function useBondCard() {
 
         return {
           bondCapacity,
-          totalSold: totalSoldCom,
+          totalSold: isLeftAmountLessThan100 ? bondCapacity : totalSoldCom,
           saleProgressOnTotalCapacity: Number(
             commafy(saleProgressOnTotalCapacity * 100, 0)
           ),
