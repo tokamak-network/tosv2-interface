@@ -10,7 +10,7 @@ import useBondModal from "hooks/bond/useBondModal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useMediaView from "hooks/useMediaView";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import BondLockupGraph from "./BondLockupGraph";
 
@@ -92,17 +92,21 @@ function SliderGraph() {
   if (roiGraphData.length === 0 || bonddiscountGraphData.length === 0) {
     return null;
   }
+
   return (
-    <Flex pos={"absolute"} w={"100%"} h={"90px"}>
+    <Flex pos={"absolute"} w={"101%"} h={"90px"} className={"test"}>
       <ResponsiveLine
         data={graphData}
         colors={["#50d1b2", "#ec8c56"]}
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
-          min: discountRatePerBondingPrice ? discountRatePerBondingPrice[0] : 0,
-          max: roiPerWeeks ? roiPerWeeks[52] : 0,
+          min: discountRatePerBondingPrice
+            ? discountRatePerBondingPrice[0] - 1
+            : 0,
+          max: roiPerWeeks ? roiPerWeeks[52] + 1 : 0,
         }}
+        margin={{ right: 4 }}
         axisTop={null}
         axisRight={null}
         axisLeft={null}
@@ -121,6 +125,7 @@ function SliderGraph() {
         justifyContent={"space-between"}
         zIndex={-1}
         maxW={"460px"}
+        className={"DotLine"}
       >
         <DotLine />
         <DotLine />

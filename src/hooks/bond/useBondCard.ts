@@ -164,10 +164,10 @@ export function useBondCard() {
           currentBondable,
           currentCapacity: commafy(currentCapacityTotal, 0),
           status,
-          bondButtonIsDisabled:
-            status !== "open" ||
-            Number(currentCapacity) <= 0 ||
-            Number(currentProgressOnCurrentCapacity) === 100,
+          bondButtonIsDisabled: false,
+          // status !== "open" ||
+          // Number(currentCapacity) <= 0 ||
+          // Number(currentProgressOnCurrentCapacity) === 100,
           marketId: index,
           ethPrice,
           totalRound: roundNums,
