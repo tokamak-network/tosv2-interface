@@ -84,6 +84,7 @@ function TokenPair(props: TokenPairType) {
 function BondInfo(props: TokenPairType) {
   const { inToken, roi, ethCapacity, isDiscountMinus } = props;
   const { cardTextColor } = useBondCardStyle();
+  const { isDark } = useCustomColorMode();
 
   return (
     <Flex
@@ -95,7 +96,11 @@ function BondInfo(props: TokenPairType) {
       alignItems={"end"}
     >
       {isDiscountMinus ? (
-        <Text fontSize={12} color={"white.100"} maxW={["55px", "55px", ""]}>
+        <Text
+          fontSize={12}
+          color={isDark ? "white.100" : "#07070c"}
+          maxW={["55px", "55px", ""]}
+        >
           Negative Discount
         </Text>
       ) : (

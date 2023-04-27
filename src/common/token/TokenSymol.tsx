@@ -6,11 +6,14 @@ import TOS_SYMBOL from "assets/icons/TOS.svg";
 import TOKEN_TOS_SYMBOL from "assets/icons/tokens/TOS.svg";
 import LTOS_SYMBOL from "assets/icons/tokens/dark-LTOS.svg";
 import LTOS_SYMBOL_BIG from "assets/icons/tokens/dark-LTOS_34w.svg";
+import LTOS_SYMBOL_BIG_LIGHT from "assets/icons/tokens/bright-LTOS.svg";
 
 import STOS_SYMBOL from "assets/icons/tokens/dark-sTOS.svg";
+import STOS_SYMBOL_LIGHT from "assets/icons/tokens/bright-sTOS.svg";
 
 import { SupportedInputTokenTypes, TokenTypes } from "types";
 import { Flex, useColorMode } from "@chakra-ui/react";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 
 function TokenSymbol(props: {
   tokenType: SupportedInputTokenTypes;
@@ -23,6 +26,7 @@ function TokenSymbol(props: {
 }) {
   const { tokenType, h, w, imageH, imageW, isTokenInput, style } = props;
   const { colorMode } = useColorMode();
+  const { isDark } = useCustomColorMode();
 
   switch (tokenType) {
     case "ETH":
@@ -106,7 +110,10 @@ function TokenSymbol(props: {
           justifyContent={"center"}
           {...style}
         >
-          <Image src={LTOS_SYMBOL_BIG} alt={"LTOS_SYMBOL"}></Image>
+          <Image
+            src={isDark ? LTOS_SYMBOL_BIG : LTOS_SYMBOL_BIG_LIGHT}
+            alt={"LTOS_SYMBOL"}
+          ></Image>
         </Flex>
       );
     case "STOS":
@@ -123,7 +130,10 @@ function TokenSymbol(props: {
           justifyContent={"center"}
           {...style}
         >
-          <Image src={STOS_SYMBOL} alt={"STOS_SYMBOL"}></Image>
+          <Image
+            src={isDark ? STOS_SYMBOL : STOS_SYMBOL_LIGHT}
+            alt={"STOS_SYMBOL"}
+          ></Image>
         </Flex>
       );
     default:

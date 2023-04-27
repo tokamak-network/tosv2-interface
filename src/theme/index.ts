@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
 import "@fontsource/poppins";
 import { BalanceInput } from "common/input/TextInput";
 
@@ -93,6 +93,11 @@ const theme = extendTheme({
         backgroundColor: "black.100",
       },
     }),
+  },
+  withDefaultColorScheme: {
+    colors: {
+      test: "#c6cbd9",
+    },
   },
 });
 

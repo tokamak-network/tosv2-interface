@@ -14,7 +14,7 @@ export default function BondCard_Progress(props: BondCardProgress) {
 
   return (
     <Flex flexDir={"column"} rowGap={"5px"} mb={"17px"}>
-      <Flex fontWeight={600} columnGap={"6px"} alignItems={"end"}>
+      <Flex fontWeight={600} columnGap={"6px"} alignItems={"baseline"}>
         <Text fontSize={13} color={isDark ? "#dee4ef" : "#3f536e"}>
           Bond Sold
         </Text>
@@ -33,8 +33,21 @@ export default function BondCard_Progress(props: BondCardProgress) {
         w={"100%"}
         h={"5px"}
         borderRadius={100}
-        value={status === "open" && currentRound !== 1 ? 0 : progress}
-        colorScheme={status === "open" && currentRound === 1 ? "blue" : "gray"}
+        value={
+          status === "open" && currentRound !== 1
+            ? 0
+            : status === "will be open"
+            ? 0
+            : progress
+        }
+        bg={isDark ? "#353d48" : "#e7edf3"}
+        colorScheme={
+          status === "open" && currentRound === 1
+            ? "blue"
+            : isDark
+            ? "gray"
+            : ""
+        }
       />
     </Flex>
   );

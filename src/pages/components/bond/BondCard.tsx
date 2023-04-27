@@ -23,6 +23,7 @@ import BondCard_Buttons from "./card/BondCard_Buttons";
 import BondCard_Capacity from "./card/BondCard_Capacity";
 import BondCard_Status from "./card/BondCard_Status";
 import { getCountDown } from "@/utils/bond/card/getCountDown";
+import commafy from "@/utils/commafy";
 
 function BondCard(props: { data: BondCardProps }) {
   const { colorMode } = useColorMode();
@@ -88,7 +89,15 @@ function BondCard(props: { data: BondCardProps }) {
           }
         />
       ),
-      content: <ContentComponent content="10.1%" />,
+      content: (
+        <ContentComponent
+          content={
+            data?.isDiscountMinus
+              ? "Negative Discount"
+              : `${commafy(data?.roi, 1)}%`
+          }
+        />
+      ),
     },
     {
       title: (
@@ -183,7 +192,7 @@ function BondCard(props: { data: BondCardProps }) {
       borderRadius={10}
       pt={["20px", "20px", "27px"]}
       bg={colorMode === "light" ? "white.100" : "#1f2128"}
-      px={"20px"}
+      px={["15px", "15px", "20px"]}
       pb={"24px"}
     >
       {isProduction() === false && (
