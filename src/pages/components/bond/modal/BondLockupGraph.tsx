@@ -165,7 +165,7 @@ function BondLockupGraph(props: {
           )}
         </SliderTrack>
         <Tooltip
-          visibility={subModal !== null ? "hidden" : ""}
+          visibility={subModal !== null ? "hidden" : undefined}
           color={isDark ? "#d0d0da" : "#07070c"}
           placement="top"
           bg={isDark ? "#1f2128" : "#fff"}
