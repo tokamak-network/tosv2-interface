@@ -147,7 +147,9 @@ const InputPeriod = (props: InputProp) => {
             weekHighlight === false
               ? "#64646f"
               : colorMode === "light"
-              ? "gray.800"
+              ? isDisabled
+                ? "#737e8f"
+                : "gray.800"
               : isDisabled
               ? "#64646f"
               : "#f1f1f1"
