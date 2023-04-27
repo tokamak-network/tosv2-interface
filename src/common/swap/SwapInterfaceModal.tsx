@@ -165,9 +165,9 @@ function SwapInterfaceModal() {
       token0.address === "" ||
       tx.tx === true ||
       !account ||
-      Number(approved) > Number(fromAmount) ||
+      Number(approved) >= Number(fromAmount) ||
       token0.address === ZERO_ADDRESS;
-      
+
     return condition;
   }, [account, approved, fromAmount, token0.address, tx.tx]);
 
@@ -182,8 +182,9 @@ function SwapInterfaceModal() {
       Number(approved) < Number(fromAmount) ||
       (Number(fromAmount) === 0 && Number(toAmount) === 0) ||
       token0.address === token1.address ||
-      Number(fromAmount) > Number(token0Balance);      
-      
+      Number(fromAmount) > Number(token0Balance);
+console.log('maxError',maxError);
+
     return condition;
   }, [
     approved,
@@ -210,7 +211,10 @@ function SwapInterfaceModal() {
       }
       try {
         const totalSupply = await contract?.totalSupply();
-        const receipt = await contract?.approve(SwapperV2Proxy, totalSupply);
+        const receipt = await contract?.increaseAllowance(
+          SwapperV2Proxy,
+          totalSupply
+        );
         setTX({ tx: true, data: { name: "approve" } });
 
         if (receipt) {
@@ -306,7 +310,7 @@ function SwapInterfaceModal() {
           const feeData = await SwapperV2Proxy_CONTRACT.provider.getFeeData();
           const { maxFeePerGas } = feeData;
           if (maxFeePerGas) {
-            const txFee = BigNumber.from(42000)
+            const txFee = BigNumber.from(42000);
             const remove = estimate.add(txFee).mul(maxFeePerGas);
 
             const subtracted = parseInputAmount.sub(remove);
@@ -334,10 +338,12 @@ function SwapInterfaceModal() {
   ]);
 
   useEffect(() => {
+    console.log("came here");
+
     if (token0.address === ZERO_ADDRESS) {
       setFromAmount(max);
     }
-  }, [max, token1.address]);
+  }, [token1.address]);
 
   const getExpectedIn = useCallback(() => {
     if (token0.address && toAmount !== "" && toAmount !== "0") {
