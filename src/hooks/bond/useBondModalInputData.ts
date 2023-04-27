@@ -1,5 +1,8 @@
 import { convertNumber, convertToWei } from "@/utils/number";
-import { BigNumber, ethers } from "ethers";
+import { ethers, BigNumber, FixedNumber } from "ethers";
+import { BigNumber as BigNumberJS } from "bignumber.js";
+import Decimal from "decimal.js";
+
 import useStosReward from "hooks/stake/useStosReward";
 import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
@@ -265,17 +268,17 @@ function useBondModalInputData() {
         const capacity = await BondDepositoryProxy_CONTRACT.possibleMaxCapacity(
           marketId
         );
-        const currentCapacityETH_BN = BigNumber.from(
-          capacity.currentCapacity
-        ).div(bondingPrice);
-        const currentCapacityETH = commafy(currentCapacityETH_BN.toString(), 2);
+        //not to apply slippage as dividing 1.005
+        //because BondContract doesn't support for returning left amount like Uniswap
+        // const currentCapacityNum = capacity.currentCapacity.toString();
+        // const bondingPriceNum = Number(bondingPrice.toString());
+        // const capacityMaxValue = currentCapacityNum / bondingPriceNum;
 
-        //apply slippage as dividing 1.005
-        const currentCapacityNum = Number(capacity.currentCapacity.toString());
-        const bondingPriceNum = Number(bondingPrice);
-        const capacityMaxValue = currentCapacityNum / bondingPriceNum;
+        const currentCapacity = FixedNumber.from(capacity.currentCapacity);
+        const bondPrice = FixedNumber.from(bondingPrice);
+        const result = currentCapacity.divUnsafe(bondPrice).toString();
 
-        setMaxCapacityValue(currentCapacityNum / bondingPriceNum);
+        setMaxCapacityValue(Number(result));
       }
     }
     fetchMaxValue().catch((e) => {
