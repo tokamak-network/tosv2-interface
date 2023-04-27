@@ -268,11 +268,6 @@ function useBondModalInputData() {
         const capacity = await BondDepositoryProxy_CONTRACT.possibleMaxCapacity(
           marketId
         );
-        //not to apply slippage as dividing 1.005
-        //because BondContract doesn't support for returning left amount like Uniswap
-        // const currentCapacityNum = capacity.currentCapacity.toString();
-        // const bondingPriceNum = Number(bondingPrice.toString());
-        // const capacityMaxValue = currentCapacityNum / bondingPriceNum;
 
         const currentCapacity = FixedNumber.from(capacity.currentCapacity);
         const bondPrice = FixedNumber.from(bondingPrice);

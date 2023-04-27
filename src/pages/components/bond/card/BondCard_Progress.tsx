@@ -1,5 +1,6 @@
 import { Flex, Progress, Text } from "@chakra-ui/react";
 import { useCustomColorMode } from "hooks/style/useCustomColorMode";
+import { LegacyRef, useEffect, useRef } from "react";
 import { BondCardProps } from "types/bond";
 
 type BondCardProgress = {
@@ -11,6 +12,21 @@ type BondCardProgress = {
 export default function BondCard_Progress(props: BondCardProgress) {
   const { progress, status, currentRound } = props;
   const { isDark } = useCustomColorMode();
+  const progressBarRef = useRef<LegacyRef<HTMLDivElement> | undefined>(
+    undefined
+  );
+
+  useEffect(() => {
+    if (
+      //@ts-ignore
+      progressBarRef?.current?.children[0] &&
+      status === "closed"
+    ) {
+      //@ts-ignore
+      const progress = progressBarRef.current.children[0];
+      progress.style.backgroundColor = isDark ? "#64646f" : "#c6cbd9";
+    }
+  }, [progressBarRef, isDark, status]);
 
   return (
     <Flex flexDir={"column"} rowGap={"5px"} mb={"17px"}>
@@ -33,6 +49,8 @@ export default function BondCard_Progress(props: BondCardProgress) {
         w={"100%"}
         h={"5px"}
         borderRadius={100}
+        //@ts-ignore
+        ref={progressBarRef}
         value={
           status === "open" && currentRound !== 1
             ? 0
@@ -41,13 +59,7 @@ export default function BondCard_Progress(props: BondCardProgress) {
             : progress
         }
         bg={isDark ? "#353d48" : "#e7edf3"}
-        colorScheme={
-          status === "open" && currentRound === 1
-            ? "blue"
-            : isDark
-            ? "gray"
-            : ""
-        }
+        colorScheme={status === "open" && currentRound === 1 ? "blue" : "gray"}
       />
     </Flex>
   );
