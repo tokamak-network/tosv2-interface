@@ -1,8 +1,9 @@
+import { truncNumber } from "@/utils/number";
 import constant from "constant";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 
-function useBondModalCondition(maxValue: number | undefined) {
+function useBondModalCondition() {
   const [inputOver, setInputOver] = useState<boolean>(true);
   const [inputPeriodOver, setInputPeriodOver] = useState<boolean>(true);
   const [inputPeriodIsEmpty, setInputPeriodIsEmpty] = useState<boolean>(true);
@@ -24,7 +25,7 @@ function useBondModalCondition(maxValue: number | undefined) {
       return setInputOver(false);
     }
     if (actualMaxValue && inputBalance) {
-      if (Number(inputBalance) > actualMaxValue) {
+      if (truncNumber(inputBalance, 4) > truncNumber(actualMaxValue, 4)) {
         setZeroInputBalance(false);
         setInputBalanceisEmpty(false);
         return setInputOver(true);

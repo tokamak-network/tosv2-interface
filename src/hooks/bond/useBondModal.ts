@@ -29,6 +29,7 @@ function useBondModal() {
 
   //calculate maxValue
   const { userETHBalance, userETHBalanceWei } = useUserBalance();
+
   const maxValue = useMemo(() => {
     if (userETHBalanceWei === undefined || maxCapacityValue === undefined) {
       return 0;
@@ -48,7 +49,7 @@ function useBondModal() {
     zeroInputBalance,
     inputPeriodIsEmpty,
     inputBalanceisEmpty,
-  } = useBondModalCondition(maxValue);
+  } = useBondModalCondition();
 
   //maxValue for each case(token type)
   let tempTokenType: TokenTypes = "ETH";
@@ -92,6 +93,7 @@ function useBondModal() {
       originalTosAmount,
     },
     userTokenBalance,
+    maxCapacityValue,
   };
 }
 

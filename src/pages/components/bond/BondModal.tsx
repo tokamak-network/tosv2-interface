@@ -105,7 +105,7 @@ function BondModal() {
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
-    useBondModalCondition(maxCapacityValue);
+    useBondModalCondition();
   const { basePrice } = useBondDepository();
   const { errMsg } = constant;
 
@@ -153,16 +153,17 @@ function BondModal() {
         console.log(`minimumTosPrice : ${minimumTosPrice.toString()}`);
         console.log(`value : ${convertToWei(inputAmount)}`);
 
-        const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
-          marketId,
-          0,
-          basePrice
-        );
+        // just in case when bondingDiscount is not correct on a frontend side
+        // const bondingPrice = await BondDepositoryProxy_CONTRACT.getBondingPrice(
+        //   marketId,
+        //   0,
+        //   basePrice
+        // );
 
         const tx = await BondDepositoryProxy_CONTRACT.ETHDeposit(
           marketId,
           convertToWei(inputAmount),
-          BigInt(bondingPrice.toString() / 1.005),
+          minimumTosPrice,
           { value: convertToWei(inputAmount) }
         );
         setTx(tx);
@@ -183,6 +184,7 @@ function BondModal() {
     closeThisModal,
     minimumTosPrice,
     basePrice,
+    setIsOpenConfirm,
   ]);
 
   return (

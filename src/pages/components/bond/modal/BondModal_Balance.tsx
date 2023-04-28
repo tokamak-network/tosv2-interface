@@ -1,4 +1,4 @@
-import { convertToWei } from "@/utils/number";
+import { convertToWei, truncNumber } from "@/utils/number";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { bond_modal } from "atom/bond/modal";
 import { BalanceInput } from "common/input/TextInput";
@@ -23,7 +23,7 @@ const bondToken: SupportedBondToken = "ETH";
 
 export default function BondModal_Balance() {
   const { errMsg } = constant;
-  const { modalCondition, userTokenBalance } = useBondModal();
+  const { modalCondition, userTokenBalance, maxCapacityValue } = useBondModal();
   const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
   const { isDark } = useCustomColorMode();
   const { maxValue, balance, balanceNum, name } = userTokenBalance;
@@ -50,7 +50,8 @@ export default function BondModal_Balance() {
     actualMaxValue === undefined ||
     inputWeeks === undefined ||
     inputWeeks === "" ||
-    Number(inputAmount) === Number(actualMaxValue);
+    truncNumber(Number(inputAmount.replaceAll(",", "")), 4) ===
+      truncNumber(Number(actualMaxValue.replaceAll(",", "")), 4);
 
   const tokenImage = useMemo(() => {
     switch (bondToken) {
@@ -74,79 +75,50 @@ export default function BondModal_Balance() {
         minimumTosPrice &&
         maxValue
       ) {
-        const userEthBalanceWei = userTokenBalance.balanceNum;
-        const parseInputAmount = ethers.utils.parseUnits(
-          String(userEthBalanceWei).replaceAll(",", ""),
+        const parseMaxValue = ethers.utils.parseUnits(
+          String(maxValue).replaceAll(",", ""),
+          18
+        );
+        const inputBalanceToEstimate = ethers.utils.parseUnits(
+          String(maxValue - 0.05).replaceAll(",", ""),
           18
         );
         const periodWeeks = inputValue.bond_modal_period + 1;
-        const inputToEstimate = convertToWei(String(maxValue));
 
         const feeData =
           await BondDepositoryProxy_CONTRACT.provider.getFeeData();
         const { maxFeePerGas } = feeData;
 
-        //with lockup period
-        if (!fiveDaysLockup && inputValue.bond_modal_period) {
-          console.log("params");
-          console.log(marketId, inputToEstimate, minimumTosPrice, periodWeeks, {
-            value: inputToEstimate,
-          });
-
-          const gasEstimate =
-            await BondDepositoryProxy_CONTRACT.estimateGas.ETHDepositWithSTOS(
-              marketId,
-              inputToEstimate,
-              minimumTosPrice,
-              periodWeeks,
-              { value: inputToEstimate }
-            );
-
-          if (maxFeePerGas) {
-            const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
-            const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
-            const gasPrice = gasEstimate.add(42000).mul(maxFeePerGas);
-            console.log("parseInputAmount");
-            console.log(parseInputAmount);
-            console.log("gasPrice");
-            console.log(gasPrice);
-
-            const subtractedMaxAmount = parseInputAmount.sub(gasPrice);
-
-            console.log("maxFeePerGas(wei) : ", maxFeePerGas.toString());
-            console.log("gasEstimate : ", gasEstimate.toString());
-            console.log("bufferGasFee : ", bufferPrice.toString());
-
-            const result =
-              Number(subtractedMaxAmount.toString()) > maxValue
-                ? maxValue
-                : subtractedMaxAmount;
-
-            return setActualMaxValue(result.toString());
-          }
-        }
-
-        //5 days lockup
         if (maxFeePerGas) {
+          //with lokup or 5days lockup
           const gasEstimate =
-            await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
-              marketId,
-              inputToEstimate,
-              minimumTosPrice,
-              { value: inputToEstimate }
-            );
+            !fiveDaysLockup && inputValue.bond_modal_period
+              ? await BondDepositoryProxy_CONTRACT.estimateGas.ETHDepositWithSTOS(
+                  marketId,
+                  inputBalanceToEstimate,
+                  minimumTosPrice,
+                  periodWeeks,
+                  { value: inputBalanceToEstimate }
+                )
+              : await BondDepositoryProxy_CONTRACT.estimateGas.ETHDeposit(
+                  marketId,
+                  inputBalanceToEstimate,
+                  minimumTosPrice,
+                  { value: inputBalanceToEstimate }
+                );
 
           const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
           const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
-          const gasPrice = gasEstimate.add(42000).mul(maxFeePerGas);
-          const subtractedMaxAmount = parseInputAmount.sub(gasPrice);
+          const gasPrice = gasEstimate.add(bufferPrice);
+          const subtractedMaxAmount = parseMaxValue.sub(gasPrice);
 
-          const result =
-            Number(subtractedMaxAmount.toString()) > maxValue
-              ? maxValue
-              : subtractedMaxAmount;
+          const result = subtractedMaxAmount.gte(parseMaxValue)
+            ? parseMaxValue
+            : subtractedMaxAmount;
+          const parsedResult = ethers.utils.formatUnits(result.toString());
+          const resultIsMinus = Number(parsedResult) < 0;
 
-          return setActualMaxValue(ethers.utils.formatUnits(result.toString()));
+          return setActualMaxValue(resultIsMinus ? "0" : parsedResult);
         }
       }
     }
@@ -160,6 +132,8 @@ export default function BondModal_Balance() {
     fiveDaysLockup,
     marketId,
     maxValue,
+    inputValue,
+    userTokenBalance,
   ]);
 
   useEffect(() => {
@@ -289,7 +263,7 @@ export default function BondModal_Balance() {
             <Text>
               Balance: {balance} {name}
             </Text>
-            <Text> Bond Capacity : {commafy(maxValue)} ETH</Text>
+            <Text> Bond Capacity : {commafy(maxCapacityValue)} ETH</Text>
           </Flex>
         ) : (
           <Flex
@@ -299,7 +273,8 @@ export default function BondModal_Balance() {
             alignItems={"center"}
           >
             <Text>
-              Balance: {balance} {name} / Bond Capacity: {commafy(maxValue)} ETH
+              Balance: {balance} {name} / Bond Capacity:{" "}
+              {commafy(maxCapacityValue)} ETH
             </Text>
           </Flex>
         )}

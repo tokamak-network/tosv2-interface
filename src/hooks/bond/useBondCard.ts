@@ -165,10 +165,10 @@ export function useBondCard() {
           currentBondable,
           currentCapacity: commafy(currentCapacityTotal, 0),
           status,
-          bondButtonIsDisabled: false,
-          // status !== "open" ||
-          // Number(currentCapacity) <= 0 ||
-          // Number(currentProgressOnCurrentCapacity) === 100,
+          bondButtonIsDisabled:
+            status !== "open" ||
+            Number(currentCapacity) <= 0 ||
+            Number(currentProgressOnCurrentCapacity) === 100,
           marketId: index,
           ethPrice,
           totalRound: roundNums,
@@ -181,32 +181,32 @@ export function useBondCard() {
         };
       });
 
-      //remove bonds are already done or not started yet from the list to calculate highest yield bond
-      const discountArr = bondcardDatas.map((bondData) =>
-        bondData.status === "open" ? bondData.discountRate : -9999
-      );
+      // //remove bonds are already done or not started yet from the list to calculate highest yield bond
+      // const discountArr = bondcardDatas.map((bondData) =>
+      //   bondData.status === "open" ? bondData.discountRate : -9999
+      // );
 
-      let max = discountArr[0];
-      let maxIndices: number[] = [];
-      let maxArr = [];
+      // let max = discountArr[0];
+      // let maxIndices: number[] = [];
+      // let maxArr = [];
 
-      for (let i = 0; i < discountArr.length; i++) {
-        if (discountArr[i] > max) {
-          max = discountArr[i];
-          maxIndices = [i];
-        } else if (discountArr[i] === max) {
-          maxIndices.push(i);
-        }
-      }
+      // for (let i = 0; i < discountArr.length; i++) {
+      //   if (discountArr[i] > max) {
+      //     max = discountArr[i];
+      //     maxIndices = [i];
+      //   } else if (discountArr[i] === max) {
+      //     maxIndices.push(i);
+      //   }
+      // }
 
-      //to set highest value for bonds which have even same discount value
-      for (let i = 0; i < maxIndices.length; i++) {
-        const index = maxIndices[i];
-        bondcardDatas[index] = {
-          ...bondcardDatas[index],
-          isHighest: discountArr[index] > 0 ? true : false,
-        };
-      }
+      // //to set highest value for bonds which have even same discount value
+      // for (let i = 0; i < maxIndices.length; i++) {
+      //   const index = maxIndices[i];
+      //   bondcardDatas[index] = {
+      //     ...bondcardDatas[index],
+      //     isHighest: discountArr[index] > 0 ? true : false,
+      //   };
+      // }
 
       // const biggestElementIndex = discountArr.indexOf(
       //   Math.max.apply(Math, discountArr)

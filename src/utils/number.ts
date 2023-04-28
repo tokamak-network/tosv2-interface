@@ -146,3 +146,6 @@ export function convertNumber(args: ConverNumberFunc): string | undefined {
     // console.log(e);
   }
 }
+
+export const truncNumber = (number: number, digits: number) =>
+  Math.trunc(number * Math.pow(10, digits)) / Math.pow(10, digits);
