@@ -50,8 +50,8 @@ export default function BondModal_Balance() {
     actualMaxValue === undefined ||
     inputWeeks === undefined ||
     inputWeeks === "" ||
-    truncNumber(Number(inputAmount.replaceAll(",", "")), 4) ===
-      truncNumber(Number(actualMaxValue.replaceAll(",", "")), 4);
+    truncNumber(Number(inputAmount?.replaceAll(",", "")), 4) ===
+      truncNumber(Number(actualMaxValue?.replaceAll(",", "")), 4);
 
   const tokenImage = useMemo(() => {
     switch (bondToken) {
