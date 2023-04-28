@@ -8,7 +8,6 @@ import {
   Text,
   Flex,
   useTheme,
-  useColorMode,
   Checkbox,
   Link,
   Input,
@@ -20,11 +19,12 @@ import SubmitButton from "common/button/SubmitButton";
 import useMediaView from "hooks/useMediaView";
 import { useRecoilState } from "recoil";
 import { subModalState } from "atom/global/modal";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 
 const BondConfirm = (props: { callBond: any }) => {
   const theme = useTheme();
   const { callBond } = props;
-  const { colorMode } = useColorMode();
+  const { isDark } = useCustomColorMode();
   const { bp700px } = useMediaView();
 
   const [isOpenConfirm, setIsOpenConfirm] = useRecoilState(subModalState);
@@ -38,13 +38,13 @@ const BondConfirm = (props: { callBond: any }) => {
   return (
     <Modal
       isOpen={isOpenConfirm === "bond_confirm"}
-      //   isOpen={selectedModal === "bond_openConfirm_modal"}
+      // isOpen={true}
       isCentered
       onClose={() => closeModal()}
     >
       <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
-        bg={colorMode === "light" ? "white.100" : "#121318"}
+        bg={isDark ? "#121318" : "white.100"}
         minW={bp700px ? "350px" : "612px"}
         h={"340px"}
       >
@@ -52,7 +52,7 @@ const BondConfirm = (props: { callBond: any }) => {
           {/* Title Area*/}
           <Flex w={"100%"} justifyContent={"center"} mb={"33px"} h={"28px"}>
             <Text
-              color={colorMode === "light" ? "gray.800" : "white.200"}
+              color={isDark ? "white.200" : "gray.800"}
               fontSize={20}
               fontWeight={600}
               ml="9px"
@@ -97,16 +97,21 @@ const BondConfirm = (props: { callBond: any }) => {
             <Input
               w={"460px"}
               fontSize={14}
-              color={colorMode === "light" ? "#64646f" : "#f1f1f1"}
+              color={isDark ? "#f1f1f1" : "#7e7e8f"}
+              _placeholder={{ color: "#7e7e8f" }}
+              borderWidth={1}
+              borderColor={isDark ? "#313442" : "#e8edf2"}
               placeholder={"Type “confirm” here"}
               textAlign={"center"}
-              // focusBorderColor={"#8a8a98"}
-              // borderWidth={1}
-              boxShadow={""}
+              boxShadow={"none !important"}
+              _hover={{
+                borderColor: isDark ? "#535353" : "#c6cbd9",
+              }}
               _focus={{
-                border: "1px solid #8a8a98",
-                boxShadow: "",
+                color: isDark ? "#f1f1f1" : "07070c",
+                borderColor: isDark ? " #8a8a98" : "#9a9aaf",
                 outline: "none",
+                boxShadow: "none !important",
               }}
               onChange={(e) => {
                 setTypeConfirm(e.target.value);
