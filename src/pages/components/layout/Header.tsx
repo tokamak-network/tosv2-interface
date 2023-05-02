@@ -1,14 +1,4 @@
-import {
-  Flex,
-  Text,
-  useDisclosure,
-  useColorMode,
-  useColorModeValue,
-  IconButton,
-  IconButtonProps,
-  useTheme,
-  Spinner,
-} from "@chakra-ui/react";
+import { Flex, Text, useColorMode, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
 import MOON_ICON from "assets/icons/moon.svg";
 import SUN_ICON from "assets/icons/sun.svg";
@@ -18,7 +8,6 @@ import useMediaView from "hooks/useMediaView";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { sidebarState } from "atom//header";
 import { useWeb3React } from "@web3-react/core";
-import { injected } from "connectors/";
 import { useState } from "react";
 import { selectedTxState } from "atom/global/tx";
 import { accountBar } from "atom/global/sidebar";
@@ -67,16 +56,9 @@ type HeaderProps = {
 function Header(props: HeaderProps) {
   const { toggleColorMode, colorMode } = useColorMode();
   const [isHover, setIsHover] = useState<boolean>(false);
-  const SwitchIcon = useColorModeValue(MOON_ICON, SUN_ICON);
-  const theme = useTheme();
-  const [walletState, setWalletState] = useState<string>("");
-  const { onOpen } = useDisclosure();
-
-  const { pcView, tableView, mobileView, bp500px } = useMediaView();
-  const text = useColorModeValue("dark", "light");
-  const { activate, active, account } = useWeb3React();
+  const { pcView, tableView, bp500px } = useMediaView();
+  const { account } = useWeb3React();
   const txPending = useRecoilValue(selectedTxState);
-
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
 
   return (
@@ -86,7 +68,6 @@ function Header(props: HeaderProps) {
       justifyContent={["space-between", "space-between", "end"]}
       pl={bp500px ? "12px" : tableView ? "23px" : ""}
       pr={bp500px ? "10px" : "35px"}
-      pt={"24px"}
       h={"96px"}
       borderBottom={colorMode === "light" ? "1px solid #e8edf2" : ""}
       bg={colorMode === "light" ? "white.100" : "black.100"}
