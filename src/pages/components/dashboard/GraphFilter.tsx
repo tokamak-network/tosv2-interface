@@ -1,8 +1,7 @@
-import { Box, Flex, Grid, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { filterState } from "atom//dashboard";
-import BasicButton from "common/button/BasicButton";
 import SwitchButton from "common/button/SwitchButton";
-import { atom, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { SetStateAction } from "react";
 
 type FilterProps = {
@@ -51,27 +50,25 @@ function GraphFilter(props: FilterProps) {
           overflow={"auto"}
           className={"scroll-hidden"}
         >
-          {filterList.map(
-            (list: { name: string; w: number; d: number }, index: number) => {
-              return (
-                <Box
-                  key={list.name}
-                  onClick={() => {
-                    setFilter(list.name);
-                    setSelectedDates(list.d);
-                    setSelectedFilter(list.name);
-                  }}
-                >
-                  <SwitchButton
-                    name={list.name}
-                    w={`${list.w}px`}
-                    h={"36px"}
-                    isSelected={selectedFilter === list.name}
-                  ></SwitchButton>
-                </Box>
-              );
-            }
-          )}
+          {filterList.map((list: { name: string; w: number; d: number }) => {
+            return (
+              <Box
+                key={list.name}
+                onClick={() => {
+                  setFilter(list.name);
+                  setSelectedDates(list.d);
+                  setSelectedFilter(list.name);
+                }}
+              >
+                <SwitchButton
+                  name={list.name}
+                  w={`${list.w}px`}
+                  h={"36px"}
+                  isSelected={selectedFilter === list.name}
+                ></SwitchButton>
+              </Box>
+            );
+          })}
         </Flex>
       </Flex>
     </Flex>

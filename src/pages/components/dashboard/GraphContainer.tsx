@@ -1,4 +1,4 @@
-import { Flex, SimpleGrid } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import Graph from "common/graph/Graph";
 import GraphFilter from "./GraphFilter";
 import { useQuery } from "@apollo/client";
@@ -30,7 +30,7 @@ function GraphContainer() {
       let indexNum3 = -1;
       let indexNum4 = -1;
 
-      const marketCap = graphData.map((arrayData: any, index: number) => {
+      const marketCap = graphData.map((arrayData: any) => {
         indexNum += 1;
         return {
           x: `${moment(arrayData.createdAt).format(
@@ -72,7 +72,7 @@ function GraphContainer() {
 
       setMarketCapDatas(marketCapData);
 
-      const totalStaked = graphData.map((arrayData: any, index: number) => {
+      const totalStaked = graphData.map((arrayData: any) => {
         indexNum2 += 1;
 
         return {
@@ -112,7 +112,7 @@ function GraphContainer() {
       ];
       setTotalStakedDatas(totalStakedData);
 
-      const runway = graphData.map((arrayData: any, index: number) => {
+      const runway = graphData.map((arrayData: any) => {
         indexNum3 += 1;
 
         return {
@@ -155,7 +155,7 @@ function GraphContainer() {
 
       setRunwayDatas(runwayData);
 
-      const treasuryBalance = graphData.map((arrayData: any, index: number) => {
+      const treasuryBalance = graphData.map((arrayData: any) => {
         indexNum4 += 1;
         return {
           x: `${moment(new Date(arrayData.createdAt)).format(
