@@ -199,7 +199,7 @@ function BondModal() {
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
       >
-        <ModalBody px={0} pt={"30px"}>
+        <ModalBody px={0} pt={"30px"} h={"auto"}>
           <Flex w="100%" flexDir={"column"}>
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
