@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import BasicTooltip from "common/tooltip";
 import { useBondCardStyle } from "hooks/style/bond/useBondCardStyle";
 import { ReactNode } from "react";
@@ -88,7 +88,6 @@ export function ContentComponent(props: {
 
 function InfoComponent(props: { title: ReactNode; content: ReactNode }) {
   const { title, content } = props;
-  const { colorMode } = useColorMode();
   return (
     <Flex
       justifyContent={"space-between"}

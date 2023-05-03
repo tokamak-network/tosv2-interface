@@ -37,15 +37,16 @@ function BondLockupGraph(props: {
 }) {
   const { pageKey, subKey, periodKey, balanceKey, isSlideDisabled, minValue } =
     props;
+  const { isDark } = useCustomColorMode();
+
   const labelStyles = {
     bottom: "26px",
     ml: "-1",
     fontSize: "11px",
-    color: "#64646f",
+    color: isDark ? "#64646f" : "#9a9aaf",
   };
-  const { inputValue, value, setValue } = useInput(pageKey, subKey);
+  const { inputValue, setValue } = useInput(pageKey, subKey);
   const [sliderValue, setSliderValue] = useState<number | undefined>(undefined);
-  const { isDark } = useCustomColorMode();
   const subModal = useRecoilValue(subModalValue);
   const [isChanged, setIsChanged] = useState(false);
 

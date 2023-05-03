@@ -21,7 +21,7 @@ import CLOSE_ICON from "assets/icons/close-modal.svg";
 import USER_GUIDE from "assets/icons/bond/sicon-user_guide.svg";
 
 import SubmitButton from "common/button/SubmitButton";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import useCallContract from "hooks/useCallContract";
 import useBondModal from "hooks/bond/useBondModal";
 import { BondCardProps } from "types/bond";
@@ -208,7 +208,6 @@ function BondModal() {
                 w={"100%"}
                 flexDir={"column"}
                 mb={"34px"}
-                h={"28px"}
                 alignItems={"center"}
                 rowGap={"6px"}
               >

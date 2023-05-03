@@ -1,5 +1,5 @@
 import commafy from "@/utils/commafy";
-import { Box, Checkbox, Flex, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Checkbox, Flex, Text } from "@chakra-ui/react";
 import { ResponsiveLine } from "@nivo/line";
 import { bond_bondModal_input } from "atom/bond/input";
 import { bond_modal } from "atom/bond/modal";
@@ -10,7 +10,7 @@ import useBondModal from "hooks/bond/useBondModal";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useMediaView from "hooks/useMediaView";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import BondLockupGraph from "./BondLockupGraph";
 
@@ -28,11 +28,10 @@ function DotLine() {
 }
 
 function SliderGraph() {
-  const { colorMode } = useColorMode();
   const { bond_modal_period } = useRecoilValue(bond_bondModal_input);
 
   const CustomPoint = (props: any) => {
-    const { currentPoint, borderWidth, borderColor, points, datum } = props;
+    const { borderWidth, borderColor, datum } = props;
     const { dataIndex, id } = datum;
 
     if (bond_modal_period !== dataIndex) {
@@ -138,15 +137,14 @@ function SliderGraph() {
 
 export default function BondModal_Period() {
   const { bp700px } = useMediaView();
-  const { colorMode } = useColorMode();
   const [bondModalState, setBondModalState] = useRecoilState(bond_modal);
-  const { fiveDaysLockup, fiveDaysLockupEndTime } = bondModalState;
+  const { fiveDaysLockup } = bondModalState;
   const { bondModalMaxWeeks, errMsg } = constant;
 
-  const { sTos, modalCondition, bondModalInputData } = useBondModal();
+  const { isDark } = useCustomColorMode();
+  const { sTos, modalCondition } = useBondModal();
   const { leftHourAndMin, leftDays } = sTos;
   const { inputPeriodOver, inputPeriodIsEmpty } = modalCondition;
-  const { endTime } = bondModalInputData;
   const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
   const FiveDaysLockUpCheckBox = () => (
@@ -155,7 +153,7 @@ export default function BondModal_Period() {
         size={"lg"}
         style={{
           borderRadius: "4px",
-          borderColor: colorMode === "dark" ? "#535353" : "#c6cbd9",
+          borderColor: isDark ? "#535353" : "#c6cbd9",
         }}
         isChecked={fiveDaysLockup}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -169,7 +167,7 @@ export default function BondModal_Period() {
       <Text
         ml={"6px"}
         mr="3px"
-        color={colorMode === "dark" ? "gray.100" : "gray.1000"}
+        color={isDark ? "gray.100" : "gray.1000"}
         fontSize={bp700px ? 12 : ""}
       >
         5 Days Lock-Up
@@ -211,7 +209,7 @@ export default function BondModal_Period() {
         <Flex columnGap={"3px"}>
           <Text
             fontWeight={600}
-            color={colorMode === "light" ? "gray.800" : "white.200"}
+            color={isDark ? "white.200" : "gray.800"}
             fontSize={"12px"}
           >
             Lock-Up Period
@@ -238,7 +236,7 @@ export default function BondModal_Period() {
           flexDir={"column"}
           textAlign={"right"}
           fontSize={11}
-          color={"#64646f"}
+          color={isDark ? "#64646f" : "#9a9aaf"}
           h={"100%"}
           maxH={"90px"}
           left={bp700px ? "-20px" : "40px"}
