@@ -120,8 +120,12 @@ function BondCard(props: { data: BondCardProps }) {
               justifyContent={"flex-end"}
             >
               <Flex columnGap={"3px"}>
-                <Text>${data?.bondingPrice}</Text>
-                <Text>/</Text>
+                <Text fontWeight={data?.isDiscountMinus ? "normal" : 600}>
+                  ${data?.bondingPrice}
+                </Text>
+                <Text fontWeight={data?.isDiscountMinus ? "normal" : 600}>
+                  /
+                </Text>
                 <Text fontWeight={"normal"} fontSize={12}>
                   ${data?.tosPrice}
                 </Text>
@@ -254,7 +258,7 @@ function BondCard(props: { data: BondCardProps }) {
             <BondCard_BondInfo bondInfoData={bondClosedInfoData} />
           </Box>
         )}
-        {!closed && currentRound === 1 && (
+        {!closed && currentRound === 1 && !data?.bondButtonIsDisabled && (
           <BasicButton
             name={account ? (!closed ? "Bond" : "Closed") : "Connect Wallet"}
             w={["100%", "270px", "150px"]}

@@ -1,28 +1,17 @@
-import {
-  Flex,
-  Radio,
-  RadioGroup,
-  Stack,
-  Text,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Flex, Radio, RadioGroup, Stack, Text } from "@chakra-ui/react";
 import { bond_filter_sort, T_SortValues } from "atom/bond/filter";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useMediaView from "hooks/useMediaView";
-import { useState } from "react";
 import { useRecoilState } from "recoil";
 
 function BondRadioGroup() {
   const [bondRadioValue, setBondRadiouValue] =
     useRecoilState<T_SortValues>(bond_filter_sort);
-  const { colorMode } = useColorMode();
   const { bp500px, bp1024px } = useMediaView();
+  const { isDark } = useCustomColorMode();
 
   return (
-    <Flex
-      w={"100%"}
-      fontSize={14}
-      color={colorMode === "dark" ? "gray.100" : "#535362"}
-    >
+    <Flex w={"100%"} color={isDark ? "gray.100" : "#535362"}>
       <RadioGroup
         onChange={(value: T_SortValues) => setBondRadiouValue(value)}
         value={bondRadioValue}
@@ -36,12 +25,20 @@ function BondRadioGroup() {
           justifyContent={
             bp500px ? "space-between" : bp1024px ? "flex-start" : "flex-end"
           }
+          alignItems={"center"}
         >
-          <Radio value="open">
+          <Flex columnGap={"12px"} m={0}>
+            <Radio
+              value="open"
+              border={isDark ? "solid 2px #535353" : "solid 2px #c6cbd9"}
+              size={"lg"}
+              bgColor={bondRadioValue === "open" ? "blue.300" : ""}
+            ></Radio>
             <Text
+              fontSize={14}
               color={
                 bondRadioValue === "open"
-                  ? colorMode === "dark"
+                  ? isDark
                     ? "white.200"
                     : "gray.800"
                   : ""
@@ -49,12 +46,20 @@ function BondRadioGroup() {
             >
               Open
             </Text>
-          </Radio>
-          <Radio value="future">
+          </Flex>
+          <Flex columnGap={"12px"} ml={"0 !important"}>
+            <Radio
+              value="future"
+              border={isDark ? "solid 2px #535353" : "solid 2px #c6cbd9"}
+              w={"20px"}
+              h={"20px"}
+              size={"lg"}
+            ></Radio>
             <Text
+              fontSize={14}
               color={
                 bondRadioValue === "future"
-                  ? colorMode === "dark"
+                  ? isDark
                     ? "white.200"
                     : "gray.800"
                   : ""
@@ -62,12 +67,21 @@ function BondRadioGroup() {
             >
               Upcoming
             </Text>
-          </Radio>
-          <Radio value="closed">
+          </Flex>
+          <Flex columnGap={"12px"} ml={"0 !important"}>
+            <Radio
+              value="closed"
+              borderColor={"none !important"}
+              border={isDark ? "solid 2px #535353" : "solid 2px #c6cbd9"}
+              w={"20px"}
+              h={"20px"}
+              size={"lg"}
+            ></Radio>
             <Text
+              fontSize={14}
               color={
                 bondRadioValue === "closed"
-                  ? colorMode === "dark"
+                  ? isDark
                     ? "white.200"
                     : "gray.800"
                   : ""
@@ -75,12 +89,21 @@ function BondRadioGroup() {
             >
               Closed
             </Text>
-          </Radio>
-          <Radio value="default">
+          </Flex>
+          <Flex columnGap={"12px"} ml={"0 !important"}>
+            <Radio
+              value="default"
+              borderColor={"none !important"}
+              border={isDark ? "solid 2px #535353" : "solid 2px #c6cbd9"}
+              w={"20px"}
+              h={"20px"}
+              size={"lg"}
+            ></Radio>
             <Text
+              fontSize={14}
               color={
                 bondRadioValue === "default"
-                  ? colorMode === "dark"
+                  ? isDark
                     ? "white.200"
                     : "gray.800"
                   : ""
@@ -88,7 +111,7 @@ function BondRadioGroup() {
             >
               All
             </Text>
-          </Radio>
+          </Flex>
         </Stack>
       </RadioGroup>
     </Flex>

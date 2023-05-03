@@ -1,6 +1,5 @@
-import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
+import { extendTheme } from "@chakra-ui/react";
 import "@fontsource/poppins";
-import { BalanceInput } from "common/input/TextInput";
 
 interface THEME_PROPS {
   colorMode: "light" | "dark";
@@ -14,6 +13,7 @@ const colors = {
   blue: {
     100: "#257eee",
     200: "#2775ff",
+    300: "#2a72e5",
   },
   white: {
     100: "#ffffff",

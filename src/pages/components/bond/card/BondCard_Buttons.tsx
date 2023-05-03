@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import { Dispatch, SetStateAction, useState } from "react";
 
@@ -133,8 +133,16 @@ export default function BondCard_Buttons(props: {
   const { isDark } = useCustomColorMode();
   const isFirstRound = currentRound === 1;
   const isLastRound = currentRound === lastRound;
-  const prevIconColor = isFirstRound ? "#33353b" : "#64646f";
-  const nextIconColor = isLastRound ? "#33353b" : "#64646f";
+  const prevIconColor = isFirstRound
+    ? isDark
+      ? "#33353b"
+      : "#e8edf2"
+    : "#64646f";
+  const nextIconColor = isLastRound
+    ? isDark
+      ? "#33353b"
+      : "#e8edf2"
+    : "#64646f";
 
   const firstIconAction = () => {
     setCurrentNumber(1);

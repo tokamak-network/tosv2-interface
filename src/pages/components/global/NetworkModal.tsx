@@ -109,15 +109,14 @@ function NetworkModal() {
                         ? colorMode === "dark"
                           ? "#70707c"
                           : "#e2e2ea"
-                        : colorMode === "dark"
-                        ? "#1f2128"
                         : "transparent"
                     }
                     _hover={
                       isConnected
                         ? {}
                         : {
-                            backgroundColor: "#f5f5fa",
+                            backgroundColor:
+                              colorMode === "dark" ? "#1f2128" : "#f5f5fa",
                           }
                     }
                     onClick={() => changeNetwork(item.chainIdHex)}
