@@ -22,7 +22,7 @@ const DashBoard = () => {
     <Flex
       {...theme.PAGE_LAYOUT_STYLE.layoutTheme(colorMode)}
       bg={colorMode === "light" ? "#fafbfc" : "black.100"}
-      mt={bp500px ? "42px" : "66px"}
+      mt={bp500px ? "18px" : "66px"}
     >
       <PageLayout></PageLayout>
       <SmallCardContainer></SmallCardContainer>

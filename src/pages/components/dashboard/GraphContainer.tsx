@@ -254,8 +254,6 @@ function GraphContainer() {
     }
   };
 
-  console.log(marketCapDatas);
-
   return (
     <Flex flexDir={"column"}>
       <GraphFilter

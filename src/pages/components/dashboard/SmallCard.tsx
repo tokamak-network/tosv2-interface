@@ -123,11 +123,11 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
           </Text>
           <BasicTooltip label={tooltipMessage} />
         </Flex>
-        {switchButton && (
+        {!isMobile && switchButton && (
           <Flex
             w="80px"
             borderWidth={"1px"}
-            borderColor={isDark ? "#313442" : "#fafbfc"}
+            borderColor={isDark ? "#313442" : "#e8edf2"}
             borderRadius="5px"
             h={"21px"}
           >
@@ -187,8 +187,73 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
           fontSize={22}
           color={isDark ? "white.200" : "gray.800"}
           fontWeight={"bold"}
+          w={"100%"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
         >
           {PriceContent}
+          {isMobile && switchButton && (
+            <Flex
+              w="80px"
+              borderWidth={"1px"}
+              borderColor={isDark ? "#313442" : "#e8edf2"}
+              borderRadius="5px"
+              h={"21px"}
+            >
+              <Button
+                h={"19px"}
+                fontSize={"12px"}
+                borderRadius="4px"
+                fontWeight={600}
+                _hover={{ cursor: "pointer" }}
+                _active={{}}
+                color={
+                  unit === "$" ? (isDark ? "white.100" : "#07070c") : "#64646f"
+                }
+                w="50%"
+                bg={
+                  unit === "$"
+                    ? isDark
+                      ? "#0f0f12"
+                      : "transparent"
+                    : isDark
+                    ? "transparent"
+                    : "#fafbfc"
+                }
+                onClick={() => setUnit("$")}
+              >
+                $
+              </Button>
+              <Button
+                h={"19px"}
+                fontSize={"12px"}
+                borderRadius="5px"
+                w="50%"
+                color={
+                  unit === "ETH"
+                    ? isDark
+                      ? "white.100"
+                      : "#07070c"
+                    : "#64646f"
+                }
+                fontWeight={500}
+                _hover={{ cursor: "pointer" }}
+                _active={{}}
+                bg={
+                  unit === "ETH"
+                    ? isDark
+                      ? "#0f0f12"
+                      : "transparent"
+                    : isDark
+                    ? "transparent"
+                    : "#fafbfc"
+                }
+                onClick={() => setUnit("ETH")}
+              >
+                ETH
+              </Button>
+            </Flex>
+          )}
         </Flex>
         {/* {priceChangePercent !== undefined && (
           <Text

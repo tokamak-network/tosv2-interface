@@ -135,6 +135,7 @@ const SmallCardContainer = () => {
                     ? { borderBottomRadius: 14 }
                     : {}
                 }
+                switchButton={cardData.switchButton}
               ></SmallCard>
             </Box>
           );
