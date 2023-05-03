@@ -1,18 +1,13 @@
 import { Box, Flex, SimpleGrid, useColorMode } from "@chakra-ui/react";
 import useCallContract from "hooks/useCallContract";
-import useContract from "hooks/useContract";
 import { useWindowDimensions } from "hooks/useWindowDimensions";
 import { useEffect, useState } from "react";
-
-import CONTRACT_ADDRESS from "services/addresses/contract";
-import TreasuryAbi from "services/abis/Treasury.json";
 
 import {
   Dashboard_SmallCardArrType,
   Dashboard_SmallCardType,
 } from "types/dashboard";
 import SmallCard from "./SmallCard";
-import useCardData from "hooks/dashboard/useCardData";
 import { GET_DASHBOARD_CARD } from "graphql/dashboard/getDashboard";
 import { useQuery } from "@apollo/client";
 import commafy from "@/utils/commafy";
@@ -48,12 +43,8 @@ const SmallCardContainer = () => {
         backingPerTosEth,
       } = data.getDashboardCard[0];
 
-      const {
-        tosPrice: exTosPrice,
-        backingPerTos: exBackingPerTos,
-        ltosPrice: exLtosPrice,
-        ltosIndex: exLtosIndex,
-      } = data.getDashboardCard[1];
+      const { tosPrice: exTosPrice, ltosIndex: exLtosIndex } =
+        data.getDashboardCard[1];
 
       const tosPriceChangePercent =
         (Number(commafy(tosPrice - exTosPrice)) / Number(commafy(exTosPrice))) *

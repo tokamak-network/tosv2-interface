@@ -1,4 +1,4 @@
-import { convertToWei, truncNumber } from "@/utils/number";
+import { truncNumber } from "@/utils/number";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import { bond_modal } from "atom/bond/modal";
 import { BalanceInput } from "common/input/TextInput";
@@ -13,7 +13,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { SupportedBondToken } from "types/bond/index";
 import { BondCardProps } from "types/bond";
-import { useWeb3React } from "@web3-react/core";
 import useMediaView from "hooks/useMediaView";
 import TokenImageContrainer from "pages/components/common/modal/TokenImageContrainer";
 import commafy from "@/utils/commafy";
@@ -26,22 +25,19 @@ export default function BondModal_Balance() {
   const { modalCondition, userTokenBalance, maxCapacityValue } = useBondModal();
   const { zeroInputBalance, inputOver, inputBalanceisEmpty } = modalCondition;
   const { isDark } = useCustomColorMode();
-  const { maxValue, balance, balanceNum, name } = userTokenBalance;
+  const { maxValue, balance, name } = userTokenBalance;
   const { inputValue, setValue } = useInput("Bond_screen", "bond_modal");
-  const { bondDiscount, isMinusDiscount, minimumTosPrice, roi, isMinusROI } =
-    useBondModalInputData();
+  const { minimumTosPrice } = useBondModalInputData();
   const [actualMaxValue, setActualMaxValue] = useState<string | undefined>(
     undefined
   );
   const inputAmount = inputValue?.bond_modal_balance;
   const inputWeeks = inputValue?.bond_modal_period;
 
-  const { BondDepositoryProxy_CONTRACT, BondDepository_CONTRACT } =
-    useCallContract();
+  const { BondDepositoryProxy_CONTRACT } = useCallContract();
   const bondModalRecoilValue = useRecoilValue(bond_modal);
   const { fiveDaysLockup } = bondModalRecoilValue;
-  const { account } = useWeb3React();
-  const { bp500px, bp700px } = useMediaView();
+  const { bp700px } = useMediaView();
 
   const { selectedModalData } = useModal<BondCardProps>();
   const marketId = selectedModalData?.index;
@@ -109,7 +105,7 @@ export default function BondModal_Balance() {
 
           const gasPriceForContract = gasEstimate.mul(maxFeePerGas);
           const bufferPrice = BigNumber.from(maxFeePerGas).mul(42000);
-          const gasPrice = gasEstimate.add(bufferPrice);
+          const gasPrice = gasPriceForContract.add(bufferPrice);
           const subtractedMaxAmount = parseMaxValue.sub(gasPrice);
 
           const result = subtractedMaxAmount.gte(parseMaxValue)
