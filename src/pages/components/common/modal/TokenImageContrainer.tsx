@@ -12,8 +12,8 @@ function TokenImageContrainer(props: {
     <Flex columnGap={"9px"} alignItems={"center"}>
       <TokenSymbol
         tokenType={props.tokenTypes}
-        // w={"24px"}
-        // h={"24px"}
+        w={"24px"}
+        h={"24px"}
         isTokenInput={true}
         imageW={"8.4px"}
         imageH={"14.4px"}

@@ -4,14 +4,13 @@ import TOKAMAK_SYMBOL from "assets/icons/tokamak-1.svg";
 import TOS_SYMBOL from "assets/icons/TOS.svg";
 
 import TOKEN_TOS_SYMBOL from "assets/icons/tokens/TOS.svg";
-import LTOS_SYMBOL from "assets/icons/tokens/dark-LTOS.svg";
 import LTOS_SYMBOL_BIG from "assets/icons/tokens/dark-LTOS_34w.svg";
 import LTOS_SYMBOL_BIG_LIGHT from "assets/icons/tokens/bright-LTOS.svg";
 
 import STOS_SYMBOL from "assets/icons/tokens/dark-sTOS.svg";
 import STOS_SYMBOL_LIGHT from "assets/icons/tokens/bright-sTOS.svg";
 
-import { SupportedInputTokenTypes, TokenTypes } from "types";
+import { SupportedInputTokenTypes } from "types";
 import { Flex, useColorMode } from "@chakra-ui/react";
 import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 

@@ -1,26 +1,13 @@
-import { convertToWei } from "@/utils/number";
 import { Button, Flex, Text, useColorMode } from "@chakra-ui/react";
-import { bond_modal } from "atom/bond/modal";
 import { BalanceInput } from "common/input/TextInput";
-import TokenSymbol from "common/token/TokenSymol";
 import constant from "constant";
-import { BigNumber, ethers } from "ethers";
-import useBondModal from "hooks/bond/useBondModal";
-import useBondModalCondition from "hooks/bond/useBondModalCondition";
-import useBondModalInputData from "hooks/bond/useBondModalInputData";
-import useCallContract from "hooks/useCallContract";
 import useInput from "hooks/useInput";
 import useModal from "hooks/useModal";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { SetterOrUpdater, useRecoilValue } from "recoil";
+import { useCallback } from "react";
 import { PageKey, SupportedInputTokenTypes } from "types";
-import { useWeb3React } from "@web3-react/core";
 import useMediaView from "hooks/useMediaView";
 import TokenImageContrainer from "pages/components/common/modal/TokenImageContrainer";
-import { StakeCardProps } from "types/stake";
 import { InputKey } from "types/atom";
-
-const bondToken: SupportedInputTokenTypes = "ETH";
 
 type StakeModalInput = {
   defaultValue: string | number | undefined;
@@ -37,11 +24,11 @@ type StakeModalInput = {
   };
   buyMoreButton?: boolean;
   isDisabled?: boolean;
+  removeMaxButton?: boolean;
 };
 
 export default function StakeModal_Input(props: StakeModalInput) {
   const {
-    defaultValue,
     maxValue,
     tokenBalance,
     inputTokenType,
@@ -51,6 +38,7 @@ export default function StakeModal_Input(props: StakeModalInput) {
     err,
     buyMoreButton,
     isDisabled,
+    removeMaxButton,
   } = props;
   const zeroInputBalance = err?.zeroInputBalance;
   const inputOver = err?.inputOver;
@@ -58,21 +46,21 @@ export default function StakeModal_Input(props: StakeModalInput) {
 
   const { errMsg } = constant;
   const { inputValue, setValue } = useInput(pageKey, recoilKey);
-  const { bondDiscount, isMinusDiscount, minimumTosPrice, roi, isMinusROI } =
-    useBondModalInputData();
   const { colorMode } = useColorMode();
 
-  const bondModalRecoilValue = useRecoilValue(bond_modal);
-  const { fiveDaysLockup } = bondModalRecoilValue;
   const { bp700px } = useMediaView();
 
-  const { openModal: openSwapModal, selectedModal } = useModal(
-    "swap_interface_modal"
-  );
+  const { openModal: openSwapModal } = useModal("swap_interface_modal");
 
   const setMaxValue = useCallback(() => {
     if (maxValue) return setValue({ ...inputValue, [atomKey]: maxValue });
   }, [maxValue, atomKey, inputValue]);
+
+  const maxBtnDisabled =
+    inputValue &&
+    atomKey &&
+    String(inputValue[atomKey])?.replaceAll(",", "") ===
+      String(maxValue)?.replaceAll(",", "");
 
   return (
     <Flex alignItems={"center"} flexDir={"column"} rowGap={"10px"}>
@@ -144,19 +132,28 @@ export default function StakeModal_Input(props: StakeModalInput) {
               style={{ maxHeight: "27px" }}
               isDisabled={isDisabled}
             ></BalanceInput>
-            <Button
-              w={"48px"}
-              h={"20px"}
-              border={
-                colorMode === "dark" ? "1px solid #535353" : "1px solid #e8edf2"
-              }
-              bgColor={"transparent"}
-              fontSize={11}
-              color={"blue.200"}
-              onClick={() => setMaxValue()}
-            >
-              MAX
-            </Button>
+            {removeMaxButton !== true && (
+              <Button
+                w={"48px"}
+                h={"20px"}
+                border={
+                  colorMode === "dark"
+                    ? "1px solid #535353"
+                    : "1px solid #e8edf2"
+                }
+                bgColor={"transparent"}
+                fontSize={11}
+                color={"blue.200"}
+                _hover={{
+                  backgroundColor: maxBtnDisabled ? "" : "#257eee",
+                  color: maxBtnDisabled ? "" : "#ffffff",
+                }}
+                isDisabled={maxBtnDisabled}
+                onClick={() => setMaxValue()}
+              >
+                MAX
+              </Button>
+            )}
           </Flex>
         </Flex>
         <Flex

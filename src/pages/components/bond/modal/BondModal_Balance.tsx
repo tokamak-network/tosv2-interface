@@ -53,12 +53,10 @@ export default function BondModal_Balance() {
     switch (bondToken) {
       case "ETH":
         return (
-          <Flex w={"24px"} h={"24px"}>
-            <TokenImageContrainer
-              tokenTypes={"ETH"}
-              name={"ETH"}
-            ></TokenImageContrainer>
-          </Flex>
+          <TokenImageContrainer
+            tokenTypes={"ETH"}
+            name={"ETH"}
+          ></TokenImageContrainer>
         );
       default:
         return <Text>no bondTokenType</Text>;

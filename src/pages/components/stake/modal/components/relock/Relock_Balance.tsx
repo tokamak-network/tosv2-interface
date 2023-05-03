@@ -1,13 +1,5 @@
-import {
-  Checkbox,
-  Container,
-  Flex,
-  Grid,
-  Text,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Checkbox, Flex, Grid, Text, useColorMode } from "@chakra-ui/react";
 import { StakeRelockModalInput } from "atom/stake/input";
-import CustomCheckBox from "common/input/CustomCheckBox";
 import BasicTooltip from "common/tooltip";
 import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 import useInput from "hooks/useInput";
@@ -26,7 +18,7 @@ export default function Relock_Balance() {
   const addTos = inputValue?.stake_relockModal_addTos;
   const { userTokenBalance } = useUserBalance();
 
-  const { selectedModalData, selectedModal, modalSectionMtValue } = useModal<{
+  const { selectedModalData } = useModal<{
     stakeId: string;
     ltosAmount: string;
     ltosWei: string;
@@ -118,6 +110,7 @@ export default function Relock_Balance() {
             tokenBalance={ltosCommified}
             buyMoreButton={!addTos}
             isDisabled={addTos}
+            removeMaxButton={addTos}
           ></StakeModal_Input>
         </Flex>
       </Flex>

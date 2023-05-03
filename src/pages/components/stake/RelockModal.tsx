@@ -5,7 +5,6 @@ import {
   ModalOverlay,
   ModalBody,
   ModalContent,
-  useTheme,
   useColorMode,
   Box,
 } from "@chakra-ui/react";
@@ -17,14 +16,10 @@ import SubmitButton from "common/button/SubmitButton";
 import { useCallback, useEffect, useState } from "react";
 import useCallContract from "hooks/useCallContract";
 import { convertToWei } from "@/utils/number";
-import useUserBalance from "hooks/useUserBalance";
-import useStakeV2 from "hooks/contract/useStakeV2";
 import CONTRACT_ADDRESS from "services/addresses/contract";
 import useUser from "hooks/useUser";
-import { StakeRelockModalInput } from "atom/stake/input";
 import useInput from "hooks/useInput";
 import useUpdateModalAfterEndTime from "hooks/stake/useUpdateModalAfterEndTime";
-import constant from "constant";
 import useCustomToast from "hooks/useCustomToast";
 import useRelockModalCondition from "hooks/stake/useRelockModalCondition";
 import useStosReward from "hooks/stake/useStosReward";
@@ -35,7 +30,6 @@ import Relock_Balance from "./modal/components/relock/Relock_Balance";
 import StakeModal_Period from "./modal/components/StakeModal_Period";
 
 function RelockModal() {
-  const theme = useTheme();
   const { colorMode } = useColorMode();
   const { closeModal } = useModal();
   const { selectedModalData, selectedModal, modalSectionMtValue } = useModal<{
@@ -43,16 +37,11 @@ function RelockModal() {
     ltosAmount: string;
     ltosWei: string;
   }>();
-  const { stakeV2 } = useStakeV2();
-  const { inputValue, setResetValue, setValue } = useInput(
+  const { inputValue, setResetValue } = useInput(
     "Stake_screen",
     "relock_modal"
   );
 
-  const ltosBalance = inputValue?.stake_relockModal_ltos_balance?.replaceAll(
-    " ",
-    ""
-  );
   const inputLtos = inputValue?.stake_relockModal_ltos_balance;
   const inputTos = inputValue?.stake_relockModal_tos_balance;
   const inputWeeks = inputValue?.stake_relockModal_period;
@@ -62,11 +51,9 @@ function RelockModal() {
 
   const { StakingV2Proxy_CONTRACT, TOS_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
-  const { userTOSBalance, userLTOSBalance } = useUserBalance();
   const { tosAllowance } = useUser();
   const [isAllowance, setIsAllowance] = useState<boolean>(false);
-  const { newEndTime, inputTosAmount, tosValue } =
-    useUpdateModalAfterEndTime(addTos);
+  const { newEndTime, inputTosAmount } = useUpdateModalAfterEndTime(addTos);
   const { leftDays, leftHourAndMin } = useStosReward(
     Number(inputTosAmount),
     inputWeeks ? Number(inputWeeks) : 0
@@ -75,12 +62,10 @@ function RelockModal() {
   const { setTx } = useCustomToast();
 
   const stakeId = selectedModalData?.stakeId;
-  const ltosAmount = selectedModalData?.ltosAmount;
   const ltowWei = selectedModalData?.ltosWei;
 
-  const { inputOver, inputPeriodOver, btnDisabled, inputPeriodIsEmpty } =
+  const { inputPeriodOver, btnDisabled, inputPeriodIsEmpty } =
     useRelockModalCondition(Number(ltowWei));
-  const { errMsg, stakeModalMaxWeeks } = constant;
 
   const closeThisModal = useCallback(() => {
     if (setResetValue) {

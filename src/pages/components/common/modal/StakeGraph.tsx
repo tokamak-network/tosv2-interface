@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import constant from "constant";
+import { useCustomColorMode } from "hooks/style/useCustomColorMode";
 import useInput from "hooks/useInput";
 import { useEffect, useState } from "react";
 import { PageKey } from "types";
@@ -41,6 +42,7 @@ function StakeGraph(props: {
   const [sliderValue, setSliderValue] = useState<number | undefined>(undefined);
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const { colorMode } = useColorMode();
+  const { isDark } = useCustomColorMode();
   const [isChanged, setIsChanged] = useState(false);
 
   useEffect(() => {
@@ -95,6 +97,9 @@ function StakeGraph(props: {
         h={"10px"}
         alignSelf={"end"}
         isDisabled={isSlideDisabled}
+        _disabled={{
+          opacity: isDark ? 0.25 : 0.75,
+        }}
         // onMouseEnter={() => setShowTooltip(true)}
         // onMouseLeave={() => setShowTooltip(false)}
       >
@@ -155,7 +160,7 @@ function StakeGraph(props: {
           isOpen={showTooltip}
           label={`${sliderValue} sTOS`}
         >
-          <SliderThumb />
+          <SliderThumb _disabled={{ color: isDark ? "" : "#fff" }} />
         </Tooltip>
       </Slider>
     </Flex>
