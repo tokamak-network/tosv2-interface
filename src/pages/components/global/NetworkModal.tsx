@@ -10,6 +10,7 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import useModal from "hooks/useModal";
 import CLOSE_ICON from "assets/icons/close-modal(white).svg";
 import CLOSE_ICON_LIGHT from "assets/icons/close-modal(dark).svg";
@@ -17,7 +18,6 @@ import CLOSE_ICON_LIGHT from "assets/icons/close-modal(dark).svg";
 import TokenSymbol from "common/token/TokenSymol";
 import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
-import { cp } from "fs";
 import { zIndexStyle } from "theme/styles";
 
 const networkList = [
@@ -37,8 +37,9 @@ const networkList = [
 
 function NetworkModal() {
   const { selectedModal, closeModal } = useModal();
-  const { chainId, library } = useWeb3React();
+  const { chainId } = useWeb3React();
   const { colorMode } = useColorMode();
+  const [isHover, setIsHover] = useState<boolean>(false);
 
   const changeNetwork = async (chainIdHex: string) => {
     //@ts-ignore
@@ -110,9 +111,20 @@ function NetworkModal() {
                           : "#e2e2ea"
                         : colorMode === "dark"
                         ? "#1f2128"
-                        : "#f5f5fa"
+                        : "transparent"
+                    }
+                    _hover={
+                      isConnected
+                        ? {}
+                        : {
+                            backgroundColor: "#f5f5fa",
+                          }
                     }
                     onClick={() => changeNetwork(item.chainIdHex)}
+                    onMouseEnter={() => (isConnected ? null : setIsHover(true))}
+                    onMouseLeave={() =>
+                      isConnected ? null : setIsHover(false)
+                    }
                   >
                     <Flex alignItems={"center"} pl={"12px"}>
                       <TokenSymbol
@@ -133,13 +145,17 @@ function NetworkModal() {
                     </Flex>
                     <Flex alignItems={"center"} pr={"12px"}>
                       <Text fontSize={11} mr={"12px"}>
-                        {isConnected ? "Connected" : "Confirm in Wallet"}
+                        {isConnected
+                          ? "Connected"
+                          : isHover
+                          ? "Confirm in Wallet"
+                          : ""}
                       </Text>
                       <Box
                         w={"8px"}
                         h={"8px"}
                         borderRadius={25}
-                        bg={isConnected ? "#8cd31a" : "#fadf33"}
+                        bg={isConnected ? "#8cd31a" : isHover ? "#fadf33" : ""}
                       />
                     </Flex>
                   </GridItem>
