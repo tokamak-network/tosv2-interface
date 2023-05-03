@@ -4,21 +4,22 @@ import BondCard from "./BondCard";
 import { useBondCard } from "hooks/bond/useBondCard";
 import usePagination from "hooks/usePagination";
 import BondScreenBottom from "./BondScreenBottom";
+import useMediaView from "hooks/useMediaView";
 function BondCardSection() {
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
-  const [isSmallerThan1024] = useMediaQuery("(max-width: 1024px)");
+
   const { cardList } = useBondCard();
   const { pageSize, currentPage, currentPageList, setCurrentPage } =
     usePagination(cardList);
+
+  const { bp1024px } = useMediaView();
 
   return (
     <Flex flexDir={"column"}>
       <Grid
         // columns={3} gridRowGap={"24px"} columnGap={"25px"}
         columnGap={"2.2%"}
-        templateColumns={
-          isSmallerThan1024 ? "repeat(1, 1fr)" : "repeat(3, 1fr)"
-        }
+        templateColumns={bp1024px ? "repeat(1, 1fr)" : "repeat(3, 1fr)"}
         rowGap={"20px"}
         justifyContent={isSmallerThan750 ? "center" : ""}
         flexWrap={"wrap"}

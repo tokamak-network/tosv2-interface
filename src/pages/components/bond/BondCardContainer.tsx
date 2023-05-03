@@ -1,20 +1,14 @@
-import { Box, Flex, Text, useColorMode, useTheme } from "@chakra-ui/react";
-import { useWeb3React } from "@web3-react/core";
-import TabButton from "common/button/TabButton";
+import { Flex, Text, useColorMode } from "@chakra-ui/react";
 import { useState } from "react";
 import BondCardSection from "./BondCardSection";
 import MyHistory from "./MyHistory";
-import BondSortSelect from "./BondSortSelect";
-import StakeCheckbox from "./StakeCheckbox";
 import useMediaView from "hooks/useMediaView";
 import BondRadioGroup from "./BondRadioGroup";
 
 function BondCardContainer() {
   const [tab, setTab] = useState<0 | 1>(0);
-  const { account } = useWeb3React();
-  const theme = useTheme();
   const { colorMode } = useColorMode();
-  const { bp1024px, bp700px, bp500px, pcView } = useMediaView();
+  const { bp1024px, bp500px } = useMediaView();
 
   return (
     <Flex mt={"55px"} w={"100%"} justifyContent={"center"} flexDir={"column"}>
