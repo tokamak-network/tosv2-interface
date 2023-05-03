@@ -46,6 +46,7 @@ const BondConfirm = (props: { callBond: any }) => {
       <ModalContent
         bg={isDark ? "#121318" : "white.100"}
         minW={bp700px ? "350px" : "612px"}
+        maxW={bp700px ? "350px" : "612px"}
         h={"340px"}
       >
         <ModalBody px={0} pt={"30px"}>
@@ -95,7 +96,7 @@ const BondConfirm = (props: { callBond: any }) => {
             justifyContent={"center"}
           >
             <Input
-              w={"460px"}
+              w={bp700px ? "310px" : "460px"}
               fontSize={14}
               color={isDark ? "#f1f1f1" : "#7e7e8f"}
               _placeholder={{ color: "#7e7e8f" }}
@@ -118,7 +119,7 @@ const BondConfirm = (props: { callBond: any }) => {
               }}
             ></Input>
             <SubmitButton
-              w={"460px"}
+              w={bp700px ? "310px" : "460px"}
               name="Confirm"
               onClick={() => {
                 callBond();
