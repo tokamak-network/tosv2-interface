@@ -198,12 +198,12 @@ function BondModal() {
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
-        position="fixed"
-        top="0"
-        width="100%"
+        mt={0}
+        top="60px"
         overflow={"auto"}
-        maxH={"100%"}
-        // height={"7px"}
+        // position="fixed"
+        // bottom={"unset"}
+        maxH={"90vh"}
       >
         <ModalBody px={0} pt={"30px"} h={"auto"}>
           <Flex w="100%" flexDir={"column"}>
