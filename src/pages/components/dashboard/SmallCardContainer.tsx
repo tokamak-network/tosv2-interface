@@ -21,7 +21,7 @@ const SmallCardContainer = () => {
   const { Treasury_CONTRACT } = useCallContract();
   const { colorMode } = useColorMode();
 
-  const { loading, error, data } = useQuery(GET_DASHBOARD_CARD, {
+  const { data } = useQuery(GET_DASHBOARD_CARD, {
     variables: {
       period: "-1",
       limit: 2,

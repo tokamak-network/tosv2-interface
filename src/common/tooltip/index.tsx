@@ -1,14 +1,12 @@
 import {
   Tooltip,
-  IconButton,
   useColorMode,
-  Text,
-  forwardRef,
-  Icon,
   PlacementWithLogical,
+  Box,
 } from "@chakra-ui/react";
 
-import { QuestionOutlineIcon, AttachmentIcon } from "@chakra-ui/icons";
+import QuestionLineIcon from "assets/icons/question.svg";
+import Image from "next/image";
 
 type tooltipProps = {
   label: string | undefined;
@@ -30,11 +28,9 @@ const BasicTooltip: React.FC<tooltipProps> = (props) => {
       fontSize="12px"
       border={colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"}
     >
-      <QuestionOutlineIcon
-        display={label?.length === 0 ? "none" : ""}
-        h={"16px"}
-        minW={"16px"}
-      />
+      <Box w={"16px"} h={"16px"}>
+        <Image src={QuestionLineIcon} alt={"QuestionLineIcon"} />
+      </Box>
     </Tooltip>
   );
 };

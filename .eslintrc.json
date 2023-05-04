@@ -7,8 +7,8 @@
     }
   ],
   "rules": {
-    // "unused-imports/no-unused-imports": "error",
-    // "no-unused-vars": "error"
+    "unused-imports/no-unused-imports": "error",
+    "no-unused-vars": "error"
     // "react/no-unescaped-entities": "off"
     //   "@next/next/no-page-custom-font": "off"
   }

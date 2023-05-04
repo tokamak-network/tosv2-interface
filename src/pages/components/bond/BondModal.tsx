@@ -203,7 +203,7 @@ function BondModal() {
         overflow={"auto"}
         // position="fixed"
         // bottom={"unset"}
-        maxH={"90vh"}
+        maxH={"80vh"}
       >
         <ModalBody px={0} pt={"30px"} h={"auto"}>
           <Flex w="100%" flexDir={"column"}>
