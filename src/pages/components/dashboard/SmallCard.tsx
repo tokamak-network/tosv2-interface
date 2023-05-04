@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { Dashboard_SmallCardType } from "types/dashboard";
 import BasicTooltip from "common/tooltip";
 import { useCustomColorMode } from "hooks/style/useCustomColorMode";
+import useMediaView from "hooks/useMediaView";
 
 const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
   const {
@@ -18,6 +19,7 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
   const [width] = useWindowDimensions();
   const [unit, setUnit] = useState<"$" | "ETH">("$");
   const isMobile = width < 490;
+  const { pcView } = useMediaView();
   const { isDark } = useCustomColorMode();
 
   const PriceContent = useMemo(() => {
@@ -110,14 +112,14 @@ const SmallCard: React.FC<Dashboard_SmallCardType> = (props) => {
       {...style}
     >
       <Flex justifyContent={"space-between"}>
-        <Flex>
+        <Flex columnGap={"6px"}>
           <Text
             color={"gray.100"}
             fontSize={12}
             fontWeight={600}
             h={17}
             mb={"12px"}
-            mr={"6px"}
+            maxW={pcView === false && title === "Backing Per TOS" ? "70px" : ""}
           >
             {title}
           </Text>

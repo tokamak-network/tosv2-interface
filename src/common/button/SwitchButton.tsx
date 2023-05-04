@@ -39,7 +39,7 @@ const SwitchButton: React.FC<SwitchButtonProps> = (props) => {
       }
       color={isSelected ? "white.100" : "gray.200"}
       fontWeight={0}
-      bgColor={isSelected ? "blue.200" : "transparent"}
+      bgColor={isSelected ? "blue.200" : isDark ? "transparent" : "#ffffff"}
       _active={{ background: "transparent" }}
       {...style}
       //   background={"white.100"}

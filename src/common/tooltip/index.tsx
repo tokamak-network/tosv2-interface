@@ -28,7 +28,7 @@ const BasicTooltip: React.FC<tooltipProps> = (props) => {
       fontSize="12px"
       border={colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"}
     >
-      <Box w={"16px"} h={"16px"}>
+      <Box w={"16px"} h={"16px"} cursor={"pointer"}>
         <Image src={QuestionLineIcon} alt={"QuestionLineIcon"} />
       </Box>
     </Tooltip>
