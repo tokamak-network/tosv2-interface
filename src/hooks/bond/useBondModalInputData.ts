@@ -223,6 +223,11 @@ function useBondModalInputData() {
           Number(bondingPrice.toString()) / 1.005
         );
 
+        // console.log("go?");
+        // console.log(
+        //   FixedNumber.from(bondingPrice).divUnsafe(FixedNumber.from("1.005"))
+        // );
+
         setMinimumTosPrice(BigNumber.from(mininmumTosPrice.toString()));
         setBondDiscount(commafy(discountRate));
       }
@@ -231,7 +236,7 @@ function useBondModalInputData() {
       console.log("**fetchBondDiscount err**");
       console.log(e);
     });
-  }, [priceData, bondingPrice, bondInputPeriod]);
+  }, [priceData, bondingPrice, bondInputPeriod, ethPrice]);
 
   useEffect(() => {
     async function fetchROI() {

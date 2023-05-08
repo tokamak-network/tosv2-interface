@@ -77,7 +77,8 @@ export function useBondDepository(lockupWeeks?: number) {
         BondDepositoryProxy_CONTRACT !== null &&
         bonusRateInfo !== undefined
       ) {
-        const bonusRate = bonusRateInfo[_weeks] ?? bonusRateInfo[_weeks - 1];
+        const index = _weeks - 1 < 0 ? 0 : _weeks - 1 > 52 ? 52 : _weeks - 1;
+        const bonusRate = bonusRateInfo[index];
         const bonusValue = basePrice.mul(bonusRate).div(10000);
         const result = basePrice.add(bonusValue);
         return setBondingPrice(result);

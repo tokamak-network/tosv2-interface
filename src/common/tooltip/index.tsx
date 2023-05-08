@@ -4,7 +4,7 @@ import {
   PlacementWithLogical,
   Box,
 } from "@chakra-ui/react";
-
+import { useMemo } from "react";
 import QuestionLineIcon from "assets/icons/question.svg";
 import Image from "next/image";
 
@@ -16,6 +16,10 @@ type tooltipProps = {
 const BasicTooltip: React.FC<tooltipProps> = (props) => {
   const { colorMode } = useColorMode();
   const { label, placement } = props;
+
+  const questionImage = useMemo(() => {
+    return <Image src={QuestionLineIcon} alt={"QuestionLineIcon"} />;
+  }, []);
 
   return (
     <Tooltip
@@ -29,7 +33,7 @@ const BasicTooltip: React.FC<tooltipProps> = (props) => {
       border={colorMode === "light" ? "solid 1px #e8edf2" : "solid 1px #313442"}
     >
       <Box w={"16px"} h={"16px"} cursor={"pointer"}>
-        <Image src={QuestionLineIcon} alt={"QuestionLineIcon"} />
+        {questionImage}
       </Box>
     </Tooltip>
   );

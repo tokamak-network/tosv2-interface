@@ -147,34 +147,36 @@ export default function BondModal_Period() {
   const { inputPeriodOver, inputPeriodIsEmpty } = modalCondition;
   const { roiPerWeeks, discountRatePerBondingPrice } = useBondModalInputData();
 
-  const FiveDaysLockUpCheckBox = () => (
-    <Flex alignItems={"center"}>
-      <Checkbox
-        size={"lg"}
-        style={{
-          borderRadius: "4px",
-          borderColor: isDark ? "#535353" : "#c6cbd9",
-        }}
-        isChecked={fiveDaysLockup}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          const isChecked = e.target.checked;
-          setBondModalState({
-            ...bondModalState,
-            fiveDaysLockup: isChecked,
-          });
-        }}
-      ></Checkbox>
-      <Text
-        ml={"6px"}
-        mr="3px"
-        color={isDark ? "gray.100" : "gray.1000"}
-        fontSize={bp700px ? 12 : ""}
-      >
-        5 Days Lock-Up
-      </Text>
-      <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
-    </Flex>
-  );
+  const FiveDaysLockUpCheckBox = useMemo(() => {
+    return (
+      <Flex alignItems={"center"}>
+        <Checkbox
+          size={"lg"}
+          style={{
+            borderRadius: "4px",
+            borderColor: isDark ? "#535353" : "#c6cbd9",
+          }}
+          isChecked={fiveDaysLockup}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const isChecked = e.target.checked;
+            setBondModalState({
+              ...bondModalState,
+              fiveDaysLockup: isChecked,
+            });
+          }}
+        ></Checkbox>
+        <Text
+          ml={"6px"}
+          mr="3px"
+          color={isDark ? "gray.100" : "gray.1000"}
+          fontSize={bp700px ? 12 : ""}
+        >
+          5 Days Lock-Up
+        </Text>
+        <BasicTooltip label="No sTOS is given for 5 day Lock-up option" />
+      </Flex>
+    );
+  }, [bondModalState, isDark, fiveDaysLockup, bp700px]);
 
   const yLegendText = useMemo(() => {
     if (roiPerWeeks && discountRatePerBondingPrice) {
@@ -216,7 +218,7 @@ export default function BondModal_Period() {
           </Text>
           <BasicTooltip label="Bonding gives LTOS that cannot be unstaked for TOS until the lock-up period ends. The longer the lock-up period, the higher the discount. To maximize ROI, only bond when the discount is positive. Otherwise, it is more profitable to purchase TOS from the open market and stake them for LTOS." />
         </Flex>
-        {bp700px && <FiveDaysLockUpCheckBox />}
+        {bp700px && FiveDaysLockUpCheckBox}
       </Flex>
       <Flex
         w={"100%"}
@@ -290,7 +292,7 @@ export default function BondModal_Period() {
               leftDays={leftDays}
               // endTime={fiveDaysLockup || inputPeriodOver ? undefined : endTime}
             ></InputPeriod>
-            {!bp700px && <FiveDaysLockUpCheckBox />}
+            {!bp700px && FiveDaysLockUpCheckBox}
           </Flex>
         </Flex>
       </Flex>
