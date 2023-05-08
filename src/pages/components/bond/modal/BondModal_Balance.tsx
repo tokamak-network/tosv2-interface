@@ -241,6 +241,7 @@ export default function BondModal_Balance() {
                 backgroundColor: maxBtnDisabled ? "" : "#257eee",
                 color: maxBtnDisabled ? "" : "#ffffff",
               }}
+              _active={{}}
               isDisabled={maxBtnDisabled}
               onClick={() => setMaxValue()}
             >

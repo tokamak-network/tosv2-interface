@@ -5,16 +5,11 @@ import {
   ModalOverlay,
   ModalBody,
   ModalContent,
-  useTheme,
   useColorMode,
   Link,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
-import {
-  modalBottomLoadingState,
-  stosLoadingState,
-  subModalState,
-} from "atom//global/modal";
+import { subModalState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
@@ -23,17 +18,13 @@ import USER_GUIDE from "assets/icons/bond/sicon-user_guide.svg";
 import SubmitButton from "common/button/SubmitButton";
 import { useCallback } from "react";
 import useCallContract from "hooks/useCallContract";
-import useBondModal from "hooks/bond/useBondModal";
 import { BondCardProps } from "types/bond";
 import { convertToWei } from "@/utils/number";
 import useInput from "hooks/useInput";
 import useBondModalInputData from "hooks/bond/useBondModalInputData";
 import useCustomToast from "hooks/useCustomToast";
-import useLtosIndex from "hooks/gql/useLtosIndex";
 import { useRecoilState, useRecoilValue } from "recoil";
 import useBondModalCondition from "hooks/bond/useBondModalCondition";
-import constant from "constant";
-import useStosReward from "hooks/stake/useStosReward";
 import BondConfirm from "./modal/BondConfirm";
 import BondModal_BottomContent from "./modal/BondModal_BottomContent";
 import useMediaView from "hooks/useMediaView";
@@ -49,22 +40,18 @@ import BondModal_Balance from "./modal/BondModal_Balance";
 import { useBondDepository } from "hooks/bond/useBondDepository";
 
 function BondModal() {
-  const theme = useTheme();
   const [isOpenConfirm, setIsOpenConfirm] = useRecoilState(subModalState);
 
   const [isOpendAccount, setOpenedAccountBar] = useRecoilState(accountBar);
   const { openModal: openSwapModal } = useModal("swap_interface_modal");
   const [token0, setToken0] = useRecoilState(selectedToken0);
-  const { TON_ADDRESS, WTON_ADDRESS, TOS_ADDRESS } = CONTRACT_ADDRESS;
-  const { userTokenBalance } = useBondModal();
+  const { WTON_ADDRESS } = CONTRACT_ADDRESS;
 
   const { colorMode } = useColorMode();
   const { inputValue, setResetValue } = useInput<BondModalInput>(
     "Bond_screen",
     "bond_modal"
   );
-  const inputBalance = inputValue?.bond_modal_balance;
-  const inputWeeks = inputValue?.bond_modal_period;
 
   const { selectedModalData, selectedModal, closeModal } =
     useModal<BondCardProps>();
@@ -77,37 +64,15 @@ function BondModal() {
   const marketId = selectedModalData?.index;
 
   const { bp700px } = useMediaView();
-
-  const {
-    youWillGet,
-    endTime,
-    stosReward,
-    originalTosAmount,
-    minimumTosPrice,
-    isMinusDiscount,
-    maxCapacityValue,
-  } = useBondModalInputData();
-
-  const { leftDays, leftWeeks, leftHourAndMin } = useStosReward(
-    Number(inputBalance),
-    inputWeeks
-  );
+  const { minimumTosPrice, isMinusDiscount } = useBondModalInputData();
 
   const { setTx } = useCustomToast({
     confirmedMessage: "Bond purchase success! Go to",
     confirmedLink: "Stake_screen",
   });
-  const { ltosIndex } = useLtosIndex();
 
-  const [bottomLoading, setBottomLoading] = useRecoilState(
-    modalBottomLoadingState
-  );
-  const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
-
-  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
-    useBondModalCondition();
+  const { inputOver, btnDisabled } = useBondModalCondition();
   const { basePrice } = useBondDepository();
-  const { errMsg } = constant;
 
   const closeThisModal = useCallback(() => {
     setResetValue();
@@ -198,12 +163,12 @@ function BondModal() {
         bg={colorMode === "light" ? "white.100" : "#121318"}
         minW={bp700px ? "350px" : "700px"}
         maxW={bp700px ? "350px" : "700px"}
-        mt={0}
-        top="60px"
-        overflow={"auto"}
+        mt={bp700px ? 0 : undefined}
+        top={bp700px ? "60px" : undefined}
+        overflow={bp700px ? "auto" : undefined}
         // position="fixed"
         // bottom={"unset"}
-        maxH={"80vh"}
+        maxH={bp700px ? "80vh" : undefined}
       >
         <ModalBody px={0} pt={"30px"} h={"auto"}>
           <Flex w="100%" flexDir={"column"}>

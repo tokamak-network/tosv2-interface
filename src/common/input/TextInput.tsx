@@ -8,22 +8,12 @@ import {
   NumberInputField,
   Text,
   useColorMode,
-  useFocusOnPointerDown,
-  useMediaQuery,
   useTheme,
 } from "@chakra-ui/react";
-import { inputBalanceState, inputState } from "atom/global/input";
 import { selectedModalState } from "atom/global/modal";
 import useInput from "hooks/useInput";
 import useMediaView from "hooks/useMediaView";
-import { max } from "moment";
-import React, {
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useMemo, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { PageKey } from "types";
 import { InputKey } from "types/atom";
@@ -144,6 +134,7 @@ const TextInput: React.FC<InputProp> = (props) => {
             fontSize={14}
             fontWeight={"normal"}
             isDisabled={isDisabled}
+            _active={{}}
             onClick={() =>
               maxValue && setValue({ ...inputValue, [atomKey]: maxValue })
             }
