@@ -1,18 +1,12 @@
 import {
   Flex,
   Text,
-  Button,
   Modal,
   ModalOverlay,
   ModalBody,
   ModalContent,
   useTheme,
   useColorMode,
-  Link,
-  Box,
-  Input,
-  Tooltip,
-  useMediaQuery,
 } from "@chakra-ui/react";
 // import { CloseIcon } from "@chakra-ui/icons";
 import { useRecoilValue } from "recoil";
@@ -20,13 +14,10 @@ import { selectedModalState } from "atom//global/modal";
 import useModal from "hooks/useModal";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
-import CustomCheckBox from "common/input/CustomCheckBox";
 import SubmitButton from "common/button/SubmitButton";
 import { useCallback, useEffect, useState } from "react";
 import Tile from "../common/modal/Tile";
-import { BalanceInput } from "common/input/TextInput";
 import useUserBalance from "hooks/useUserBalance";
-import useInputValue from "hooks/useInputValue";
 import useCallContract from "hooks/useCallContract";
 import { convertToWei } from "@/utils/number";
 import useUnstake from "hooks/stake/useUnstakeModalData";
@@ -34,13 +25,13 @@ import commafy from "@/utils/commafy";
 import useInput from "hooks/useInput";
 import useUser from "hooks/useUser";
 import useCustomToast from "hooks/useCustomToast";
-import { StakeCardProps } from "types/stake";
 import useLtosIndex from "hooks/gql/useLtosIndex";
 import useRebaseTime from "hooks/useRebaseTime";
 import useMediaView from "hooks/useMediaView";
 import constant from "constant";
 import StakeModal_Input from "./modal/components/StakeModal_Input";
 import useUnstakeModalCondition from "hooks/stake/modal/useUnstakeModalCondition";
+import UserGuide from "../common/guide/UserGuide";
 
 function BottomContent(props: { title: string; content: string }) {
   const { colorMode } = useColorMode();
@@ -177,7 +168,12 @@ function UnstakeModal() {
             {/*TOP Area*/}
             <Flex flexDir={"column"} pos={"relative"}>
               {/* Title Area*/}
-              <Flex w={"100%"} justifyContent={"center"} mb={"33px"}>
+              <Flex
+                w={"100%"}
+                flexDir={"column"}
+                alignItems={"center"}
+                mb={"33px"}
+              >
                 <Text
                   color={colorMode === "light" ? "gray.800" : "white.200"}
                   fontSize={20}
@@ -185,10 +181,12 @@ function UnstakeModal() {
                 >
                   Unstake
                 </Text>
+                <UserGuide />
                 <Flex
                   pos={"absolute"}
                   right={"1.56em"}
                   cursor={"pointer"}
+                  top={"-3px"}
                   onClick={() => closeThisModal()}
                 >
                   <Image src={CLOSE_ICON} alt={"CLOSE_ICON"}></Image>
