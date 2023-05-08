@@ -45,7 +45,7 @@ import useModal from "hooks/useModal";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import CLOSE_ICON from "assets/icons/close-modal.svg";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import SelectToken from "./SelectToken";
 import {
   selectedToken0,
@@ -183,7 +183,6 @@ function SwapInterfaceModal() {
       (Number(fromAmount) === 0 && Number(toAmount) === 0) ||
       token0.address === token1.address ||
       Number(fromAmount) > Number(token0Balance);
-console.log('maxError',maxError);
 
     return condition;
   }, [

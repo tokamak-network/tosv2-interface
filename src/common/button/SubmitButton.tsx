@@ -78,6 +78,8 @@ const SubmitButton: React.FC<SubmitButtonProp> = (props) => {
         isDisabled ? (colorMode === "dark" ? "#5a5a5a" : "#a9a9b7") : "#f1f1f1"
       }
       onClick={() => onClick && onClick()}
+      _disabled={{ opacity: 1 }}
+      _active={{}}
       {...style}
     >
       {iconLocation === "left" && getIcon(iconName)}
