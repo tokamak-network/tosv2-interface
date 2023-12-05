@@ -19,7 +19,6 @@ import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 import { cp } from "fs";
 import { zIndexStyle } from "theme/styles";
-import { TESTNET_CHAIN_ID } from "constants";
 
 const networkList = [
   {
@@ -29,7 +28,7 @@ const networkList = [
     tokenType: "ETH",
   },
   {
-    name: "Goerli",
+    name: "Sepolia",
     chainId: 11155111,
     chainIdHex: "0xAA36A7",
     tokenType: "ETH",

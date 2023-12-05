@@ -12,7 +12,6 @@ function useLockTOS(): UseLockTOS {
   useEffect(() => {
     async function fetchUnstakeData() {
       if (LockTOS_CONTRACT) {
-        console.log("LockTOS_CONTRACT", LockTOS_CONTRACT);
         const epochUnit = parseInt(await LockTOS_CONTRACT.epochUnit());
         setEpochUnit(epochUnit);
       }
