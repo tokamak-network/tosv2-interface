@@ -18,12 +18,7 @@ function useClient() {
   useEffect(() => {
     async function fetchClientData() {
       if (chainId && DEFAULT_NETWORK) {
-        const networkName =
-          DEFAULT_NETWORK === "1"
-            ? "Mainnet"
-            : DEFAULT_NETWORK === "5"
-            ? "Goerli"
-            : "Rinkeby";
+        const networkName = DEFAULT_NETWORK === "1" ? "Mainnet" : "Sepolia";
         if (String(chainId) !== DEFAULT_NETWORK) {
           return setClientData({
             isConnectedToChain: false,

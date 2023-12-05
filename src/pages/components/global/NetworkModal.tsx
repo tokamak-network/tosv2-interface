@@ -19,6 +19,7 @@ import Image from "next/image";
 import { useWeb3React } from "@web3-react/core";
 import { cp } from "fs";
 import { zIndexStyle } from "theme/styles";
+import { TESTNET_CHAIN_ID } from "constants";
 
 const networkList = [
   {
@@ -29,8 +30,8 @@ const networkList = [
   },
   {
     name: "Goerli",
-    chainId: 5,
-    chainIdHex: "0x5",
+    chainId: 11155111,
+    chainIdHex: "0xAA36A7",
     tokenType: "ETH",
   },
 ];
@@ -54,7 +55,7 @@ function NetworkModal() {
       isCentered
       onClose={() => closeModal()}
     >
-      <ModalOverlay className="modalOverlayDrawer"  bg={'none'}  />
+      <ModalOverlay className="modalOverlayDrawer" bg={"none"} />
       <ModalContent
         w={"360px"}
         h={"223px"}
