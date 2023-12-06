@@ -118,7 +118,11 @@ function BondCard(props: { data: BondCardProps }) {
           name={account ? (isOpen ? "Bond" : "Closed") : "Connect Wallet"}
           w={["100%", "270px", "150px"]}
           h={"33px"}
-          style={{ alignSelf: "center", marginTop: "9px", fontWeight:'normal' }}
+          style={{
+            alignSelf: "center",
+            marginTop: "9px",
+            fontWeight: "normal",
+          }}
           isDisabled={bondButtonIsDisabled}
           isLoading={txPending}
           onClick={account ? openModal : tryActivation}
