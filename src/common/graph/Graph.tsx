@@ -53,7 +53,7 @@ function Graph(props: {
   // console.log(hoverData);
   // const selectedFilter = useRecoilValue(selectedFilterState);
 
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
+  // const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
 
   const CustomPoint = (props: any) => {
     const { currentPoint, borderWidth, borderColor, points } = props;
