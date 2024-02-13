@@ -10,18 +10,24 @@ import usePrice from "hooks/usePrice";
 import useCallContract from "hooks/useCallContract";
 import { convertNumber } from "@/utils/number";
 import { log } from "console";
+import { bondDB } from "constants/db";
 
 function BondCardSection() {
   const [cardList, setCardList] = useState<BondCardProps[] | undefined>(
     undefined
   );
   const [isSmallerThan750] = useMediaQuery("(max-width: 750px)");
-  const { loading, error, data } = useQuery(GET_BOND_LIST, {
-    variables: {
-      period: "-1",
-    },
-    pollInterval: 10000,
-  });
+
+  /**
+   * fetch through DB
+   */
+  // const { loading, error, data } = useQuery(GET_BOND_LIST, {
+  //   variables: {
+  //     period: "-1",
+  //   },
+  //   pollInterval: 10000,
+  // });
+  const data = bondDB;
   const { priceData } = usePrice();
 
   // const { BondDepositoryProxy_CONTRACT } = useCallContract();

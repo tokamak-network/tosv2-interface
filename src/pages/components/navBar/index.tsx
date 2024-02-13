@@ -295,7 +295,7 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
             : "DAO";
         return (
           <>
-            <Flex pos={"relative"} key={`${index + 1}`}>
+            <Flex pos={"relative"} key={`${item.link}`}>
               <Flex
                 w={isExpended ? 206 : 54}
                 h={54}
