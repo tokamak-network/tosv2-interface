@@ -34,8 +34,6 @@ const SmallCardContainer = () => {
     pollInterval: 10000,
   });
 
-  console.log("data", data);
-
   // const { data, loading, error } = useCardData();
   // const { tosPrice, backingPerTos, ltosPrice, ltosIndex } = data;
 
