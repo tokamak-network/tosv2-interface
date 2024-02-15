@@ -68,24 +68,9 @@ import { zIndexStyle } from "theme/styles";
 
 const iconList = [
   {
-    icon: MEDIUM_ICON,
-    hoverIcon: MEDIUM_HOVER_ICON,
-    href: "https://medium.com/onther-tech",
-  },
-  {
-    icon: TWITTER_ICON,
-    hoverIcon: TWITTER_HOVER_ICON,
-    href: "https://twitter.com/tokamak_network?lang=en",
-  },
-  {
     icon: GITHUB_ICON,
     hoverIcon: GITHUB_HOVER_ICON,
     href: "https://github.com/tokamak-network/tosv2-interface",
-  },
-  {
-    icon: TELEGRAM_ICON,
-    hoverIcon: TELEGRAM_HOVER_ICON,
-    href: "http://bit.ly/3gH1bCr",
   },
 ];
 
@@ -270,25 +255,11 @@ const NavItemBottom = (props: { isExpended: boolean }) => {
   const pName = pathname.replaceAll("/", "");
   const [isOpen, setIsOpen] = useRecoilState(sidebarState);
   const { colorMode } = useColorMode();
-  const navItemBottomList = [
-    {
-      icon: TONSTARTER_GRAY_ICON,
-      hoverIcon: TONSTARTER_HOVER,
-      lightHoverIcon: TONSTARTER_HOVER,
-      link: "TONStarter",
-      href: "https://tonstarter.tokamak.network/",
-    },
-    {
-      icon: USERGUIDE_GRAY_ICON,
-      hoverIcon: USERGUIDE_HOVER_ICON,
-      lightHoverIcon: USERGUIDE_HOVER_ICON,
-      link: "User Guide",
-      href: "https://tokamaknetwork.gitbook.io/home/02-service-guide/tosv2",
-    },
-  ];
+  const navItemBottomList: any = undefined;
+  if (!navItemBottomList) return null;
   return (
     <>
-      {navItemBottomList.map((item, index) => {
+      {navItemBottomList.map((item: any, index: any) => {
         const capitalLinkName =
           item.link !== "dao"
             ? item.link.charAt(0).toUpperCase() + item.link.slice(1)

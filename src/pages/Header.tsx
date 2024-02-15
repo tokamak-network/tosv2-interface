@@ -5,11 +5,10 @@ const HeadMeta: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>TOSv2 - Tokamak</title>
+        <title>TOSv2 </title>
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://tosv2.tokamak.network" />
-        <meta property="title" content="TOSv2 - Tokamak" />
-        <meta property="og:title" content="TOSv2 - Tokamak" />
+        <meta property="title" content="TOSv2" />
+        <meta property="og:title" content="TOSv2" />
         <meta
           property="description"
           content="Functional upgrade to TONStarter ecosystem"
