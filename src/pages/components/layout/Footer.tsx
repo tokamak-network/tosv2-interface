@@ -12,7 +12,7 @@ function Footer() {
     <Flex w={"100%"} mt={"auto"} pt={"24px"} flexDir="column">
       <Flex
         borderWidth={0.5}
-        mb={mobile ? '18px' : "25px"}
+        mb={mobile ? "18px" : "25px"}
         borderColor={colorMode === "dark" ? "gray.300" : "gray.900"}
       ></Flex>
       <Flex
@@ -23,24 +23,32 @@ function Footer() {
         pb={"25px"}
         rowGap={mobile ? "15px" : 0}
       >
-        <Flex flexDir={mobile ? 'column' : 'row'} alignItems={'center'}>
-          <Flex mb={mobile ? '3px' : ''}>
-            <Text>© 2022</Text>
-            <span  style={{color:'#2775ff', marginLeft: '3px', marginRight: '3px' }} >
+        <Flex flexDir={mobile ? "column" : "row"} alignItems={"center"}>
+          <Flex mb={mobile ? "3px" : ""}>
+            <Text>Copyright ©2024</Text>
+            <span
+              style={{
+                color: "#2775ff",
+                marginLeft: "3px",
+                marginRight: "3px",
+              }}
+            >
               Tokamak Network
             </span>
-            <Text>PTE.LTD</Text>
+            <Text>All Rights Reserved.</Text>
           </Flex>
           <Flex>
-         {!mobile &&  <Flex alignItems={"center"} h={"18px"}>
-              <Box
-                mx={mobile? '12px' : "15px"}
-                w={"4px"}
-                h={"4px"}
-                borderRadius={25}
-                bgColor={"gray.700"}
-              ></Box>
-            </Flex>}
+            {!mobile && (
+              <Flex alignItems={"center"} h={"18px"}>
+                <Box
+                  mx={mobile ? "12px" : "15px"}
+                  w={"4px"}
+                  h={"4px"}
+                  borderRadius={25}
+                  bgColor={"gray.700"}
+                ></Box>
+              </Flex>
+            )}
             <Text color={"blue.200"}>hello</Text>
             <Text>@tokamak.network</Text>
           </Flex>
@@ -50,7 +58,7 @@ function Footer() {
           h={"17px"}
           justifyContent={mobile ? "center" : "flex-end"}
           onClick={() => openModal()}
-          mb={mobile ? '-5px' : ''}
+          mb={mobile ? "-5px" : ""}
         >
           <Text
             cursor={"pointer"}
