@@ -1,20 +1,10 @@
-import { selector, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { filterState } from "atom//dashboard";
-import {
-  Box,
-  Flex,
-  Text,
-  Tooltip,
-  useColorMode,
-  useMediaQuery,
-} from "@chakra-ui/react";
-import { DatumValue, ResponsiveLine } from "@nivo/line";
-import question from "assets/icons/question.svg";
-import Image from "next/image";
+import { Flex, Text, useColorMode } from "@chakra-ui/react";
+import { ResponsiveLine } from "@nivo/line";
 import moment from "moment";
 import BasicTooltip from "common/tooltip";
-import { useEffect, useRef, useState } from "react";
-import useMediaView from "hooks/useMediaView";
+import { useState } from "react";
 
 function Graph(props: {
   data: any[];
@@ -49,14 +39,8 @@ function Graph(props: {
     },
   };
 
-  // console.log("--hoverData--");
-  // console.log(hoverData);
-  // const selectedFilter = useRecoilValue(selectedFilterState);
-
-  const [smallerThan1024] = useMediaQuery("(max-width: 1024px)");
-
   const CustomPoint = (props: any) => {
-    const { currentPoint, borderWidth, borderColor, points } = props;
+    const { borderWidth, borderColor } = props;
 
     // it will show the current point
     if (hoverDataIndex !== props.datum.dataIndex) {
@@ -122,6 +106,7 @@ function Graph(props: {
       >
         {amount}
       </Text>
+      {/* @ts-ignore */}
       <ResponsiveLine
         data={data}
         theme={theme}
