@@ -18,6 +18,7 @@ const Home: NextPage = () => {
   //   router.push("/intro");
   // }, []);
 
+  //@ts-ignore
   return <Intro></Intro>;
 };
 

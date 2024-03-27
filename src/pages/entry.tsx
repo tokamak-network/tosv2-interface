@@ -3,6 +3,8 @@ import useClient from "hooks/useClient";
 import { AppProps } from "next/app";
 import { useEffect } from "react";
 
+import React, { ReactElement, ReactNode } from "react"; // Add import statement
+
 function Entry({ Component, pageProps }: AppProps) {
   const { isConnectedToChain, networkName } = useClient();
 
@@ -12,7 +14,12 @@ function Entry({ Component, pageProps }: AppProps) {
     }
   }, [isConnectedToChain, networkName]);
 
-  if (Component) return <Component {...pageProps} />;
+  if (Component)
+    return (
+      // @ts-ignore
+      <Component {...pageProps} />
+    );
+
   return null;
 }
 

@@ -67,7 +67,7 @@ function BondCardSection() {
             amount: bondPrice.toString(),
             localeString: true,
             round: false,
-          }),
+          }) as string,
           discountRate: `${commafy(discount)}%`,
           tokenType: "ETH",
           totalSold: `${commafy(totalSold)} TOS`,

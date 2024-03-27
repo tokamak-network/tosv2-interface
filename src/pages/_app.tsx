@@ -18,8 +18,6 @@ import Entry from "./entry";
 import AccountDrawer from "./components/layout/AccountDrawer";
 import HeadMeta from "./Header";
 import NetworkModal from "./components/global/NetworkModal";
-import TermsOfUse from "./components/global/TermsOfUse";
-import Notice from "./components/global/Notice";
 import "css/gradient.css";
 import "css/modalOverlay.css";
 import "css/scrollbar.css";
@@ -38,7 +36,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ColorModeScript initialColorMode={theme.initialColorMode} />
         <ChakraProvider resetCSS theme={theme}>
           <RecoilRoot>
-            <HeadMeta></HeadMeta>
             <Flex minH={"100vh"} w={"100%"}>
               <NavBar></NavBar>
               {/* PC VIEW = 1440px */}
