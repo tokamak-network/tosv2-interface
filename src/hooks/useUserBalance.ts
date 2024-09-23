@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { convertNumber } from "utils/number";
 import useCallContract from "hooks/useCallContract";
 import { useBlockNumber } from "./useBlockNumber";
+import { formatUnits } from "ethers/lib/utils";
 
 const useUserBalance = () => {
   const { account, library } = useWeb3React();
@@ -31,6 +32,9 @@ const useUserBalance = () => {
     undefined
   );
   const [userSTOSBalance, setUserSTOSBalance] = useState<string | undefined>(
+    undefined
+  );
+  const [userTOSBNBalance, setUserTOSBNBalance] = useState<string | undefined>(
     undefined
   );
 
@@ -78,6 +82,7 @@ const useUserBalance = () => {
           amount: sTOS.toString(),
           localeString: true,
         });
+        const tosBNBalance = formatUnits(tos, 18);
 
         setUserTonBalance(convertedTon || "-");
         setUserWTonBalance(convertedWTon || "-");
@@ -85,6 +90,7 @@ const useUserBalance = () => {
         setUserETHBalance(convertedEth || "-");
         setUserLTOSBalance(convertedLTOS || "-");
         setUserSTOSBalance(convertedSTOS || "-");
+        setUserTOSBNBalance(tosBNBalance);
       } catch (e) {
         // console.log("*****fetch balance err*****");
         // console.log(e);
@@ -111,6 +117,7 @@ const useUserBalance = () => {
     userETHBalance,
     userLTOSBalance,
     userSTOSBalance,
+    userTOSBNBalance,
   };
 };
 

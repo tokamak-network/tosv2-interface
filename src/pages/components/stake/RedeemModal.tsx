@@ -85,12 +85,9 @@ function RedeemModal() {
     currentTosValue,
     newBalanceTosValue,
   } = useStakeModaldata();
-  const { StakingV2Proxy_CONTRACT, TOS_CONTRACT, TreasuryProxy_CONTRACT } =
-    useCallContract();
+  const { TOS_CONTRACT, TreasuryProxy_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
-  const { userTOSBalance } = useUserBalance();
-  const { stakeList, tosAllowance } = useUser();
-
+  const { userTOSBalance, userTOSBNBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(true);
   const [isApproving, setIsApproving] = useState<boolean>(false);
@@ -99,86 +96,20 @@ function RedeemModal() {
 
   const { bp700px } = useMediaView();
 
-  const { newEndTime, leftDays, leftWeeks, leftHourAndMin } = useStosReward(
+  const { newEndTime } = useStosReward(
     Number(inputValue.stake_modal_balance),
     inputValue.stake_modal_period
   );
   const { newBalanceStos } = useStosStake();
-  const { ltosIndex } = useLtosIndex();
-  const rebaseTime = useRebaseTime(":");
   const [bottomLoading, setBottomLoading] = useRecoilState(
     modalBottomLoadingState
   );
   const [stosLoading, setStosLoading] = useRecoilState(stosLoadingState);
 
   const { setTx } = useCustomToast();
-  const { inputOver, inputPeriodOver, btnDisabled, zeroInputBalance } =
+  const { inputPeriodOver, btnDisabled, zeroInputBalance } =
     useStakeModalCondition();
   const { errMsg, modalMaxWeeks } = constant;
-
-  const contentList = fiveDaysLockup
-    ? [
-        {
-          title: "You Give",
-          content: `${inputValue.stake_modal_balance || "-"} TOS`,
-          tooltip: false,
-          tooltipMessage: "",
-        },
-        {
-          title: "You Will Get",
-          content: bottomLoading ? "..." : `${ltos} LTOS`,
-          tooltip: true,
-          tooltipMessage:
-            "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-          secondTooltip: `${inputValue.stake_modal_balance} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-          thirdTooltip:
-            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-        },
-        {
-          title: "Current Balance",
-          content: `${currentBalance || "-"} LTOS`,
-          tooltip: true,
-          tooltipMessage: "Current LTOS balance without Lock-Up period",
-          secondTooltip: `${currentTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-        },
-        {
-          title: "New Balance",
-          content: `${newBalance || "-"} LTOS`,
-          tooltip: true,
-          tooltipMessage:
-            "New LTOS balance without Lock-Up period after staking. ",
-          secondTooltip: `${newBalanceTosValue} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-        },
-      ]
-    : [
-        {
-          title: "You Give",
-          content: `${inputValue.stake_modal_balance || "-"} TOS`,
-          tooltip: false,
-          tooltipMessage: "",
-        },
-        {
-          title: "You Will Get",
-          content: {
-            ltos: bottomLoading ? "..." : ltos,
-            stos: stosLoading ? "..." : commafy(newBalanceStos),
-          },
-          tooltip: true,
-          tooltipMessage:
-            "You get LTOS based on what you give and sTOS is also based on the lock-up period.",
-          secondTooltip: `${commafy(
-            inputValue.stake_modal_balance
-          )} TOS. As LTOS index increases, the number of TOS you can get from unstaking LTOS will also increase.`,
-          thirdTooltip:
-            "sTOS’s lock-up period is calculated relative to Thursday 00:00 (UTC+0).",
-        },
-        {
-          title: "End Time",
-          content: `${newEndTime || "-"}`,
-          tooltip: true,
-          tooltipMessage: "LTOS can be unstaked after this time. ",
-        },
-      ];
 
   const closeThisModal = useCallback(() => {
     setResetValue();
@@ -260,6 +191,12 @@ function RedeemModal() {
     setBottomLoading(true);
   }, [inputValue.stake_modal_balance, setBottomLoading]);
 
+  const inputOver = useMemo(() => {
+    if (inputValue.stake_modal_balance && userTOSBNBalance) {
+      return Number(inputValue.stake_modal_balance) > Number(userTOSBNBalance);
+    }
+  }, [inputValue.stake_modal_balance, userTOSBNBalance]);
+
   return (
     <Modal
       isOpen={selectedModal === "stake_redeem_modal"}
@@ -330,7 +267,7 @@ function RedeemModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
-                    maxValue={Number(userTOSBalance?.replaceAll(",", ""))}
+                    maxValue={Number(userTOSBNBalance)}
                     isError={zeroInputBalance || inputOver}
                     errorMsg={
                       zeroInputBalance
@@ -349,7 +286,7 @@ function RedeemModal() {
                   px="6px"
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userTOSBalance || "-"} TOS</Text>
+                  <Text>{userTOSBNBalance || "-"} TOS</Text>
                 </Flex>
               </Flex>
               {/* Content Bottom */}
@@ -365,11 +302,7 @@ function RedeemModal() {
                   h={42}
                   name="Redeem"
                   onClick={callStake}
-                  isDisabled={
-                    (fiveDaysLockup
-                      ? zeroInputBalance || inputOver
-                      : btnDisabled) || isModalLoading
-                  }
+                  isDisabled={zeroInputBalance || inputOver}
                 ></SubmitButton>
               ) : (
                 <SubmitButton
