@@ -53,11 +53,11 @@ function StakeModal_BottomContent(props: {
     ? [
         {
           title: "You Burn",
-          content: `${commafy(inputValue.stake_modal_balance)} TOS`,
+          content: `${commafy(inputValue.stake_modal_balance, 18)} TOS`,
         },
         {
           title: "You Get",
-          content: `${commafy(redeemValue, 4)} ETH`,
+          content: `${commafy(redeemValue.toFixed(8), 8)} ETH`,
         },
       ]
     : fiveDaysLockup

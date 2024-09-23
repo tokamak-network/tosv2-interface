@@ -87,7 +87,7 @@ function RedeemModal() {
   } = useStakeModaldata();
   const { TOS_CONTRACT, TreasuryProxy_CONTRACT } = useCallContract();
   const { StakingV2Proxy } = CONTRACT_ADDRESS;
-  const { userTOSBalance, userTOSBNBalance } = useUserBalance();
+  const { userTOSBNBalance: userTOSBalance } = useUserBalance();
   const [fiveDaysLockup, setFiveDaysLockup] = useState<boolean>(false);
   const [isAllowance, setIsAllowance] = useState<boolean>(true);
   const [isApproving, setIsApproving] = useState<boolean>(false);
@@ -192,10 +192,10 @@ function RedeemModal() {
   }, [inputValue.stake_modal_balance, setBottomLoading]);
 
   const inputOver = useMemo(() => {
-    if (inputValue.stake_modal_balance && userTOSBNBalance) {
-      return Number(inputValue.stake_modal_balance) > Number(userTOSBNBalance);
+    if (inputValue.stake_modal_balance && userTOSBalance) {
+      return Number(inputValue.stake_modal_balance) > Number(userTOSBalance);
     }
-  }, [inputValue.stake_modal_balance, userTOSBNBalance]);
+  }, [inputValue.stake_modal_balance, userTOSBalance]);
 
   return (
     <Modal
@@ -267,7 +267,7 @@ function RedeemModal() {
                     pageKey={"Stake_screen"}
                     recoilKey={"stake_modal"}
                     atomKey={"stake_modal_balance"}
-                    maxValue={Number(userTOSBNBalance)}
+                    maxValue={userTOSBalance}
                     isError={zeroInputBalance || inputOver}
                     errorMsg={
                       zeroInputBalance
@@ -286,7 +286,7 @@ function RedeemModal() {
                   px="6px"
                 >
                   <Text>Your Balance</Text>
-                  <Text>{userTOSBNBalance || "-"} TOS</Text>
+                  <Text>{userTOSBalance || "-"} TOS</Text>
                 </Flex>
               </Flex>
               {/* Content Bottom */}
